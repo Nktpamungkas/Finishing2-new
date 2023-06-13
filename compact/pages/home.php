@@ -548,6 +548,8 @@
 								<option value="<?= $r_demand['DEMAND']; ?>" <?php if($r_demand['DEMAND'] == $_GET['demand']){ echo 'SELECTED'; } ?>><?= $r_demand['DEMAND']; ?></option>
 								<?php endwhile; ?>
 							</select>
+						<?php } else { ?>
+							<input name="demand" id="demand" type="text" placeholder="Nomor Demand">
 						<?php } ?>
 					</td>
 					<td width="14%">

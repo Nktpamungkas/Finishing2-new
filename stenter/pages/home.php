@@ -554,7 +554,7 @@
           <td width="26%">
             <input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
 
-            <?php if ($_GET['typekk'] == 'NOW') { ?>
+            <?php if ($_GET['typekk'] == 'NOW') {  ?>
               <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
                 <option value="" disabled selected>Pilih Nomor Demand</option>
                 <?php 
@@ -564,6 +564,8 @@
                 <option value="<?= $r_demand['DEMAND']; ?>" <?php if($r_demand['DEMAND'] == $_GET['demand']){ echo 'SELECTED'; } ?>><?= $r_demand['DEMAND']; ?></option>
                 <?php endwhile; ?>
               </select>
+            <?php } else { ?>
+              <input name="demand" id="demand" type="text" placeholder="Nomor Demand">
             <?php } ?>
           </td>
           <td width="14%">
