@@ -873,26 +873,26 @@
           </td>
           <td>:</td>
           <td><input name="proses_in" type="text" required="required" id="proses_in" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25" onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['jam_in'] ?>" size="5" maxlength="5" />
-            <input name="tgl_proses_m" type="text" required="required" id="tgl_proses_m" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_m);return false;" value="<?php echo $rw['tgl_proses_in']; ?>" size="10" />
-            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_m);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal2" style="border:none" align="absmiddle" border="0" /></a>
-          </td>
-          <td>
-            <h4>Selesai Proses</h4>
-          </td>
-          <td>:</td>
-          <td colspan="2"><input name="proses_out" type="text" required="required" id="proses_out" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['jam_out'] ?>" size="5" maxlength="5" />
+              var time = this.value;
+              if (time.match(/^\d{2}$/) !== null) {
+                this.value = time + ':';
+              } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+                this.value = time + '';
+              }" value="<?php echo $rw['jam_in'] ?>" size="5" maxlength="5" />
+                        <input name="tgl_proses_m" type="text" required="required" id="tgl_proses_m" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_m);return false;" value="<?php echo $rw['tgl_proses_in']; ?>" size="10" />
+                        <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_m);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal2" style="border:none" align="absmiddle" border="0" /></a>
+                      </td>
+                      <td>
+                        <h4>Selesai Proses</h4>
+                      </td>
+                      <td>:</td>
+                      <td colspan="2"><input name="proses_out" type="text" required="required" id="proses_out" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
+              var time = this.value;
+              if (time.match(/^\d{2}$/) !== null) {
+                this.value = time + ':';
+              } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+                this.value = time + '';
+              }" value="<?php echo $rw['jam_out'] ?>" size="5" maxlength="5" />
             <input name="tgl_proses_k" type="text" required="required" id="tgl_proses_k" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_k);return false;" value="<?php echo $rw['tgl_proses_out']; ?>" size="10" />
             <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_k);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal3" style="border:none" align="absmiddle" border="0" /></a>
           </td>
@@ -903,26 +903,26 @@
           </td>
           <td>:</td>
           <td><input name="stop_mulai" type="text" id="stop_mulai" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
-            <input name="tgl_stop_m" type="text" id="tgl_stop_m" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
-            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal4" style="border:none" align="absmiddle" border="0" /></a>
-          </td>
-          <td>
-            <h4>Selesai Stop Mesin 1</h4>
-          </td>
-          <td>:</td>
-          <td width="21%"><input name="stop_selesai" type="text" id="stop_selesai" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
+              var time = this.value;
+              if (time.match(/^\d{2}$/) !== null) {
+                this.value = time + ':';
+              } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+                this.value = time + '';
+              }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
+                        <input name="tgl_stop_m" type="text" id="tgl_stop_m" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
+                        <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal4" style="border:none" align="absmiddle" border="0" /></a>
+                      </td>
+                      <td>
+                        <h4>Selesai Stop Mesin 1</h4>
+                      </td>
+                      <td>:</td>
+                      <td width="21%"><input name="stop_selesai" type="text" id="stop_selesai" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
+              var time = this.value;
+              if (time.match(/^\d{2}$/) !== null) {
+                this.value = time + ':';
+              } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+                this.value = time + '';
+              }" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
             <input name="tgl_stop_s" type="text" id="tgl_stop_s" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s);return false;" value="<?php echo $rw['tgl_stop_r']; ?>" size="10" />
             <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal5" style="border:none" align="absmiddle" border="0" /></a>
           </td>
@@ -950,26 +950,26 @@
           </td>
           <td>:</td>
           <td><input name="stop_mulai2" type="text" id="stop_mulai2" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
-            <input name="tgl_stop_m2" type="text" id="tgl_stop_m2" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
-            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal6" style="border:none" align="absmiddle" border="0" /></a>
-          </td>
-          <td>
-            <h4>Selesai Stop Mesin 2</h4>
-          </td>
-          <td>:</td>
-          <td><input name="stop_selesai2" type="text" id="stop_selesai2" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
+            var time = this.value;
+            if (time.match(/^\d{2}$/) !== null) {
+              this.value = time + ':';
+            } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+              this.value = time + '';
+            }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
+                      <input name="tgl_stop_m2" type="text" id="tgl_stop_m2" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
+                      <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal6" style="border:none" align="absmiddle" border="0" /></a>
+                    </td>
+                    <td>
+                      <h4>Selesai Stop Mesin 2</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="stop_selesai2" type="text" id="stop_selesai2" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
+            var time = this.value;
+            if (time.match(/^\d{2}$/) !== null) {
+              this.value = time + ':';
+            } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+              this.value = time + '';
+            }" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
             <input name="tgl_stop_s2" type="text" id="tgl_stop_s2" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s2);return false;" value="<?php echo $rw['tgl_stop_r']; ?>" size="10" />
             <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s2);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal7" style="border:none" align="absmiddle" border="0" /></a>
           </td>
@@ -997,26 +997,26 @@
           </td>
           <td>:</td>
           <td><input name="stop_mulai3" type="text" id="stop_mulai3" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
-            <input name="tgl_stop_m3" type="text" id="tgl_stop_m3" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
-            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal8" style="border:none" align="absmiddle" border="0" /></a>
-          </td>
-          <td>
-            <h4>Selesai Stop Mesin 3</h4>
-          </td>
-          <td>:</td>
-          <td><input name="stop_selesai3" type="text" id="stop_selesai3" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
+            var time = this.value;
+            if (time.match(/^\d{2}$/) !== null) {
+              this.value = time + ':';
+            } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+              this.value = time + '';
+            }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
+                      <input name="tgl_stop_m3" type="text" id="tgl_stop_m3" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
+                      <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal8" style="border:none" align="absmiddle" border="0" /></a>
+                    </td>
+                    <td>
+                      <h4>Selesai Stop Mesin 3</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="stop_selesai3" type="text" id="stop_selesai3" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
+            var time = this.value;
+            if (time.match(/^\d{2}$/) !== null) {
+              this.value = time + ':';
+            } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+              this.value = time + '';
+            }" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
             <input name="tgl_stop_s3" type="text" id="tgl_stop_s3" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s3);return false;" value="<?php echo $rw['tgl_stop_r']; ?>" size="10" />
             <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s3);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal9" style="border:none" align="absmiddle" border="0" /></a>
           </td>

@@ -42,159 +42,202 @@
 </head>
 
 <body>
-<?php
-	ini_set("error_reporting", 1);
-	session_start();
-	include ('../koneksi.php');
+	<?php
+		ini_set("error_reporting", 1);
+		session_start();
+		include ('../koneksi.php');
 
-	function nourut(){
-		include('../koneksi.php');
-		$format	= date("Ymd");
-		$sql	= mysqli_query($con,"SELECT nokk FROM tbl_adm WHERE substr(nokk,1,8) like '%".$format."%' ORDER BY nokk DESC LIMIT 1 ") or die (mysqli_error());
-		$d		= mysqli_num_rows($sql);
+		function nourut(){
+			include('../koneksi.php');
+			$format	= date("Ymd");
+			$sql	= mysqli_query($con,"SELECT nokk FROM tbl_adm WHERE substr(nokk,1,8) like '%".$format."%' ORDER BY nokk DESC LIMIT 1 ") or die (mysqli_error());
+			$d		= mysqli_num_rows($sql);
 
-		if( $d>0 ){
-			$r		= mysqli_fetch_array($sql);
-			$d		= $r['nokk'];
-			$str	= substr($d,8,2);
-			$Urut	= (int)$str;
+			if( $d>0 ){
+				$r		= mysqli_fetch_array($sql);
+				$d		= $r['nokk'];
+				$str	= substr($d,8,2);
+				$Urut	= (int)$str;
+			}else{
+				$Urut = 0;
+			}
+			$Urut = $Urut + 1;
+			$Nol="";
+			$nilai=2-strlen($Urut);
+
+			for ($i=1;$i<=$nilai;$i++){
+				$Nol= $Nol."0";
+			}
+			$nipbr =$format.$Nol.$Urut;
+			return $nipbr;
+		}
+		$nou=nourut();
+		if($_REQUEST['kk']!=''){
+			$idkk="";
 		}else{
-			$Urut = 0;
+			$idkk=$_GET['idkk'];
 		}
-		$Urut = $Urut + 1;
-		$Nol="";
-		$nilai=2-strlen($Urut);
-
-		for ($i=1;$i<=$nilai;$i++){
-			$Nol= $Nol."0";
-		}
-		$nipbr =$format.$Nol.$Urut;
-		return $nipbr;
-	}
-	$nou=nourut();
-	if($_REQUEST['kk']!=''){
-		$idkk="";
-	}else{
-		$idkk=$_GET['idkk'];
-	}
-	
-	if($_GET['typekk'] == "KKLama"){
-		if($idkk!=""){
-			date_default_timezone_set('Asia/Jakarta');
-			$qry=mysqli_query($con,"SELECT * FROM tbl_adm WHERE nokk='$idkk' and status='1' and ISNULL(tgl_out) ORDER BY id DESC LIMIT 1");
-			$rw=mysqli_fetch_array($qry);
-			$rc=mysqli_num_rows($qry);
-			$tglsvr= sqlsrv_query($conn,"select CONVERT(VARCHAR(10),GETDATE(),105) AS  tgk");
-			$sr=sqlsrv_fetch_array($tglsvr);
-			
-			$sqlLot=sqlsrv_query($conn," SELECT
-						x.*,dbo.fn_StockMovementDetails_GetTotalWeightPCC(0, x.PCBID) as Weight,
-						dbo.fn_StockMovementDetails_GetTotalRollPCC(0, x.PCBID) as RollCount
-					FROM( SELECT
-						so.CustomerID, so.BuyerID, 
-						sod.ID as SODID, sod.ProductID, sod.UnitID, sod.WeightUnitID, 
-						pcb.ID as PCBID,pcb.UnitID as BatchUnitID,
-						pcblp.DepartmentID,pcb.PCID,pcb.LotNo,pcb.ChildLevel,pcb.RootID
-					FROM
-						SalesOrders so INNER JOIN
-						JobOrders jo ON jo.SOID=so.ID INNER JOIN
-						SODetails sod ON so.ID = sod.SOID INNER JOIN
-						SODetailsAdditional soda ON sod.ID = soda.SODID LEFT JOIN
-						ProcessControlJO pcjo ON sod.ID = pcjo.SODID LEFT JOIN
-						ProcessControlBatches pcb ON pcjo.PCID = pcb.PCID LEFT JOIN
-						ProcessControlBatchesLastPosition pcblp ON pcb.ID = pcblp.PCBID LEFT JOIN
-						ProcessFlowProcessNo pfpn ON pfpn.EntryType = 2 and pcb.ID = pfpn.ParentID AND pfpn.MachineType = 24 LEFT JOIN
-						ProcessFlowDetailsNote pfdn ON pfpn.EntryType = pfdn.EntryType AND pfpn.ID = pfdn.ParentID
-					WHERE pcb.DocumentNo='$idkk' AND pcb.Gross<>'0'
-						GROUP BY
-							so.SONumber, so.SODate, so.CustomerID, so.BuyerID, so.PONumber, so.PODate,jo.DocumentNo,
-							sod.ID, sod.ProductID, sod.Quantity, sod.UnitID, sod.Weight, sod.WeightUnitID,
-							soda.RefNo,pcb.DocumentNo,pcb.Dated,sod.RequiredDate,
-							pcb.ID, pcb.DocumentNo, pcb.Gross,
-							pcb.Quantity, pcb.UnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
-							pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID
-						) x INNER JOIN
-						ProductMaster pm ON x.ProductID = pm.ID LEFT JOIN
-						Departments dep ON x.DepartmentID  = dep.ID LEFT JOIN
-						Departments pdep ON dep.RootID = pdep.ID LEFT JOIN				
-						Partners cust ON x.CustomerID = cust.ID LEFT JOIN
-						Partners buy ON x.BuyerID = buy.ID LEFT JOIN
-						UnitDescription udq ON x.UnitID = udq.ID LEFT JOIN
-						UnitDescription udw ON x.WeightUnitID = udw.ID LEFT JOIN
-						UnitDescription udb ON x.BatchUnitID = udb.ID
-					ORDER BY
-						x.SODID, x.PCBID ", array(), array( "Scrollable" => 'static' ));
-			$sLot=sqlsrv_fetch_array($sqlLot);
-			$cLot=sqlsrv_num_rows($sqlLot);
-			$child=$sLot['ChildLevel'];
+		
+		if($_GET['typekk'] == "KKLama"){
+			if($idkk!=""){
+				date_default_timezone_set('Asia/Jakarta');
+				$qry=mysqli_query($con,"SELECT * FROM tbl_adm WHERE nokk='$idkk' and status='1' and ISNULL(tgl_out) ORDER BY id DESC LIMIT 1");
+				$rw=mysqli_fetch_array($qry);
+				$rc=mysqli_num_rows($qry);
+				$tglsvr= sqlsrv_query($conn,"select CONVERT(VARCHAR(10),GETDATE(),105) AS  tgk");
+				$sr=sqlsrv_fetch_array($tglsvr);
 				
-				if($child > 0){
-					$sqlgetparent=sqlsrv_query($conn,"select ID,LotNo from ProcessControlBatches where ID='$sLot[RootID]' and ChildLevel='0'");
-					$rowgp=sqlsrv_fetch_array($sqlgetparent);
+				$sqlLot=sqlsrv_query($conn," SELECT
+							x.*,dbo.fn_StockMovementDetails_GetTotalWeightPCC(0, x.PCBID) as Weight,
+							dbo.fn_StockMovementDetails_GetTotalRollPCC(0, x.PCBID) as RollCount
+						FROM( SELECT
+							so.CustomerID, so.BuyerID, 
+							sod.ID as SODID, sod.ProductID, sod.UnitID, sod.WeightUnitID, 
+							pcb.ID as PCBID,pcb.UnitID as BatchUnitID,
+							pcblp.DepartmentID,pcb.PCID,pcb.LotNo,pcb.ChildLevel,pcb.RootID
+						FROM
+							SalesOrders so INNER JOIN
+							JobOrders jo ON jo.SOID=so.ID INNER JOIN
+							SODetails sod ON so.ID = sod.SOID INNER JOIN
+							SODetailsAdditional soda ON sod.ID = soda.SODID LEFT JOIN
+							ProcessControlJO pcjo ON sod.ID = pcjo.SODID LEFT JOIN
+							ProcessControlBatches pcb ON pcjo.PCID = pcb.PCID LEFT JOIN
+							ProcessControlBatchesLastPosition pcblp ON pcb.ID = pcblp.PCBID LEFT JOIN
+							ProcessFlowProcessNo pfpn ON pfpn.EntryType = 2 and pcb.ID = pfpn.ParentID AND pfpn.MachineType = 24 LEFT JOIN
+							ProcessFlowDetailsNote pfdn ON pfpn.EntryType = pfdn.EntryType AND pfpn.ID = pfdn.ParentID
+						WHERE pcb.DocumentNo='$idkk' AND pcb.Gross<>'0'
+							GROUP BY
+								so.SONumber, so.SODate, so.CustomerID, so.BuyerID, so.PONumber, so.PODate,jo.DocumentNo,
+								sod.ID, sod.ProductID, sod.Quantity, sod.UnitID, sod.Weight, sod.WeightUnitID,
+								soda.RefNo,pcb.DocumentNo,pcb.Dated,sod.RequiredDate,
+								pcb.ID, pcb.DocumentNo, pcb.Gross,
+								pcb.Quantity, pcb.UnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
+								pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID
+							) x INNER JOIN
+							ProductMaster pm ON x.ProductID = pm.ID LEFT JOIN
+							Departments dep ON x.DepartmentID  = dep.ID LEFT JOIN
+							Departments pdep ON dep.RootID = pdep.ID LEFT JOIN				
+							Partners cust ON x.CustomerID = cust.ID LEFT JOIN
+							Partners buy ON x.BuyerID = buy.ID LEFT JOIN
+							UnitDescription udq ON x.UnitID = udq.ID LEFT JOIN
+							UnitDescription udw ON x.WeightUnitID = udw.ID LEFT JOIN
+							UnitDescription udb ON x.BatchUnitID = udb.ID
+						ORDER BY
+							x.SODID, x.PCBID ", array(), array( "Scrollable" => 'static' ));
+				$sLot=sqlsrv_fetch_array($sqlLot);
+				$cLot=sqlsrv_num_rows($sqlLot);
+				$child=$sLot['ChildLevel'];
 					
-					//$nomLot=substr("$row2[LotNo]",0,1);
-					$nomLot=$rowgp['LotNo'];
-					$nomorLot="$nomLot/K$sLot[ChildLevel]&nbsp;";				
-										
-				}else{
-					$nomorLot=$sLot['LotNo'];
+					if($child > 0){
+						$sqlgetparent=sqlsrv_query($conn,"select ID,LotNo from ProcessControlBatches where ID='$sLot[RootID]' and ChildLevel='0'");
+						$rowgp=sqlsrv_fetch_array($sqlgetparent);
 						
-				}
-			
-				$sqlLot1="Select count(*) as TotalLot From ProcessControlBatches where PCID='$sLot[PCID]' and RootID='0' and LotNo < '1000'";
-				$qryLot1 = sqlsrv_query($conn,$sqlLot1) or die('A error occured : ');							
-				$rowLot=sqlsrv_fetch_array($qryLot1);	
-									
-			$sqls=sqlsrv_query($conn,"select processcontrolJO.SODID,salesorders.ponumber,processcontrol.productid,salesorders.customerid,joborders.documentno,
-										salesorders.buyerid,processcontrolbatches.lotno,productcode,productmaster.color,colorno,description,weight,cuttablewidth from Joborders 
-										left join processcontrolJO on processcontrolJO.joid = Joborders.id
-										left join salesorders on soid= salesorders.id
-										left join processcontrol on processcontrolJO.pcid = processcontrol.id
-										left join processcontrolbatches on processcontrolbatches.pcid = processcontrol.id
-										left join productmaster on productmaster.id= processcontrol.productid
-										left join productpartner on productpartner.productid= processcontrol.productid
-										where processcontrolbatches.documentno='$idkk'", array(), array( "Scrollable" => 'static' ));
-					$ssr=sqlsrv_fetch_array($sqls);
-					$cek=sqlsrv_num_rows($sqls);
-					$lgn1=sqlsrv_query($conn,"select partnername from partners where id='$ssr[customerid]'");
-					$ssr1=sqlsrv_fetch_array($lgn1);
-					$lgn2=sqlsrv_query($conn,"select partnername from partners where id='$ssr[buyerid]'");
-					$ssr2=sqlsrv_fetch_array($lgn2);
+						//$nomLot=substr("$row2[LotNo]",0,1);
+						$nomLot=$rowgp['LotNo'];
+						$nomorLot="$nomLot/K$sLot[ChildLevel]&nbsp;";				
+											
+					}else{
+						$nomorLot=$sLot['LotNo'];
+							
+					}
+				
+					$sqlLot1="Select count(*) as TotalLot From ProcessControlBatches where PCID='$sLot[PCID]' and RootID='0' and LotNo < '1000'";
+					$qryLot1 = sqlsrv_query($conn,$sqlLot1) or die('A error occured : ');							
+					$rowLot=sqlsrv_fetch_array($qryLot1);	
+										
+				$sqls=sqlsrv_query($conn,"select processcontrolJO.SODID,salesorders.ponumber,processcontrol.productid,salesorders.customerid,joborders.documentno,
+											salesorders.buyerid,processcontrolbatches.lotno,productcode,productmaster.color,colorno,description,weight,cuttablewidth from Joborders 
+											left join processcontrolJO on processcontrolJO.joid = Joborders.id
+											left join salesorders on soid= salesorders.id
+											left join processcontrol on processcontrolJO.pcid = processcontrol.id
+											left join processcontrolbatches on processcontrolbatches.pcid = processcontrol.id
+											left join productmaster on productmaster.id= processcontrol.productid
+											left join productpartner on productpartner.productid= processcontrol.productid
+											where processcontrolbatches.documentno='$idkk'", array(), array( "Scrollable" => 'static' ));
+						$ssr=sqlsrv_fetch_array($sqls);
+						$cek=sqlsrv_num_rows($sqls);
+						$lgn1=sqlsrv_query($conn,"select partnername from partners where id='$ssr[customerid]'");
+						$ssr1=sqlsrv_fetch_array($lgn1);
+						$lgn2=sqlsrv_query($conn,"select partnername from partners where id='$ssr[buyerid]'");
+						$ssr2=sqlsrv_fetch_array($lgn2);
+			}
+		}elseif ($_GET['typekk'] == "NOW") {
+		if ($idkk != "") {
+			include_once("../now.php");
 		}
-	}elseif ($_GET['typekk'] == "NOW") {
-	if ($idkk != "") {
-		include_once("../now.php");
-	}
-	}
-?>
-     
-<?php
-
-if(isset($_POST['btnSimpan']) and $_POST['proses']!=$rw['proses']){
-	if($_POST['nokk']!=""){
-	$nokk=$_POST['nokk'];
-	$idkk=$_POST['nokk'];
-	}else{$nokk=$nou;$idkk=$nou;}
-	$shift=$_POST['shift'];
-	$shift1=$_POST['shift2'];
-	$langganan=str_replace("'","''",$_POST['buyer']);
-	$order=$_POST['no_order'];
-	$jenis_kain=str_replace("'","''",$_POST['jenis_kain']);
-	$noitem=$_POST['no_item'];
-	$nowarna=str_replace("'","''",$_POST['no_warna']);
-	$warna=str_replace("'","''",$_POST['warna']);
-	$note=str_replace("'","''",$_POST['catatan']);
-	$lot=$_POST['lot'];
-	$qty=$_POST['qty'];
-	$rol=$_POST['rol'];
-	$yard=$_POST['qty2'];
-	$lebar=$_POST['lebar'];
-	$gramasi=$_POST['gramasi'];
-	$proses=$_POST['proses'];
-	$kondisi=$_POST['kondisi'];
-	//$tglin=$_POST[tgl_proses_m]." ".$_POST[proses_in];
-	$simpanSql = "INSERT INTO tbl_adm SET 
-								`nokk`='$nokk',
+		}
+	?>
+	<?php
+		if(isset($_POST['btnSimpan']) and $_POST['proses']!=$rw['proses']){
+			if($_POST['nokk']!=""){
+			$nokk=$_POST['nokk'];
+			$idkk=$_POST['nokk'];
+			}else{$nokk=$nou;$idkk=$nou;}
+			$shift=$_POST['shift'];
+			$shift1=$_POST['shift2'];
+			$langganan=str_replace("'","''",$_POST['buyer']);
+			$order=$_POST['no_order'];
+			$jenis_kain=str_replace("'","''",$_POST['jenis_kain']);
+			$noitem=$_POST['no_item'];
+			$nowarna=str_replace("'","''",$_POST['no_warna']);
+			$warna=str_replace("'","''",$_POST['warna']);
+			$note=str_replace("'","''",$_POST['catatan']);
+			$lot=$_POST['lot'];
+			$qty=$_POST['qty'];
+			$rol=$_POST['rol'];
+			$yard=$_POST['qty2'];
+			$lebar=$_POST['lebar'];
+			$gramasi=$_POST['gramasi'];
+			$proses=$_POST['proses'];
+			$kondisi=$_POST['kondisi'];
+			//$tglin=$_POST[tgl_proses_m]." ".$_POST[proses_in];
+			$simpanSql = "INSERT INTO tbl_adm SET 
+										`nokk`='$nokk',
+										`shift`='$shift',
+										`shift1`='$shift1',
+										`langganan`='$langganan',
+										`no_order`='$order',
+										`jenis_kain`='$jenis_kain',
+										`warna`='$warna',
+										`no_warna`='$nowarna',
+										`no_item`='$noitem',
+										`lebar`='$lebar',
+										`gramasi`='$gramasi',
+										`lot`='$lot',
+										`rol`='$rol',
+										`qty`='$qty',
+										`panjang`='$yard',
+										`proses`='$proses',
+										`catatan`='$note',
+										`kondisi_kain`='$kondisi',
+										`tgl_buat`=now(),
+										`tgl_update`=now(),
+										`tgl_in`=now()
+										";
+				mysqli_query($con,$simpanSql) or die ("Gagal Simpan".mysqli_error());
+				
+				// Refresh form
+				echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiSimpan'>";
+		}else if(isset($_POST['btnSimpan']) and $_POST['proses']==$rw['proses']){
+			$shift=$_POST['shift'];
+			$shift1=$_POST['shift2'];
+			$langganan=str_replace("'","''",$_POST['buyer']);
+			$order=$_POST['no_order'];
+			$jenis_kain=str_replace("'","''",$_POST['jenis_kain']);
+			$noitem=$_POST['no_item'];
+			$nowarna=$_POST['no_warna'];
+			$warna=str_replace("'","''",$_POST['warna']);
+			$note=str_replace("'","''",$_POST['catatan']);
+			$lot=$_POST['lot'];
+			$qty=$_POST['qty'];
+			$rol=$_POST['rol'];
+			$yard=$_POST['qty2'];
+			$lebar=$_POST['lebar'];
+			$gramasi=$_POST['gramasi'];
+			$proses=$_POST['proses'];
+			$kondisi=$_POST['kondisi'];
+			//$tglin=$_POST[tgl_proses_m]." ".$_POST[proses_in];
+			$simpanSql = "UPDATE tbl_adm SET
 								`shift`='$shift',
 								`shift1`='$shift1',
 								`langganan`='$langganan',
@@ -212,58 +255,13 @@ if(isset($_POST['btnSimpan']) and $_POST['proses']!=$rw['proses']){
 								`proses`='$proses',
 								`catatan`='$note',
 								`kondisi_kain`='$kondisi',
-								`tgl_buat`=now(),
-								`tgl_update`=now(),
-								`tgl_in`=now()
-								";
-		mysqli_query($con,$simpanSql) or die ("Gagal Simpan".mysqli_error());
-		
-		// Refresh form
-		echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiSimpan'>";
-}else if(isset($_POST['btnSimpan']) and $_POST['proses']==$rw['proses']){
-	$shift=$_POST['shift'];
-	$shift1=$_POST['shift2'];
-	$langganan=str_replace("'","''",$_POST['buyer']);
-	$order=$_POST['no_order'];
-	$jenis_kain=str_replace("'","''",$_POST['jenis_kain']);
-	$noitem=$_POST['no_item'];
-	$nowarna=$_POST['no_warna'];
-	$warna=str_replace("'","''",$_POST['warna']);
-	$note=str_replace("'","''",$_POST['catatan']);
-	$lot=$_POST['lot'];
-	$qty=$_POST['qty'];
-	$rol=$_POST['rol'];
-	$yard=$_POST['qty2'];
-	$lebar=$_POST['lebar'];
-	$gramasi=$_POST['gramasi'];
-	$proses=$_POST['proses'];
-	$kondisi=$_POST['kondisi'];
-	//$tglin=$_POST[tgl_proses_m]." ".$_POST[proses_in];
-	$simpanSql = "UPDATE tbl_adm SET
-						`shift`='$shift',
-						`shift1`='$shift1',
-						`langganan`='$langganan',
-						`no_order`='$order',
-						`jenis_kain`='$jenis_kain',
-						`warna`='$warna',
-						`no_warna`='$nowarna',
-						`no_item`='$noitem',
-						`lebar`='$lebar',
-						`gramasi`='$gramasi',
-						`lot`='$lot',
-						`rol`='$rol',
-						`qty`='$qty',
-						`panjang`='$yard',
-						`proses`='$proses',
-						`catatan`='$note',
-						`kondisi_kain`='$kondisi',
-						`tgl_update`=now()
-						WHERE `id`='$_POST[id]'";
-	mysqli_query($con,$simpanSql) or die ("Gagal Ubah".mysqli_error());
-	
-	// Refresh form
-	echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiUbah'>";
-}
+								`tgl_update`=now()
+								WHERE `id`='$_POST[id]'";
+			mysqli_query($con,$simpanSql) or die ("Gagal Ubah".mysqli_error());
+			
+			// Refresh form
+			echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiUbah'>";
+		}
 	?>
 <form id="form1" name="form1" method="post" action="" >
  	<fieldset>
