@@ -33,6 +33,8 @@ include ('../../koneksi.php');
 <table width="100%" border="1" class="table-list1">
   <thead>
     <tr>
+      <td rowspan="2"><div align="center"><strong><font size="-2">Prod Order</font></strong></div></td>
+      <td rowspan="2"><div align="center"><strong><font size="-2">Prod Demand</font></strong></div></td>
       <td rowspan="2"><div align="center"><strong><font size="-2">Tanggal</font></strong></div></td>
       <td rowspan="2"><div align="center"><strong><font size="-2">Shift</font></strong></div></td>
       <td rowspan="2"><div align="center"><strong><font size="-2">Operator</font></strong></div></td>
@@ -108,6 +110,8 @@ $tjam  =round($diff / (60 * 60),2);
 $hari  =round($tjam/24,2);
 		   ?>
       <tr class="display"  >
+        <td  ><div align="center"><font size="-2">`<?php echo $rowd['nokk'];?></font></div></td>
+        <td  ><div align="center"><font size="-2">`<?php echo $rowd['demandno'];?></font></div></td>
         <td  ><div align="center"><font size="-2"><?php echo $rowd['tgl_update'];?></font></div></td>
         <td  ><font size="-2"><?php echo $rowd['shift'];?></font></td>
         <td  ><font size="-2"><?php echo $rowd['acc_staff']; ?></font></td>

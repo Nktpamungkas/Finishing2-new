@@ -33,49 +33,49 @@
   ini_set("error_reporting", 1);
   session_start();
   include('../koneksi.php');
-  if ($_POST['mesin'] == "Stenter" or $_GET['mesin'] == "Stenter") {
   ?>
+  <?php if ($_POST['mesin'] == "Stenter" or $_GET['mesin'] == "Stenter") {  ?>
     <?php
-    if ($_POST['awal'] != "") {
-      $tglawal = $_POST['awal'];
-      $tglakhir = $_POST['akhir'];
-      $jns = $_POST['jns'];
-    } else {
-      $tglawal = $_GET['tgl1'];
-      $tglakhir = $_GET['tgl2'];
-      $jns = $_GET['jns'];
-    }
-    if ($_POST['shift'] != "") {
-      $shft = $_POST['shift'];
-    } else {
-      $shft = $_GET['shift'];
-    }
-    if ($_POST['shift2'] != "") {
-      $shft2 = $_POST['shift2'];
-    } else {
-      $shft2 = $_GET['shift2'];
-    }
-    if ($tglakhir != "" and $tglawal != "") {
-      $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
-    } else {
-      $tgl = " ";
-    }
-    if ($shft == "ALL") {
-      $shift = " ";
-    } else {
-      $shift = " AND a.`shift2`='$shft' ";
-    }
-    if ($shft2 == "ALL") {
-      $shift2 = " ";
-    } else {
-      $shift2 = " AND a.`shift`='$shft2' ";
-    }
-    $msn = str_replace("'", "''", $_POST['nama_mesin']);
-    if ($_POST['nama_mesin'] == "") {
-      $mesin = " ";
-    } else {
-      $mesin = " AND a.`no_mesin`='$msn' ";
-    }
+      if ($_POST['awal'] != "") {
+        $tglawal = $_POST['awal'];
+        $tglakhir = $_POST['akhir'];
+        $jns = $_POST['jns'];
+      } else {
+        $tglawal = $_GET['tgl1'];
+        $tglakhir = $_GET['tgl2'];
+        $jns = $_GET['jns'];
+      }
+      if ($_POST['shift'] != "") {
+        $shft = $_POST['shift'];
+      } else {
+        $shft = $_GET['shift'];
+      }
+      if ($_POST['shift2'] != "") {
+        $shft2 = $_POST['shift2'];
+      } else {
+        $shft2 = $_GET['shift2'];
+      }
+      if ($tglakhir != "" and $tglawal != "") {
+        $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+      } else {
+        $tgl = " ";
+      }
+      if ($shft == "ALL") {
+        $shift = " ";
+      } else {
+        $shift = " AND a.`shift2`='$shft' ";
+      }
+      if ($shft2 == "ALL") {
+        $shift2 = " ";
+      } else {
+        $shift2 = " AND a.`shift`='$shft2' ";
+      }
+      $msn = str_replace("'", "''", $_POST['nama_mesin']);
+      if ($_POST['nama_mesin'] == "") {
+        $mesin = " ";
+      } else {
+        $mesin = " AND a.`no_mesin`='$msn' ";
+      }
 
     ?>
     <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='index.php'" class="art-button" />
@@ -92,6 +92,16 @@
       <table width="100%" border="0" id="datatables" class="display">
         <thead>
           <tr>
+            <th rowspan="2" style="border:1px solid;vertical-align:middle;">
+              <div align="center"><strong>
+                  <font size="-2">PROD. ORDER</font>
+                </strong></div>
+            </th>
+            <th rowspan="2" style="border:1px solid;vertical-align:middle;">
+              <div align="center"><strong>
+                  <font size="-2">PROD. DEMAND</font>
+                </strong></div>
+            </th>
             <th rowspan="2" style="border:1px solid;vertical-align:middle;">
               <div align="center"><strong>
                   <font size="-2">TGL</font>
@@ -316,26 +326,35 @@
         </thead>
         <tbody>
           <?php
+            $sql = mysqli_query($con, " SELECT 
+                                          *,a.`id` as `idp` 
+                                        FROM
+                                          `tbl_produksi` a
+                                        WHERE
+                                          " . $tgl . $mesin . $shift2 . " ORDER BY a.`tgl_update` ASC ");
 
-          $sql = mysqli_query($con, " SELECT 
-	*,a.`id` as `idp` 
-FROM
-	`tbl_produksi` a
-WHERE
-	" . $tgl . $mesin . $shift2 . " ORDER BY a.`tgl_update` ASC ");
-
-          $c = 0;
-          while ($rowd = mysqli_fetch_array($sql)) {
-            $bgcolor = ($c++ & 1) ? '#33CCFF' : '#FFCC99';
-            // hitung hari dan jam	 
-            $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
-            $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
-            $diff  = ($akhir - $awal);
-            $tmenit = round($diff / (60), 2);
-            $tjam  = round($diff / (60 * 60), 2);
-            $hari  = round($tjam / 24, 2);
+            $c = 0;
+            while ($rowd = mysqli_fetch_array($sql)) {
+              $bgcolor = ($c++ & 1) ? '#33CCFF' : '#FFCC99';
+              // hitung hari dan jam	 
+              $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
+              $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
+              $diff  = ($akhir - $awal);
+              $tmenit = round($diff / (60), 2);
+              $tjam  = round($diff / (60 * 60), 2);
+              $hari  = round($tjam / 24, 2);
           ?>
             <tr bgcolor="<?php echo $bgcolor; ?>">
+              <td style="border:1px solid;vertical-align:middle;">
+                <div align="center">
+                  <font size="-2"><?php echo $rowd['nokk']; ?></font>
+                </div>
+              </td>
+              <td style="border:1px solid;vertical-align:middle;">
+                <div align="center">
+                  <font size="-2"><?php echo $rowd['demandno']; ?></font>
+                </div>
+              </td>
               <td style="border:1px solid;vertical-align:middle;">
                 <div align="center">
                   <font size="-2"><?php echo $rowd['tgl_update']; ?></font>
@@ -554,8 +573,7 @@ WHERE
         </tfoot>
       </table>
     </form>
-  <?php } else if ($_POST['mesin'] == "Compact" or $_GET['mesin'] == "Compact") {
-  ?>
+  <?php } else if ($_POST['mesin'] == "Compact" or $_GET['mesin'] == "Compact") { ?>
     <?php
     if ($_POST['awal'] != "") {
       $tglawal = $_POST['awal'];
@@ -733,11 +751,11 @@ WHERE
           <?php
 
           $sql = mysqli_query($con, " SELECT 
-	*,a.`id` as `idp` 
-FROM
-	`tbl_compact` a
-WHERE
-	" . $tgl . $shift . " ORDER BY a.`tgl_update` ASC ");
+                                        *,a.`id` as `idp` 
+                                      FROM
+                                        `tbl_compact` a
+                                      WHERE
+                                        " . $tgl . $shift . " ORDER BY a.`tgl_update` ASC ");
 
           $c = 0;
           while ($rowd = mysqli_fetch_array($sql)) {
