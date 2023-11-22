@@ -1,38 +1,36 @@
 <?php
-header("Content-type: application/octet-stream");
-header("Content-Disposition: attachment; filename=report-produksi-" . date($_GET['tglawal']) . ".xls"); //ganti nama sesuai keperluan
-header("Pragma: no-cache");
-header("Expires: 0");
-//disini script laporan anda
+  header("Content-type: application/octet-stream");
+  header("Content-Disposition: attachment; filename=report-produksi-" . date($_GET['tglawal']) . ".xls"); //ganti nama sesuai keperluan
+  header("Pragma: no-cache");
+  header("Expires: 0");
+  //disini script laporan anda
 ?>
 <?php
-//$con=mysqli_connect("10.0.1.91","dit","4dm1n","db_finishing");
-ini_set("error_reporting", 1);
-include('../../koneksi.php');
+  //$con=mysqli_connect("10.0.1.91","dit","4dm1n","db_finishing");
+  ini_set("error_reporting", 1);
+  include('../../koneksi.php');
 ?>
 
 <body>
   <?php
-
-  $tglawal = $_GET['tglawal'];
-  $tglakhir = $_GET['tglakhir'];
-  $shft = $_GET['shift'];
-  if ($tglakhir != "" and $tglawal != "") {
-    $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
-  } else {
-    $tgl = " ";
-  }
-  if ($shft == "ALL") {
-    $shift = " ";
-  } else {
-    $shift = " AND a.`shift`='$shft' ";
-  }
-  if ($_GET['mesin'] == "") {
-    $mesin = " ";
-  } else {
-    $mesin = " AND a.`no_mesin`='$_GET[mesin]' ";
-  }
-
+    $tglawal = $_GET['tglawal'];
+    $tglakhir = $_GET['tglakhir'];
+    $shft = $_GET['shift'];
+    if ($tglakhir != "" and $tglawal != "") {
+      $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+    } else {
+      $tgl = " ";
+    }
+    if ($shft == "ALL") {
+      $shift = " ";
+    } else {
+      $shift = " AND a.`shift`='$shft' ";
+    }
+    if ($_GET['mesin'] == "") {
+      $mesin = " ";
+    } else {
+      $mesin = " AND a.`no_mesin`='$_GET[mesin]' ";
+    }
   ?>
   <table width="100%" border="1">
     <tr valign="top">
@@ -249,33 +247,26 @@ include('../../koneksi.php');
       </td>
     </tr>
     <?php
-
-    $sql = mysqli_query($con, " SELECT 
-	*
-FROM
-	`tbl_produksi` a
-
-WHERE
-	jns_mesin='$_GET[jnsmesin]' AND " . $tgl . $shift . $mesin . " ORDER BY a.`jam_in` ASC");
-
-    $no = 1;
-
-    $c = 0;
-
-    while ($rowd = mysqli_fetch_array($sql)) {
-
+      $sql = mysqli_query($con, " SELECT 
+                                        *
+                                      FROM
+                                        `tbl_produksi` a
+                                      WHERE
+                                        jns_mesin='$_GET[jnsmesin]' AND " . $tgl . $shift . $mesin . " ORDER BY a.`jam_in` ASC");
+      $no = 1;
+      $c = 0;
+      while ($rowd = mysqli_fetch_array($sql)) {
       // hitung hari dan jam	 
       // $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
       // $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
       // $diff  = ($akhir - $awal);
       // $tmenit = round($diff / (60), 2);
-
       $awal         = date_create($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
       $akhir        = date_create($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
 
       $tmenit_stopmesin = date_diff($awal, $akhir);
 
-      $tmenit   = $tmenit_stopmesin->h . ' jam, '. $tmenit_stopmesin->i . ' menit ';
+      $tmenit   = $tmenit_stopmesin->h . ' jam, ' . $tmenit_stopmesin->i . ' menit ';
 
       $tjam  = round($diff / (60 * 60), 2);
       $hari  = round($tjam / 24, 2);
@@ -371,16 +362,17 @@ WHERE
             <font size="-2"><?php echo $rowd['jam_out']; ?></font>
           </div>
         </td>
-        <td >
+        <td>
           <div align="center">
             <font size="-2">
               <?php
-                $total_waktu_awal         = date_create($rowd['jam_in']);
-                $total_waktu_akhir        = date_create($rowd['jam_out']);
+              $total_waktu_awal         = date_create($rowd['jam_in']);
+              $total_waktu_akhir        = date_create($rowd['jam_out']);
 
-                $diff_total_waktu              = date_diff($total_waktu_awal, $total_waktu_akhir);
+              $diff_total_waktu              = date_diff($total_waktu_awal, $total_waktu_akhir);
 
-                echo $diff_total_waktu->h . ' jam, '; echo $diff_total_waktu->i . ' menit '; 
+              echo $diff_total_waktu->h . ' jam, ';
+              echo $diff_total_waktu->i . ' menit ';
               ?>
             </font>
           </div>

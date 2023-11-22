@@ -83,7 +83,7 @@ if ($msn == "") {
   <table width="100%" border="0" class="table-list1">
     <thead>
       <tr valign="top">
-        <td colspan="35">
+        <td colspan="39">
           <table width="100%" border="0" class="table-list1">
             <thead>
               <tr>
@@ -234,6 +234,26 @@ if ($msn == "") {
               <font size="-2">No Gerobak</font>
             </strong></div>
         </td>
+        <td rowspan="2">
+          <div align="center"><strong>
+              <font size="-2">Permintaan</font>
+            </strong></div>
+        </td>
+        <td rowspan="2">
+          <div align="center"><strong>
+              <font size="-2">Actual</font>
+            </strong></div>
+        </td>
+        <td rowspan="2">
+          <div align="center"><strong>
+              <font size="-2">Permintaan</font>
+            </strong></div>
+        </td>
+        <td rowspan="2">
+          <div align="center"><strong>
+              <font size="-2">Actual</font>
+            </strong></div>
+        </td>
       </tr>
       <tr>
         <td>
@@ -316,53 +336,44 @@ if ($msn == "") {
               <font size="-2">Konsentrasi VII</font>
             </strong></div>
         </td>
-        <td>
-          <div align="center"><strong>
-              <font size="-2">Permintaan</font>
-            </strong></div>
-        </td>
-        <td>
-          <div align="center"><strong>
-              <font size="-2">Actual</font>
-            </strong></div>
-        </td>
-        <td>
-          <div align="center"><strong>
-              <font size="-2">Permintaan</font>
-            </strong></div>
-        </td>
-        <td>
-          <div align="center"><strong>
-              <font size="-2">Actual</font>
-            </strong></div>
-        </td>
       </tr>
     </thead>
     <tbody>
       <?php
+        if($_GET['FromAnalisa'] = 'FromAnalisa'){
+          $prod_order   = $_GET['prod_order'];
+          $prod_demand  = $_GET['prod_demand'];
+          $tgl_in       = $_GET['tgl_in'];
+          $tgl_out      = $_GET['tgl_out'];
+          
+          $sql = mysqli_query($con, "SELECT 
+                                            * 
+                                      FROM 
+                                          `tbl_produksi` a 
+                                      WHERE 
+                                          nokk = '00085448' 
+                                          AND demandno = '00163403' 
+                                          AND tgl_proses_in = '2023-08-09' 
+                                          AND tgl_proses_out = '2023-08-09' 
+                                      ORDER BY 
+                                          a.`tgl_update` ASC ");
+        }else{
+          $sql = mysqli_query($con, " SELECT * FROM `tbl_produksi` a WHERE " . $tgl . $mesin . $shift . " ORDER BY a.`tgl_update` ASC ");
+        }
+          $no = 1;
 
-      $sql = mysqli_query($con, " SELECT 
-	*
-FROM
-	`tbl_produksi` a
+          $c = 0;
+          $totrol = 0;
+          $totberat = 0;
+          while ($rowd = mysqli_fetch_array($sql)) {
 
-WHERE
-	" . $tgl . $mesin . $shift . " ORDER BY a.`tgl_update` ASC ");
-
-      $no = 1;
-
-      $c = 0;
-      $totrol = 0;
-      $totberat = 0;
-      while ($rowd = mysqli_fetch_array($sql)) {
-
-        // hitung hari dan jam	 
-        $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
-        $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
-        $diff  = ($akhir - $awal);
-        $tmenit = round($diff / (60), 2);
-        $tjam  = round($diff / (60 * 60), 2);
-        $hari  = round($tjam / 24, 2);
+            // hitung hari dan jam	 
+            $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
+            $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
+            $diff  = ($akhir - $awal);
+            $tmenit = round($diff / (60), 2);
+            $tjam  = round($diff / (60 * 60), 2);
+            $hari  = round($tjam / 24, 2);
       ?>
         <tr class="display">
           <td style="border:1px solid;vertical-align:middle;">
@@ -584,8 +595,16 @@ WHERE
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
@@ -625,8 +644,8 @@ WHERE
   </table>
   <table width="100%" border="0" class="table-list1">
     <tr>
-      <td width="15%">&nbsp;</td>
-      <td width="31%">
+      <td width="50%" colspan="18">&nbsp;</td>
+      <td width="40%">
         <div align="center">DIBUAT OLEH:</div>
       </td>
       <td width="27%">
@@ -637,7 +656,7 @@ WHERE
       </td>
     </tr>
     <tr>
-      <td>NAMA</td>
+      <td colspan="18">NAMA</td>
       <td>
         <div align="center">
           <input name=nama type=text placeholder="Ketik disini" size="33" maxlength="30">
@@ -653,7 +672,7 @@ WHERE
       </td>
     </tr>
     <tr>
-      <td>JABATAN</td>
+      <td colspan="18">JABATAN</td>
       <td>
         <div align="center">Operator</div>
       </td>
@@ -665,43 +684,43 @@ WHERE
       </td>
     </tr>
     <tr>
-      <td>TANGGAL</td>
+      <td colspan="18">TANGGAL</td>
       <td>
         <div align="center">
           <input type="text" name="date" placeholder="dd-mm-yyyy" onKeyUp="
-  var date = this.value;
-  if (date.match(/^\d{2}$/) !== null) {
-     this.value = date + '-';
-  } else if (date.match(/^\d{2}\-\d{2}$/) !== null) {
-     this.value = date + '-';
-  }" maxlength="10">
+              var date = this.value;
+              if (date.match(/^\d{2}$/) !== null) {
+                this.value = date + '-';
+              } else if (date.match(/^\d{2}\-\d{2}$/) !== null) {
+                this.value = date + '-';
+              }" maxlength="10">
         </div>
       </td>
       <td>
         <div align="center">
           <input type="text" name="date" placeholder="dd-mm-yyyy" onKeyUp="
-  var date = this.value;
-  if (date.match(/^\d{2}$/) !== null) {
-     this.value = date + '-';
-  } else if (date.match(/^\d{2}\-\d{2}$/) !== null) {
-     this.value = date + '-';
-  }" maxlength="10">
+            var date = this.value;
+            if (date.match(/^\d{2}$/) !== null) {
+              this.value = date + '-';
+            } else if (date.match(/^\d{2}\-\d{2}$/) !== null) {
+              this.value = date + '-';
+            }" maxlength="10">
         </div>
       </td>
       <td>
         <div align="center">
           <input type="text" name="date" placeholder="dd-mm-yyyy" onKeyUp="
-  var date = this.value;
-  if (date.match(/^\d{2}$/) !== null) {
-     this.value = date + '-';
-  } else if (date.match(/^\d{2}\-\d{2}$/) !== null) {
-     this.value = date + '-';
-  }" maxlength="10">
+            var date = this.value;
+            if (date.match(/^\d{2}$/) !== null) {
+              this.value = date + '-';
+            } else if (date.match(/^\d{2}\-\d{2}$/) !== null) {
+              this.value = date + '-';
+            }" maxlength="10">
         </div>
       </td>
     </tr>
     <tr>
-      <td height="60" valign="top">TANDA TANGAN</td>
+      <td height="60" colspan="18" valign="top">TANDA TANGAN</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>

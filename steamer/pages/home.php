@@ -690,18 +690,7 @@
 					</td>
 					<td valign="top">:</td>
 					<td valign="top">
-						<?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $jk = $dt_ITXVIEWKK['ITEMDESCRIPTION']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$jk = $ssr['productcode'] . " / " . $ssr['description'];
-							} else if ($rc > 0) {
-								$jk = $rw['jenis_kain'];
-							} else if ($rcAdm > 0) {
-								$jk = $rwAdm['jenis_kain'];
-							} ?>
-						<?php endif; ?>
-						<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
+						<textarea name="jenis_kain" cols="35" id="jenis_kain"></textarea>
 					</td>
 				</tr>
 				<tr>
