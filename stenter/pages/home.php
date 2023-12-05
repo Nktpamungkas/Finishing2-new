@@ -36,28 +36,28 @@
     $(document).ready(function(){
       $('#proses_in').change(function(){
         var jam_proses_in = document.getElementById('proses_in').value;
-        if(jam_proses_in.substring(0, 2) > 24){
+        if(jam_proses_in.substring(0, 2) >= 24){
           alert("Waktu pada MULAI PROSES tidak boleh melebihi batas 1 hari.");
         }
       });
 
       $('#stop_mulai').change(function(){
         var jam_stop_mulai = document.getElementById('stop_mulai').value;
-        if(jam_stop_mulai.substring(0, 2) > 24){
+        if(jam_stop_mulai.substring(0, 2) >= 24){
           alert("Waktu pada MULAI STOP MESIN 1 tidak boleh melebihi batas 1 hari.");
         }
       });
       
       $('#stop_mulai2').change(function(){
         var jam_stop_mulai2 = document.getElementById('stop_mulai2').value;
-        if(jam_stop_mulai2.substring(0, 2) > 24){
+        if(jam_stop_mulai2.substring(0, 2) >= 24){
           alert("Waktu pada MULAI STOP MESIN 2 tidak boleh melebihi batas 1 hari.");
         }
       });
       
       $('#stop_mulai3').change(function(){
         var jam_stop_mulai3 = document.getElementById('stop_mulai3').value;
-        if(jam_stop_mulai3.substring(0, 2) > 24){
+        if(jam_stop_mulai3.substring(0, 2) >= 24){
           alert("Waktu pada MULAI STOP MESIN 3 tidak boleh melebihi batas 1 hari.");
         }
       });
@@ -65,28 +65,28 @@
       
       $('#proses_out').change(function(){
         var jam_proses_out = document.getElementById('proses_out').value;
-        if(jam_proses_out.substring(0, 2) > 24){
+        if(jam_proses_out.substring(0, 2) >= 24){
           alert("Waktu pada SELESAI PROSES tidak boleh melebihi batas 1 hari.");
         }
       });
       
       $('#stop_selesai').change(function(){
         var jam_stop_selesai = document.getElementById('stop_selesai').value;
-        if(jam_stop_selesai.substring(0, 2) > 24){
+        if(jam_stop_selesai.substring(0, 2) >= 24){
           alert("Waktu pada SELESAI STOP MESIN 1 tidak boleh melebihi batas 1 hari.");
         }
       });
       
       $('#stop_selesai2').change(function(){
         var jam_stop_selesai2 = document.getElementById('stop_selesai2').value;
-        if(jam_stop_selesai2.substring(0, 2) > 24){
+        if(jam_stop_selesai2.substring(0, 2) >= 24){
           alert("Waktu pada SELESAI STOP MESIN 2 tidak boleh melebihi batas 1 hari.");
         }
       });
       
       $('#stop_selesai3').change(function(){
         var jam_stop_selesai3 = document.getElementById('stop_selesai3').value;
-        if(jam_stop_selesai3.substring(0, 2) > 24){
+        if(jam_stop_selesai3.substring(0, 2) >= 24){
           alert("Waktu pada SELESAI STOP MESIN 3 tidak boleh melebihi batas 1 hari.");
         }
       });

@@ -38,10 +38,10 @@
 
 <body onload="document.refresh();">
   <?php
-  ini_set("error_reporting", 1);
-  session_start();
-  include('../koneksi.php');
-  if (($_POST['jns'] == "Produksi Finishing" or $_GET['jns'] == "Produksi Finishing") and ($_POST['jnsmesin'] == "stenter" or $_POST['jnsmesin'] == "compact" or $_POST['jnsmesin'] == "oven")) {
+    ini_set("error_reporting", 1);
+    session_start();
+    include('../koneksi.php');
+    if (($_POST['jns'] == "Produksi Finishing" or $_GET['jns'] == "Produksi Finishing") and ($_POST['jnsmesin'] == "stenter" or $_POST['jnsmesin'] == "compact" or $_POST['jnsmesin'] == "oven" or $_POST['jnsmesin'] == "steamer")) {
   ?>
     <?php
     if ($_POST['awal'] != "") {
@@ -88,11 +88,7 @@
     </strong>
     <form id="form1" name="form1" method="post" action="">
       <strong> Periode: <?php echo $tglawal; ?> s/d <?php echo $tglakhir; ?></strong>
-      <strong>Shift: <?php echo $shft; ?> Jenis Mesin: <?php echo $_POST['jnsmesin']; ?> No Mesin: <?php if ($msn == "") {
-                                                                                                      echo "ALL";
-                                                                                                    } else {
-                                                                                                      echo $msn;
-                                                                                                    } ?></strong><br />
+      <strong>Shift: <?php echo $shft; ?> Jenis Mesin: <?php echo $_POST['jnsmesin']; ?> No Mesin: <?php if ($msn == "") { echo "ALL"; } else { echo $msn; } ?></strong><br />
       <table width="100%" border="0" id="datatables" class="display">
         <thead>
           <tr>
@@ -463,8 +459,7 @@
               </td>
               <td style="border:1px solid;vertical-align:middle;"><input type="button" name="ubah" id="ubah" value="Ubah" onClick="confirmEdit('?p=edit-data&id=<?php echo $rowd['idp']; ?>&mc=<?php echo $_POST['jnsmesin']; ?>');" /><input type="button" name="hapus" id="hapus" value="Hapus" onClick="confirmDelete('?p=hapus-report1&id=<?php echo $rowd['idp']; ?>&tgl1=<?php echo $tglawal; ?>&tgl2=<?php echo $tglakhir; ?>&shift=<?php echo $shft; ?>&jns=Produksi Finishing&msn=<?php echo $msn; ?>');" /></td>
             </tr>
-          <?php $no++;
-          } ?>
+          <?php $no++; } ?>
         </tbody>
         <!--<tfoot>
           <tr>
