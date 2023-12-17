@@ -1031,7 +1031,7 @@
 			</table>
 		</fieldset>
 		<br>
-		<fieldset>
+		<!-- <fieldset>
 			<legend>Data Proses Actual</legend>
 			<table width="100%" border="0">
 				<tr>
@@ -1077,7 +1077,7 @@
 				</tr>
 			</table>
 		</fieldset>
-		<br>
+		<br> -->
 		<input type="submit" name="btnSimpan" id="btnSimpan" value="Simpan" class="art-button" />
 		<input type="button" name="batal" id="batal" value="Batal" onclick="window.location.href='index.php'" class="art-button" />
 		<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../index.php'" class="art-button" />

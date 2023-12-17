@@ -701,7 +701,7 @@
 						<?php endif; ?>
             			<input type="text" name="no_item" id="no_item" value="<?= $hanger; ?>" />
 					</td>
-					<td>
+					<!-- <td>
 						<h4>L X G Actual</h4>
 					</td>
 					<td>:</td>
@@ -712,7 +712,7 @@
 						<input name="h_gramasi" type="text" required="required" id="h_gramasi" value="<?php if ($rw['gramasi_h'] != "") {
 																											echo round($rw['gramasi_h'], 2);
 																										} ?>" size="5" />
-					</td>
+					</td> -->
 				</tr>
 				<tr>
 					<td scope="row">
