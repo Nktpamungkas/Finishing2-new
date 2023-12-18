@@ -126,6 +126,21 @@
           <font size="-2">Speed</font>
         </div>
       </td>
+      <td rowspan="3">
+        <div align="center">
+          <font size="-2">VMT</font>
+        </div>
+      </td>
+      <td rowspan="3">
+        <div align="center">
+          <font size="-2">OVER FEED</font>
+        </div>
+      </td>
+      <td rowspan="3">
+        <div align="center">
+          <font size="-2">BUKA RANTAI</font>
+        </div>
+      </td>
       <td colspan="2">
         <div align="center">
           <font size="-2">Permintaan</font>
@@ -327,10 +342,119 @@
           <font size="-2"><?php echo $rowd['proses']; ?></font>
         </td>
         <td>
-          <font size="-2"><?php echo $rowd['suhu']; ?></font>
+          <font size="-2">
+            <?php
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
+                                                  PRODUCTIONORDERCODE,
+                                                  PRODUCTIONDEMANDCODE,
+                                                  OPERATIONCODE,
+                                                  CHARACTERISTICCODE,
+                                                  VALUEQUANTITY 
+                                                FROM
+                                                  ITXVIEW_DETAIL_QA_DATA
+                                                WHERE
+                                                  PRODUCTIONORDERCODE = '$rowd[nokk]' AND 
+                                                  PRODUCTIONDEMANDCODE = '$rowd[demandno]' AND
+                                                  OPERATIONCODE = '$rowd[nama_mesin]' AND
+                                                  CHARACTERISTICCODE = 'TMP'
+                                                ORDER BY
+                                                  LINE ASC");
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2)
+            ?>
+            </font>
         </td>
         <td>
-          <font size="-2"><?php echo $rowd['speed']; ?></font>
+          <font size="-2">
+            <?php
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
+                                                  PRODUCTIONORDERCODE,
+                                                  PRODUCTIONDEMANDCODE,
+                                                  OPERATIONCODE,
+                                                  CHARACTERISTICCODE,
+                                                  VALUEQUANTITY 
+                                                FROM
+                                                  ITXVIEW_DETAIL_QA_DATA
+                                                WHERE
+                                                  PRODUCTIONORDERCODE = '$rowd[nokk]' AND 
+                                                  PRODUCTIONDEMANDCODE = '$rowd[demandno]' AND
+                                                  OPERATIONCODE = '$rowd[nama_mesin]' AND
+                                                  CHARACTERISTICCODE = 'SPEEDFIN'
+                                                ORDER BY
+                                                  LINE ASC");
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2)
+            ?>
+          </font>
+        </td>
+        <td>
+          <font size="-2">
+            <?php
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
+                                                  PRODUCTIONORDERCODE,
+                                                  PRODUCTIONDEMANDCODE,
+                                                  OPERATIONCODE,
+                                                  CHARACTERISTICCODE,
+                                                  VALUEQUANTITY 
+                                                FROM
+                                                  ITXVIEW_DETAIL_QA_DATA
+                                                WHERE
+                                                  PRODUCTIONORDERCODE = '$rowd[nokk]' AND 
+                                                  PRODUCTIONDEMANDCODE = '$rowd[demandno]' AND
+                                                  OPERATIONCODE = '$rowd[nama_mesin]' AND
+                                                  CHARACTERISTICCODE = 'VMT'
+                                                ORDER BY
+                                                  LINE ASC");
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2)
+            ?>
+          </font>
+        </td>
+        <td>
+          <font size="-2">
+            <?php
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
+                                                  PRODUCTIONORDERCODE,
+                                                  PRODUCTIONDEMANDCODE,
+                                                  OPERATIONCODE,
+                                                  CHARACTERISTICCODE,
+                                                  VALUEQUANTITY 
+                                                FROM
+                                                  ITXVIEW_DETAIL_QA_DATA
+                                                WHERE
+                                                  PRODUCTIONORDERCODE = '$rowd[nokk]' AND 
+                                                  PRODUCTIONDEMANDCODE = '$rowd[demandno]' AND
+                                                  OPERATIONCODE = '$rowd[nama_mesin]' AND
+                                                  CHARACTERISTICCODE = 'OVR'
+                                                ORDER BY
+                                                  LINE ASC");
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2)
+            ?>
+          </font>
+        </td>
+        <td>
+          <font size="-2">
+            <?php
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
+                                                  PRODUCTIONORDERCODE,
+                                                  PRODUCTIONDEMANDCODE,
+                                                  OPERATIONCODE,
+                                                  CHARACTERISTICCODE,
+                                                  VALUEQUANTITY 
+                                                FROM
+                                                  ITXVIEW_DETAIL_QA_DATA
+                                                WHERE
+                                                  PRODUCTIONORDERCODE = '$rowd[nokk]' AND 
+                                                  PRODUCTIONDEMANDCODE = '$rowd[demandno]' AND
+                                                  OPERATIONCODE = '$rowd[nama_mesin]' AND
+                                                  CHARACTERISTICCODE = 'BK'
+                                                ORDER BY
+                                                  LINE ASC");
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2)
+            ?>
+          </font>
         </td>
         <td>
           <div align="center">
@@ -344,12 +468,52 @@
         </td>
         <td>
           <div align="center">
-            <font size="-2"><?php echo $rowd['lebar_h']; ?></font>
+            <font size="-2">
+              <?php
+                $q_QA_DATA = db2_exec($conn_db2, "SELECT
+                                                    PRODUCTIONORDERCODE,
+                                                    PRODUCTIONDEMANDCODE,
+                                                    OPERATIONCODE,
+                                                    CHARACTERISTICCODE,
+                                                    VALUEQUANTITY 
+                                                  FROM
+                                                    ITXVIEW_DETAIL_QA_DATA
+                                                  WHERE
+                                                    PRODUCTIONORDERCODE = '$rowd[nokk]' AND 
+                                                    PRODUCTIONDEMANDCODE = '$rowd[demandno]' AND
+                                                    OPERATIONCODE = '$rowd[nama_mesin]' AND
+                                                    CHARACTERISTICCODE = 'LEBAR'
+                                                  ORDER BY
+                                                    LINE ASC");
+                $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+                echo round($row_QA_DATA['VALUEQUANTITY'], 2)
+              ?>
+            </font>
           </div>
         </td>
         <td>
           <div align="center">
-            <font size="-2"><?php echo $rowd['gramasi_h']; ?></font>
+            <font size="-2">
+              <?php
+                  $q_QA_DATA = db2_exec($conn_db2, "SELECT
+                                                      PRODUCTIONORDERCODE,
+                                                      PRODUCTIONDEMANDCODE,
+                                                      OPERATIONCODE,
+                                                      CHARACTERISTICCODE,
+                                                      VALUEQUANTITY 
+                                                    FROM
+                                                      ITXVIEW_DETAIL_QA_DATA
+                                                    WHERE
+                                                      PRODUCTIONORDERCODE = '$rowd[nokk]' AND 
+                                                      PRODUCTIONDEMANDCODE = '$rowd[demandno]' AND
+                                                      OPERATIONCODE = '$rowd[nama_mesin]' AND
+                                                      CHARACTERISTICCODE = 'GRAMASI'
+                                                    ORDER BY
+                                                      LINE ASC");
+                  $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+                  echo round($row_QA_DATA['VALUEQUANTITY'], 2)
+                ?>
+            </font>
           </div>
         </td>
         <td>
