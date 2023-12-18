@@ -925,7 +925,7 @@
                                                                         echo $rwAdm['lot'];
                                                                       } ?>" /></td>
           <td>
-            <h4>Nama Mesin</h4>
+            <h4>Operation</h4>
           </td>
           <td>:</td>
           <td colspan="2">
@@ -939,6 +939,7 @@
                                                 WORKCENTERANDOPERATTRIBUTES
                                               WHERE
                                                 SUBSTR(WORKCENTERCODE, 1,4) = 'P3ST' 
+                                                AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
                                               ORDER BY
 	                                              OPERATIONCODE ASC");
                 while ($r = db2_fetch_assoc($qry1)) {

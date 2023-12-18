@@ -714,6 +714,19 @@
 						<?php endif; ?>
 						<input type="text" name="no_item" id="no_item" value="<?= $hanger; ?>" />
 					</td>
+					<td>
+						<h4>Kondisi Kain</h4>
+					</td>
+					<td>:</td>
+					<td colspan="2"><select name="kondisi_kain" id="kondisi_kain" required="required">
+						<option value="">Pilih</option>
+						<option value="BASAH" <?php if ($rw['kondisi_kain'] == "BASAH") {
+												echo "SELECTED";
+												} ?>>BASAH</option>
+						<option value="KERING" <?php if ($rw['kondisi_kain'] == "KERING") {
+													echo "SELECTED";
+												} ?>>KERING</option>
+						</select></td>
 				</tr>
 				<tr>
 					<td scope="row">
@@ -786,7 +799,7 @@
 																					echo $rwAdm['lot'];
 																				} ?>" /></td>
 					<td>
-						<h4>Nama Mesin</h4>
+						<h4>Operation</h4>
 					</td>
 					<td>:</td>
 					<td colspan="2">

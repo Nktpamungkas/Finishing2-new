@@ -700,6 +700,7 @@
 					<td valign="top">:</td>
 					<td colspan="2" valign="top"><textarea name="catatan" cols="35" id="catatan"><?php echo $rw['catatan']; ?></textarea></td>
 				</tr>
+
 				<tr>
 					<td scope="row">
 						<h4>Hanger/Item</h4>
@@ -720,21 +721,18 @@
             			<input type="text" name="no_item" id="no_item" value="<?= $hanger; ?>" />
 					</td>
 					<td>
-						<h4>L X G </h4>
+						<h4>Kondisi Kain</h4>
 					</td>
 					<td>:</td>
-					<td colspan="2"><input name="lebar" type="text" id="lebar" size="6" value="<?= floor($dt_lg['LEBAR']); ?><?php if ($cek > 0) {
-																									echo round($ssr['cuttablewidth'], 2);
-																								} else if ($rcAdm > 0) {
-																									echo $rwAdm['lebar'];
-																								} ?>" placeholder="0" />
-						&quot;X
-						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= floor($dt_lg['GRAMASI']); ?><?php if ($cek > 0) {
-																							echo round($ssr['weight'], 2);
-																						} else if ($rcAdm > 0) {
-																							echo $rwAdm['gramasi'];
-																						} ?>" placeholder="0" />
-					</td>
+					<td colspan="2"><select name="kondisi_kain" id="kondisi_kain" required="required">
+						<option value="">Pilih</option>
+						<option value="BASAH" <?php if ($rw['kondisi_kain'] == "BASAH") {
+												echo "SELECTED";
+												} ?>>BASAH</option>
+						<option value="KERING" <?php if ($rw['kondisi_kain'] == "KERING") {
+													echo "SELECTED";
+												} ?>>KERING</option>
+						</select></td>
 				</tr>
 				<tr>
 					<td scope="row">
@@ -782,7 +780,19 @@
 																							} else if ($rcAdm > 0) {
 																								echo round($rwAdm['qty'], 2);
 																							} ?>" placeholder="0.00" />
-						&nbsp;&nbsp;&nbsp;</td>
+						&nbsp;&nbsp;&nbsp;
+						<strong>Gramasi</strong>:
+						<input name="lebar" type="text" id="lebar" size="6" value="<?= floor($dt_lg['LEBAR']); ?><?php if ($cek > 0) {
+																									echo round($ssr['cuttablewidth'], 2);
+																								} else if ($rcAdm > 0) {
+																									echo $rwAdm['lebar'];
+																								} ?>" placeholder="0" />
+						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= floor($dt_lg['GRAMASI']); ?><?php if ($cek > 0) {
+																							echo round($ssr['weight'], 2);
+																						} else if ($rcAdm > 0) {
+																							echo $rwAdm['gramasi'];
+																						} ?>" placeholder="0" />
+					</td>
 				</tr>
 				<tr>
 					<td scope="row">
@@ -815,7 +825,7 @@
 																					echo $rwAdm['lot'];
 																				} ?>" /></td>
 					<td>
-						<h4>Nama Mesin</h4>
+						<h4>Operation</h4>
 					</td>
 					<td>:</td>
 					<td colspan="2">

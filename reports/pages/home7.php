@@ -63,27 +63,28 @@ include('../koneksi.php');
           </select>
         </td>
       </tr>
-      <tr valign="middle">
+      <!-- <tr valign="middle">
         <td><strong>Jenis Mesin</strong></td>
         <td>:</td>
         <td><select name="jnsmesin" id="jnsmesin" onChange="window.location='?p=home7&jns='+this.value">
             <option value="">Pilih</option>
             <?php
-                $q_operation = db2_exec($conn_db2, "SELECT
-                                                            TRIM(CODE) AS CODE, LONGDESCRIPTION
+                $q_operation = db2_exec($conn_db2, "SELECT DISTINCT 
+                                                            TRIM(o.CODE) AS CODE,
+                                                            o.LONGDESCRIPTION,
+                                                            SUBSTR(w.WORKCENTERCODE, 1,4) AS KODE_MESIN
                                                         FROM
                                                             OPERATION o
+                                                        LEFT JOIN WORKCENTERANDOPERATTRIBUTES w ON w.OPERATIONCODE = o.CODE
                                                         WHERE
-                                                            OPERATIONGROUPCODE = 'FIN'
-                                                        ORDER BY 
-                                                            CODE");
+                                                            o.OPERATIONGROUPCODE = 'FIN'");
             ?>
             <?php while ($r_operation = db2_fetch_assoc($q_operation)) { ?>
                 <option value="<?= $r_operation['CODE']; ?>" <?php if ($_GET['jns'] == "$r_operation[CODE]") { echo "SELECTED"; } ?>><?= $r_operation['CODE']; ?> <?php echo $r_operation['LONGDESCRIPTION']; ?></option>
             <?php } ?>
             <option value="OVEN" <?php if("OVEN" == $_GET['jns']){ echo "SELECTED"; } ?>>OVEN</option>
           </select></td>
-      </tr>
+      </tr> -->
       <tr valign="middle">
         <td width="127"><strong>Tanggal Awal</strong></td>
         <td width="3">:</td>
@@ -107,30 +108,22 @@ include('../koneksi.php');
         <td><select name="nama_mesin" id="nama_mesin" onchange="myFunction();">
             <option value="">Pilih</option>
             <?php $qry1 = db2_exec($conn_db2, "SELECT
-                                                    TRIM(CODE) AS CODE, LONGDESCRIPTION
-                                                  FROM
-                                                    RESOURCES r
-                                                  WHERE
-                                                    (CODE LIKE '%ST%' OR 
-                                                    CODE LIKE '%CP%' OR 
-                                                    CODE LIKE '%BL%' OR 
-                                                    CODE LIKE '%LI%' OR 
-                                                    CODE LIKE '%SM%' OR
-                                                    CODE LIKE '%BC%')
-                                                    AND (LONGDESCRIPTION LIKE '%Stenter%' OR 
-                                                      LONGDESCRIPTION LIKE '%Compact%' OR 
-                                                      LONGDESCRIPTION LIKE '%Belah%' OR 
-                                                      LONGDESCRIPTION LIKE '%Lipat%' OR 
-                                                      LONGDESCRIPTION LIKE '%Steam%' OR
-                                                      LONGDESCRIPTION LIKE '%Open and wash%')
-                                                  ORDER BY 
-                                                    SUBSTR(CODE, 6,2) 
-                                                  ASC");
+                                                  TRIM(CODE) AS CODE, LONGDESCRIPTION
+                                                FROM
+                                                  RESOURCES r
+                                                WHERE
+                                                  SUBSTR(CODE, 1,4) = 'P3ST' OR
+                                                  SUBSTR(CODE, 1,4) = 'P3CP' OR
+                                                  SUBSTR(CODE, 1,4) = 'P3BC' OR CODE = 'P3IN350' OR
+                                                  SUBSTR(CODE, 1,4) = 'P3ST' OR SUBSTR(CODE, 1,4) = 'P3DR' OR
+                                                  SUBSTR(CODE, 1,4) = 'P3SM'
+                                                ORDER BY 
+                                                  CODE 
+                                                ASC");
             while ($r = db2_fetch_assoc($qry1)) {
             ?>
               <option value="<?php echo $r['CODE']; ?>"><?php echo $r['CODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
             <?php } ?>
-            <option value="OVEN-01">OVEN-01</option>
           </select></td>
       </tr>
       <tr>
