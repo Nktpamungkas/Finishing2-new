@@ -198,7 +198,13 @@
 			$rol = $_POST['rol'];
 			$mesin = $_POST['no_mesin'];
 			$nmmesin = str_replace("'", "''", $_POST['nama_mesin']);
-			$jnsmesin = strtolower(str_replace("'", "''", $_POST['nama_mesin']));
+			// $jnsmesin = strtolower(str_replace("'", "''", $_POST['nama_mesin']));
+			// $jnsmesin = $_POST['nama_mesin'];
+			if($_POST['nama_mesin'] == "BLD1" OR $_POST['nama_mesin'] == "BLP1" OR $_POST['nama_mesin'] == "OPW1"){
+				$jnsmesin = 'belah';
+			}elseif($_POST['nama_mesin']== "LIP1"){
+				$jnsmesin = 'lipat';
+			}
 			$proses = $_POST['proses'];
 			$gerobak = $_POST['no_gerobak'];
 			$jam_in = $_POST['proses_in'];
@@ -346,7 +352,12 @@
 			$rol = $_POST['rol'];
 			$mesin = $_POST['no_mesin'];
 			$nmmesin = str_replace("'", "''", $_POST['nama_mesin']);
-			$jnsmesin = strtolower(str_replace("'", "''", $_POST['nama_mesin']));
+			// $jnsmesin = strtolower(str_replace("'", "''", $_POST['nama_mesin']));
+			if($_POST['nama_mesin'] == "BLD1" OR $_POST['nama_mesin'] == "BLP1" OR $_POST['nama_mesin'] == "OPW1"){
+				$jnsmesin = 'belah';
+			}elseif($_POST['nama_mesin']== "LIP1"){
+				$jnsmesin = 'lipat';
+			}
 			$proses = $_POST['proses'];
 			$gerobak = $_POST['no_gerobak'];
 			$jam_in = $_POST['proses_in'];
@@ -792,17 +803,18 @@
 						<select name="nama_mesin" id="nama_mesin" onchange="myFunction();" required="required">
 							<option value="">Pilih</option>
 							<?php
-								$qry1 = db2_exec($conn_db2, "SELECT
-																TRIM(CODE) AS CODE, LONGDESCRIPTION
-															FROM
-																OPERATION o
+								$qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
+																TRIM(OPERATIONCODE) AS OPERATIONCODE,
+																LONGDESCRIPTION 
+															FROM 
+																WORKCENTERANDOPERATTRIBUTES
 															WHERE
-																OPERATIONGROUPCODE = 'FIN'
-															ORDER BY 
-																CODE");
+																SUBSTR(WORKCENTERCODE, 1,4) = 'P3BC' OR SUBSTR(WORKCENTERCODE, 1,4) = 'P3BL'
+															ORDER BY
+																OPERATIONCODE ASC");
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['CODE']; ?>" <?php if ($rw['nama_mesin'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($rw['nama_mesin'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -833,8 +845,7 @@
 															FROM
 																RESOURCES r
 															WHERE
-																(CODE LIKE '%BL%' OR CODE LIKE '%LI%')
-																AND (LONGDESCRIPTION LIKE '%Belah%' OR LONGDESCRIPTION LIKE '%Lipat%')
+																SUBSTR(CODE, 1,4) = 'P3BC' OR SUBSTR(CODE, 1,4) = 'P3BL'
 															ORDER BY 
 																SUBSTR(CODE, 6,2) 
 															ASC");

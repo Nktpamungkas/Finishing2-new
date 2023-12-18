@@ -66,7 +66,7 @@ include('../koneksi.php');
       <tr valign="middle">
         <td><strong>Jenis Mesin</strong></td>
         <td>:</td>
-        <td><select name="jnsmesin" id="jnsmesin" onChange="window.location='?p=home7&jns='+this.value" required>
+        <td><select name="jnsmesin" id="jnsmesin" onChange="window.location='?p=home7&jns='+this.value">
             <option value="">Pilih</option>
             <?php
                 $q_operation = db2_exec($conn_db2, "SELECT
@@ -112,15 +112,17 @@ include('../koneksi.php');
                                                     RESOURCES r
                                                   WHERE
                                                     (CODE LIKE '%ST%' OR 
-                                                     CODE LIKE '%CP%' OR 
-                                                     CODE LIKE '%BL%' OR 
-                                                     CODE LIKE '%LI%' OR 
-                                                     CODE LIKE '%SM%')
+                                                    CODE LIKE '%CP%' OR 
+                                                    CODE LIKE '%BL%' OR 
+                                                    CODE LIKE '%LI%' OR 
+                                                    CODE LIKE '%SM%' OR
+                                                    CODE LIKE '%BC%')
                                                     AND (LONGDESCRIPTION LIKE '%Stenter%' OR 
-                                                         LONGDESCRIPTION LIKE '%Compact%' OR 
-                                                         LONGDESCRIPTION LIKE '%Belah%' OR 
-                                                         LONGDESCRIPTION LIKE '%Lipat%' OR 
-                                                         LONGDESCRIPTION LIKE '%Steam%')
+                                                      LONGDESCRIPTION LIKE '%Compact%' OR 
+                                                      LONGDESCRIPTION LIKE '%Belah%' OR 
+                                                      LONGDESCRIPTION LIKE '%Lipat%' OR 
+                                                      LONGDESCRIPTION LIKE '%Steam%' OR
+                                                      LONGDESCRIPTION LIKE '%Open and wash%')
                                                   ORDER BY 
                                                     SUBSTR(CODE, 6,2) 
                                                   ASC");

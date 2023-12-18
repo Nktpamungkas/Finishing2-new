@@ -107,13 +107,11 @@
                   <font size="-2">TGL</font>
                 </strong></div>
             </th>
-            <?php if ($msn == "") { ?>
-              <th rowspan="2" style="border:1px solid;vertical-align:middle;">
-                <div align="center"><strong>
-                    <font size="-2">MC</font>
-                  </strong></div>
-              </th>
-            <?php } ?>
+            <th rowspan="2" style="border:1px solid;vertical-align:middle;">
+              <div align="center"><strong>
+                  <font size="-2">MC</font>
+                </strong></div>
+            </th>
             <th rowspan="2" style="border:1px solid;vertical-align:middle;">
               <div align="center"><strong>
                   <font size="-2">B/K</font>
@@ -291,12 +289,12 @@
         <tbody>
           <?php
             $sql = mysqli_query($con, "SELECT 
-                                            *,a.`id` as `idp` 
+                                            *,a.`id` as `idp`, a.no_mesin AS no_mesin_now
                                           FROM
                                             `tbl_produksi` a
                                             LEFT JOIN `tbl_no_mesin` b ON a.no_mesin=b.no_mesin
                                           WHERE
-                                             $tgl $shift $mesin ORDER BY a.`jam_in` ASC ");
+                                             $tgl $shift $mesin ORDER BY a.`jam_in` ASC");
             $no = 1;
             $c = 0;
             while ($rowd = mysqli_fetch_array($sql)) {
@@ -324,13 +322,11 @@
                   <font size="-2"><?php echo $rowd['tgl_update']; ?></font>
                 </div>
               </td>
-              <?php if ($msn == "") { ?>
-                <td style="border:1px solid;vertical-align:middle;">
-                  <div align="center">
-                    <font size="-2"><?php echo $rowd['no_mesin']; ?></font>
-                  </div>
-                </td>
-              <?php } ?>
+              <td style="border:1px solid;vertical-align:middle;">
+                <div align="center">
+                  <font size="-2"><?php echo $rowd['no_mesin_now']; ?></font>
+                </div>
+              </td>
               <td style="border:1px solid;vertical-align:middle;">
                 <div align="center">
                   <font size="-2"><?php echo $rowd['kondisi_kain']; ?></font>
@@ -509,6 +505,8 @@
         </tfoot>-->
       </table>
     </form>
+
+    <!-- yang bawah ini udah gak kepakai lagi / belum ditambahin yang dibawah ada yg gak ada di atas apa enggak -->
   <?php } else if (($_POST['jns'] == "Produksi Finishing" or $_GET['jns'] == "Produksi Finishing" or $_GET['jns'] == "Produksi Finishing NOW") and ($_POST['jnsmesin'] == "belah" or $_POST['jnsmesin'] == "lipat")) {
   ?>
     <?php

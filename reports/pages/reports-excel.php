@@ -252,7 +252,7 @@
                                       FROM
                                         `tbl_produksi` a
                                       WHERE
-                                        jns_mesin='$_GET[jnsmesin]' AND " . $tgl . $shift . $mesin . " ORDER BY a.`jam_in` ASC");
+                                        $tgl $shift $mesin ORDER BY a.`jam_in` ASC");
       $no = 1;
       $c = 0;
       while ($rowd = mysqli_fetch_array($sql)) {

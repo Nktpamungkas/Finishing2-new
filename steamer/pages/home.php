@@ -793,17 +793,18 @@
 						<select name="nama_mesin" id="nama_mesin" onchange="myFunction();" required="required">
 							<option value="">Pilih</option>
 							<?php
-								$qry1 = db2_exec($conn_db2, "SELECT
-																TRIM(CODE) AS CODE, LONGDESCRIPTION
-															FROM
-																OPERATION o
-															WHERE
-																OPERATIONGROUPCODE = 'FIN'
-															ORDER BY 
-																CODE");
+								$qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
+																	TRIM(OPERATIONCODE) AS OPERATIONCODE,
+																	LONGDESCRIPTION 
+																FROM 
+																	WORKCENTERANDOPERATTRIBUTES
+																WHERE
+																	SUBSTR(WORKCENTERCODE, 1,4) = 'P3SM'
+																ORDER BY
+																	OPERATIONCODE ASC");
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['CODE']; ?>" <?php if ($rw['nama_mesin'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($rw['nama_mesin'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -834,8 +835,7 @@
 															FROM
 																RESOURCES r
 															WHERE
-																CODE LIKE '%SM%'
-																AND LONGDESCRIPTION LIKE '%Steam%'
+																SUBSTR(CODE, 1,4) = 'P3SM'
 															ORDER BY 
 																SUBSTR(CODE, 6,2) 
 															ASC");
