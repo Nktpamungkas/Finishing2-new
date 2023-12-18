@@ -818,14 +818,21 @@
 						<h4>Nama Mesin</h4>
 					</td>
 					<td>:</td>
-					<td colspan="2"><select name="nama_mesin" id="nama_mesin" onchange="myFunction();" required="required">
+					<td colspan="2">
+						<select name="nama_mesin" id="nama_mesin" onchange="myFunction();" required="required">
 							<option value="">Pilih</option>
-							<?php $qry1 = mysqli_query($con, "SELECT nama FROM tbl_mesin WHERE jenis='compact' ORDER BY nama ASC");
-							while ($r = mysqli_fetch_array($qry1)) {
+							<?php
+								$qry1 = db2_exec($conn_db2, "SELECT
+																TRIM(CODE) AS CODE, LONGDESCRIPTION
+															FROM
+																OPERATION o
+															WHERE
+																OPERATIONGROUPCODE = 'FIN'
+															ORDER BY 
+																CODE");
+								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['nama']; ?>" <?php if ($rw['nama_mesin'] == $r['nama']) {
-																				echo "SELECTED";
-																			} ?>><?php echo $r['nama']; ?></option>
+								<option value="<?php echo $r['CODE']; ?>" <?php if ($rw['nama_mesin'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -847,14 +854,23 @@
 																													} ?>" /></td>
 					<td><strong>No. Mesin</strong></td>
 					<td>:</td>
-					<td colspan="2"><select name="no_mesin" id="no_mesin" onchange="myFunction();" required="required">
+					<td colspan="2">
+						<select name="no_mesin" id="no_mesin" onchange="myFunction();" required="required">
 							<option value="">Pilih</option>
-							<?php $qry1 = mysqli_query($con, "SELECT no_mesin FROM tbl_no_mesin WHERE jenis='compact' ORDER BY no_mesin ASC");
-							while ($r = mysqli_fetch_array($qry1)) {
+							<?php
+								$qry1 = db2_exec($conn_db2, "SELECT
+																*
+															FROM
+																RESOURCES r
+															WHERE
+																CODE LIKE '%CP%'
+																AND LONGDESCRIPTION LIKE '%Compact%'
+															ORDER BY 
+																SUBSTR(CODE, 6,2) 
+															ASC");
+								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['no_mesin']; ?>" <?php if ($rw['no_mesin'] == $r['no_mesin']) {
-																					echo "SELECTED";
-																				} ?>><?php echo $r['no_mesin']; ?></option>
+								<option value="<?php echo $r['CODE']; ?>" <?php if ($rw['no_mesin'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>

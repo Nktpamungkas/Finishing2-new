@@ -38,47 +38,48 @@
 
 <body onload="document.refresh();">
   <?php
-    ini_set("error_reporting", 1);
-    session_start();
-    include('../koneksi.php');
-    if (($_POST['jns'] == "Produksi Finishing" or $_GET['jns'] == "Produksi Finishing") and ($_POST['jnsmesin'] == "stenter" or $_POST['jnsmesin'] == "compact" or $_POST['jnsmesin'] == "oven" or $_POST['jnsmesin'] == "steamer")) {
+  ini_set("error_reporting", 1);
+  session_start();
+  include('../koneksi.php');
+  $jenis_mesin_now = substr($_POST['nama_mesin'], 2,2);
+  if (($_POST['jns'] == "Produksi Finishing" or $_GET['jns'] == "Produksi Finishing" or $_POST['jns'] == "Produksi Finishing NOW")) {
   ?>
     <?php
-    if ($_POST['awal'] != "") {
-      $tglawal = $_POST['awal'];
-      $tglakhir = $_POST['akhir'];
-      $jns = $_POST['jns'];
-    } else {
-      $tglawal = $_GET['tgl1'];
-      $tglakhir = $_GET['tgl2'];
-      $jns = $_GET['jns'];
-    }
-    if ($_POST['shift'] != "") {
-      $shft = $_POST['shift'];
-    } else {
-      $shft = $_GET['shift'];
-    }
-    if ($_POST['nama_mesin'] != "") {
-      $mesin1 = $_POST['nama_mesin'];
-    } else {
-      $mesin1 = $_GET['msn'];
-    }
-    if ($tglakhir != "" and $tglawal != "") {
-      $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
-    } else {
-      $tgl = " ";
-    }
-    if ($shft == "ALL") {
-      $shift = " ";
-    } else {
-      $shift = " AND a.`shift`='$shft' ";
-    }
-    $msn = str_replace("'", "''", $mesin1);
-    if ($msn == "") {
-      $mesin = " ";
-    } else {
-      $mesin = " AND a.`no_mesin`='$msn' ";
-    }
+      if ($_POST['awal'] != "") {
+        $tglawal = $_POST['awal'];
+        $tglakhir = $_POST['akhir'];
+        $jns = $_POST['jns'];
+      } else {
+        $tglawal = $_GET['tgl1'];
+        $tglakhir = $_GET['tgl2'];
+        $jns = $_GET['jns'];
+      }
+      if ($_POST['shift'] != "") {
+        $shft = $_POST['shift'];
+      } else {
+        $shft = $_GET['shift'];
+      }
+      if ($_POST['nama_mesin'] != "") {
+        $mesin1 = $_POST['nama_mesin'];
+      } else {
+        $mesin1 = $_GET['msn'];
+      }
+      if ($tglakhir != "" and $tglawal != "") {
+        $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+      } else {
+        $tgl = " ";
+      }
+      if ($shft == "ALL") {
+        $shift = " ";
+      } else {
+        $shift = " AND a.`shift`='$shft' ";
+      }
+      $msn = str_replace("'", "''", $mesin1);
+      if ($msn == "") {
+        $mesin = " ";
+      } else {
+        $mesin = " AND a.`no_mesin`='$msn' ";
+      }
     ?>
     <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='index.php'" class="art-button" />
     <a href="pages/reports-cetak.php?tglawal=<?php echo $tglawal; ?>&amp;tglakhir=<?php echo $tglakhir; ?>&amp;shift=<?php echo $shft; ?>&amp;mesin=<?php echo $msn; ?>&amp;jnsmesin=<?php echo $_POST['jnsmesin']; ?>" class="art-button" target="_blank">CETAK</a>
@@ -88,7 +89,11 @@
     </strong>
     <form id="form1" name="form1" method="post" action="">
       <strong> Periode: <?php echo $tglawal; ?> s/d <?php echo $tglakhir; ?></strong>
-      <strong>Shift: <?php echo $shft; ?> Jenis Mesin: <?php echo $_POST['jnsmesin']; ?> No Mesin: <?php if ($msn == "") { echo "ALL"; } else { echo $msn; } ?></strong><br />
+      <strong>Shift: <?php echo $shft; ?> Jenis Mesin: <?php echo $_POST['jnsmesin']; ?> No Mesin: <?php if ($msn == "") {
+                                                                                                      echo "ALL";
+                                                                                                    } else {
+                                                                                                      echo $msn;
+                                                                                                    } ?></strong><br />
       <table width="100%" border="0" id="datatables" class="display">
         <thead>
           <tr>
@@ -226,6 +231,11 @@
             </th>
             <th rowspan="2" style="border:1px solid;vertical-align:middle;">
               <div align="center"><strong>
+                  <font size="-2">NO DEMAND</font>
+              </div>
+            </th>
+            <th rowspan="2" style="border:1px solid;vertical-align:middle;">
+              <div align="center"><strong>
                   <font size="-2">NO GRBK</font>
               </div>
             </th>
@@ -281,32 +291,31 @@
         <tbody>
           <?php
             $sql = mysqli_query($con, "SELECT 
-                                          *,a.`id` as `idp` 
-                                        FROM
-                                          `tbl_produksi` a
-                                          LEFT JOIN `tbl_no_mesin` b ON a.no_mesin=b.no_mesin
-
-                                        WHERE
-                                          jns_mesin='$_POST[jnsmesin]' AND " . $tgl . $shift . $mesin . " ORDER BY a.`jam_in` ASC ");
+                                            *,a.`id` as `idp` 
+                                          FROM
+                                            `tbl_produksi` a
+                                            LEFT JOIN `tbl_no_mesin` b ON a.no_mesin=b.no_mesin
+                                          WHERE
+                                             $tgl $shift $mesin ORDER BY a.`jam_in` ASC ");
             $no = 1;
             $c = 0;
             while ($rowd = mysqli_fetch_array($sql)) {
               $bgcolor = ($c++ & 1) ? '#33CCFF' : '#FFCC99';
-            // hitung hari dan jam	 
-            // $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
-            // $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
-            // $diff  = ($akhir - $awal);
-            // $tmenit = round($diff / (60), 2);
+              // hitung hari dan jam	 
+              // $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
+              // $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
+              // $diff  = ($akhir - $awal);
+              // $tmenit = round($diff / (60), 2);
 
-            $awal         = date_create($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
-            $akhir        = date_create($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
+              $awal         = date_create($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
+              $akhir        = date_create($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
 
-            $tmenit_stopmesin = date_diff($awal, $akhir);
+              $tmenit_stopmesin = date_diff($awal, $akhir);
 
-            $tmenit   = $tmenit_stopmesin->h . ' jam, ' . $tmenit_stopmesin->i . ' menit ';
+              $tmenit   = $tmenit_stopmesin->h . ' jam, ' . $tmenit_stopmesin->i . ' menit ';
 
-            $tjam  = round($diff / (60 * 60), 2);
-            $hari  = round($tjam / 24, 2);
+              $tjam  = round($diff / (60 * 60), 2);
+              $hari  = round($tjam / 24, 2);
           ?>
             <tr bgcolor="<?php echo $bgcolor; ?>">
               <td style="border:1px solid;vertical-align:middle;">&nbsp;</td>
@@ -406,14 +415,15 @@
               <td style="border:1px solid;vertical-align:middle;">
                 <div align="center">
                   <?php
-                    $total_waktu_awal         = date_create($rowd['jam_in']);
-                    $total_waktu_akhir        = date_create($rowd['jam_out']);
+                  $total_waktu_awal         = date_create($rowd['jam_in']);
+                  $total_waktu_akhir        = date_create($rowd['jam_out']);
 
-                    if($rowd['jam_in'] & $rowd['jam_out']){
-                      $diff_total_waktu              = date_diff($total_waktu_awal, $total_waktu_akhir);
+                  if ($rowd['jam_in'] & $rowd['jam_out']) {
+                    $diff_total_waktu              = date_diff($total_waktu_awal, $total_waktu_akhir);
 
-                      echo $diff_total_waktu->h . ' jam, '; echo $diff_total_waktu->i . ' menit ';
-                    }
+                    echo $diff_total_waktu->h . ' jam, ';
+                    echo $diff_total_waktu->i . ' menit ';
+                  }
                   ?>
                 </div>
               </td>
@@ -450,6 +460,11 @@
               <td style="border:1px solid;vertical-align:middle;">
                 <div align="left">
                   <font size="-2"><?php echo $rowd['nokk']; ?></font>
+                </div>
+              </td>
+              <td style="border:1px solid;vertical-align:middle;">
+                <div align="left">
+                  <font size="-2"><?php echo $rowd['demandno']; ?></font>
                 </div>
               </td>
               <td style="border:1px solid;vertical-align:middle;">
@@ -494,44 +509,44 @@
         </tfoot>-->
       </table>
     </form>
-  <?php } else if (($_POST['jns'] == "Produksi Finishing" or $_GET['jns'] == "Produksi Finishing") and ($_POST['jnsmesin'] == "belah" or $_POST['jnsmesin'] == "lipat")) {
+  <?php } else if (($_POST['jns'] == "Produksi Finishing" or $_GET['jns'] == "Produksi Finishing" or $_GET['jns'] == "Produksi Finishing NOW") and ($_POST['jnsmesin'] == "belah" or $_POST['jnsmesin'] == "lipat")) {
   ?>
     <?php
-      if ($_POST['awal'] != "") {
-        $tglawal = $_POST['awal'];
-        $tglakhir = $_POST['akhir'];
-        $jns = $_POST['jns'];
-      } else {
-        $tglawal = $_GET['tgl1'];
-        $tglakhir = $_GET['tgl2'];
-        $jns = $_GET['jns'];
-      }
-      if ($_POST['shift'] != "") {
-        $shft = $_POST['shift'];
-      } else {
-        $shft = $_GET['shift'];
-      }
-      if ($_POST['nama_mesin'] != "") {
-        $mesin1 = $_POST['nama_mesin'];
-      } else {
-        $mesin1 = $_GET['msn'];
-      }
-      if ($tglakhir != "" and $tglawal != "") {
-        $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
-      } else {
-        $tgl = " ";
-      }
-      if ($shft == "ALL") {
-        $shift = " ";
-      } else {
-        $shift = " AND a.`shift`='$shft' ";
-      }
-      $msn = str_replace("'", "''", $mesin1);
-      if ($msn == "") {
-        $mesin = " ";
-      } else {
-        $mesin = " AND a.`no_mesin`='$msn' ";
-      }
+    if ($_POST['awal'] != "") {
+      $tglawal = $_POST['awal'];
+      $tglakhir = $_POST['akhir'];
+      $jns = $_POST['jns'];
+    } else {
+      $tglawal = $_GET['tgl1'];
+      $tglakhir = $_GET['tgl2'];
+      $jns = $_GET['jns'];
+    }
+    if ($_POST['shift'] != "") {
+      $shft = $_POST['shift'];
+    } else {
+      $shft = $_GET['shift'];
+    }
+    if ($_POST['nama_mesin'] != "") {
+      $mesin1 = $_POST['nama_mesin'];
+    } else {
+      $mesin1 = $_GET['msn'];
+    }
+    if ($tglakhir != "" and $tglawal != "") {
+      $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+    } else {
+      $tgl = " ";
+    }
+    if ($shft == "ALL") {
+      $shift = " ";
+    } else {
+      $shift = " AND a.`shift`='$shft' ";
+    }
+    $msn = str_replace("'", "''", $mesin1);
+    if ($msn == "") {
+      $mesin = " ";
+    } else {
+      $mesin = " AND a.`no_mesin`='$msn' ";
+    }
     ?>
     <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='index.php'" class="art-button" />
     <a href="pages/reports-cetak-bl.php?tglawal=<?php echo $tglawal; ?>&amp;tglakhir=<?php echo $tglakhir; ?>&amp;shift=<?php echo $shft; ?>&amp;mesin=<?php echo $msn; ?>&amp;jnsmesin=<?php echo $_POST['jnsmesin']; ?>" class="art-button" target="_blank">CETAK</a>
@@ -609,7 +624,7 @@
             </th>
             <th rowspan="2" style="border:1px solid;vertical-align:middle;">
               <div align="center"><strong>
-                  <font size="-2">PANJANG (Yard)</font>
+                  <font size="-2">PANJANG AKTUAL (Yard)</font>
                 </strong></div>
             </th>
             <th rowspan="2" style="border:1px solid;vertical-align:middle;">
@@ -669,6 +684,11 @@
             </th>
             <th rowspan="2" style="border:1px solid;vertical-align:middle;">
               <div align="center"><strong>
+                  <font size="-2">NO DEMAND</font>
+              </div>
+            </th>
+            <th rowspan="2" style="border:1px solid;vertical-align:middle;">
+              <div align="center"><strong>
                   <font size="-2">NO GRBK</font>
               </div>
             </th>
@@ -724,12 +744,12 @@
         <tbody>
           <?php
             $sql = mysqli_query($con, " SELECT 
-                                            *,a.`id` as `idp` 
-                                          FROM
-                                            `tbl_produksi` a
-                                            LEFT JOIN `tbl_no_mesin` b ON a.no_mesin=b.no_mesin
-                                          WHERE
-                                            jns_mesin='$_POST[jnsmesin]' AND " . $tgl . $shift . $mesin . " ORDER BY a.`jam_in` ASC ");
+                                              *,a.`id` as `idp` 
+                                            FROM
+                                              `tbl_produksi` a
+                                              LEFT JOIN `tbl_no_mesin` b ON a.no_mesin=b.no_mesin
+                                            WHERE
+                                              $tgl $shift $mesin ORDER BY a.`jam_in` ASC");
             $no = 1;
             $c = 0;
             while ($rowd = mysqli_fetch_array($sql)) {
@@ -832,10 +852,11 @@
                   $total_waktu_awal         = date_create($rowd['jam_in']);
                   $total_waktu_akhir        = date_create($rowd['jam_out']);
 
-                  if($rowd['jam_in'] & $rowd['jam_out']){
+                  if ($rowd['jam_in'] & $rowd['jam_out']) {
                     $diff_total_waktu              = date_diff($total_waktu_awal, $total_waktu_akhir);
 
-                    echo $diff_total_waktu->h . ' jam, '; echo $diff_total_waktu->i . ' menit ';
+                    echo $diff_total_waktu->h . ' jam, ';
+                    echo $diff_total_waktu->i . ' menit ';
                   }
                   ?>
                 </div>
@@ -877,45 +898,21 @@
               </td>
               <td style="border:1px solid;vertical-align:middle;">
                 <div align="left">
+                  <font size="-2"><?php echo $rowd['demandno']; ?></font>
+                </div>
+              </td>
+              <td style="border:1px solid;vertical-align:middle;">
+                <div align="left">
                   <font size="-2"><?php echo $rowd['no_gerobak']; ?></font>
                 </div>
               </td>
               <td style="border:1px solid;vertical-align:middle;"><input type="button" name="ubah" id="ubah" value="Ubah" onClick="confirmEdit('?p=edit-data-bl&id=<?php echo $rowd['idp']; ?>');" /><input type="button" name="hapus" id="hapus" value="Hapus" onClick="confirmDelete('?p=hapus-report1&id=<?php echo $rowd['idp']; ?>&tgl1=<?php echo $tglawal; ?>&tgl2=<?php echo $tglakhir; ?>&shift=<?php echo $shft; ?>&jns=Produksi Finishing&msn=<?php echo $msn; ?>');" /></td>
             </tr>
-          <?php
-
-            $no++;
-          } ?>
+          <?php $no++; } ?>
         </tbody>
-        <!--<tfoot>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td colspan="2"><strong>Total</strong></td>
-      <td><strong><?php echo $totqty; ?></strong></td>
-      <td><strong><?php echo $totberat; ?></strong></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    </tfoot>-->
       </table>
     </form>
-  <?php } ?>
+  <?php } else { echo $_POST['jns']; } ?>
 </body>
 
 </html>

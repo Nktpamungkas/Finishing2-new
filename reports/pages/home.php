@@ -22,8 +22,9 @@ include('../koneksi.php');
         window.location.href = "?p=home5";
       } else if (lprn == "Stoppage Mesin") {
         window.location.href = "?p=home6";
+      }else if (lprn == "Produksi Finishing NOW"){
+        window.location.href = "?p=home7";
       }
-
     }
   </script>
 </head>
@@ -39,8 +40,7 @@ include('../koneksi.php');
           $user_name = $_SESSION['username'];
           date_default_timezone_set('Asia/Jakarta');
           $tgl = date("Y-M-d h:i:s A");
-          echo $tgl;
-          ?><br />
+          echo $tgl; ?><br />
         </td>
       </tr>
       <tr>
@@ -49,10 +49,11 @@ include('../koneksi.php');
         <td><label for="jns"></label>
           <select name="jns" id="jns" onchange="ganti();">
             <option value="Produksi Finishing" selected="selected">Produksi Finishing</option>
-            <option value="Adm Finishing">Adm Finishing</option>
-            <option value="Detail In-Out">Detail In-Out</option>
-            <option value="Grafik">Grafik</option>
-            <option value="Detail Proses">Detail Proses</option>
+            <option value="Produksi Finishing NOW">Produksi Finishing NOW</option>
+            <!-- <option value="Adm Finishing">Adm Finishing</option> -->
+            <!-- <option value="Detail In-Out">Detail In-Out</option> -->
+            <!-- <option value="Grafik">Grafik</option> -->
+            <!-- <option value="Detail Proses">Detail Proses</option> -->
             <option value="Stoppage Mesin">Stoppage Mesin</option>
           </select>
         </td>
@@ -60,11 +61,9 @@ include('../koneksi.php');
       <tr valign="middle">
         <td><strong>Jenis Mesin</strong></td>
         <td>:</td>
-        <td><select name="jnsmesin" id="jnsmesin" onChange="window.location='?p=home&jns='+this.value" required>
+        <td>
+          <select name="jnsmesin" id="jnsmesin" onChange="window.location='?p=home&jns='+this.value" required>
             <option value="">Pilih</option>
-            <option value="steamer" <?php if ($_GET['jns'] == "steamer") {
-                                      echo "SELECTED";
-                                    } ?>>Steamer</option>
             <option value="belah" <?php if ($_GET['jns'] == "belah") {
                                     echo "SELECTED";
                                   } ?>>Belah</option>
@@ -80,7 +79,11 @@ include('../koneksi.php');
             <option value="stenter" <?php if ($_GET['jns'] == "stenter") {
                                       echo "SELECTED";
                                     } ?>>Stenter</option>
-          </select></td>
+            <option value="steamer" <?php if ($_GET['jns'] == "steamer") {
+                                      echo "SELECTED";
+                                    } ?>>Steamer</option>
+          </select>
+        </td>
       </tr>
       <tr valign="middle">
         <td width="127"><strong>Tanggal Awal</strong></td>
