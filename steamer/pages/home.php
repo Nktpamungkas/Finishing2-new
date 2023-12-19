@@ -803,7 +803,7 @@
 					</td>
 					<td>:</td>
 					<td colspan="2">
-						<select name="nama_mesin" id="nama_mesin" onchange="myFunction();" required="required">
+						<select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
 							<option value="">Pilih</option>
 							<?php
 								$qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
@@ -817,7 +817,7 @@
 																	OPERATIONCODE ASC");
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($rw['nama_mesin'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -840,9 +840,43 @@
 					<td><strong>No. Mesin</strong></td>
 					<td>:</td>
 					<td>
+																																			
 						<select name="no_mesin" id="no_mesin" onchange="myFunction();" required="required">
 							<option value="">Pilih</option>
 							<?php
+								$q_mesin = db2_exec($conn_db2, "SELECT
+																p.WORKCENTERCODE,
+																CASE
+																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+																	ELSE p.PRODRESERVATIONLINKGROUPCODE
+																END	AS OPERATIONCODE,
+																TRIM(o.OPERATIONGROUPCODE) AS OPERATIONGROUPCODE,
+																o.LONGDESCRIPTION,
+																iptip.MULAI,
+																iptop.SELESAI,
+																p.PRODUCTIONORDERCODE,
+																p.PRODUCTIONDEMANDCODE,
+																p.GROUPSTEPNUMBER AS STEPNUMBER,
+																CASE
+																	WHEN iptip.MACHINECODE = iptop.MACHINECODE THEN iptip.MACHINECODE
+																	ELSE iptip.MACHINECODE || '-' ||iptop.MACHINECODE
+																END AS MESIN   
+															FROM 
+																PRODUCTIONDEMANDSTEP p 
+															LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+															LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+															LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+															WHERE
+																p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' 
+																AND 
+																CASE
+																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+																	ELSE p.PRODRESERVATIONLINKGROUPCODE
+																END = '$_GET[operation]'
+															ORDER BY iptip.MULAI ASC");
+								$row_mesin = db2_fetch_assoc($q_mesin);
 								$qry1 = db2_exec($conn_db2, "SELECT
 																*
 															FROM
@@ -854,7 +888,7 @@
 															ASC");
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['CODE']; ?>" <?php if ($rw['no_mesin'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?></option>
+								<option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>
