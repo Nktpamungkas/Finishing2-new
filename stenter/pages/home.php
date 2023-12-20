@@ -115,126 +115,126 @@
 
 <body>
   <?php
-  ini_set("error_reporting", 1);
-  session_start();
-  include('../koneksi.php');
-  function nourut(){
+    ini_set("error_reporting", 1);
+    session_start();
     include('../koneksi.php');
-    $format = date("ymd");
-    $sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
-    $d = mysqli_num_rows($sql);
+    function nourut(){
+      include('../koneksi.php');
+      $format = date("ymd");
+      $sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
+      $d = mysqli_num_rows($sql);
 
-    if ($d > 0) {
-      $r = mysqli_fetch_array($sql);
-      $d = $r['nokk'];
-      $str = substr($d, 6, 2);
-      $Urut = (int)$str;
-    } else {
-      $Urut = 0;
-    }
-    $Urut = $Urut + 1;
-    $Nol = "";
-    $nilai = 2 - strlen($Urut);
-    for ($i = 1; $i <= $nilai; $i++) {
-      $Nol = $Nol . "0";
-    }
-    $nipbr = $format . $Nol . $Urut;
-    return $nipbr;
-  }
-  $nou = nourut();
-  if ($_REQUEST['kk'] != '') {
-    $idkk = "";
-  } else {
-    $idkk = $_GET['idkk'];
-  }
-  if ($_GET['typekk'] == "KKLama") {
-    if ($idkk != "") {
-      date_default_timezone_set('Asia/Jakarta');
-      $qry = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk='$idkk' and jns_mesin='stenter' and shift='$_GET[shift]' and shift2='$_GET[shift2]' ORDER BY id DESC LIMIT 1");
-      $rw = mysqli_fetch_array($qry);
-      $rc = mysqli_num_rows($qry);
-      $qryAdm = mysqli_query($con, "SELECT * FROM tbl_adm WHERE nokk='$idkk' ORDER BY id DESC LIMIT 1");
-      $rwAdm = mysqli_fetch_array($qryAdm);
-      $rcAdm = mysqli_num_rows($qryAdm);
-      $tglsvr = sqlsrv_query($conn, "select CONVERT(VARCHAR(10),GETDATE(),105) AS  tgk");
-      $sr = sqlsrv_fetch_array($tglsvr);
-
-      $sqlLot = sqlsrv_query($conn, " SELECT
-        x.*,dbo.fn_StockMovementDetails_GetTotalWeightPCC(0, x.PCBID) as Weight,
-        dbo.fn_StockMovementDetails_GetTotalRollPCC(0, x.PCBID) as RollCount
-        FROM( SELECT
-          so.CustomerID, so.BuyerID, 
-          sod.ID as SODID, sod.ProductID, sod.UnitID, sod.WeightUnitID, 
-          pcb.ID as PCBID,pcb.UnitID as BatchUnitID,
-          pcblp.DepartmentID,pcb.PCID,pcb.LotNo,pcb.ChildLevel,pcb.RootID
-        FROM
-          SalesOrders so INNER JOIN
-          JobOrders jo ON jo.SOID=so.ID INNER JOIN
-          SODetails sod ON so.ID = sod.SOID INNER JOIN
-          SODetailsAdditional soda ON sod.ID = soda.SODID LEFT JOIN
-          ProcessControlJO pcjo ON sod.ID = pcjo.SODID LEFT JOIN
-          ProcessControlBatches pcb ON pcjo.PCID = pcb.PCID LEFT JOIN
-          ProcessControlBatchesLastPosition pcblp ON pcb.ID = pcblp.PCBID LEFT JOIN
-          ProcessFlowProcessNo pfpn ON pfpn.EntryType = 2 and pcb.ID = pfpn.ParentID AND pfpn.MachineType = 24 LEFT JOIN
-          ProcessFlowDetailsNote pfdn ON pfpn.EntryType = pfdn.EntryType AND pfpn.ID = pfdn.ParentID
-        WHERE pcb.DocumentNo='$idkk' AND pcb.Gross<>'0'
-          GROUP BY
-            so.SONumber, so.SODate, so.CustomerID, so.BuyerID, so.PONumber, so.PODate,jo.DocumentNo,
-            sod.ID, sod.ProductID, sod.Quantity, sod.UnitID, sod.Weight, sod.WeightUnitID,
-            soda.RefNo,pcb.DocumentNo,pcb.Dated,sod.RequiredDate,
-            pcb.ID, pcb.DocumentNo, pcb.Gross,
-            pcb.Quantity, pcb.UnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
-            pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID
-          ) x INNER JOIN
-          ProductMaster pm ON x.ProductID = pm.ID LEFT JOIN
-          Departments dep ON x.DepartmentID  = dep.ID LEFT JOIN
-          Departments pdep ON dep.RootID = pdep.ID LEFT JOIN				
-          Partners cust ON x.CustomerID = cust.ID LEFT JOIN
-          Partners buy ON x.BuyerID = buy.ID LEFT JOIN
-          UnitDescription udq ON x.UnitID = udq.ID LEFT JOIN
-          UnitDescription udw ON x.WeightUnitID = udw.ID LEFT JOIN
-          UnitDescription udb ON x.BatchUnitID = udb.ID
-        ORDER BY
-          x.SODID, x.PCBID ", array(), array("Scrollable" => 'static'));
-      $sLot = sqlsrv_fetch_array($sqlLot);
-      $cLot = sqlsrv_num_rows($sqlLot);
-      $child = $sLot['ChildLevel'];
-
-      if ($child > 0) {
-        $sqlgetparent = sqlsrv_query($conn, "select ID,LotNo from ProcessControlBatches where ID='$sLot[RootID]' and ChildLevel='0'");
-        $rowgp = sqlsrv_fetch_array($sqlgetparent);
-
-        //$nomLot=substr("$row2[LotNo]",0,1);
-        $nomLot = $rowgp['LotNo'];
-        $nomorLot = "$nomLot/K$sLot[ChildLevel]&nbsp;";
+      if ($d > 0) {
+        $r = mysqli_fetch_array($sql);
+        $d = $r['nokk'];
+        $str = substr($d, 6, 2);
+        $Urut = (int)$str;
       } else {
-        $nomorLot = $sLot['LotNo'];
+        $Urut = 0;
       }
+      $Urut = $Urut + 1;
+      $Nol = "";
+      $nilai = 2 - strlen($Urut);
+      for ($i = 1; $i <= $nilai; $i++) {
+        $Nol = $Nol . "0";
+      }
+      $nipbr = $format . $Nol . $Urut;
+      return $nipbr;
+    }
+    $nou = nourut();
+    if ($_REQUEST['kk'] != '') {
+      $idkk = "";
+    } else {
+      $idkk = $_GET['idkk'];
+    }
+    if ($_GET['typekk'] == "KKLama") {
+      if ($idkk != "") {
+        date_default_timezone_set('Asia/Jakarta');
+        $qry = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk='$idkk' and jns_mesin='stenter' and shift='$_GET[shift]' and shift2='$_GET[shift2]' ORDER BY id DESC LIMIT 1");
+        $rw = mysqli_fetch_array($qry);
+        $rc = mysqli_num_rows($qry);
+        $qryAdm = mysqli_query($con, "SELECT * FROM tbl_adm WHERE nokk='$idkk' ORDER BY id DESC LIMIT 1");
+        $rwAdm = mysqli_fetch_array($qryAdm);
+        $rcAdm = mysqli_num_rows($qryAdm);
+        $tglsvr = sqlsrv_query($conn, "select CONVERT(VARCHAR(10),GETDATE(),105) AS  tgk");
+        $sr = sqlsrv_fetch_array($tglsvr);
 
-      $sqlLot1 = "Select count(*) as TotalLot From ProcessControlBatches where PCID='$sLot[PCID]' and RootID='0' and LotNo < '1000'";
-      $qryLot1 = sqlsrv_query($conn, $sqlLot1) or die('A error occured : ');
-      $rowLot = sqlsrv_fetch_array($qryLot1);
-      $sqls = sqlsrv_query($conn, "select processcontrolJO.SODID,salesorders.ponumber,processcontrol.productid,salesorders.customerid,joborders.documentno,
-                                salesorders.buyerid,processcontrolbatches.lotno,productcode,productmaster.hangerno,productmaster.color,colorno,description,weight,cuttablewidth from Joborders 
-                                left join processcontrolJO on processcontrolJO.joid = Joborders.id
-                                left join salesorders on soid= salesorders.id
-                                left join processcontrol on processcontrolJO.pcid = processcontrol.id
-                                left join processcontrolbatches on processcontrolbatches.pcid = processcontrol.id
-                                left join productmaster on productmaster.id= processcontrol.productid
-                                left join productpartner on productpartner.productid= processcontrol.productid
-                                where processcontrolbatches.documentno='$idkk'", array(), array("Scrollable" => 'static'));
-      $ssr = sqlsrv_fetch_array($sqls);
-      $cek = sqlsrv_num_rows($sqls);
-      $lgn1 = sqlsrv_query($conn, "select partnername from partners where id='$ssr[customerid]'");
-      $ssr1 = sqlsrv_fetch_array($lgn1);
-      $lgn2 = sqlsrv_query($conn, "select partnername from partners where id='$ssr[buyerid]'");
-      $ssr2 = sqlsrv_fetch_array($lgn2);
+        $sqlLot = sqlsrv_query($conn, " SELECT
+          x.*,dbo.fn_StockMovementDetails_GetTotalWeightPCC(0, x.PCBID) as Weight,
+          dbo.fn_StockMovementDetails_GetTotalRollPCC(0, x.PCBID) as RollCount
+          FROM( SELECT
+            so.CustomerID, so.BuyerID, 
+            sod.ID as SODID, sod.ProductID, sod.UnitID, sod.WeightUnitID, 
+            pcb.ID as PCBID,pcb.UnitID as BatchUnitID,
+            pcblp.DepartmentID,pcb.PCID,pcb.LotNo,pcb.ChildLevel,pcb.RootID
+          FROM
+            SalesOrders so INNER JOIN
+            JobOrders jo ON jo.SOID=so.ID INNER JOIN
+            SODetails sod ON so.ID = sod.SOID INNER JOIN
+            SODetailsAdditional soda ON sod.ID = soda.SODID LEFT JOIN
+            ProcessControlJO pcjo ON sod.ID = pcjo.SODID LEFT JOIN
+            ProcessControlBatches pcb ON pcjo.PCID = pcb.PCID LEFT JOIN
+            ProcessControlBatchesLastPosition pcblp ON pcb.ID = pcblp.PCBID LEFT JOIN
+            ProcessFlowProcessNo pfpn ON pfpn.EntryType = 2 and pcb.ID = pfpn.ParentID AND pfpn.MachineType = 24 LEFT JOIN
+            ProcessFlowDetailsNote pfdn ON pfpn.EntryType = pfdn.EntryType AND pfpn.ID = pfdn.ParentID
+          WHERE pcb.DocumentNo='$idkk' AND pcb.Gross<>'0'
+            GROUP BY
+              so.SONumber, so.SODate, so.CustomerID, so.BuyerID, so.PONumber, so.PODate,jo.DocumentNo,
+              sod.ID, sod.ProductID, sod.Quantity, sod.UnitID, sod.Weight, sod.WeightUnitID,
+              soda.RefNo,pcb.DocumentNo,pcb.Dated,sod.RequiredDate,
+              pcb.ID, pcb.DocumentNo, pcb.Gross,
+              pcb.Quantity, pcb.UnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
+              pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID
+            ) x INNER JOIN
+            ProductMaster pm ON x.ProductID = pm.ID LEFT JOIN
+            Departments dep ON x.DepartmentID  = dep.ID LEFT JOIN
+            Departments pdep ON dep.RootID = pdep.ID LEFT JOIN				
+            Partners cust ON x.CustomerID = cust.ID LEFT JOIN
+            Partners buy ON x.BuyerID = buy.ID LEFT JOIN
+            UnitDescription udq ON x.UnitID = udq.ID LEFT JOIN
+            UnitDescription udw ON x.WeightUnitID = udw.ID LEFT JOIN
+            UnitDescription udb ON x.BatchUnitID = udb.ID
+          ORDER BY
+            x.SODID, x.PCBID ", array(), array("Scrollable" => 'static'));
+        $sLot = sqlsrv_fetch_array($sqlLot);
+        $cLot = sqlsrv_num_rows($sqlLot);
+        $child = $sLot['ChildLevel'];
+
+        if ($child > 0) {
+          $sqlgetparent = sqlsrv_query($conn, "select ID,LotNo from ProcessControlBatches where ID='$sLot[RootID]' and ChildLevel='0'");
+          $rowgp = sqlsrv_fetch_array($sqlgetparent);
+
+          //$nomLot=substr("$row2[LotNo]",0,1);
+          $nomLot = $rowgp['LotNo'];
+          $nomorLot = "$nomLot/K$sLot[ChildLevel]&nbsp;";
+        } else {
+          $nomorLot = $sLot['LotNo'];
+        }
+
+        $sqlLot1 = "Select count(*) as TotalLot From ProcessControlBatches where PCID='$sLot[PCID]' and RootID='0' and LotNo < '1000'";
+        $qryLot1 = sqlsrv_query($conn, $sqlLot1) or die('A error occured : ');
+        $rowLot = sqlsrv_fetch_array($qryLot1);
+        $sqls = sqlsrv_query($conn, "select processcontrolJO.SODID,salesorders.ponumber,processcontrol.productid,salesorders.customerid,joborders.documentno,
+                                  salesorders.buyerid,processcontrolbatches.lotno,productcode,productmaster.hangerno,productmaster.color,colorno,description,weight,cuttablewidth from Joborders 
+                                  left join processcontrolJO on processcontrolJO.joid = Joborders.id
+                                  left join salesorders on soid= salesorders.id
+                                  left join processcontrol on processcontrolJO.pcid = processcontrol.id
+                                  left join processcontrolbatches on processcontrolbatches.pcid = processcontrol.id
+                                  left join productmaster on productmaster.id= processcontrol.productid
+                                  left join productpartner on productpartner.productid= processcontrol.productid
+                                  where processcontrolbatches.documentno='$idkk'", array(), array("Scrollable" => 'static'));
+        $ssr = sqlsrv_fetch_array($sqls);
+        $cek = sqlsrv_num_rows($sqls);
+        $lgn1 = sqlsrv_query($conn, "select partnername from partners where id='$ssr[customerid]'");
+        $ssr1 = sqlsrv_fetch_array($lgn1);
+        $lgn2 = sqlsrv_query($conn, "select partnername from partners where id='$ssr[buyerid]'");
+        $ssr2 = sqlsrv_fetch_array($lgn2);
+      }
+    } elseif ($_GET['typekk'] == "NOW") {
+      if ($idkk != "") {
+        include_once("../now.php");
+      }
     }
-  } elseif ($_GET['typekk'] == "NOW") {
-    if ($idkk != "") {
-      include_once("../now.php");
-    }
-  }
   ?>
 
   <?php
@@ -312,74 +312,74 @@
       $jmlKonsen6 = $_POST['jmlKonsen6'];
       $jmlKonsen7 = $_POST['jmlKonsen7'];
       $simpanSql = "UPDATE tbl_produksi SET 
-          `shift`='$shift',
-          `shift2`='$shift2',
-          `buyer`='$buyer',
-          `no_item`='$item',
-          `no_warna`='$nowarna',
-          `jenis_bahan`='$bahan',
-          `kondisi_kain`='$kain',
-          `panjang`='$qty2',
-          `panjang_h`='$qty3',
-          `no_gerobak`='$gerobak',
-          `no_mesin`='$mesin',
-          `nama_mesin`='$nmmesin',
-          `langganan`='$langganan',
-          `no_order`='$order',
-          `jenis_kain`='$jenis_kain',
-          `warna`='$warna',
-          `lot`='$lot',
-          `rol`='$rol',
-          `qty`='$qty',
-          `proses`='$proses',
-          `jam_in`='$jam_in',
-          `jam_out`='$jam_out',
-          `tgl_proses_in`='$tgl_proses_in',
-          `tgl_proses_out`='$tgl_proses_out',
-          `stop_l`='$mulai',
-          `stop_l2`='$mulai2',
-          `stop_l3`='$mulai3',
-          `stop_r`='$selesai',
-          `stop_r2`='$selesai2',
-          `stop_r3`='$selesai3',
-          `tgl_stop_l`='$tgl_stop_m',
-          `tgl_stop_l2`='$tgl_stop_m2',
-          `tgl_stop_l3`='$tgl_stop_m3',
-          `tgl_stop_r`='$tgl_stop_s',
-          `tgl_stop_r2`='$tgl_stop_s2',
-          `tgl_stop_r3`='$tgl_stop_s3',
-          `kd_stop`='$kd',
-          `kd_stop2`='$kd2',
-          `kd_stop3`='$kd3',
-          `acc_staff`='$acc_kain',
-          `catatan`='$catatan',
-          `suhu`='$suhu',
-          `speed`='$speed',
-          `omt`='$omt',
-          `vmt`='$vmt',
-          `t_vmt`='$vmt_time',
-          `buka_rantai`='$buka',
-          `overfeed`='$overfeed',
-          `lebar`='$lebar',
-          `gramasi`='$gramasi',
-          `lebar_h`='$hlebar',
-          `gramasi_h`='$hgramasi',
-          `ph_larut`='$phlarutan',
-          `chemical_1`='$chemical1',
-          `chemical_2`='$chemical2',
-          `chemical_3`='$chemical3',
-          `chemical_4`='$chemical4',
-          `chemical_5`='$chemical5',
-          `chemical_6`='$chemical6',
-          `chemical_7`='$chemical7',
-          `konsen_1`='$jmlKonsen1',
-          `konsen_2`='$jmlKonsen2',
-          `konsen_3`='$jmlKonsen3',
-          `konsen_4`='$jmlKonsen4',
-          `konsen_5`='$jmlKonsen5',
-          `konsen_6`='$jmlKonsen6',
-          `konsen_7`='$jmlKonsen7',
-          `tgl_update`='$tgl'
+                  `shift`='$shift',
+                  `shift2`='$shift2',
+                  `buyer`='$buyer',
+                  `no_item`='$item',
+                  `no_warna`='$nowarna',
+                  `jenis_bahan`='$bahan',
+                  `kondisi_kain`='$kain',
+                  `panjang`='$qty2',
+                  `panjang_h`='$qty3',
+                  `no_gerobak`='$gerobak',
+                  `no_mesin`='$mesin',
+                  `nama_mesin`='$nmmesin',
+                  `langganan`='$langganan',
+                  `no_order`='$order',
+                  `jenis_kain`='$jenis_kain',
+                  `warna`='$warna',
+                  `lot`='$lot',
+                  `rol`='$rol',
+                  `qty`='$qty',
+                  `proses`='$proses',
+                  `jam_in`='$jam_in',
+                  `jam_out`='$jam_out',
+                  `tgl_proses_in`='$tgl_proses_in',
+                  `tgl_proses_out`='$tgl_proses_out',
+                  `stop_l`='$mulai',
+                  `stop_l2`='$mulai2',
+                  `stop_l3`='$mulai3',
+                  `stop_r`='$selesai',
+                  `stop_r2`='$selesai2',
+                  `stop_r3`='$selesai3',
+                  `tgl_stop_l`='$tgl_stop_m',
+                  `tgl_stop_l2`='$tgl_stop_m2',
+                  `tgl_stop_l3`='$tgl_stop_m3',
+                  `tgl_stop_r`='$tgl_stop_s',
+                  `tgl_stop_r2`='$tgl_stop_s2',
+                  `tgl_stop_r3`='$tgl_stop_s3',
+                  `kd_stop`='$kd',
+                  `kd_stop2`='$kd2',
+                  `kd_stop3`='$kd3',
+                  `acc_staff`='$acc_kain',
+                  `catatan`='$catatan',
+                  `suhu`='$suhu',
+                  `speed`='$speed',
+                  `omt`='$omt',
+                  `vmt`='$vmt',
+                  `t_vmt`='$vmt_time',
+                  `buka_rantai`='$buka',
+                  `overfeed`='$overfeed',
+                  `lebar`='$lebar',
+                  `gramasi`='$gramasi',
+                  `lebar_h`='$hlebar',
+                  `gramasi_h`='$hgramasi',
+                  `ph_larut`='$phlarutan',
+                  `chemical_1`='$chemical1',
+                  `chemical_2`='$chemical2',
+                  `chemical_3`='$chemical3',
+                  `chemical_4`='$chemical4',
+                  `chemical_5`='$chemical5',
+                  `chemical_6`='$chemical6',
+                  `chemical_7`='$chemical7',
+                  `konsen_1`='$jmlKonsen1',
+                  `konsen_2`='$jmlKonsen2',
+                  `konsen_3`='$jmlKonsen3',
+                  `konsen_4`='$jmlKonsen4',
+                  `konsen_5`='$jmlKonsen5',
+                  `konsen_6`='$jmlKonsen6',
+                  `konsen_7`='$jmlKonsen7',
+                  `tgl_update`='$tgl'
           WHERE `id`='$_POST[id]'";
       mysqli_query($con, $simpanSql) or die("Gagal Ubah" . mysqli_error());
 

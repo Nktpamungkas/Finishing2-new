@@ -842,7 +842,8 @@
                                                   FROM 
                                                     WORKCENTERANDOPERATTRIBUTES
                                                   WHERE
-                                                    SUBSTR(WORKCENTERCODE, 1,4) = 'P3ST' OR SUBSTR(WORKCENTERCODE, 1,4) = 'P3DR'
+                                                    (SUBSTR(WORKCENTERCODE, 1,4) = 'P3ST' OR SUBSTR(WORKCENTERCODE, 1,4) = 'P3DR')
+                                                    AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
                                                   ORDER BY
                                                     OPERATIONCODE ASC");
 								while ($r = db2_fetch_assoc($qry1)) {

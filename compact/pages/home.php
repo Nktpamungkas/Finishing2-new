@@ -839,6 +839,7 @@
 																WORKCENTERANDOPERATTRIBUTES
 															WHERE
 																SUBSTR(WORKCENTERCODE, 1,4) = 'P3CP'
+																AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
 															ORDER BY
 																OPERATIONCODE ASC");
 								while ($r = db2_fetch_assoc($qry1)) {

@@ -831,15 +831,16 @@
 														ORDER BY
 															OPERATIONCODE ASC)
 														WHERE 
-														NOT OPERATIONCODE = 'INS1'
-														AND NOT OPERATIONCODE = 'INS2'
-														AND NOT OPERATIONCODE = 'INS3'
-														AND NOT OPERATIONCODE = 'INS4'
-														AND NOT OPERATIONCODE = 'INS7'
-														AND NOT OPERATIONCODE = 'KKT'
-														AND NOT OPERATIONCODE = 'PQC'
-														AND NOT OPERATIONCODE = 'CNP1'
-														AND NOT LONGDESCRIPTION = 'Folding'");
+															NOT OPERATIONCODE = 'INS1'
+															AND NOT OPERATIONCODE = 'INS2'
+															AND NOT OPERATIONCODE = 'INS3'
+															AND NOT OPERATIONCODE = 'INS4'
+															AND NOT OPERATIONCODE = 'INS7'
+															AND NOT OPERATIONCODE = 'KKT'
+															AND NOT OPERATIONCODE = 'PQC'
+															AND NOT OPERATIONCODE = 'CNP1'
+															AND NOT LONGDESCRIPTION = 'Folding'
+															AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'");
 							while ($r = db2_fetch_assoc($qry1)) {
 							?>
 								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
