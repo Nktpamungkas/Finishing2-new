@@ -97,7 +97,11 @@
       <table width="100%" border="0" id="datatables" class="display">
         <thead>
           <tr>
-            
+            <th rowspan="2" style="border:1px solid;vertical-align:middle;">
+              <div align="center"><strong>
+                  <font size="-2">AKSI</font>
+                </strong></div>
+            </th>
             <th rowspan="2" style="border:1px solid;vertical-align:middle;">
               <div align="center"><strong>
                   <font size="-2">TGL</font>
@@ -105,7 +109,7 @@
             </th>
             <th rowspan="2" style="border:1px solid;vertical-align:middle;">
               <div align="center"><strong>
-                  <font size="-2">MC</font>
+                  <font size="-2">MC<br>OPERATION</font>
                 </strong></div>
             </th>
             <th rowspan="2" style="border:1px solid;vertical-align:middle;">
@@ -248,11 +252,6 @@
                   <font size="-2">NO GRBK</font>
               </div>
             </th>
-            <th rowspan="2" style="border:1px solid;vertical-align:middle;">
-              <div align="center"><strong>
-                  <font size="-2">AKSI</font>
-                </strong></div>
-            </th>
           </tr>
           <tr>
             <th style="border:1px solid;vertical-align:middle;">
@@ -327,6 +326,11 @@
               $hari  = round($tjam / 24, 2);
           ?>
             <tr bgcolor="<?php echo $bgcolor; ?>">
+              <td style="border:1px solid;vertical-align:middle;">
+                <input type="button" name="ubah" id="ubah" value="Ubah" 
+                  onClick="confirmEdit('?p=edit-data&id=<?php echo $rowd['idp']; ?>&nama_mesin=<?php echo $_POST['nama_mesin']; ?>');" />
+                <input type="button" name="hapus" id="hapus" value="Hapus" onClick="confirmDelete('?p=hapus-report1&id=<?php echo $rowd['idp']; ?>&tgl1=<?php echo $tglawal; ?>&tgl2=<?php echo $tglakhir; ?>&shift=<?php echo $shft; ?>&jns=Produksi Finishing&msn=<?php echo $msn; ?>');" />
+              </td>
               <td style="border:1px solid;vertical-align:middle;">
                 <div align="center">
                   <font size="-2"><?php echo $rowd['tgl_update']; ?></font>
@@ -627,9 +631,6 @@
                   <font size="-2"><?php echo $rowd['no_gerobak']; ?></font>
                 </div>
               </td>
-              <td style="border:1px solid;vertical-align:middle;">
-                <!-- <input type="button" name="ubah" id="ubah" value="Ubah" onClick="confirmEdit('?p=edit-data&id=<?php echo $rowd['idp']; ?>&mc=<?php echo $_POST['jnsmesin']; ?>');" /> -->
-                <input type="button" name="hapus" id="hapus" value="Hapus" onClick="confirmDelete('?p=hapus-report1&id=<?php echo $rowd['idp']; ?>&tgl1=<?php echo $tglawal; ?>&tgl2=<?php echo $tglakhir; ?>&shift=<?php echo $shft; ?>&jns=Produksi Finishing&msn=<?php echo $msn; ?>');" /></td>
             </tr>
           <?php $no++; } ?>
         </tbody>
