@@ -393,20 +393,20 @@
                     echo $rowd['suhu'];
                   }else{
                     $q_QA_DATA = db2_exec($conn_db2, "SELECT
-                                                      PRODUCTIONORDERCODE,
-                                                      PRODUCTIONDEMANDCODE,
-                                                      OPERATIONCODE,
-                                                      CHARACTERISTICCODE,
-                                                      VALUEQUANTITY 
-                                                    FROM
-                                                      ITXVIEW_DETAIL_QA_DATA
-                                                    WHERE
-                                                      PRODUCTIONORDERCODE = '$rowd[nokk]' AND 
-                                                      PRODUCTIONDEMANDCODE = '$rowd[demandno]' AND
-                                                      OPERATIONCODE = '$rowd[nama_mesin]' AND
-                                                      CHARACTERISTICCODE = 'TMP'
-                                                    ORDER BY
-                                                      LINE ASC");
+                                                        PRODUCTIONORDERCODE,
+                                                        PRODUCTIONDEMANDCODE,
+                                                        OPERATIONCODE,
+                                                        CHARACTERISTICCODE,
+                                                        VALUEQUANTITY 
+                                                      FROM
+                                                        ITXVIEW_DETAIL_QA_DATA
+                                                      WHERE
+                                                        PRODUCTIONORDERCODE = '$rowd[nokk]' AND 
+                                                        PRODUCTIONDEMANDCODE = '$rowd[demandno]' AND
+                                                        OPERATIONCODE = '$rowd[nama_mesin]' AND
+                                                        CHARACTERISTICCODE = 'TMP'
+                                                      ORDER BY
+                                                        LINE ASC");
                     $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
                     echo round($row_QA_DATA['VALUEQUANTITY'], 2);
                   }
