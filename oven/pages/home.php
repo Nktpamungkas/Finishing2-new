@@ -588,251 +588,11 @@
             </select></td>
         </tr>
         <tr>
-          <td scope="row">
-            <h4>Langganan/Buyer</h4>
-          </td>
-          <td>:</td>
-          <td>
-            <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $langganan_buyer =  $dt_pelanggan_buyer['PELANGGAN'] . '/' . $dt_pelanggan_buyer['BUYER']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$langganan_buyer =  $ssr1['partnername'] . "/" . $ssr2['partnername'];
-							} else {
-								$langganan_buyer =  $rw['langganan'];
-							} ?>
-						<?php endif; ?>
-						<input name="buyer" type="text" id="buyer" size="30" value="<?= $langganan_buyer; ?>">
-          </td>
-          <td width="14%">
-            <h4>Shift</h4>
-          </td>
-          <td>:</td>
-          <td colspan="2"><select name="shift2" id="shift2" required="required">
-              <option value="">Pilih</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Kode Buyer</h4>
-          </td>
-          <td>:</td>
-          <td><select name="kd_buyer" id="kd_buyer" required="required">
-              <option value="">Pilih</option>
-              <option value="ADIDAS" <?php if ($ssr2['partnername'] == "ADIDAS") {
-                                        echo "SELECTED";
-                                      } ?>>ADIDAS</option>
-              <option value="NIKE" <?php if ($ssr2['partnername'] == "NIKE") {
-                                      echo "SELECTED";
-                                    } ?>>NIKE</option>
-              <option value="CAMPURAN" <?php if ($ssr2['partnername'] == "NIKE") {
-                                        } else if ($ssr2['partnername'] == "ADIDAS") {
-                                        } else {
-                                          echo "SELECTED";
-                                        } ?>>CAMPURAN</option>
-            </select></td>
-          <td>
-            <h4>Tgl Proses</h4>
-          </td>
-          <td>:</td>
-          <td colspan="2"><input name="tgl" type="text" id="tgl" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl);return false;" size="10" placeholder="0000-00-00" required="required" />
-            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a>
-          </td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>No. Order</h4>
-          </td>
-          <td>:</td>
-          <td>
-            <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $no_order =  $dt_ITXVIEWKK['PROJECTCODE']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$no_order =  $ssr['documentno'];
-							} else if ($rc > 0) {
-								$no_order =  $rw['no_order'];
-							} else if ($rcAdm > 0) {
-								$no_order = $rwAdm['no_order'];
-							} ?>
-						<?php endif; ?>
-						<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
-          </td>
-          <td>
-            <h4>Proses</h4>
-          </td>
-          <td>:</td>
-          <td colspan="2"><select name="proses" id="proses" required>
-              <option value="">Pilih</option>
-              <?php $qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='oven' ORDER BY id ASC");
-              while ($r = mysqli_fetch_array($qry1)) {
-              ?>
-                <option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
-                                                                                echo "SELECTED";
-                                                                              } ?>><?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
-              <?php } ?>
-            </select>
-            <?php if ($_SESSION['lvl'] == "SPV") { ?>
-              <input type="button" name="btnproses" id="btnproses" value="..." onclick="window.open('pages/data-proses.php','MyWindow','height=400,width=650');" />
-            <?php } ?>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top" scope="row">
-            <h4>Jenis Kain</h4>
-          </td>
-          <td valign="top">:</td>
-          <td>
-            <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $jk = $dt_ITXVIEWKK['ITEMDESCRIPTION']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$jk = $ssr['productcode'] . " / " . $ssr['description'];
-							} else if ($rc > 0) {
-								$jk = $rw['jenis_kain'];
-							} else if ($rcAdm > 0) {
-								$jk = $rwAdm['jenis_kain'];
-							} ?>
-						<?php endif; ?>
-						<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
-          </td>
-          <td valign="top">
-            <h4>Catatan</h4>
-          </td>
-          <td valign="top">:</td>
-          <td colspan="2" valign="top"><textarea name="catatan" cols="35" id="catatan"><?php echo $rw['catatan']; ?></textarea></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Hanger/Item</h4>
-          </td>
-          <td>:</td>
-          <td>
-            <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $hanger = $dt_ITXVIEWKK['NO_HANGER']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$hanger = $ssr['productcode'];
-							} else if ($rc > 0) {
-								$hanger = $rw['no_item'];
-							} else if ($rcAdm > 0) {
-								$hanger = $rwAdm['no_item'];
-							}?>
-						<?php endif; ?>
-            <input type="text" name="no_item" id="no_item" value="<?= $hanger; ?>" />
-          </td>
-          <td>
-						<h4>Kondisi Kain</h4>
-					</td>
-					<td>:</td>
-					<td colspan="2"><select name="kondisi_kain" id="kondisi_kain" required="required">
-						<option value="">Pilih</option>
-						<option value="BASAH" <?php if ($rw['kondisi_kain'] == "BASAH") {
-												echo "SELECTED";
-												} ?>>BASAH</option>
-						<option value="KERING" <?php if ($rw['kondisi_kain'] == "KERING") {
-													echo "SELECTED";
-												} ?>>KERING</option>
-						</select></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>No. Warna</h4>
-          </td>
-          <td>:</td>
-          <td>
-            <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $nomor_warna = $dt_ITXVIEWKK['NO_WARNA']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$nomor_warna = $ssr['colorno'];
-							} else if ($rc > 0) {
-								$nomor_warna = $rw['no_warna'];
-							} else if ($rcAdm > 0) {
-								$nomor_warna = $rwAdm['no_warna'];
-							}?>
-						<?php endif; ?>
-						<input name="no_warna" type="text" id="no_warna" size="30" value="<?= $nomor_warna; ?>" />
-          </td>
-          <td>
-            <h4>No. Gerobak</h4>
-          </td>
-          <td>:</td>
-          <td colspan="2"><input type="text" name="no_gerobak" id="no_gerobak" value="<?php echo $rw['no_gerobak']; ?>" /></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Warna</h4>
-          </td>
-          <td>:</td>
-          <td><input name="warna" type="text" id="warna" size="30" value="<?= $dt_warna['WARNA']; ?><?php if ($cek > 0) {
-                                                                            echo $ssr['color'];
-                                                                          } else if ($rc > 0) {
-                                                                            echo $rw['warna'];
-                                                                          } else if ($rcAdm > 0) {
-                                                                            echo $rwAdm['warna'];
-                                                                          } ?>" /></td>
-          <td width="14%"><strong>Quantity (Kg)</strong></td>
-          <td width="1%">:</td>
-          <td colspan="2"><input name="qty" type="text" id="qty" size="5" value="<?= $dt_qtyorder['QTY_ORDER']; ?><?php if ($cLot > 0) {
-                                                                                    echo round($sLot['Weight'], 2);
-                                                                                  } else if ($rc > 0) {
-                                                                                    echo round($rw['qty'], 2);
-                                                                                  } else if ($rcAdm > 0) {
-                                                                                    echo round($rwAdm['qty'], 2);
-                                                                                  } ?>" placeholder="0.00" />
-            &nbsp;&nbsp;&nbsp;
-            <strong>Gramasi</strong>:
-						<input name="lebar" type="text" id="lebar" size="6" value="<?= floor($dt_lg['LEBAR']); ?><?php if ($cek > 0) {
-																									echo round($ssr['cuttablewidth'], 2);
-																								} else if ($rcAdm > 0) {
-																									echo $rwAdm['lebar'];
-																								} ?>" placeholder="0" />
-						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= floor($dt_lg['GRAMASI']); ?><?php if ($cek > 0) {
-																							echo round($ssr['weight'], 2);
-																						} else if ($rcAdm > 0) {
-																							echo $rwAdm['gramasi'];
-																						} ?>" placeholder="0" />
-              </td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Jenis Bahan</h4>
-          </td>
-          <td>:</td>
-          <td><select name="jenis_bahan" id="jenis_bahan" required="required">
-              <option value="">Pilih</option>
-              <option value="Polyesyer" <?php if ($rw['jenis_bahan'] == "Polyesyer") {
-                                          echo "SELECTED";
-                                        } ?>>Polyesyer</option>
-              <option value="Cotton" <?php if ($rw['janis_bahan'] == "Cotton") {
-                                        echo "SELECTED";
-                                      } ?>>Cotton</option>
-            </select></td>
-          <td width="14%"><strong>Panjang (Yard)</strong></td>
-          <td>:</td>
-          <td colspan="2"><input name="qty2" type="text" id="qty2" size="8" value="<?= $dt_qtyorder['QTY_ORDER_YARD']; ?><?php echo $rw['panjang']; ?>" placeholder="0.00" onfocus="jumlah();" /></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Lot</h4>
-          </td>
-          <td>:</td>
-          <td><input name="lot" type="text" id="lot" size="5" value="<?php if ($cLot > 0) {
-                                                                        echo $rowLot['TotalLot'] . "-" . $nomorLot;
-                                                                      } else if ($rc > 0) {
-                                                                        echo $rw['lot'];
-                                                                      } else if ($rcAdm > 0) {
-                                                                        echo $rwAdm['lot'];
-                                                                      } ?>" /></td>
           <td>
             <h4>Operation</h4>
           </td>
           <td>:</td>
-          <td colspan="2">
+          <td>
             <select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
 							<option value="">Pilih</option>
 							<?php
@@ -855,22 +615,21 @@
               <input type="button" name="btnmesin2" id="btnmesin2" value="..." onclick="window.open('pages/mesin.php','MyWindow','height=400,width=650');" />
             <?php } ?>
           </td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Roll</h4>
+          <td width="14%">
+            <h4>Shift</h4>
           </td>
           <td>:</td>
-          <td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $dt_roll['ROLL']; ?><?php if ($cLot > 0) {
-                                                                                                            echo $sLot['RollCount'];
-                                                                                                          } else if ($rc > 0) {
-                                                                                                            echo $rw['rol'];
-                                                                                                          } else if ($rcAdm > 0) {
-                                                                                                            echo $rwAdm['rol'];
-                                                                                                          } ?>" /></td>
-          <td><strong>No. Mesin</strong></td>
+          <td colspan="2"><select name="shift2" id="shift2" required="required">
+              <option value="">Pilih</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select></td>
+        </tr>
+        <tr>
+        <td><strong>No. Mesin</strong></td>
           <td>:</td>
-          <td colspan="2">
+          <td>
             <select name="no_mesin" id="no_mesin" onchange="myFunction();" required="required">
 							<option value="">Pilih</option>
 							<?php
@@ -926,6 +685,255 @@
               <input type="button" name="btnmesin" id="btnmesin" value="..." onclick="window.open('pages/data-mesin.php','MyWindow','height=400,width=650');" />
             <?php } ?>
           </td>
+          <td>
+            <h4>Tgl Proses</h4>
+          </td>
+          <td>:</td>
+          <td colspan="2"><input name="tgl" type="text" id="tgl" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl);return false;" size="10" placeholder="0000-00-00" required="required" />
+            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a>
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">
+            <h4>Langganan/Buyer</h4>
+          </td>
+          <td>:</td>
+          <td>
+            <?php if ($_GET['typekk'] == "NOW") : ?>
+							<?php $langganan_buyer =  $dt_pelanggan_buyer['PELANGGAN'] . '/' . $dt_pelanggan_buyer['BUYER']; ?>
+						<?php else : ?>
+							<?php if ($cek > 0) {
+								$langganan_buyer =  $ssr1['partnername'] . "/" . $ssr2['partnername'];
+							} else {
+								$langganan_buyer =  $rw['langganan'];
+							} ?>
+						<?php endif; ?>
+						<input name="buyer" type="text" id="buyer" size="30" value="<?= $langganan_buyer; ?>">
+          </td>
+          <td>
+            <h4>Proses</h4>
+          </td>
+          <td>:</td>
+          <td colspan="2"><select name="proses" id="proses" required>
+              <option value="">Pilih</option>
+              <?php $qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='oven' ORDER BY id ASC");
+              while ($r = mysqli_fetch_array($qry1)) {
+              ?>
+                <option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
+                                                                                echo "SELECTED";
+                                                                              } ?>><?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
+              <?php } ?>
+            </select>
+            <?php if ($_SESSION['lvl'] == "SPV") { ?>
+              <input type="button" name="btnproses" id="btnproses" value="..." onclick="window.open('pages/data-proses.php','MyWindow','height=400,width=650');" />
+            <?php } ?>
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">
+            <h4>Kode Buyer</h4>
+          </td>
+          <td>:</td>
+          <td><select name="kd_buyer" id="kd_buyer" required="required">
+              <option value="">Pilih</option>
+              <option value="ADIDAS" <?php if ($ssr2['partnername'] == "ADIDAS") {
+                                        echo "SELECTED";
+                                      } ?>>ADIDAS</option>
+              <option value="NIKE" <?php if ($ssr2['partnername'] == "NIKE") {
+                                      echo "SELECTED";
+                                    } ?>>NIKE</option>
+              <option value="CAMPURAN" <?php if ($ssr2['partnername'] == "NIKE") {
+                                        } else if ($ssr2['partnername'] == "ADIDAS") {
+                                        } else {
+                                          echo "SELECTED";
+                                        } ?>>CAMPURAN</option>
+            </select></td>
+          <td>
+						<h4>Kondisi Kain</h4>
+					</td>
+					<td>:</td>
+					<td colspan="2"><select name="kondisi_kain" id="kondisi_kain" required="required">
+						<option value="">Pilih</option>
+						<option value="BASAH" <?php if ($rw['kondisi_kain'] == "BASAH") {
+												echo "SELECTED";
+												} ?>>BASAH</option>
+						<option value="KERING" <?php if ($rw['kondisi_kain'] == "KERING") {
+													echo "SELECTED";
+												} ?>>KERING</option>
+						</select></td>
+        </tr>
+        <tr>
+          <td scope="row">
+            <h4>No. Order</h4>
+          </td>
+          <td>:</td>
+          <td>
+            <?php if ($_GET['typekk'] == "NOW") : ?>
+							<?php $no_order =  $dt_ITXVIEWKK['PROJECTCODE']; ?>
+						<?php else : ?>
+							<?php if ($cek > 0) {
+								$no_order =  $ssr['documentno'];
+							} else if ($rc > 0) {
+								$no_order =  $rw['no_order'];
+							} else if ($rcAdm > 0) {
+								$no_order = $rwAdm['no_order'];
+							} ?>
+						<?php endif; ?>
+						<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
+          </td>
+          <td>
+            <h4>No. Gerobak</h4>
+          </td>
+          <td>:</td>
+          <td colspan="2"><input type="text" name="no_gerobak" id="no_gerobak" value="<?php echo $rw['no_gerobak']; ?>" /></td>
+        </tr>
+        <tr>
+          <td valign="top" scope="row">
+            <h4>Jenis Kain</h4>
+          </td>
+          <td valign="top">:</td>
+          <td>
+            <?php if ($_GET['typekk'] == "NOW") : ?>
+							<?php $jk = $dt_ITXVIEWKK['ITEMDESCRIPTION']; ?>
+						<?php else : ?>
+							<?php if ($cek > 0) {
+								$jk = $ssr['productcode'] . " / " . $ssr['description'];
+							} else if ($rc > 0) {
+								$jk = $rw['jenis_kain'];
+							} else if ($rcAdm > 0) {
+								$jk = $rwAdm['jenis_kain'];
+							} ?>
+						<?php endif; ?>
+						<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
+          </td>
+          <td valign="top">
+            <h4>Catatan</h4>
+          </td>
+          <td valign="top">:</td>
+          <td colspan="2" valign="top"><textarea name="catatan" cols="35" id="catatan"><?php echo $rw['catatan']; ?></textarea></td>
+        </tr>
+        <tr>
+          <td scope="row">
+            <h4>Hanger/Item</h4>
+          </td>
+          <td>:</td>
+          <td>
+            <?php if ($_GET['typekk'] == "NOW") : ?>
+							<?php $hanger = $dt_ITXVIEWKK['NO_HANGER']; ?>
+						<?php else : ?>
+							<?php if ($cek > 0) {
+								$hanger = $ssr['productcode'];
+							} else if ($rc > 0) {
+								$hanger = $rw['no_item'];
+							} else if ($rcAdm > 0) {
+								$hanger = $rwAdm['no_item'];
+							}?>
+						<?php endif; ?>
+            <input type="text" name="no_item" id="no_item" value="<?= $hanger; ?>" />
+          </td>
+          <td width="14%"><strong>Quantity (Kg)</strong></td>
+          <td width="1%">:</td>
+          <td colspan="2"><input name="qty" type="text" id="qty" size="5" value="<?= $dt_qtyorder['QTY_ORDER']; ?><?php if ($cLot > 0) {
+                                                                                    echo round($sLot['Weight'], 2);
+                                                                                  } else if ($rc > 0) {
+                                                                                    echo round($rw['qty'], 2);
+                                                                                  } else if ($rcAdm > 0) {
+                                                                                    echo round($rwAdm['qty'], 2);
+                                                                                  } ?>" placeholder="0.00" />
+            &nbsp;&nbsp;&nbsp;
+            <strong>Gramasi</strong>:
+						<input name="lebar" type="text" id="lebar" size="6" value="<?= floor($dt_lg['LEBAR']); ?><?php if ($cek > 0) {
+																									echo round($ssr['cuttablewidth'], 2);
+																								} else if ($rcAdm > 0) {
+																									echo $rwAdm['lebar'];
+																								} ?>" placeholder="0" />
+						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= floor($dt_lg['GRAMASI']); ?><?php if ($cek > 0) {
+																							echo round($ssr['weight'], 2);
+																						} else if ($rcAdm > 0) {
+																							echo $rwAdm['gramasi'];
+																						} ?>" placeholder="0" />
+              </td>
+        </tr>
+        <tr>
+          <td scope="row">
+            <h4>No. Warna</h4>
+          </td>
+          <td>:</td>
+          <td>
+            <?php if ($_GET['typekk'] == "NOW") : ?>
+							<?php $nomor_warna = $dt_ITXVIEWKK['NO_WARNA']; ?>
+						<?php else : ?>
+							<?php if ($cek > 0) {
+								$nomor_warna = $ssr['colorno'];
+							} else if ($rc > 0) {
+								$nomor_warna = $rw['no_warna'];
+							} else if ($rcAdm > 0) {
+								$nomor_warna = $rwAdm['no_warna'];
+							}?>
+						<?php endif; ?>
+						<input name="no_warna" type="text" id="no_warna" size="30" value="<?= $nomor_warna; ?>" />
+          </td>
+          <td width="14%"><strong>Panjang (Yard)</strong></td>
+          <td>:</td>
+          <td colspan="2"><input name="qty2" type="text" id="qty2" size="8" value="<?= $dt_qtyorder['QTY_ORDER_YARD']; ?><?php echo $rw['panjang']; ?>" placeholder="0.00" onfocus="jumlah();" /></td>
+        </tr>
+        <tr>
+          <td scope="row">
+            <h4>Warna</h4>
+          </td>
+          <td>:</td>
+          <td><input name="warna" type="text" id="warna" size="30" value="<?= $dt_warna['WARNA']; ?><?php if ($cek > 0) {
+                                                                            echo $ssr['color'];
+                                                                          } else if ($rc > 0) {
+                                                                            echo $rw['warna'];
+                                                                          } else if ($rcAdm > 0) {
+                                                                            echo $rwAdm['warna'];
+                                                                          } ?>" /></td>
+          
+        </tr>
+        <tr>
+          <td scope="row">
+            <h4>Jenis Bahan</h4>
+          </td>
+          <td>:</td>
+          <td><select name="jenis_bahan" id="jenis_bahan" required="required">
+              <option value="">Pilih</option>
+              <option value="Polyesyer" <?php if ($rw['jenis_bahan'] == "Polyesyer") {
+                                          echo "SELECTED";
+                                        } ?>>Polyesyer</option>
+              <option value="Cotton" <?php if ($rw['janis_bahan'] == "Cotton") {
+                                        echo "SELECTED";
+                                      } ?>>Cotton</option>
+            </select></td>
+          
+        </tr>
+        <tr>
+          <td scope="row">
+            <h4>Lot</h4>
+          </td>
+          <td>:</td>
+          <td><input name="lot" type="text" id="lot" size="5" value="<?php if ($cLot > 0) {
+                                                                        echo $rowLot['TotalLot'] . "-" . $nomorLot;
+                                                                      } else if ($rc > 0) {
+                                                                        echo $rw['lot'];
+                                                                      } else if ($rcAdm > 0) {
+                                                                        echo $rwAdm['lot'];
+                                                                      } ?>" /></td>
+          
+        </tr>
+        <tr>
+          <td scope="row">
+            <h4>Roll</h4>
+          </td>
+          <td>:</td>
+          <td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $dt_roll['ROLL']; ?><?php if ($cLot > 0) {
+                                                                                                            echo $sLot['RollCount'];
+                                                                                                          } else if ($rc > 0) {
+                                                                                                            echo $rw['rol'];
+                                                                                                          } else if ($rcAdm > 0) {
+                                                                                                            echo $rwAdm['rol'];
+                                                                                                          } ?>" /></td>
+          
         </tr>
         <tr>
           <td scope="row">

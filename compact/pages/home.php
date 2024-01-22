@@ -564,6 +564,114 @@
 						</select></td>
 				</tr>
 				<tr>
+					<td>
+						<h4>Operation</h4>
+					</td>
+					<td>:</td>
+					<td>
+						<select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
+							<option value="">Pilih</option>
+							<?php
+								$qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
+																TRIM(OPERATIONCODE) AS OPERATIONCODE,
+																LONGDESCRIPTION 
+															FROM 
+																WORKCENTERANDOPERATTRIBUTES
+															WHERE
+																SUBSTR(WORKCENTERCODE, 1,4) = 'P3CP'
+																AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
+															ORDER BY
+																OPERATIONCODE ASC");
+								while ($r = db2_fetch_assoc($qry1)) {
+							?>
+								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+							<?php } ?>
+						</select>
+						<?php if ($_SESSION['lvl'] == "SPV") { ?>
+							<input type="button" name="btnmesin2" id="btnmesin2" value="..." onclick="window.open('pages/mesin.php','MyWindow','height=400,width=650');" />
+						<?php } ?>
+					</td>
+					<td width="14%">
+						<h4>Shift</h4>
+					</td>
+					<td>:</td>
+					<td colspan="2">
+						<select name="shift2" id="shift2" required="required">
+							<option value="">Pilih</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>No. Mesin</strong></td>
+					<td>:</td>
+					<td>
+						<select name="no_mesin" id="no_mesin" onchange="myFunction();" required="required">
+							<option value="">Pilih</option>
+							<?php
+								$q_mesin = db2_exec($conn_db2, "SELECT
+																p.WORKCENTERCODE,
+																CASE
+																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+																	ELSE p.PRODRESERVATIONLINKGROUPCODE
+																END	AS OPERATIONCODE,
+																TRIM(o.OPERATIONGROUPCODE) AS OPERATIONGROUPCODE,
+																o.LONGDESCRIPTION,
+																iptip.MULAI,
+																iptop.SELESAI,
+																p.PRODUCTIONORDERCODE,
+																p.PRODUCTIONDEMANDCODE,
+																p.GROUPSTEPNUMBER AS STEPNUMBER,
+																CASE
+																	WHEN iptip.MACHINECODE = iptop.MACHINECODE THEN iptip.MACHINECODE
+																	ELSE iptip.MACHINECODE || '-' ||iptop.MACHINECODE
+																END AS MESIN   
+															FROM 
+																PRODUCTIONDEMANDSTEP p 
+															LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+															LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+															LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+															WHERE
+																p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' 
+																AND 
+																CASE
+																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+																	ELSE p.PRODRESERVATIONLINKGROUPCODE
+																END = '$_GET[operation]'
+															ORDER BY iptip.MULAI ASC");
+								$row_mesin = db2_fetch_assoc($q_mesin);
+
+								$qry1 = db2_exec($conn_db2, "SELECT
+																	*
+																FROM
+																	RESOURCES r
+																WHERE
+																	SUBSTR(CODE, 1,4) = 'P3CP'
+																ORDER BY 
+																	SUBSTR(CODE, 6,2) 
+																ASC");
+								while ($r = db2_fetch_assoc($qry1)) {
+							?>
+								<option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?></option>
+							<?php } ?>
+						</select>
+						<?php if ($_SESSION['lvl'] == "SPV") { ?>
+							<input type="button" name="btnmesin" id="btnmesin" value="..." onclick="window.open('pages/data-mesin.php','MyWindow','height=400,width=650');" />
+						<?php } ?>
+					</td>
+					<td>
+						<h4>Tgl Proses</h4>
+					</td>
+					<td>:</td>
+					<td colspan="2"><input name="tgl" type="text" id="tgl" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl);return false;" size="10" placeholder="0000-00-00" required="required" />
+						<a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a>
+					</td>
+				</tr>
+				<tr>
 					<td scope="row">
 						<h4>Langganan/Buyer</h4>
 					</td>
@@ -580,16 +688,24 @@
 						<?php endif; ?>
 						<input name="buyer" type="text" id="buyer" size="30" value="<?= $langganan_buyer; ?>">
 					</td>
-					<td width="14%">
-						<h4>Shift</h4>
+					<td>
+						<h4>Proses</h4>
 					</td>
 					<td>:</td>
-					<td colspan="2"><select name="shift2" id="shift2" required="required">
+					<td colspan="2"><select name="proses" id="proses" required>
 							<option value="">Pilih</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-						</select></td>
+							<?php $qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='compact' ORDER BY id ASC");
+							while ($r = mysqli_fetch_array($qry1)) {
+							?>
+								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
+																									echo "SELECTED";
+																								} ?>><?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
+							<?php } ?>
+						</select>
+						<?php if ($_SESSION['lvl'] == "SPV") { ?>
+							<input type="button" name="btnproses" id="btnproses" value="..." onclick="window.open('pages/data-proses.php','MyWindow','height=400,width=650');" />
+						<?php } ?>
+					</td>
 				</tr>
 				<tr>
 					<td scope="row">
@@ -630,12 +746,10 @@
 						<?php endif; ?>
 					</td>
 					<td>
-						<h4>Tgl Proses</h4>
+						<h4>No. Gerobak</h4>
 					</td>
 					<td>:</td>
-					<td colspan="2"><input name="tgl" type="text" id="tgl" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl);return false;" size="10" placeholder="0000-00-00" required="required" />
-						<a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a>
-					</td>
+					<td colspan="2"><input type="text" name="no_gerobak" id="no_gerobak" value="<?php echo $rw['no_gerobak']; ?>" /></td>
 				</tr>
 				<tr>
 					<td scope="row">
@@ -656,24 +770,7 @@
 						<?php endif; ?>
 						<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
 					</td>
-					<td>
-						<h4>Proses</h4>
-					</td>
-					<td>:</td>
-					<td colspan="2"><select name="proses" id="proses" required>
-							<option value="">Pilih</option>
-							<?php $qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='compact' ORDER BY id ASC");
-							while ($r = mysqli_fetch_array($qry1)) {
-							?>
-								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
-																									echo "SELECTED";
-																								} ?>><?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
-							<?php } ?>
-						</select>
-						<?php if ($_SESSION['lvl'] == "SPV") { ?>
-							<input type="button" name="btnproses" id="btnproses" value="..." onclick="window.open('pages/data-proses.php','MyWindow','height=400,width=650');" />
-						<?php } ?>
-					</td>
+					
 				</tr>
 				<tr>
 					<td valign="top" scope="row">
@@ -753,24 +850,6 @@
 						<?php endif; ?>
 						<input name="no_warna" type="text" id="no_warna" size="30" value="<?= $nomor_warna; ?>" />
 					</td>
-					<td>
-						<h4>No. Gerobak</h4>
-					</td>
-					<td>:</td>
-					<td colspan="2"><input type="text" name="no_gerobak" id="no_gerobak" value="<?php echo $rw['no_gerobak']; ?>" /></td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>Warna</h4>
-					</td>
-					<td>:</td>
-					<td><input name="warna" type="text" id="warna" size="30" value="<?= $dt_warna['WARNA']; ?><?php if ($cek > 0) {
-																						echo $ssr['color'];
-																					} else if ($rc > 0) {
-																						echo $rw['warna'];
-																					} else if ($rcAdm > 0) {
-																						echo $rwAdm['warna'];
-																					} ?>" /></td>
 					<td width="14%"><strong>Quantity (Kg)</strong></td>
 					<td width="1%">:</td>
 					<td colspan="2"><input name="qty" type="text" id="qty" size="5" value="<?= $dt_qtyorder['QTY_ORDER']; ?><?php if ($cLot > 0) {
@@ -796,6 +875,22 @@
 				</tr>
 				<tr>
 					<td scope="row">
+						<h4>Warna</h4>
+					</td>
+					<td>:</td>
+					<td><input name="warna" type="text" id="warna" size="30" value="<?= $dt_warna['WARNA']; ?><?php if ($cek > 0) {
+																						echo $ssr['color'];
+																					} else if ($rc > 0) {
+																						echo $rw['warna'];
+																					} else if ($rcAdm > 0) {
+																						echo $rwAdm['warna'];
+																					} ?>" /></td>
+					<td width="14%"><strong>Panjang (Yard)</strong></td>
+					<td>:</td>
+					<td colspan="2"><input name="qty2" type="text" id="qty2" size="8" value="<?= $dt_qtyorder['QTY_ORDER_YARD']; ?><?php echo $rw['panjang']; ?>" placeholder="0.00" onfocus="jumlah();" /></td>
+				</tr>
+				<tr>
+					<td scope="row">
 						<h4>Jenis Bahan</h4>
 					</td>
 					<td>:</td>
@@ -808,9 +903,7 @@
 														echo "SELECTED";
 													} ?>>Cotton</option>
 						</select></td>
-					<td width="14%"><strong>Panjang (Yard)</strong></td>
-					<td>:</td>
-					<td colspan="2"><input name="qty2" type="text" id="qty2" size="8" value="<?= $dt_qtyorder['QTY_ORDER_YARD']; ?><?php echo $rw['panjang']; ?>" placeholder="0.00" onfocus="jumlah();" /></td>
+					
 				</tr>
 				<tr>
 					<td scope="row">
@@ -824,33 +917,7 @@
 																				} else if ($rcAdm > 0) {
 																					echo $rwAdm['lot'];
 																				} ?>" /></td>
-					<td>
-						<h4>Operation</h4>
-					</td>
-					<td>:</td>
-					<td colspan="2">
-						<select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
-							<option value="">Pilih</option>
-							<?php
-								$qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
-																TRIM(OPERATIONCODE) AS OPERATIONCODE,
-																LONGDESCRIPTION 
-															FROM 
-																WORKCENTERANDOPERATTRIBUTES
-															WHERE
-																SUBSTR(WORKCENTERCODE, 1,4) = 'P3CP'
-																AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
-															ORDER BY
-																OPERATIONCODE ASC");
-								while ($r = db2_fetch_assoc($qry1)) {
-							?>
-								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
-							<?php } ?>
-						</select>
-						<?php if ($_SESSION['lvl'] == "SPV") { ?>
-							<input type="button" name="btnmesin2" id="btnmesin2" value="..." onclick="window.open('pages/mesin.php','MyWindow','height=400,width=650');" />
-						<?php } ?>
-					</td>
+					
 				</tr>
 				<tr>
 					<td scope="row">
@@ -864,64 +931,7 @@
 																													} else if ($rcAdm > 0) {
 																														echo $rwAdm['rol'];
 																													} ?>" /></td>
-					<td><strong>No. Mesin</strong></td>
-					<td>:</td>
-					<td colspan="2">
-						<select name="no_mesin" id="no_mesin" onchange="myFunction();" required="required">
-							<option value="">Pilih</option>
-							<?php
-								$q_mesin = db2_exec($conn_db2, "SELECT
-																p.WORKCENTERCODE,
-																CASE
-																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
-																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
-																	ELSE p.PRODRESERVATIONLINKGROUPCODE
-																END	AS OPERATIONCODE,
-																TRIM(o.OPERATIONGROUPCODE) AS OPERATIONGROUPCODE,
-																o.LONGDESCRIPTION,
-																iptip.MULAI,
-																iptop.SELESAI,
-																p.PRODUCTIONORDERCODE,
-																p.PRODUCTIONDEMANDCODE,
-																p.GROUPSTEPNUMBER AS STEPNUMBER,
-																CASE
-																	WHEN iptip.MACHINECODE = iptop.MACHINECODE THEN iptip.MACHINECODE
-																	ELSE iptip.MACHINECODE || '-' ||iptop.MACHINECODE
-																END AS MESIN   
-															FROM 
-																PRODUCTIONDEMANDSTEP p 
-															LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
-															LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-															LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-															WHERE
-																p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' 
-																AND 
-																CASE
-																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
-																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
-																	ELSE p.PRODRESERVATIONLINKGROUPCODE
-																END = '$_GET[operation]'
-															ORDER BY iptip.MULAI ASC");
-								$row_mesin = db2_fetch_assoc($q_mesin);
-
-								$qry1 = db2_exec($conn_db2, "SELECT
-																	*
-																FROM
-																	RESOURCES r
-																WHERE
-																	SUBSTR(CODE, 1,4) = 'P3CP'
-																ORDER BY 
-																	SUBSTR(CODE, 6,2) 
-																ASC");
-								while ($r = db2_fetch_assoc($qry1)) {
-							?>
-								<option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?></option>
-							<?php } ?>
-						</select>
-						<?php if ($_SESSION['lvl'] == "SPV") { ?>
-							<input type="button" name="btnmesin" id="btnmesin" value="..." onclick="window.open('pages/data-mesin.php','MyWindow','height=400,width=650');" />
-						<?php } ?>
-					</td>
+					
 				</tr>
 				<tr>
 					<td scope="row">
