@@ -314,16 +314,6 @@
               // $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
               // $diff  = ($akhir - $awal);
               // $tmenit = round($diff / (60), 2);
-
-              $awal         = date_create($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
-              $akhir        = date_create($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
-
-              $tmenit_stopmesin = date_diff($awal, $akhir);
-
-              $tmenit   = $tmenit_stopmesin->h . ' jam, ' . $tmenit_stopmesin->i . ' menit ';
-
-              $tjam  = round($diff / (60 * 60), 2);
-              $hari  = round($tjam / 24, 2);
           ?>
             <tr bgcolor="<?php echo $bgcolor; ?>">
               <td style="border:1px solid;vertical-align:middle;">
@@ -602,15 +592,15 @@
               <td style="border:1px solid;vertical-align:middle;">
                 <div align="center">
                   <?php
-                  $total_waktu_awal         = date_create($rowd['jam_in']);
-                  $total_waktu_akhir        = date_create($rowd['jam_out']);
+                    $total_waktu_awal         = date_create($rowd['jam_in']);
+                    $total_waktu_akhir        = date_create($rowd['jam_out']);
 
-                  if ($rowd['jam_in'] & $rowd['jam_out']) {
-                    $diff_total_waktu              = date_diff($total_waktu_awal, $total_waktu_akhir);
+                    if ($rowd['jam_in'] & $rowd['jam_out']) {
+                      $diff_total_waktu              = date_diff($total_waktu_awal, $total_waktu_akhir);
 
-                    echo $diff_total_waktu->h . ' jam, ';
-                    echo $diff_total_waktu->i . ' menit ';
-                  }
+                      echo $diff_total_waktu->h . ' jam, ';
+                      echo $diff_total_waktu->i . ' menit ';
+                    }
                   ?>
                 </div>
               </td>
@@ -626,7 +616,20 @@
               </td>
               <td style="border:1px solid;vertical-align:middle;">
                 <div align="center">
-                  <font size="-2"><?php echo $tmenit; ?></font>
+                  <font size="-2">
+                    <?php
+                      $awal         = date_create($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
+                      $akhir        = date_create($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
+        
+                      $tmenit_stopmesin = date_diff($awal, $akhir);
+        
+                      $tmenit   = $tmenit_stopmesin->h . ' jam, ' . $tmenit_stopmesin->i . ' menit ';
+        
+                      $tjam  = round($diff / (60 * 60), 2);
+                      $hari  = round($tjam / 24, 2);
+                    ?>
+                    <?php echo $tmenit; ?>
+                  </font>
                 </div>
               </td>
               <td style="border:1px solid;vertical-align:middle;">
