@@ -7,12 +7,19 @@
 
   $tglawal = $_GET['tglawal'];
   $tglakhir = $_GET['tglakhir'];
+  $jamawal = $_GET['jamawal'];
+  $jamakhir = $_GET['jamakhir'];
   $shft = $_GET['shift'];
-  if ($tglakhir != "" and $tglawal != "") {
-    $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+//  if ($tglakhir != "" and $tglawal != "") {
+//    $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+//  } else {
+//    $tgl = " ";
+//  }
+  if ($tglakhir != "" and $tglawal != "" or $jamakhir != "" and $jamawal != "") {
+    $tgl = " DATE_FORMAT(a.`tgl_buat`,'%Y-%m-%d %H:%i') BETWEEN '$tglawal $jamawal' AND '$tglakhir $jamakhir' ";
   } else {
     $tgl = " ";
-  }
+  }	
   if ($shft == "ALL") {
     $shift = " ";
   } else {
@@ -104,7 +111,7 @@
       <tr valign="top">
         <td <?php if ($_GET['mesin'] == "") { ?> colspan="8" <?php } else {
                                                           echo 'colspan="7"';
-                                                        } ?>>TANGGAL:<strong> <?php echo $tglawal; ?> s/d <?php echo $tglakhir; ?></strong></td>
+                                                        } ?>>TANGGAL:<strong> <?php echo $tglawal." ".$jamawal; ?> s/d <?php echo $tglakhir." ".$jamakhir; ?></strong></td>
         <td colspan="9">GROUP SHIFT:<strong><?php echo $shft; ?></strong></td>
         <td colspan="13">NO MESIN :<strong><?php if ($_GET['mesin'] == "") {
                                               echo "ALL";
