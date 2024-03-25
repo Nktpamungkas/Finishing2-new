@@ -370,7 +370,7 @@
                     <td style="color: red;"><strong>Nomor Mesin</strong></td>
                     <td>:</td>
                     <td>
-                        <select name="no_mesin" required="required">
+                        <select name="no_mesin" required>
                             <option value="">Pilih</option>
                             <?php
 								$query_namamesin	= "SELECT
@@ -494,7 +494,7 @@
                         </select>
 
                         <strong  style="color: red;">No Urut :</strong>
-                        <select name="no_urut" class="form-control select2" id="no_urut" >
+                        <select name="no_urut" class="form-control select2" id="no_urut" required>
 							<option value="">Pilih</option>
 							<?php
 								$q_nourut		= mysqli_query($con, "SELECT
@@ -531,7 +531,7 @@
                     </td>
                     <td>:</td>
                     <td>
-                        <select name="g_shift" class="form-control select2" >
+                        <select name="g_shift" class="form-control select2" required>
 							<option value="">Pilih</option>
 							<option value="A">A</option>
 							<option value="B">B</option>
@@ -562,7 +562,7 @@
 		<input type="submit" name="btnSimpan" id="btnSimpan" value="Simpan" class="art-button" />
 		<input type="button" name="batal" id="batal" value="Batal" onclick="window.location.href='index.php'" class="art-button" />
 		<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../index.php'" class="art-button" />
-		<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button green">
+		<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
 	</form>
 </body>
 </html>
