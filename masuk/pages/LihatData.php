@@ -109,6 +109,12 @@
             $q_tblmasuk     = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE `status` = 'KK MASUK' $where_tgl $where_nama_mesin");
         ?>
         <?php while ($row_tblmasuk  = mysqli_fetch_array($q_tblmasuk)) : ?>
+            <?php
+                // CEK, JIKA KARTU KERJA SUDAH DIBIKIN SCHEDULE MAKA TIDAK AKAN MUNCUL DI KK MASUK. 
+                $cek_schedule   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_schedule_new WHERE nokk = '$row_tblmasuk[nokk]' AND nodemand = '$row_tblmasuk[nodemand]'");
+                $data_schedule  = mysqli_fetch_assoc($cek_schedule);
+            ?>
+            <?php if(empty($data_schedule['jml'])) : ?>
             <tr>
                 <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nokk'] ?></td>
                 <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nodemand'] ?></td>
@@ -124,6 +130,7 @@
                 <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['creationdatetime'] ?></td>
                 <td style="border:1px solid;vertical-align:middle;"></td>
             </tr>
+            <?php endif; ?>
         <?php endwhile; ?>
     </tbody>
     </table>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <?php
-    include('../koneksi.php');
+include('../koneksi.php');
 ?>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -21,6 +21,17 @@
             });
         })
     </script>
+    
+    <style>
+        .button {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -30,10 +41,10 @@
                 <td colspan="3">
                     <div align="center"><strong>KK MASUK FINISHING</strong></div>
                     <?php
-                        $user_name = $_SESSION['username'];
-                        date_default_timezone_set('Asia/Jakarta');
-                        $tgl = date("Y-M-d h:i:s A");
-                        echo $tgl; 
+                    $user_name = $_SESSION['username'];
+                    date_default_timezone_set('Asia/Jakarta');
+                    $tgl = date("Y-M-d h:i:s A");
+                    echo $tgl;
                     ?>
                     <br>
                 </td>
@@ -45,14 +56,16 @@
                     <select name="no_mesin" class="form-control select2">
                         <option value="-" disabled selected>Pilih</option>
                         <?php
-                            $q_mesin    = mysqli_query($con, "SELECT
+                        $q_mesin    = mysqli_query($con, "SELECT
                                                                     DISTINCT
                                                                     no_mesin 
                                                                 FROM
                                                                     `tbl_schedule_new`");
                         ?>
                         <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
-                            <option value="<?= $row_mesin['no_mesin']; ?>" <?php if($row_mesin['no_mesin'] == $_POST['no_mesin']){ echo 'SELECTED'; } ?>><?= $row_mesin['no_mesin']; ?></option>
+                            <option value="<?= $row_mesin['no_mesin']; ?>" <?php if ($row_mesin['no_mesin'] == $_POST['no_mesin']) {
+                                                                                echo 'SELECTED';
+                                                                            } ?>><?= $row_mesin['no_mesin']; ?></option>
                         <?php endwhile; ?>
                     </select>
                 </td>
@@ -64,14 +77,16 @@
                     <select name="nama_mesin" class="form-control select2">
                         <option value="-" disabled selected>Pilih</option>
                         <?php
-                            $q_mesin    = mysqli_query($con, "SELECT
+                        $q_mesin    = mysqli_query($con, "SELECT
                                                                     DISTINCT
                                                                     nama_mesin 
                                                                 FROM
                                                                     `tbl_schedule_new`");
                         ?>
                         <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
-                            <option value="<?= $row_mesin['nama_mesin']; ?>" <?php if($row_mesin['nama_mesin'] == $_POST['nama_mesin']){ echo 'SELECTED'; } ?>><?= $row_mesin['nama_mesin']; ?></option>
+                            <option value="<?= $row_mesin['nama_mesin']; ?>" <?php if ($row_mesin['nama_mesin'] == $_POST['nama_mesin']) {
+                                                                                    echo 'SELECTED';
+                                                                                } ?>><?= $row_mesin['nama_mesin']; ?></option>
                         <?php endwhile; ?>
                     </select>
                 </td>
@@ -88,50 +103,50 @@
             </tr>
             <tr>
                 <td colspan="3">
-                    <input type="submit" name="button" id="button" value="Cari data" class="art-button" /> 
+                    <input type="submit" name="button" id="button" value="Cari data" class="art-button" />
                 </td>
             </tr>
         </table>
     </form>
     <table width="100%" border="1" id="datatables" class="display">
-    <thead>
-        <tr>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO URUT</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO MESIN</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO KK</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO DEMAND</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LANGGANAN</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">BUYER</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO ORDER</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">JENIS KAIN</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO WARNA</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY YD</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
-            <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPSI</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-            if($_POST['no_mesin']){
+        <thead>
+            <tr>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO URUT</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO MESIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO KK</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO DEMAND</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LANGGANAN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">BUYER</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO ORDER</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">JENIS KAIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO WARNA</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY YD</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPSI</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($_POST['no_mesin']) {
                 $where_no_mesin  = "AND no_mesin = '$_POST[no_mesin]'";
-            }else{
+            } else {
                 $where_no_mesin  = "";
             }
-            
-            if($_POST['nama_mesin']){
+
+            if ($_POST['nama_mesin']) {
                 $where_nama_mesin  = "AND nama_mesin = '$_POST[nama_mesin]'";
-            }else{
+            } else {
                 $where_nama_mesin  = "";
             }
-            
-            if($_POST['awal']){
+
+            if ($_POST['awal']) {
                 $where_tgl  = "AND creationdatetime BETWEEN '$_POST[awal]' AND '$_POST[akhir]'";
-            }else{
+            } else {
                 $where_tgl  = "";
             }
 
@@ -141,9 +156,9 @@
             //                                             GROUP_CONCAT( nokk ORDER BY id SEPARATOR ', ' ) AS nokk,
             //                                             GROUP_CONCAT( TRIM( nodemand ) ORDER BY id SEPARATOR ', ' ) AS nodemand,
             //                                             GROUP_CONCAT( DISTINCT no_order ORDER BY id SEPARATOR ', ' ) AS no_order,
-	        //                                             GROUP_CONCAT( DISTINCT jenis_kain ORDER BY id SEPARATOR ', ' ) AS jenis_kain,
+            //                                             GROUP_CONCAT( DISTINCT jenis_kain ORDER BY id SEPARATOR ', ' ) AS jenis_kain,
             //                                             GROUP_CONCAT( DISTINCT langganan ORDER BY id SEPARATOR ', ' ) AS langganan,
-	        //                                             GROUP_CONCAT( DISTINCT buyer ORDER BY id SEPARATOR ', ' ) AS buyer
+            //                                             GROUP_CONCAT( DISTINCT buyer ORDER BY id SEPARATOR ', ' ) AS buyer
             //                                         FROM
             //                                             `tbl_schedule_new` 
             //                                         WHERE 
@@ -152,29 +167,34 @@
                                                         `tbl_schedule_new`  
                                                     WHERE 
                                                         `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin");
-        ?>
-        <?php while ($row_tblmasuk  = mysqli_fetch_array($q_tblmasuk)) : ?>
-            <tr>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nourut'] ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['no_mesin'] ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['operation'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nokk'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nodemand'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['langganan'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['buyer'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_order'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['jenis_kain'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['warna'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['rol'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order_yd'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
-                <td style="border:1px solid;vertical-align:middle;"></td>
-            </tr>
-        <?php endwhile; ?>
-    </tbody>
+            ?>
+            <?php while ($row_tblmasuk  = mysqli_fetch_array($q_tblmasuk)) : ?>
+                <tr>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nourut'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['no_mesin'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['operation'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nokk'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nodemand'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['langganan'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['buyer'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_order'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['jenis_kain'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['warna'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['rol'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order_yd'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;">
+                        <a href="?p=edit_schedule&id=<?= $row_tblmasuk['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+            
+        </tbody>
     </table>
 </body>
+
+
 </html>
