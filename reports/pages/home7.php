@@ -89,8 +89,15 @@ include('../koneksi.php');
         <td width="127"><strong>Tanggal Awal</strong></td>
         <td width="3">:</td>
         <td width="280">
+			<input name="jam_awal" type="text" id="jam_awal" placeholder="23:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 23:00" onkeyup="
+            var time = this.value;
+            if (time.match(/^\d{2}$/) !== null) {
+              this.value = time + ':';
+            } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+              this.value = time + '';
+            }" value="<?= $_GET['jam1']; ?>" size="5" maxlength="5" onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1='+this.value" required/>
             <input name="awal" type="date" id="awal" value="<?= $_GET['awal']; ?>" 
-                onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&awal='+this.value" size="14" required="required" />
+                onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1=<?= $_GET['jam1']; ?>&awal='+this.value" size="14" required="required" />
         </td>
       </tr>
       <tr>
@@ -98,8 +105,15 @@ include('../koneksi.php');
         <td><strong>Tanggal Akhir</strong></td>
         <td>:</td>
         <td width="280">
+			<input name="jam_akhir" type="text" id="jam_akhir" placeholder="23:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 23:00" onkeyup="
+            var time = this.value;
+            if (time.match(/^\d{2}$/) !== null) {
+              this.value = time + ':';
+            } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+              this.value = time + '';
+            }" value="<?= $_GET['jam2']; ?>" size="5" maxlength="5" onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1=<?= $_GET['jam1']; ?>&awal=<?= $_GET['awal']; ?>&jam2='+this.value" required/>
             <input name="akhir" type="date" id="akhir" value="<?= $_GET['akhir']; ?>" 
-                onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&awal=<?= $_GET['awal']; ?>&akhir='+this.value" size="14" required="required" />
+                onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1=<?= $_GET['jam1']; ?>&awal=<?= $_GET['awal']; ?>&jam2=<?= $_GET['jam2']; ?>&akhir='+this.value" size="14" required="required" />
         </td>
       </tr>
       <tr>

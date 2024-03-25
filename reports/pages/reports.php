@@ -48,6 +48,8 @@
       if ($_POST['awal'] != "") {
         $tglawal = $_POST['awal'];
         $tglakhir = $_POST['akhir'];
+		$jamawal = $_POST['jam_awal'];
+        $jamakhir = $_POST['jam_akhir'];  
         $jns = $_POST['jns'];
       } else {
         $tglawal = $_GET['tgl1'];
@@ -64,8 +66,13 @@
       } else {
         $mesin1 = $_GET['msn'];
       }
-      if ($tglakhir != "" and $tglawal != "") {
-        $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+//      if ($tglakhir != "" and $tglawal != "") {
+//        $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+//      } else {
+//        $tgl = " ";
+//      }
+	  if ($tglakhir != "" and $tglawal != "" and $jamakhir != "" and $jamawal != "") {
+        $tgl = " DATE_FORMAT(a.`tgl_buat`,'%Y-%m-%d %H:%i') BETWEEN '$tglawal $jamawal' AND '$tglakhir $jamakhir' ";
       } else {
         $tgl = " ";
       }
@@ -81,14 +88,14 @@
         $mesin = " AND a.`no_mesin`='$msn' ";
       }
     ?>
-    <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='index.php'" class="art-button" />
-    <a href="pages/reports-cetak.php?tglawal=<?php echo $tglawal; ?>&amp;tglakhir=<?php echo $tglakhir; ?>&amp;shift=<?php echo $shft; ?>&amp;mesin=<?php echo $msn; ?>&amp;jnsmesin=<?php echo $_POST['jnsmesin']; ?>" class="art-button" target="_blank">CETAK</a>
-    <a href="pages/reports-excel.php?tglawal=<?php echo $tglawal; ?>&amp;tglakhir=<?php echo $tglakhir; ?>&amp;shift=<?php echo $shft; ?>&amp;mesin=<?php echo $msn; ?>&amp;jnsmesin=<?php echo $_POST['jnsmesin']; ?>" class="art-button">Cetak Ke Excel</a>
+    <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='?p=home7'" class="art-button" />
+    <a href="pages/reports-cetak.php?tglawal=<?php echo $tglawal; ?>&amp;jamawal=<?php echo $jamawal; ?>&amp;tglakhir=<?php echo $tglakhir; ?>&amp;jamakhir=<?php echo $jamakhir; ?>&amp;shift=<?php echo $shft; ?>&amp;mesin=<?php echo $msn; ?>&amp;jnsmesin=<?php echo $_POST['jnsmesin']; ?>" class="art-button" target="_blank">CETAK</a>
+    <a href="pages/reports-excel.php?tglawal=<?php echo $tglawal; ?>&amp;jamawal=<?php echo $jamawal; ?>&amp;tglakhir=<?php echo $tglakhir; ?>&amp;jamakhir=<?php echo $jamakhir; ?>&amp;shift=<?php echo $shft; ?>&amp;mesin=<?php echo $msn; ?>&amp;jnsmesin=<?php echo $_POST['jnsmesin']; ?>" class="art-button">Cetak Ke Excel</a>
     <br />
     <strong><br />
     </strong>
     <form id="form1" name="form1" method="post" action="">
-      <strong> Periode: <?php echo $tglawal; ?> s/d <?php echo $tglakhir; ?></strong>
+      <strong> Periode: <?php echo $tglawal." ".$jamawal; ?> s/d <?php echo $tglakhir." ".$jamakhir; ?></strong>
       <strong>Shift: <?php echo $shft; ?> Jenis Mesin: <?php echo $_POST['jnsmesin']; ?> No Mesin: <?php if ($msn == "") {
                                                                                                       echo "ALL";
                                                                                                     } else {
