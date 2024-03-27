@@ -1,4 +1,5 @@
 <?php
+    include('koneksi.php');
     date_default_timezone_set('Asia/Jakarta');
     if ($_GET['demand'] != "") {
         $nomordemand = $_GET['demand'];
@@ -19,7 +20,8 @@
                                             TRIM(DSUBCODE05) AS NO_WARNA,
                                             TRIM(DSUBCODE02) || '-' || TRIM(DSUBCODE03)  AS NO_HANGER,
                                             TRIM(ITEMDESCRIPTION) AS ITEMDESCRIPTION,
-                                            DELIVERYDATE
+                                            DELIVERYDATE,
+                                            LOT
                                         FROM 
                                             ITXVIEWKK 
                                         WHERE 
@@ -27,7 +29,7 @@
     $dt_ITXVIEWKK	= db2_fetch_assoc($sql_ITXVIEWKK);
 
     $sql_pelanggan_buyer 	= db2_exec($conn_db2, "SELECT TRIM(LANGGANAN) AS PELANGGAN, TRIM(BUYER) AS BUYER FROM ITXVIEW_PELANGGAN 
-    WHERE ORDPRNCUSTOMERSUPPLIERCODE = '$dt_ITXVIEWKK[ORDPRNCUSTOMERSUPPLIERCODE]' AND CODE = '$dt_ITXVIEWKK[PROJECTCODE]'");
+                                                        WHERE ORDPRNCUSTOMERSUPPLIERCODE = '$dt_ITXVIEWKK[ORDPRNCUSTOMERSUPPLIERCODE]' AND CODE = '$dt_ITXVIEWKK[PROJECTCODE]'");
     $dt_pelanggan_buyer		= db2_fetch_assoc($sql_pelanggan_buyer);
 
     $sql_demand		= db2_exec($conn_db2, "SELECT LISTAGG(TRIM(DEAMAND), ', ') AS DEMAND,

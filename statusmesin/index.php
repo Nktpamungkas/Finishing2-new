@@ -1,7 +1,7 @@
 <?php
     ini_set("error_reporting", 1);
     session_start();
-    $timeout = 10; // Set timeout menit
+    $timeout = 5; // Set timeout menit
     $logout_redirect_url = "../login.php"; // Set logout URL
 
     $timeout = $timeout * 60; // Ubah menit ke detik
@@ -94,10 +94,10 @@
                 <ul class="art-hmenu">
                     <li><a href="../index.php">Main</a></li>
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
-                        <li><a href="?typekk=NOW" class="active">Masuk</a></li>
+                        <li><a href="../masuk/?typekk=NOW">Masuk</a></li>
                     <?php } ?>
                     <li><a href="../schedule/?typekk=NOW">Schedule</a></li>
-                    <li><a href="../statusmesin/">Status Mesin</a></li>
+                    <li><a href="index.php" class="active">Status Mesin</a></li>
                     <!-- <li><a href="../belah-lipat/">Belah &amp; Lipat</a></li> -->
                     <!-- <li><a href="../oven/">Oven</a></li> -->
                     <!-- <li><a href="../steamer/">Steamer</a></li> -->

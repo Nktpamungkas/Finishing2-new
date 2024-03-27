@@ -28,7 +28,7 @@
 
 <head><!-- Created by Artisteer v4.3.0.60745 -->
     <meta charset="utf-8">
-    <title>KK Masuk</title>
+    <title>SCHEDULE FINISHING</title>
     <meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
     <link rel="icon" type="image/png" href="../images/icon.png">
     <!--[if lt IE 9]><script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -94,9 +94,9 @@
                 <ul class="art-hmenu">
                     <li><a href="../index.php">Main</a></li>
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
-                        <li><a href="?typekk=NOW" class="active">Masuk</a></li>
+                        <li><a href="../masuk/?typekk=NOW">Masuk</a></li>
                     <?php } ?>
-                    <li><a href="../schedule/?typekk=NOW">Schedule</a></li>
+                    <li><a href="?typekk=NOW" class="active">Schedule</a></li>
                     <li><a href="../statusmesin/">Status Mesin</a></li>
                     <!-- <li><a href="../belah-lipat/">Belah &amp; Lipat</a></li> -->
                     <!-- <li><a href="../oven/">Oven</a></li> -->
