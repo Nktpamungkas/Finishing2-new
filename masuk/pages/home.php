@@ -166,7 +166,23 @@
 					</script>";
 		} elseif ($_GET['typekk'] == "NOW") {
 			if ($idkk != "") {
-				include_once("../now.php");
+				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]'");
+				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+				if($row_kkmasuk){
+					echo 	"<script>
+								swal({
+									title: 'Kartu Kerja sudah ada.',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+									}
+								});
+							</script>";
+				}else{
+					include_once("../now.php");
+				}
 			}
 		}
 	?>
@@ -358,6 +374,7 @@
 						<?php endif; ?>
 						<input name="buyer" type="text" id="buyer" size="45" value="<?= $langganan_buyer; ?>">
 					</td>
+
 					<td><strong>Nama Mesin</strong></td>
 					<td>:</td>
 					<td>
@@ -400,7 +417,7 @@
 
 							$qry1 = db2_exec($conn_db2, "SELECT
 															DISTINCT 
-															TRIM(p.WORKCENTERCODE) AS WORKCENTERCODE,
+															SUBSTR(TRIM(p.WORKCENTERCODE), 1, 4) AS WORKCENTERCODE,
 															w2.LONGDESCRIPTION 
 														FROM
 															WORKCENTERANDOPERATTRIBUTES w

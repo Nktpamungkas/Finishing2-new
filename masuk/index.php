@@ -94,7 +94,7 @@
                 <ul class="art-hmenu">
                     <li><a href="../index.php">Main</a></li>
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
-                        <li><a href="index.php?typekk=NOW" class="active">Masuk</a></li>
+                        <li><a href="?typekk=NOW" class="active">Masuk</a></li>
                     <?php } ?>
                     <li><a href="../schedule/?typekk=NOW">Schedule</a></li>
                     <li><a href="../statusmesin/">Status Mesin</a></li>

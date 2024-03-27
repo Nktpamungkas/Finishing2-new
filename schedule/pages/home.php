@@ -174,12 +174,29 @@
 				}
 				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$idkk' $anddemand");
 				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+				
+				$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$nomordemand'");
+				$row_schedule	= mysqli_fetch_assoc($q_schedule);
 
 				$operation		= $row_kkmasuk['operation'];
 				if(empty($row_kkmasuk)){
 					echo 	"<script>
 								swal({
 									title: 'Kartu Kerja belum di input di KK MASUK',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/schedule/?typekk=NOW'; 
+									}
+								});
+							</script>";
+				}
+
+				if (!empty($row_schedule)) {
+					echo 	"<script>
+								swal({
+									title: 'Kartu Kerja sudah di input',   
 									text: 'Klik Ok untuk input data kembali',
 									type: 'warning',
 								}).then((result) => {
@@ -223,7 +240,7 @@
 														ipaddress) 
 											VALUES('$_POST[nokk]',
 													'$_POST[demand]',
-													'$_POST[nourut]',
+													'$_POST[no_urut]',
 													'$row_kkmasuk[langganan]',
 													'$row_kkmasuk[buyer]',
 													'$_POST[no_order]',

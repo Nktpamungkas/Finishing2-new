@@ -200,7 +200,7 @@
 			if($simpan){
 				echo 	"<script>
 							swal({
-								title: 'Data Tersimpan',   
+								title: 'Data Terupdate',   
 								text: 'Klik Ok untuk input data kembali',
 								type: 'success',
 							}).then((result) => {
@@ -482,7 +482,7 @@
 		</fieldset>
 		<br>
 		<input type="submit" name="btnSimpan" id="btnSimpan" value="Ubah" class="art-button" />
-		<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../index.php'" class="art-button" />
+		<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='index.php?p=LihatData'" class="art-button" />
 	</form>
 </body>
 </html>

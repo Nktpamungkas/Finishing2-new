@@ -58,7 +58,7 @@ include_once ('koneksi.php');
     <ul class="art-hmenu">
     <li><a href="index.php" class="active">Main</a></li>
     <?php if($_SESSION['lvl']!="Operator"){ ?>
-    <li><a href="masuk/">Masuk</a></li>
+    <li><a href="masuk/?typekk=NOW">Masuk</a></li>
     <?php } ?>
     <li><a href="stenter/">Stenter</a></li>
     <li><a href="compact/">Compact</a></li>

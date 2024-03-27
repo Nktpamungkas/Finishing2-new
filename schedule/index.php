@@ -96,7 +96,7 @@
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
                         <li><a href="../masuk/?typekk=NOW">Masuk</a></li>
                     <?php } ?>
-                    <li><a href="index.php?typekk=NOW" class="active">Schedule</a></li>
+                    <li><a href="?typekk=NOW" class="active">Schedule</a></li>
                     <li><a href="../statusmesin/">Status Mesin</a></li>
                     <!-- <li><a href="../belah-lipat/">Belah &amp; Lipat</a></li> -->
                     <!-- <li><a href="../oven/">Oven</a></li> -->
