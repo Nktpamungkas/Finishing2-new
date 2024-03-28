@@ -453,7 +453,7 @@
 						<select name="proses" id="proses" required>
 							<option value="">Pilih</option>
 							<?php
-							$qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='stenter' ORDER BY id ASC");
+							$qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses ORDER BY id ASC");
 							while ($r = mysqli_fetch_array($qry1)) {
 							?>
 								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($row_kkmasuk['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
@@ -511,7 +511,7 @@
                         </select>
 
                         <strong  style="color: red;">No Urut :</strong>
-                        <select name="no_urut" class="form-control select2" id="no_urut" required>
+                        <select name="no_urut" class="form-control select2" id="no_urut">
 							<option value="">Pilih</option>
 							<?php
 								$q_nourut		= mysqli_query($con, "SELECT

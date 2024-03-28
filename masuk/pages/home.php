@@ -168,18 +168,36 @@
 			if ($idkk != "") {
 				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]'");
 				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+
+				$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]'");
+				$row_schedule	= mysqli_fetch_assoc($q_schedule);
+
 				if($row_kkmasuk){
-					echo 	"<script>
-								swal({
-									title: 'Kartu Kerja sudah ada.',   
-									text: 'Klik Ok untuk input data kembali',
-									type: 'warning',
-								}).then((result) => {
-									if (result.value) {
-										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
-									}
-								});
-							</script>";
+					if($row_schedule){
+						echo 	"<script>
+									swal({
+										title: 'Kartu Kerja sudah pernah di input di SCHEDULE.',   
+										text: 'Klik Ok untuk input data kembali',
+										type: 'warning',
+									}).then((result) => {
+										if (result.value) {
+											window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+										}
+									});
+								</script>";
+					}else{
+						echo 	"<script>
+									swal({
+										title: 'Kartu Kerja sudah pernah di input di KK MASUK.',   
+										text: 'Klik Ok untuk input data kembali',
+										type: 'warning',
+									}).then((result) => {
+										if (result.value) {
+											window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+										}
+									});
+								</script>";
+					}
 				}else{
 					include_once("../now.php");
 				}
@@ -347,7 +365,7 @@
 						<select name="proses" id="proses" required>
 							<option value="">Pilih</option>
 							<?php
-								$qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='stenter' ORDER BY id ASC");
+								$qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses ORDER BY id ASC");
 								while ($r = mysqli_fetch_array($qry1)) {
 							?>
 								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
