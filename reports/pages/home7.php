@@ -95,7 +95,7 @@ include('../koneksi.php');
               this.value = time + ':';
             } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
               this.value = time + '';
-            }" value="<?= $_GET['jam1']; ?>" size="5" maxlength="5" onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1='+this.value" required/>
+            }" value="<?= $_GET['jam1']; ?>" size="5" maxlength="5" onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1='+this.value" hidden/>
             <input name="awal" type="date" id="awal" value="<?= $_GET['awal']; ?>" 
                 onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1=<?= $_GET['jam1']; ?>&awal='+this.value" size="14" required="required" />
         </td>
@@ -111,7 +111,7 @@ include('../koneksi.php');
               this.value = time + ':';
             } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
               this.value = time + '';
-            }" value="<?= $_GET['jam2']; ?>" size="5" maxlength="5" onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1=<?= $_GET['jam1']; ?>&awal=<?= $_GET['awal']; ?>&jam2='+this.value" required/>
+            }" value="<?= $_GET['jam2']; ?>" size="5" maxlength="5" onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1=<?= $_GET['jam1']; ?>&awal=<?= $_GET['awal']; ?>&jam2='+this.value" hidden/>
             <input name="akhir" type="date" id="akhir" value="<?= $_GET['akhir']; ?>" 
                 onChange="window.location='?p=home7&jns=<?= $_GET['jns']; ?>&jam1=<?= $_GET['jam1']; ?>&awal=<?= $_GET['awal']; ?>&jam2=<?= $_GET['jam2']; ?>&akhir='+this.value" size="14" required="required" />
         </td>
