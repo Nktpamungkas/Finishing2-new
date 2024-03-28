@@ -30,7 +30,9 @@ $page	= strtolower($page);
     <link rel="stylesheet" href="../style.css" media="screen">
     <!--[if lte IE 7]><link rel="stylesheet" href="style.ie7.css" media="screen" /><![endif]-->
     <link rel="stylesheet" href="../style.responsive.css" media="all">
-<link rel="icon" type="image/png" href="../images/index.gif">
+    <link rel="icon" type="image/png" href="../images/index.gif">
+    <link href="../sweetalert/sweetalert2.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="../sweetalert/sweetalert2.min.js"></script>
 
     <script src="../jquery.js"></script>
     <script src="../script.js"></script>
@@ -52,13 +54,13 @@ $page	= strtolower($page);
     <ul class="art-hmenu">
     <li><a href="../index.php" >Main</a></li>
     <?php if($_SESSION['lvl']!="Operator"){ ?>
-    <li><a href="../masuk/">Masuk</a></li>
+    <li><a href="../masuk/?typekk=NOW">Masuk</a></li>
     <?php } ?>    
-    <li><a href="index.php" class="active">Stenter</a></li>
-    <li><a href="../compact/">Compact</a></li>
-    <li><a href="../belah-lipat/">Belah &amp; Lipat</a></li>
-    <li><a href="../oven/">Oven</a></li>
-    <li><a href="../steamer/">Steamer</a></li>
+    <li><a href="index.php?typekk=NOW" class="active">Stenter</a></li>
+    <li><a href="../compact/?typekk=NOW">Compact</a></li>
+    <li><a href="../belah-lipat/?typekk=NOW">Belah &amp; Lipat</a></li>
+    <li><a href="../oven/?typekk=NOW">Oven</a></li>
+    <li><a href="../steamer/?typekk=NOW">Steamer</a></li>
     <?php if($_SESSION['lvl']!="Operator"){ ?>
     <li><a href="../keluar/">Keluar</a></li>
     <?php } ?>

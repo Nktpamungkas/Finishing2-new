@@ -18,16 +18,16 @@
 	$jamawal = $_GET['jamawal'];
     $jamakhir = $_GET['jamakhir'];
     $shft = $_GET['shift'];
-//    if ($tglakhir != "" and $tglawal != "") {
-//      $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
-//    } else {
-//      $tgl = " ";
-//    }
-	if ($tglakhir != "" and $tglawal != "" or $jamakhir != "" and $jamawal != "") {
-    $tgl = " DATE_FORMAT(a.`tgl_buat`,'%Y-%m-%d %H:%i') BETWEEN '$tglawal $jamawal' AND '$tglakhir $jamakhir' ";
-  } else {
-    $tgl = " ";
-  }	
+   if ($tglakhir != "" and $tglawal != "") {
+     $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+   } else {
+     $tgl = " ";
+   }
+	// if ($tglakhir != "" and $tglawal != "" or $jamakhir != "" and $jamawal != "") {
+  //   $tgl = " DATE_FORMAT(a.`tgl_buat`,'%Y-%m-%d %H:%i') BETWEEN '$tglawal $jamawal' AND '$tglakhir $jamakhir' ";
+  // } else {
+  //   $tgl = " ";
+  // }	
     if ($shft == "ALL") {
       $shift = " ";
     } else {

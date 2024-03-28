@@ -244,11 +244,11 @@ WHERE
             <td width="3%" valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;"><strong>GL</strong></td>
+	border-right:0px #000 solid;"><strong></strong></td>
             <td width="15%" valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;">: Ganti Lebar</td>
+	border-right:0px #000 solid;"></td>
           </tr>
           <tr>
             <td valign="top" style="border-bottom:0px #000 solid;
@@ -272,11 +272,11 @@ WHERE
             <td width="3%" valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;"><strong>NS</strong></td>
+	border-right:0px #000 solid;"><strong></strong></td>
             <td width="15%" valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;">: Naik Suhu</td>
+	border-right:0px #000 solid;"></td>
           </tr>
           <tr>
             <td valign="top" style="border-bottom:0px #000 solid;
@@ -316,11 +316,11 @@ WHERE
             <td width="4%" valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;"><strong>OH</strong></td>
+	border-right:0px #000 solid;"><strong></strong></td>
             <td valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;">: Overhoul</td>
+	border-right:0px #000 solid;"></td>
             <td valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
@@ -342,11 +342,11 @@ WHERE
             <td valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;"><strong>PLP</strong></td>
+	border-right:0px #000 solid;"><strong></strong></td>
             <td valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;">: Persiapan Lem Pinggir</td>
+	border-right:0px #000 solid;"></td>
             <td valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
@@ -368,11 +368,11 @@ WHERE
             <td valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;"><strong>TS</strong></td>
+	border-right:0px #000 solid;"><strong></strong></td>
             <td valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;
-	border-right:0px #000 solid;">: Turun Suhu</td>
+	border-right:0px #000 solid;"></td>
             <td valign="top" style="border-bottom:0px #000 solid;
 	border-top:0px #000 solid;
 	border-left:0px #000 solid;

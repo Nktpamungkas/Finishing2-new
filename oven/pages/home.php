@@ -87,94 +87,34 @@
     } else {
       $idkk = $_GET['idkk'];
     }
-    if($_GET['typekk'] == "KKLama"){
-      if ($idkk != "") {
-        date_default_timezone_set('Asia/Jakarta');
-        $qry = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk='$idkk' and jns_mesin='oven' ORDER BY id DESC LIMIT 1");
-        $rw = mysqli_fetch_array($qry);
-        $rc = mysqli_num_rows($qry);
-        $qryAdm = mysqli_query($con, "SELECT * FROM tbl_adm WHERE nokk='$idkk' ORDER BY id DESC LIMIT 1");
-        $rwAdm = mysqli_fetch_array($qryAdm);
-        $rcAdm = mysqli_num_rows($qryAdm);
-        $tglsvr = sqlsrv_query($conn, "select CONVERT(VARCHAR(10),GETDATE(),105) AS  tgk");
-        $sr = sqlsrv_fetch_array($tglsvr);
-
-        $sqlLot = sqlsrv_query($conn, " SELECT
-          x.*,dbo.fn_StockMovementDetails_GetTotalWeightPCC(0, x.PCBID) as Weight,
-          dbo.fn_StockMovementDetails_GetTotalRollPCC(0, x.PCBID) as RollCount
-          FROM( SELECT
-            so.CustomerID, so.BuyerID, 
-            sod.ID as SODID, sod.ProductID, sod.UnitID, sod.WeightUnitID, 
-            pcb.ID as PCBID,pcb.UnitID as BatchUnitID,
-            pcblp.DepartmentID,pcb.PCID,pcb.LotNo,pcb.ChildLevel,pcb.RootID
-          FROM
-            SalesOrders so INNER JOIN
-            JobOrders jo ON jo.SOID=so.ID INNER JOIN
-            SODetails sod ON so.ID = sod.SOID INNER JOIN
-            SODetailsAdditional soda ON sod.ID = soda.SODID LEFT JOIN
-            ProcessControlJO pcjo ON sod.ID = pcjo.SODID LEFT JOIN
-            ProcessControlBatches pcb ON pcjo.PCID = pcb.PCID LEFT JOIN
-            ProcessControlBatchesLastPosition pcblp ON pcb.ID = pcblp.PCBID LEFT JOIN
-            ProcessFlowProcessNo pfpn ON pfpn.EntryType = 2 and pcb.ID = pfpn.ParentID AND pfpn.MachineType = 24 LEFT JOIN
-            ProcessFlowDetailsNote pfdn ON pfpn.EntryType = pfdn.EntryType AND pfpn.ID = pfdn.ParentID
-          WHERE pcb.DocumentNo='$idkk' AND pcb.Gross<>'0'
-            GROUP BY
-              so.SONumber, so.SODate, so.CustomerID, so.BuyerID, so.PONumber, so.PODate,jo.DocumentNo,
-              sod.ID, sod.ProductID, sod.Quantity, sod.UnitID, sod.Weight, sod.WeightUnitID,
-              soda.RefNo,pcb.DocumentNo,pcb.Dated,sod.RequiredDate,
-              pcb.ID, pcb.DocumentNo, pcb.Gross,
-              pcb.Quantity, pcb.UnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
-              pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID
-            ) x INNER JOIN
-            ProductMaster pm ON x.ProductID = pm.ID LEFT JOIN
-            Departments dep ON x.DepartmentID  = dep.ID LEFT JOIN
-            Departments pdep ON dep.RootID = pdep.ID LEFT JOIN				
-            Partners cust ON x.CustomerID = cust.ID LEFT JOIN
-            Partners buy ON x.BuyerID = buy.ID LEFT JOIN
-            UnitDescription udq ON x.UnitID = udq.ID LEFT JOIN
-            UnitDescription udw ON x.WeightUnitID = udw.ID LEFT JOIN
-            UnitDescription udb ON x.BatchUnitID = udb.ID
-          ORDER BY
-            x.SODID, x.PCBID ", array(), array("Scrollable" => 'static'));
-        $sLot = sqlsrv_fetch_array($sqlLot);
-        $cLot = sqlsrv_num_rows($sqlLot);
-        $child = $sLot['ChildLevel'];
-
-        if ($child > 0) {
-          $sqlgetparent = sqlsrv_query($conn, "select ID,LotNo from ProcessControlBatches where ID='$sLot[RootID]' and ChildLevel='0'");
-          $rowgp = sqlsrv_fetch_array($sqlgetparent);
-
-          //$nomLot=substr("$row2[LotNo]",0,1);
-          $nomLot = $rowgp['LotNo'];
-          $nomorLot = "$nomLot/K$sLot[ChildLevel]&nbsp;";
-        } else {
-          $nomorLot = $sLot['LotNo'];
-        }
-
-        $sqlLot1 = "Select count(*) as TotalLot From ProcessControlBatches where PCID='$sLot[PCID]' and RootID='0' and LotNo < '1000'";
-        $qryLot1 = sqlsrv_query($conn, $sqlLot1) or die('A error occured : ');
-        $rowLot = sqlsrv_fetch_array($qryLot1);
-        $sqls = sqlsrv_query($conn, "select processcontrolJO.SODID,salesorders.ponumber,processcontrol.productid,salesorders.customerid,joborders.documentno,
-          salesorders.buyerid,processcontrolbatches.lotno,productcode,productmaster.color,colorno,description,weight,cuttablewidth from Joborders 
-          left join processcontrolJO on processcontrolJO.joid = Joborders.id
-          left join salesorders on soid= salesorders.id
-          left join processcontrol on processcontrolJO.pcid = processcontrol.id
-          left join processcontrolbatches on processcontrolbatches.pcid = processcontrol.id
-          left join productmaster on productmaster.id= processcontrol.productid
-          left join productpartner on productpartner.productid= processcontrol.productid
-          where processcontrolbatches.documentno='$idkk'", array(), array("Scrollable" => 'static'));
-        $ssr = sqlsrv_fetch_array($sqls);
-        $cek = sqlsrv_num_rows($sqls);
-        $lgn1 = sqlsrv_query($conn, "select partnername from partners where id='$ssr[customerid]'");
-        $ssr1 = sqlsrv_fetch_array($lgn1);
-        $lgn2 = sqlsrv_query($conn, "select partnername from partners where id='$ssr[buyerid]'");
-        $ssr2 = sqlsrv_fetch_array($lgn2);
-      }
-    }elseif ($_GET['typekk'] == "NOW") {
+    if ($_GET['typekk'] == "KKLama") {
+      echo 	"<script>
+						swal({
+							title: 'SYSTEM OFFLINE',   
+							text: 'Klik Ok untuk input data kembali',
+							type: 'success',
+						}).then((result) => {
+							if (result.value) {
+								window.location.href = 'http://online.indotaichen.com/finishing2-new/oven/?typekk=NOW'; 
+							}
+						});
+					</script>";
+    } elseif ($_GET['typekk'] == "NOW") {
       if ($idkk != "") {
         include_once("../now.php");
       }
-    }
+    } elseif ($_GET['typekk'] == "SCHEDULE") {
+			if ($idkk != "") {
+				if ($_GET['demand'] != "") {
+					$nomordemand = $_GET['demand'];
+					$anddemand = "AND nodemand = '$nomordemand'";
+				}else{
+					$anddemand = "";
+				}
+				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
+				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+			}
+		}
   ?>
 
   <?php
@@ -256,77 +196,77 @@
       $overfeedjk = $_POST['overfeed3'];
 
       $simpanSql = "UPDATE tbl_produksi SET 
-          `shift`='$shift',
-          `shift2`='$shift2',
-          `buyer`='$buyer',
-          `no_item`='$item',
-          `no_warna`='$nowarna',
-          `jenis_bahan`='$bahan',
-          `kondisi_kain`='$kain',
-          `panjang`='$qty2',
-          `panjang_h`='$qty3',
-          `no_gerobak`='$gerobak',
-          `no_mesin`='$mesin',
-          `nama_mesin`='$nmmesin',
-          `langganan`='$langganan',
-          `no_order`='$order',
-          `jenis_kain`='$jenis_kain',
-          `warna`='$warna',
-          `lot`='$lot',
-          `rol`='$rol',
-          `qty`='$qty',
-          `proses`='$proses',
-          `jam_in`='$jam_in',
-          `jam_out`='$jam_out',
-          `tgl_proses_in`='$tgl_proses_in',
-          `tgl_proses_out`='$tgl_proses_out',
-          `stop_l`='$mulai',
-          `stop_l2`='$mulai2',
-          `stop_l3`='$mulai3',
-          `stop_r`='$selesai',
-          `stop_r2`='$selesai2',
-          `stop_r3`='$selesai3',
-          `tgl_stop_l`='$tgl_stop_m',
-          `tgl_stop_l2`='$tgl_stop_m2',
-          `tgl_stop_l3`='$tgl_stop_m3',
-          `tgl_stop_r`='$tgl_stop_s',
-          `tgl_stop_r2`='$tgl_stop_s2',
-          `tgl_stop_r3`='$tgl_stop_s3',
-          `kd_stop`='$kd',
-          `kd_stop2`='$kd2',
-          `kd_stop3`='$kd3',
-          `acc_staff`='$acc_kain',
-          `catatan`='$catatan',
-          `suhu`='$suhu',
-          `speed`='$speed',
-          `omt`='$omt',
-          `vmt`='$vmt',
-          `t_vmt`='$vmt_time',
-          `buka_rantai`='$buka',
-          `overfeed`='$overfeed',
-          `overfeedjt`='$overfeedjt',
-          `overfeedjk`='$overfeedjk',
-          `lebar`='$lebar',
-          `gramasi`='$gramasi',
-          `lebar_h`='$hlebar',
-          `gramasi_h`='$hgramasi',
-          `ph_larut`='$phlarutan',
-          `chemical_1`='$chemical1',
-          `chemical_2`='$chemical2',
-          `chemical_3`='$chemical3',
-          `chemical_4`='$chemical4',
-          `chemical_5`='$chemical5',
-          `chemical_6`='$chemical6',
-          `chemical_7`='$chemical7',
-          `konsen_1`='$jmlKonsen1',
-          `konsen_2`='$jmlKonsen2',
-          `konsen_3`='$jmlKonsen3',
-          `konsen_4`='$jmlKonsen4',
-          `konsen_5`='$jmlKonsen5',
-          `konsen_6`='$jmlKonsen6',
-          `konsen_7`='$jmlKonsen7',
-          `tgl_update`='$tgl'
-        WHERE `id`='$_POST[id]'";
+            `shift`='$shift',
+            `shift2`='$shift2',
+            `buyer`='$buyer',
+            `no_item`='$item',
+            `no_warna`='$nowarna',
+            `jenis_bahan`='$bahan',
+            `kondisi_kain`='$kain',
+            `panjang`='$qty2',
+            `panjang_h`='$qty3',
+            `no_gerobak`='$gerobak',
+            `no_mesin`='$mesin',
+            `nama_mesin`='$nmmesin',
+            `langganan`='$langganan',
+            `no_order`='$order',
+            `jenis_kain`='$jenis_kain',
+            `warna`='$warna',
+            `lot`='$lot',
+            `rol`='$rol',
+            `qty`='$qty',
+            `proses`='$proses',
+            `jam_in`='$jam_in',
+            `jam_out`='$jam_out',
+            `tgl_proses_in`='$tgl_proses_in',
+            `tgl_proses_out`='$tgl_proses_out',
+            `stop_l`='$mulai',
+            `stop_l2`='$mulai2',
+            `stop_l3`='$mulai3',
+            `stop_r`='$selesai',
+            `stop_r2`='$selesai2',
+            `stop_r3`='$selesai3',
+            `tgl_stop_l`='$tgl_stop_m',
+            `tgl_stop_l2`='$tgl_stop_m2',
+            `tgl_stop_l3`='$tgl_stop_m3',
+            `tgl_stop_r`='$tgl_stop_s',
+            `tgl_stop_r2`='$tgl_stop_s2',
+            `tgl_stop_r3`='$tgl_stop_s3',
+            `kd_stop`='$kd',
+            `kd_stop2`='$kd2',
+            `kd_stop3`='$kd3',
+            `acc_staff`='$acc_kain',
+            `catatan`='$catatan',
+            `suhu`='$suhu',
+            `speed`='$speed',
+            `omt`='$omt',
+            `vmt`='$vmt',
+            `t_vmt`='$vmt_time',
+            `buka_rantai`='$buka',
+            `overfeed`='$overfeed',
+            `overfeedjt`='$overfeedjt',
+            `overfeedjk`='$overfeedjk',
+            `lebar`='$lebar',
+            `gramasi`='$gramasi',
+            `lebar_h`='$hlebar',
+            `gramasi_h`='$hgramasi',
+            `ph_larut`='$phlarutan',
+            `chemical_1`='$chemical1',
+            `chemical_2`='$chemical2',
+            `chemical_3`='$chemical3',
+            `chemical_4`='$chemical4',
+            `chemical_5`='$chemical5',
+            `chemical_6`='$chemical6',
+            `chemical_7`='$chemical7',
+            `konsen_1`='$jmlKonsen1',
+            `konsen_2`='$jmlKonsen2',
+            `konsen_3`='$jmlKonsen3',
+            `konsen_4`='$jmlKonsen4',
+            `konsen_5`='$jmlKonsen5',
+            `konsen_6`='$jmlKonsen6',
+            `konsen_7`='$jmlKonsen7',
+            `tgl_update`='$tgl'
+          WHERE `id`='$_POST[id]'";
       mysqli_query($con, $simpanSql) or die("Gagal Ubah" . mysqli_error());
 
       // Refresh form
@@ -416,113 +356,113 @@
       $jmlKonsen7 = $_POST['jmlKonsen7'];
 
       $simpanSql = "INSERT INTO tbl_produksi SET 
-        `nokk`='$nokk',
-        `demandno`='$demand',
-        `shift`='$shift',
-        `shift2`='$shift2',
-        `buyer`='$buyer',
-        `no_item`='$item',
-        `no_warna`='$nowarna',
-        `jenis_bahan`='$bahan',
-        `kondisi_kain`='$kain',
-        `panjang`='$qty2',
-        `panjang_h`='$qty3',
-        `no_gerobak`='$gerobak',
-        `no_mesin`='$mesin',
-        `nama_mesin`='$nmmesin',
-        `langganan`='$langganan',
-        `no_order`='$order',
-        `jenis_kain`='$jenis_kain',
-        `warna`='$warna',
-        `lot`='$lot',
-        `rol`='$rol',
-        `qty`='$qty',
-        `proses`='$proses',
-        `jam_in`='$jam_in',
-        `jam_out`='$jam_out',
-        `tgl_proses_in`='$tgl_proses_in',
-        `tgl_proses_out`='$tgl_proses_out',
-        `stop_l`='$mulai',
-        `stop_l2`='$mulai2',
-        `stop_l3`='$mulai3',
-        `stop_r`='$selesai',
-        `stop_r2`='$selesai2',
-        `stop_r3`='$selesai3',
-        `tgl_stop_l`='$tgl_stop_m',
-        `tgl_stop_l2`='$tgl_stop_m2',
-        `tgl_stop_l3`='$tgl_stop_m3',
-        `tgl_stop_r`='$tgl_stop_s',
-        `tgl_stop_r2`='$tgl_stop_s2',
-        `tgl_stop_r3`='$tgl_stop_s3',
-        `kd_stop`='$kd',
-        `kd_stop2`='$kd2',
-        `kd_stop3`='$kd3',
-        `tgl_buat`=now(),
-        `tgl_pro`=now(),
-        `acc_staff`='$acc_kain',
-        `catatan`='$catatan',
-        `suhu`='$suhu',
-        `speed`='$speed',
-        `omt`='$omt',
-        `vmt`='$vmt',
-        `t_vmt`='$vmt_time',
-        `buka_rantai`='$buka',
-        `overfeed`='$overfeed',
-        `overfeedjt`='$overfeedjt',
-        `overfeedjk`='$overfeedjk',
-        `lebar`='$lebar',
-        `gramasi`='$gramasi',
-        `lebar_h`='$hlebar',
-        `gramasi_h`='$hgramasi',
-        `ph_larut`='$phlarutan',
-        `chemical_1`='$chemical1',
-        `chemical_2`='$chemical2',
-        `chemical_3`='$chemical3',
-        `chemical_4`='$chemical4',
-        `chemical_5`='$chemical5',
-        `chemical_6`='$chemical6',
-        `chemical_7`='$chemical7',
-        `konsen_1`='$jmlKonsen1',
-        `konsen_2`='$jmlKonsen2',
-        `konsen_3`='$jmlKonsen3',
-        `konsen_4`='$jmlKonsen4',
-        `konsen_5`='$jmlKonsen5',
-        `konsen_6`='$jmlKonsen6',
-        `konsen_7`='$jmlKonsen7',
-        `jns_mesin`='oven',
-        `tgl_update`='$tgl'";
+          `nokk`='$nokk',
+          `demandno`='$demand',
+          `shift`='$shift',
+          `shift2`='$shift2',
+          `buyer`='$buyer',
+          `no_item`='$item',
+          `no_warna`='$nowarna',
+          `jenis_bahan`='$bahan',
+          `kondisi_kain`='$kain',
+          `panjang`='$qty2',
+          `panjang_h`='$qty3',
+          `no_gerobak`='$gerobak',
+          `no_mesin`='$mesin',
+          `nama_mesin`='$nmmesin',
+          `langganan`='$langganan',
+          `no_order`='$order',
+          `jenis_kain`='$jenis_kain',
+          `warna`='$warna',
+          `lot`='$lot',
+          `rol`='$rol',
+          `qty`='$qty',
+          `proses`='$proses',
+          `jam_in`='$jam_in',
+          `jam_out`='$jam_out',
+          `tgl_proses_in`='$tgl_proses_in',
+          `tgl_proses_out`='$tgl_proses_out',
+          `stop_l`='$mulai',
+          `stop_l2`='$mulai2',
+          `stop_l3`='$mulai3',
+          `stop_r`='$selesai',
+          `stop_r2`='$selesai2',
+          `stop_r3`='$selesai3',
+          `tgl_stop_l`='$tgl_stop_m',
+          `tgl_stop_l2`='$tgl_stop_m2',
+          `tgl_stop_l3`='$tgl_stop_m3',
+          `tgl_stop_r`='$tgl_stop_s',
+          `tgl_stop_r2`='$tgl_stop_s2',
+          `tgl_stop_r3`='$tgl_stop_s3',
+          `kd_stop`='$kd',
+          `kd_stop2`='$kd2',
+          `kd_stop3`='$kd3',
+          `tgl_buat`=now(),
+          `tgl_pro`=now(),
+          `acc_staff`='$acc_kain',
+          `catatan`='$catatan',
+          `suhu`='$suhu',
+          `speed`='$speed',
+          `omt`='$omt',
+          `vmt`='$vmt',
+          `t_vmt`='$vmt_time',
+          `buka_rantai`='$buka',
+          `overfeed`='$overfeed',
+          `overfeedjt`='$overfeedjt',
+          `overfeedjk`='$overfeedjk',
+          `lebar`='$lebar',
+          `gramasi`='$gramasi',
+          `lebar_h`='$hlebar',
+          `gramasi_h`='$hgramasi',
+          `ph_larut`='$phlarutan',
+          `chemical_1`='$chemical1',
+          `chemical_2`='$chemical2',
+          `chemical_3`='$chemical3',
+          `chemical_4`='$chemical4',
+          `chemical_5`='$chemical5',
+          `chemical_6`='$chemical6',
+          `chemical_7`='$chemical7',
+          `konsen_1`='$jmlKonsen1',
+          `konsen_2`='$jmlKonsen2',
+          `konsen_3`='$jmlKonsen3',
+          `konsen_4`='$jmlKonsen4',
+          `konsen_5`='$jmlKonsen5',
+          `konsen_6`='$jmlKonsen6',
+          `konsen_7`='$jmlKonsen7',
+          `jns_mesin`='oven',
+          `tgl_update`='$tgl'";
       mysqli_query($con, $simpanSql) or die("Gagal Simpan" . mysqli_error());
       //Simpan ke schedule
       $posisi = strpos($langganan, "/");
       $cus = substr($langganan, 0, $posisi);
       $byr = substr($langganan, ($posisi - 1), 100);
       $sqlData = mysqli_query($con, "INSERT INTO tbl_schedule SET
-        nokk='$nokk',
-        nodemand='$demand',
-        langganan='$cus',
-        buyer='$byr',
-        no_order='$order',
-        no_hanger='$item',
-        no_item='$item',
-        jenis_kain='$jenis_kain',
-        lebar='$lebar',
-        gramasi='$gramasi',
-        warna='$warna',
-        no_warna='$nowarna',
-        bruto='$qty',
-        lot='$lot',
-        rol='$rol',
-        shift='$shift',
-        g_shift='$shift2',
-        no_mesin='$mesin',
-        proses='$proses',
-        revisi='0',
-        tgl_masuk=now(),
-        personil='Operator Fin',
-        target='0',
-        catatan='data diinput dari finishing',
-        tgl_update=now(),
-        tampil='1'");
+          nokk='$nokk',
+          nodemand='$demand',
+          langganan='$cus',
+          buyer='$byr',
+          no_order='$order',
+          no_hanger='$item',
+          no_item='$item',
+          jenis_kain='$jenis_kain',
+          lebar='$lebar',
+          gramasi='$gramasi',
+          warna='$warna',
+          no_warna='$nowarna',
+          bruto='$qty',
+          lot='$lot',
+          rol='$rol',
+          shift='$shift',
+          g_shift='$shift2',
+          no_mesin='$mesin',
+          proses='$proses',
+          revisi='0',
+          tgl_masuk=now(),
+          personil='Operator Fin',
+          target='0',
+          catatan='data diinput dari finishing',
+          tgl_update=now(),
+          tampil='1'");
 
       // Refresh form
       echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiSimpan'>";
@@ -538,22 +478,25 @@
           </th>
         </tr>
         <tr>
-					<td scope="row">
-						<h4>Pilih Asal Kartu Kerja</h4>
-					</td>
-					<td width="1%">:</td>
-					<td>
-						<select style="width: 50%" id="typekk" name="typekk" onchange="window.location='?typekk='+this.value" required>
-							<option value="" disabled selected>-Pilih Tipe Kartu Kerja-</option>
-							<option value="KKLama" <?php if ($_GET['typekk'] == "KKLama") {
-														echo "SELECTED";
-													} ?>>KK Lama</option>
-							<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
-													echo "SELECTED";
-												} ?>>KK NOW</option> -->
-						</select>
-					</td>
-				</tr>
+          <td scope="row">
+            <h4>Pilih Asal Kartu Kerja</h4>
+          </td>
+          <td width="1%">:</td>
+          <td>
+            <select style="width: 50%" id="typekk" name="typekk" onchange="window.location='?typekk='+this.value" required>
+              <option value="" disabled selected>-Pilih Tipe Kartu Kerja-</option>
+              <option value="KKLama" <?php if ($_GET['typekk'] == "KKLama") {
+                                        echo "SELECTED";
+                                      } ?>>KK Lama</option>
+              <option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
+                                    echo "SELECTED";
+                                  } ?>>KK NOW</option>
+              <option value="SCHEDULE" <?php if ($_GET['typekk'] == "SCHEDULE") {
+                                    echo "SELECTED";
+                                  } ?>>SCHEDULE</option>
+            </select>
+          </td>
+        </tr>
         <tr>
           <td width="13%" scope="row">
             <h4>Nokk</h4>
@@ -562,19 +505,21 @@
           <td width="26%">
             <input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
 
-            <?php if ($_GET['typekk'] == 'NOW') { ?>
+            <?php if ($_GET['typekk'] == 'NOW' OR $_GET['typekk'] == 'SCHEDULE') { ?>
               <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
                 <option value="" disabled selected>Pilih Nomor Demand</option>
-                <?php 
+                <?php
                 $sql_ITXVIEWKK_demand  = db2_exec($conn_db2, "SELECT DEAMAND AS DEMAND FROM ITXVIEWKK WHERE PRODUCTIONORDERCODE = '$idkk'");
                 while ($r_demand = db2_fetch_assoc($sql_ITXVIEWKK_demand)) :
                 ?>
-                <option value="<?= $r_demand['DEMAND']; ?>" <?php if($r_demand['DEMAND'] == $_GET['demand']){ echo 'SELECTED'; } ?>><?= $r_demand['DEMAND']; ?></option>
+                  <option value="<?= $r_demand['DEMAND']; ?>" <?php if ($r_demand['DEMAND'] == $_GET['demand']) {
+                                                                echo 'SELECTED';
+                                                              } ?>><?= $r_demand['DEMAND']; ?></option>
                 <?php endwhile; ?>
               </select>
             <?php } else { ?>
-							<input name="demand" id="demand" type="text" placeholder="Nomor Demand">
-						<?php } ?>
+              <input name="demand" id="demand" type="text" placeholder="Nomor Demand">
+            <?php } ?>
           </td>
           <td width="14%">
             <h4>Group Shift</h4>
@@ -594,9 +539,9 @@
           <td>:</td>
           <td>
             <select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
-							<option value="">Pilih</option>
-							<?php
-								$qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
+              <option value="">Pilih</option>
+              <?php
+              $qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
                                                     TRIM(OPERATIONCODE) AS OPERATIONCODE,
                                                     LONGDESCRIPTION 
                                                   FROM 
@@ -606,11 +551,13 @@
                                                     AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
                                                   ORDER BY
                                                     OPERATIONCODE ASC");
-								while ($r = db2_fetch_assoc($qry1)) {
-							?>
-								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
-							<?php } ?>
-						</select>
+              while ($r = db2_fetch_assoc($qry1)) {
+              ?>
+                <option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) {
+                                                                      echo "SELECTED";
+                                                                    } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+              <?php } ?>
+            </select>
             <?php if ($_SESSION['lvl'] == "SPV") { ?>
               <input type="button" name="btnmesin2" id="btnmesin2" value="..." onclick="window.open('pages/mesin.php','MyWindow','height=400,width=650');" />
             <?php } ?>
@@ -627,13 +574,13 @@
             </select></td>
         </tr>
         <tr>
-        <td><strong>No. Mesin</strong></td>
+          <td><strong>No. Mesin</strong></td>
           <td>:</td>
           <td>
             <select name="no_mesin" id="no_mesin" onchange="myFunction();" required="required">
-							<option value="">Pilih</option>
-							<?php
-                $q_mesin = db2_exec($conn_db2, "SELECT
+              <option value="">Pilih</option>
+              <?php
+              $q_mesin = db2_exec($conn_db2, "SELECT
                                               p.WORKCENTERCODE,
                                               CASE
                                                 WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
@@ -665,9 +612,9 @@
                                                 ELSE p.PRODRESERVATIONLINKGROUPCODE
                                               END = '$_GET[operation]'
                                             ORDER BY iptip.MULAI ASC");
-                $row_mesin = db2_fetch_assoc($q_mesin);
+              $row_mesin = db2_fetch_assoc($q_mesin);
 
-								$qry1 = db2_exec($conn_db2, "SELECT
+              $qry1 = db2_exec($conn_db2, "SELECT
                                               *
                                             FROM
                                               RESOURCES r
@@ -676,11 +623,13 @@
                                             ORDER BY 
                                               SUBSTR(CODE, 6,2) 
                                             ASC");
-								while ($r = db2_fetch_assoc($qry1)) {
-							?>
-								<option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?></option>
-							<?php } ?>
-						</select>
+              while ($r = db2_fetch_assoc($qry1)) {
+              ?>
+                <option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) {
+                                                            echo "SELECTED";
+                                                          } ?>><?php echo $r['CODE']; ?></option>
+              <?php } ?>
+            </select>
             <?php if ($_SESSION['lvl'] == "SPV") { ?>
               <input type="button" name="btnmesin" id="btnmesin" value="..." onclick="window.open('pages/data-mesin.php','MyWindow','height=400,width=650');" />
             <?php } ?>
@@ -700,15 +649,15 @@
           <td>:</td>
           <td>
             <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $langganan_buyer =  $dt_pelanggan_buyer['PELANGGAN'] . '/' . $dt_pelanggan_buyer['BUYER']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$langganan_buyer =  $ssr1['partnername'] . "/" . $ssr2['partnername'];
-							} else {
-								$langganan_buyer =  $rw['langganan'];
-							} ?>
-						<?php endif; ?>
-						<input name="buyer" type="text" id="buyer" size="30" value="<?= $langganan_buyer; ?>">
+              <?php $langganan_buyer =  $dt_pelanggan_buyer['PELANGGAN'] . '/' . $dt_pelanggan_buyer['BUYER']; ?>
+            <?php else : ?>
+              <?php if ($cek > 0) {
+                $langganan_buyer =  $ssr1['partnername'] . "/" . $ssr2['partnername'];
+              } else {
+                $langganan_buyer =  $rw['langganan'];
+              } ?>
+            <?php endif; ?>
+            <input name="buyer" type="text" id="buyer" size="30" value="<?= $langganan_buyer; ?>">
           </td>
           <td>
             <h4>Proses</h4>
@@ -720,8 +669,8 @@
               while ($r = mysqli_fetch_array($qry1)) {
               ?>
                 <option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
-                                                                                echo "SELECTED";
-                                                                              } ?>><?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
+                                                                                        echo "SELECTED";
+                                                                                      } ?>><?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
               <?php } ?>
             </select>
             <?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -749,18 +698,18 @@
                                         } ?>>CAMPURAN</option>
             </select></td>
           <td>
-						<h4>Kondisi Kain</h4>
-					</td>
-					<td>:</td>
-					<td colspan="2"><select name="kondisi_kain" id="kondisi_kain" required="required">
-						<option value="">Pilih</option>
-						<option value="BASAH" <?php if ($rw['kondisi_kain'] == "BASAH") {
-												echo "SELECTED";
-												} ?>>BASAH</option>
-						<option value="KERING" <?php if ($rw['kondisi_kain'] == "KERING") {
-													echo "SELECTED";
-												} ?>>KERING</option>
-						</select></td>
+            <h4>Kondisi Kain</h4>
+          </td>
+          <td>:</td>
+          <td colspan="2"><select name="kondisi_kain" id="kondisi_kain" required="required">
+              <option value="">Pilih</option>
+              <option value="BASAH" <?php if ($rw['kondisi_kain'] == "BASAH") {
+                                      echo "SELECTED";
+                                    } ?>>BASAH</option>
+              <option value="KERING" <?php if ($rw['kondisi_kain'] == "KERING") {
+                                        echo "SELECTED";
+                                      } ?>>KERING</option>
+            </select></td>
         </tr>
         <tr>
           <td scope="row">
@@ -769,17 +718,17 @@
           <td>:</td>
           <td>
             <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $no_order =  $dt_ITXVIEWKK['PROJECTCODE']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$no_order =  $ssr['documentno'];
-							} else if ($rc > 0) {
-								$no_order =  $rw['no_order'];
-							} else if ($rcAdm > 0) {
-								$no_order = $rwAdm['no_order'];
-							} ?>
-						<?php endif; ?>
-						<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
+              <?php $no_order =  $dt_ITXVIEWKK['PROJECTCODE']; ?>
+            <?php else : ?>
+              <?php if ($cek > 0) {
+                $no_order =  $ssr['documentno'];
+              } else if ($rc > 0) {
+                $no_order =  $rw['no_order'];
+              } else if ($rcAdm > 0) {
+                $no_order = $rwAdm['no_order'];
+              } ?>
+            <?php endif; ?>
+            <input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
           </td>
           <td>
             <h4>No. Gerobak</h4>
@@ -794,17 +743,17 @@
           <td valign="top">:</td>
           <td>
             <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $jk = $dt_ITXVIEWKK['ITEMDESCRIPTION']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$jk = $ssr['productcode'] . " / " . $ssr['description'];
-							} else if ($rc > 0) {
-								$jk = $rw['jenis_kain'];
-							} else if ($rcAdm > 0) {
-								$jk = $rwAdm['jenis_kain'];
-							} ?>
-						<?php endif; ?>
-						<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
+              <?php $jk = $dt_ITXVIEWKK['ITEMDESCRIPTION']; ?>
+            <?php else : ?>
+              <?php if ($cek > 0) {
+                $jk = $ssr['productcode'] . " / " . $ssr['description'];
+              } else if ($rc > 0) {
+                $jk = $rw['jenis_kain'];
+              } else if ($rcAdm > 0) {
+                $jk = $rwAdm['jenis_kain'];
+              } ?>
+            <?php endif; ?>
+            <textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
           </td>
           <td valign="top">
             <h4>Catatan</h4>
@@ -819,40 +768,40 @@
           <td>:</td>
           <td>
             <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $hanger = $dt_ITXVIEWKK['NO_HANGER']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$hanger = $ssr['productcode'];
-							} else if ($rc > 0) {
-								$hanger = $rw['no_item'];
-							} else if ($rcAdm > 0) {
-								$hanger = $rwAdm['no_item'];
-							}?>
-						<?php endif; ?>
+              <?php $hanger = $dt_ITXVIEWKK['NO_HANGER']; ?>
+            <?php else : ?>
+              <?php if ($cek > 0) {
+                $hanger = $ssr['productcode'];
+              } else if ($rc > 0) {
+                $hanger = $rw['no_item'];
+              } else if ($rcAdm > 0) {
+                $hanger = $rwAdm['no_item'];
+              } ?>
+            <?php endif; ?>
             <input type="text" name="no_item" id="no_item" value="<?= $hanger; ?>" />
           </td>
           <td width="14%"><strong>Quantity (Kg)</strong></td>
           <td width="1%">:</td>
           <td colspan="2"><input name="qty" type="text" id="qty" size="5" value="<?= $dt_qtyorder['QTY_ORDER']; ?><?php if ($cLot > 0) {
-                                                                                    echo round($sLot['Weight'], 2);
-                                                                                  } else if ($rc > 0) {
-                                                                                    echo round($rw['qty'], 2);
-                                                                                  } else if ($rcAdm > 0) {
-                                                                                    echo round($rwAdm['qty'], 2);
-                                                                                  } ?>" placeholder="0.00" />
+                                                                                                                    echo round($sLot['Weight'], 2);
+                                                                                                                  } else if ($rc > 0) {
+                                                                                                                    echo round($rw['qty'], 2);
+                                                                                                                  } else if ($rcAdm > 0) {
+                                                                                                                    echo round($rwAdm['qty'], 2);
+                                                                                                                  } ?>" placeholder="0.00" />
             &nbsp;&nbsp;&nbsp;
             <strong>Gramasi</strong>:
-						<input name="lebar" type="text" id="lebar" size="6" value="<?= floor($dt_lg['LEBAR']); ?><?php if ($cek > 0) {
-																									echo round($ssr['cuttablewidth'], 2);
-																								} else if ($rcAdm > 0) {
-																									echo $rwAdm['lebar'];
-																								} ?>" placeholder="0" />
-						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= floor($dt_lg['GRAMASI']); ?><?php if ($cek > 0) {
-																							echo round($ssr['weight'], 2);
-																						} else if ($rcAdm > 0) {
-																							echo $rwAdm['gramasi'];
-																						} ?>" placeholder="0" />
-              </td>
+            <input name="lebar" type="text" id="lebar" size="6" value="<?= floor($dt_lg['LEBAR']); ?><?php if ($cek > 0) {
+                                                                                                        echo round($ssr['cuttablewidth'], 2);
+                                                                                                      } else if ($rcAdm > 0) {
+                                                                                                        echo $rwAdm['lebar'];
+                                                                                                      } ?>" placeholder="0" />
+            <input name="gramasi" type="text" id="gramasi" size="6" value="<?= floor($dt_lg['GRAMASI']); ?><?php if ($cek > 0) {
+                                                                                                              echo round($ssr['weight'], 2);
+                                                                                                            } else if ($rcAdm > 0) {
+                                                                                                              echo $rwAdm['gramasi'];
+                                                                                                            } ?>" placeholder="0" />
+          </td>
         </tr>
         <tr>
           <td scope="row">
@@ -861,17 +810,17 @@
           <td>:</td>
           <td>
             <?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $nomor_warna = $dt_ITXVIEWKK['NO_WARNA']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$nomor_warna = $ssr['colorno'];
-							} else if ($rc > 0) {
-								$nomor_warna = $rw['no_warna'];
-							} else if ($rcAdm > 0) {
-								$nomor_warna = $rwAdm['no_warna'];
-							}?>
-						<?php endif; ?>
-						<input name="no_warna" type="text" id="no_warna" size="30" value="<?= $nomor_warna; ?>" />
+              <?php $nomor_warna = $dt_ITXVIEWKK['NO_WARNA']; ?>
+            <?php else : ?>
+              <?php if ($cek > 0) {
+                $nomor_warna = $ssr['colorno'];
+              } else if ($rc > 0) {
+                $nomor_warna = $rw['no_warna'];
+              } else if ($rcAdm > 0) {
+                $nomor_warna = $rwAdm['no_warna'];
+              } ?>
+            <?php endif; ?>
+            <input name="no_warna" type="text" id="no_warna" size="30" value="<?= $nomor_warna; ?>" />
           </td>
           <td width="14%"><strong>Panjang (Yard)</strong></td>
           <td>:</td>
@@ -883,13 +832,13 @@
           </td>
           <td>:</td>
           <td><input name="warna" type="text" id="warna" size="30" value="<?= $dt_warna['WARNA']; ?><?php if ($cek > 0) {
-                                                                            echo $ssr['color'];
-                                                                          } else if ($rc > 0) {
-                                                                            echo $rw['warna'];
-                                                                          } else if ($rcAdm > 0) {
-                                                                            echo $rwAdm['warna'];
-                                                                          } ?>" /></td>
-          
+                                                                                                      echo $ssr['color'];
+                                                                                                    } else if ($rc > 0) {
+                                                                                                      echo $rw['warna'];
+                                                                                                    } else if ($rcAdm > 0) {
+                                                                                                      echo $rwAdm['warna'];
+                                                                                                    } ?>" /></td>
+
         </tr>
         <tr>
           <td scope="row">
@@ -905,7 +854,7 @@
                                         echo "SELECTED";
                                       } ?>>Cotton</option>
             </select></td>
-          
+
         </tr>
         <tr>
           <td scope="row">
@@ -919,7 +868,7 @@
                                                                       } else if ($rcAdm > 0) {
                                                                         echo $rwAdm['lot'];
                                                                       } ?>" /></td>
-          
+
         </tr>
         <tr>
           <td scope="row">
@@ -927,13 +876,13 @@
           </td>
           <td>:</td>
           <td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $dt_roll['ROLL']; ?><?php if ($cLot > 0) {
-                                                                                                            echo $sLot['RollCount'];
-                                                                                                          } else if ($rc > 0) {
-                                                                                                            echo $rw['rol'];
-                                                                                                          } else if ($rcAdm > 0) {
-                                                                                                            echo $rwAdm['rol'];
-                                                                                                          } ?>" /></td>
-          
+                                                                                                                                    echo $sLot['RollCount'];
+                                                                                                                                  } else if ($rc > 0) {
+                                                                                                                                    echo $rw['rol'];
+                                                                                                                                  } else if ($rcAdm > 0) {
+                                                                                                                                    echo $rwAdm['rol'];
+                                                                                                                                  } ?>" /></td>
+
         </tr>
         <tr>
           <td scope="row">
@@ -947,14 +896,14 @@
               } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
                 this.value = time + '';
               }" value="<?php echo $rw['jam_in'] ?>" size="5" maxlength="5" />
-                        <input name="tgl_proses_m" type="text" required="required" id="tgl_proses_m" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_m);return false;" value="<?php echo $rw['tgl_proses_in']; ?>" size="10" />
-                        <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_m);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal2" style="border:none" align="absmiddle" border="0" /></a>
-                      </td>
-                      <td>
-                        <h4>Selesai Proses</h4>
-                      </td>
-                      <td>:</td>
-                      <td colspan="2"><input name="proses_out" type="text" required="required" id="proses_out" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
+            <input name="tgl_proses_m" type="text" required="required" id="tgl_proses_m" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_m);return false;" value="<?php echo $rw['tgl_proses_in']; ?>" size="10" />
+            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_proses_m);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal2" style="border:none" align="absmiddle" border="0" /></a>
+          </td>
+          <td>
+            <h4>Selesai Proses</h4>
+          </td>
+          <td>:</td>
+          <td colspan="2"><input name="proses_out" type="text" required="required" id="proses_out" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
               var time = this.value;
               if (time.match(/^\d{2}$/) !== null) {
                 this.value = time + ':';
@@ -977,14 +926,14 @@
               } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
                 this.value = time + '';
               }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
-                        <input name="tgl_stop_m" type="text" id="tgl_stop_m" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
-                        <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal4" style="border:none" align="absmiddle" border="0" /></a>
-                      </td>
-                      <td>
-                        <h4>Selesai Stop Mesin 1</h4>
-                      </td>
-                      <td>:</td>
-                      <td width="21%"><input name="stop_selesai" type="text" id="stop_selesai" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
+            <input name="tgl_stop_m" type="text" id="tgl_stop_m" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
+            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal4" style="border:none" align="absmiddle" border="0" /></a>
+          </td>
+          <td>
+            <h4>Selesai Stop Mesin 1</h4>
+          </td>
+          <td>:</td>
+          <td width="21%"><input name="stop_selesai" type="text" id="stop_selesai" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
               var time = this.value;
               if (time.match(/^\d{2}$/) !== null) {
                 this.value = time + ':';
@@ -1024,14 +973,14 @@
             } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
               this.value = time + '';
             }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
-                      <input name="tgl_stop_m2" type="text" id="tgl_stop_m2" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
-                      <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal6" style="border:none" align="absmiddle" border="0" /></a>
-                    </td>
-                    <td>
-                      <h4>Selesai Stop Mesin 2</h4>
-                    </td>
-                    <td>:</td>
-                    <td><input name="stop_selesai2" type="text" id="stop_selesai2" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
+            <input name="tgl_stop_m2" type="text" id="tgl_stop_m2" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
+            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal6" style="border:none" align="absmiddle" border="0" /></a>
+          </td>
+          <td>
+            <h4>Selesai Stop Mesin 2</h4>
+          </td>
+          <td>:</td>
+          <td><input name="stop_selesai2" type="text" id="stop_selesai2" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
             var time = this.value;
             if (time.match(/^\d{2}$/) !== null) {
               this.value = time + ':';
@@ -1071,14 +1020,14 @@
             } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
               this.value = time + '';
             }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
-                      <input name="tgl_stop_m3" type="text" id="tgl_stop_m3" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
-                      <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal8" style="border:none" align="absmiddle" border="0" /></a>
-                    </td>
-                    <td>
-                      <h4>Selesai Stop Mesin 3</h4>
-                    </td>
-                    <td>:</td>
-                    <td><input name="stop_selesai3" type="text" id="stop_selesai3" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
+            <input name="tgl_stop_m3" type="text" id="tgl_stop_m3" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
+            <a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal8" style="border:none" align="absmiddle" border="0" /></a>
+          </td>
+          <td>
+            <h4>Selesai Stop Mesin 3</h4>
+          </td>
+          <td>:</td>
+          <td><input name="stop_selesai3" type="text" id="stop_selesai3" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
             var time = this.value;
             if (time.match(/^\d{2}$/) !== null) {
               this.value = time + ':';
@@ -1120,8 +1069,8 @@
               while ($racc = mysqli_fetch_array($qryacc)) {
               ?>
                 <option value="<?php echo $racc['nama']; ?>" <?php if ($racc['nama'] == $rw['acc_staff']) {
-                                                              echo "SELECTED";
-                                                            } ?>><?php echo $racc['nama']; ?></option>
+                                                                echo "SELECTED";
+                                                              } ?>><?php echo $racc['nama']; ?></option>
               <?php } ?>
             </select>
             <?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -1237,8 +1186,8 @@
               while ($rch1 = mysqli_fetch_array($qryche1)) {
               ?>
                 <option value="<?php echo $rch1['kode']; ?>" <?php if ($rch1['kode'] == $rw['chemical_1']) {
-                                                              echo "SELECTED";
-                                                            } ?>><?php echo $rch1['kode']; ?></option>
+                                                                echo "SELECTED";
+                                                              } ?>><?php echo $rch1['kode']; ?></option>
               <?php } ?>
             </select>
             <?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -1262,8 +1211,8 @@
               while ($rch2 = mysqli_fetch_array($qryche2)) {
               ?>
                 <option value="<?php echo $rch2['kode']; ?>" <?php if ($rch2['kode'] == $rw['chemical_2']) {
-                                                              echo "SELECTED";
-                                                            } ?>><?php echo $rch2['kode']; ?></option>
+                                                                echo "SELECTED";
+                                                              } ?>><?php echo $rch2['kode']; ?></option>
               <?php } ?>
             </select>
             <?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -1287,8 +1236,8 @@
               while ($rch3 = mysqli_fetch_array($qryche3)) {
               ?>
                 <option value="<?php echo $rch3['kode']; ?>" <?php if ($rch3['kode'] == $rw['chemical_3']) {
-                                                              echo "SELECTED";
-                                                            } ?>><?php echo $rch3['kode']; ?></option>
+                                                                echo "SELECTED";
+                                                              } ?>><?php echo $rch3['kode']; ?></option>
               <?php } ?>
             </select>
             <?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -1312,8 +1261,8 @@
               while ($rch4 = mysqli_fetch_array($qryche4)) {
               ?>
                 <option value="<?php echo $rch4['kode']; ?>" <?php if ($rch4['kode'] == $rw['chemical_4']) {
-                                                              echo "SELECTED";
-                                                            } ?>><?php echo $rch4['kode']; ?></option>
+                                                                echo "SELECTED";
+                                                              } ?>><?php echo $rch4['kode']; ?></option>
               <?php } ?>
             </select>
             <?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -1337,8 +1286,8 @@
               while ($rch5 = mysqli_fetch_array($qryche5)) {
               ?>
                 <option value="<?php echo $rch5['kode']; ?>" <?php if ($rch5['kode'] == $rw['chemical_5']) {
-                                                              echo "SELECTED";
-                                                            } ?>><?php echo $rch5['kode']; ?></option>
+                                                                echo "SELECTED";
+                                                              } ?>><?php echo $rch5['kode']; ?></option>
               <?php } ?>
             </select>
             <?php if ($_SESSION['lvl'] == "SPV") { ?>

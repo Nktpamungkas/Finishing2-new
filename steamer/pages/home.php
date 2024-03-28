@@ -89,91 +89,31 @@
 		}
 
 		if ($_GET['typekk'] == "KKLama") {
-			if ($idkk != "") {
-				date_default_timezone_set('Asia/Jakarta');
-				$qry = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk='$idkk' and jns_mesin='steamer'  ORDER BY id DESC LIMIT 1");
-				$rw = mysqli_fetch_array($qry);
-				$rc = mysqli_num_rows($qry);
-				$qryAdm = mysqli_query($con, "SELECT * FROM tbl_adm WHERE nokk='$idkk' ORDER BY id DESC LIMIT 1");
-				$rwAdm = mysqli_fetch_array($qryAdm);
-				$rcAdm = mysqli_num_rows($qryAdm);
-				$tglsvr = sqlsrv_query($conn, "select CONVERT(VARCHAR(10),GETDATE(),105) AS  tgk");
-				$sr = sqlsrv_fetch_array($tglsvr);
-
-				$sqlLot = sqlsrv_query($conn, " SELECT
-					x.*,dbo.fn_StockMovementDetails_GetTotalWeightPCC(0, x.PCBID) as Weight,
-					dbo.fn_StockMovementDetails_GetTotalRollPCC(0, x.PCBID) as RollCount
-					FROM( SELECT
-						so.CustomerID, so.BuyerID, 
-						sod.ID as SODID, sod.ProductID, sod.UnitID, sod.WeightUnitID, 
-						pcb.ID as PCBID,pcb.UnitID as BatchUnitID,
-						pcblp.DepartmentID,pcb.PCID,pcb.LotNo,pcb.ChildLevel,pcb.RootID
-					FROM
-						SalesOrders so INNER JOIN
-						JobOrders jo ON jo.SOID=so.ID INNER JOIN
-						SODetails sod ON so.ID = sod.SOID INNER JOIN
-						SODetailsAdditional soda ON sod.ID = soda.SODID LEFT JOIN
-						ProcessControlJO pcjo ON sod.ID = pcjo.SODID LEFT JOIN
-						ProcessControlBatches pcb ON pcjo.PCID = pcb.PCID LEFT JOIN
-						ProcessControlBatchesLastPosition pcblp ON pcb.ID = pcblp.PCBID LEFT JOIN
-						ProcessFlowProcessNo pfpn ON pfpn.EntryType = 2 and pcb.ID = pfpn.ParentID AND pfpn.MachineType = 24 LEFT JOIN
-						ProcessFlowDetailsNote pfdn ON pfpn.EntryType = pfdn.EntryType AND pfpn.ID = pfdn.ParentID
-					WHERE pcb.DocumentNo='$idkk' AND pcb.Gross<>'0'
-						GROUP BY
-							so.SONumber, so.SODate, so.CustomerID, so.BuyerID, so.PONumber, so.PODate,jo.DocumentNo,
-							sod.ID, sod.ProductID, sod.Quantity, sod.UnitID, sod.Weight, sod.WeightUnitID,
-							soda.RefNo,pcb.DocumentNo,pcb.Dated,sod.RequiredDate,
-							pcb.ID, pcb.DocumentNo, pcb.Gross,
-							pcb.Quantity, pcb.UnitID, pcb.ScheduledDate, pcb.ProductionScheduledDate,
-							pcblp.DepartmentID,pcb.LotNo,pcb.PCID,pcb.ChildLevel,pcb.RootID
-						) x INNER JOIN
-						ProductMaster pm ON x.ProductID = pm.ID LEFT JOIN
-						Departments dep ON x.DepartmentID  = dep.ID LEFT JOIN
-						Departments pdep ON dep.RootID = pdep.ID LEFT JOIN				
-						Partners cust ON x.CustomerID = cust.ID LEFT JOIN
-						Partners buy ON x.BuyerID = buy.ID LEFT JOIN
-						UnitDescription udq ON x.UnitID = udq.ID LEFT JOIN
-						UnitDescription udw ON x.WeightUnitID = udw.ID LEFT JOIN
-						UnitDescription udb ON x.BatchUnitID = udb.ID
-					ORDER BY
-						x.SODID, x.PCBID ", array(), array("Scrollable" => 'static'));
-				$sLot = sqlsrv_fetch_array($sqlLot);
-				$cLot = sqlsrv_num_rows($sqlLot);
-				$child = $sLot['ChildLevel'];
-
-				if ($child > 0) {
-					$sqlgetparent = sqlsrv_query($conn, "select ID,LotNo from ProcessControlBatches where ID='$sLot[RootID]' and ChildLevel='0'");
-					$rowgp = sqlsrv_fetch_array($sqlgetparent);
-
-					//$nomLot=substr("$row2[LotNo]",0,1);
-					$nomLot = $rowgp['LotNo'];
-					$nomorLot = "$nomLot/K$sLot[ChildLevel]&nbsp;";
-				} else {
-					$nomorLot = $sLot['LotNo'];
-				}
-
-				$sqlLot1 = "Select count(*) as TotalLot From ProcessControlBatches where PCID='$sLot[PCID]' and RootID='0' and LotNo < '1000'";
-				$qryLot1 = sqlsrv_query($conn, $sqlLot1) or die('A error occured : ');
-				$rowLot = sqlsrv_fetch_array($qryLot1);
-				$sqls = sqlsrv_query($conn, "select processcontrolJO.SODID,salesorders.ponumber,processcontrol.productid,salesorders.customerid,joborders.documentno,
-								salesorders.buyerid,processcontrolbatches.lotno,productcode,productmaster.color,colorno,description,weight,cuttablewidth from Joborders 
-								left join processcontrolJO on processcontrolJO.joid = Joborders.id
-								left join salesorders on soid= salesorders.id
-								left join processcontrol on processcontrolJO.pcid = processcontrol.id
-								left join processcontrolbatches on processcontrolbatches.pcid = processcontrol.id
-								left join productmaster on productmaster.id= processcontrol.productid
-								left join productpartner on productpartner.productid= processcontrol.productid
-								where processcontrolbatches.documentno='$idkk'", array(), array("Scrollable" => 'static'));
-				$ssr = sqlsrv_fetch_array($sqls);
-				$cek = sqlsrv_num_rows($sqls);
-				$lgn1 = sqlsrv_query($conn, "select partnername from partners where id='$ssr[customerid]'");
-				$ssr1 = sqlsrv_fetch_array($lgn1);
-				$lgn2 = sqlsrv_query($conn, "select partnername from partners where id='$ssr[buyerid]'");
-				$ssr2 = sqlsrv_fetch_array($lgn2);
-			}
+			echo 	"<script>
+						swal({
+							title: 'SYSTEM OFFLINE',   
+							text: 'Klik Ok untuk input data kembali',
+							type: 'success',
+						}).then((result) => {
+							if (result.value) {
+								window.location.href = 'http://online.indotaichen.com/finishing2-new/steamer/?typekk=NOW'; 
+							}
+						});
+					</script>";
 		} elseif ($_GET['typekk'] == "NOW") {
 			if ($idkk != "") {
 				include_once("../now.php");
+			}
+		} elseif ($_GET['typekk'] == "SCHEDULE") {
+			if ($idkk != "") {
+				if ($_GET['demand'] != "") {
+					$nomordemand = $_GET['demand'];
+					$anddemand = "AND nodemand = '$nomordemand'";
+				}else{
+					$anddemand = "";
+				}
+				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
+				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
 			}
 		}
 	?>
@@ -536,7 +476,10 @@
 													} ?>>KK Lama</option>
 							<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
 													echo "SELECTED";
-												} ?>>KK NOW</option> -->
+												} ?>>KK NOW</option>
+							<option value="SCHEDULE" <?php if ($_GET['typekk'] == "SCHEDULE") {
+													echo "SELECTED";
+												} ?>>SCHEDULE</option>
 						</select>
 					</td>
 				</tr>
@@ -548,7 +491,7 @@
 					<td width="26%">
 						<input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
 
-						<?php if ($_GET['typekk'] == 'NOW') { ?>
+						<?php if ($_GET['typekk'] == 'NOW' OR $_GET['typekk'] == 'SCHEDULE') { ?>
 							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
 								<?php
@@ -942,12 +885,12 @@
 					</td>
 					<td>:</td>
 					<td><input name="stop_mulai" type="text" id="stop_mulai" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
+								var time = this.value;
+								if (time.match(/^\d{2}$/) !== null) {
+									this.value = time + ':';
+								} else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+									this.value = time + '';
+								}" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
 						<input name="tgl_stop_m" type="text" id="tgl_stop_m" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
 						<a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal4" style="border:none" align="absmiddle" border="0" /></a>
 					</td>
@@ -956,12 +899,12 @@
 					</td>
 					<td>:</td>
 					<td><input name="stop_selesai" type="text" id="stop_selesai" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
+						var time = this.value;
+						if (time.match(/^\d{2}$/) !== null) {
+							this.value = time + ':';
+						} else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+							this.value = time + '';
+						}" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
 						<input name="tgl_stop_s" type="text" id="tgl_stop_s" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s);return false;" value="<?php echo $rw['tgl_stop_r']; ?>" size="10" />
 						<a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal5" style="border:none" align="absmiddle" border="0" /></a>
 					</td>
@@ -989,12 +932,12 @@
 					</td>
 					<td>:</td>
 					<td><input name="stop_mulai2" type="text" id="stop_mulai2" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
+									var time = this.value;
+									if (time.match(/^\d{2}$/) !== null) {
+										this.value = time + ':';
+									} else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+										this.value = time + '';
+									}" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
 						<input name="tgl_stop_m2" type="text" id="tgl_stop_m2" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
 						<a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m2);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal6" style="border:none" align="absmiddle" border="0" /></a>
 					</td>
@@ -1003,12 +946,12 @@
 					</td>
 					<td>:</td>
 					<td width="21%"><input name="stop_selesai2" type="text" id="stop_selesai2" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
+							var time = this.value;
+							if (time.match(/^\d{2}$/) !== null) {
+								this.value = time + ':';
+							} else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+								this.value = time + '';
+							}" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
 						<input name="tgl_stop_s2" type="text" id="tgl_stop_s2" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s2);return false;" value="<?php echo $rw['tgl_stop_r']; ?>" size="10" />
 						<a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s2);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal7" style="border:none" align="absmiddle" border="0" /></a>
 					</td>
@@ -1036,12 +979,12 @@
 					</td>
 					<td>:</td>
 					<td><input name="stop_mulai3" type="text" id="stop_mulai3" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
+							var time = this.value;
+							if (time.match(/^\d{2}$/) !== null) {
+								this.value = time + ':';
+							} else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+								this.value = time + '';
+							}" value="<?php echo $rw['stop_l'] ?>" size="5" maxlength="5" />
 						<input name="tgl_stop_m3" type="text" id="tgl_stop_m3" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;" value="<?php echo $rw['tgl_stop_l']; ?>" size="10" />
 						<a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_m3);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal8" style="border:none" align="absmiddle" border="0" /></a>
 					</td>
@@ -1050,12 +993,12 @@
 					</td>
 					<td>:</td>
 					<td><input name="stop_selesai3" type="text" id="stop_selesai3" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}$" title=" e.g 14:25 " onkeyup="
-  var time = this.value;
-  if (time.match(/^\d{2}$/) !== null) {
-     this.value = time + ':';
-  } else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
-     this.value = time + '';
-  }" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
+						var time = this.value;
+						if (time.match(/^\d{2}$/) !== null) {
+							this.value = time + ':';
+						} else if (time.match(/^\d{2}\:\d{2}$/) !== null) {
+							this.value = time + '';
+						}" value="<?php echo $rw['stop_r'] ?>" size="5" maxlength="5" />
 						<input name="tgl_stop_s3" type="text" id="tgl_stop_s3" placeholder="0000-00-00" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s3);return false;" value="<?php echo $rw['tgl_stop_r']; ?>" size="10" />
 						<a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.tgl_stop_s3);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal9" style="border:none" align="absmiddle" border="0" /></a>
 					</td>

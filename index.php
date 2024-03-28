@@ -60,11 +60,11 @@ include_once ('koneksi.php');
     <?php if($_SESSION['lvl']!="Operator"){ ?>
     <li><a href="masuk/?typekk=NOW">Masuk</a></li>
     <?php } ?>
-    <li><a href="stenter/">Stenter</a></li>
-    <li><a href="compact/">Compact</a></li>
-    <li><a href="belah-lipat/">Belah &amp; Lipat</a></li>
-    <li><a href="oven/">Oven</a></li>
-	<li><a href="steamer/">Steamer</a></li>	
+    <li><a href="stenter/?typekk=NOW">Stenter</a></li>
+    <li><a href="compact/?typekk=NOW">Compact</a></li>
+    <li><a href="belah-lipat/?typekk=NOW">Belah &amp; Lipat</a></li>
+    <li><a href="oven/?typekk=NOW">Oven</a></li>
+	<li><a href="steamer/?typekk=NOW">Steamer</a></li>	
     <?php if($_SESSION['lvl']!="Operator"){ ?>
     <li><a href="keluar/">Keluar</a></li>
     <?php } ?>

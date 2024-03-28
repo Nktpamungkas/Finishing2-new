@@ -1,24 +1,24 @@
 <?php
-    ini_set("error_reporting", 1);
-    session_start();
-    include("../koneksi.php");
-    $timeout = 480; // Set timeout menit
-    $logout_redirect_url = "../login.php"; // Set logout URL
+ini_set("error_reporting", 1);
+session_start();
+include("../koneksi.php");
+$timeout = 480; // Set timeout menit
+$logout_redirect_url = "../login.php"; // Set logout URL
 
-    $timeout = $timeout * 60; // Ubah menit ke detik
-    if (isset($_SESSION['start_time'])) {
-        $elapsed_time = time() - $_SESSION['start_time'];
-        if ($elapsed_time >= $timeout) {
-            session_destroy();
-            echo "<script>alert('Session Anda Telah Habis!'); window.location = '$logout_redirect_url'</script>";
-        }
+$timeout = $timeout * 60; // Ubah menit ke detik
+if (isset($_SESSION['start_time'])) {
+    $elapsed_time = time() - $_SESSION['start_time'];
+    if ($elapsed_time >= $timeout) {
+        session_destroy();
+        echo "<script>alert('Session Anda Telah Habis!'); window.location = '$logout_redirect_url'</script>";
     }
-    $_SESSION['start_time'] = time();
-    //request page
-    $page    = isset($_GET['p']) ? $_GET['p'] : '';
-    $act    = isset($_GET['act']) ? $_GET['act'] : '';
-    $id        = isset($_GET['id']) ? $_GET['id'] : '';
-    $page    = strtolower($page);
+}
+$_SESSION['start_time'] = time();
+//request page
+$page    = isset($_GET['p']) ? $_GET['p'] : '';
+$act    = isset($_GET['act']) ? $_GET['act'] : '';
+$id        = isset($_GET['id']) ? $_GET['id'] : '';
+$page    = strtolower($page);
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
@@ -92,13 +92,13 @@
                 <ul class="art-hmenu">
                     <li><a href="../index.php">Main</a></li>
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
-                        <li><a href="../masuk/">Masuk</a></li>
+                        <li><a href="../masuk/?typekk=NOW">Masuk</a></li>
                     <?php } ?>
-                    <li><a href="../stenter/">Stenter</a></li>
-                    <li><a href="../compact/">Compact</a></li>
-                    <li><a href="../belah-lipat/">Belah &amp; Lipat</a></li>
-                    <li><a href="../oven/">Oven</a></li>
-                    <li><a href="../steamer/">Steamer</a></li>
+                    <li><a href="../stenter/?typekk=NOW">Stenter</a></li>
+                    <li><a href="../compact/?typekk=NOW">Compact</a></li>
+                    <li><a href="../belah-lipat/?typekk=NOW">Belah &amp; Lipat</a></li>
+                    <li><a href="../oven/?typekk=NOW">Oven</a></li>
+                    <li><a href="../steamer/?typekk=NOW">Steamer</a></li>
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
                         <li><a href="../keluar/">Keluar</a></li>
                     <?php } ?>
@@ -120,7 +120,8 @@
                                 <?php
                                 if (!empty($page) and !empty($act)) {
                                     $files = 'pages/' . $page . '.' . $act . '.php';
-                                } elseif (!empty($page)) {
+                                } else
+					if (!empty($page)) {
                                     $files = 'pages/' . $page . '.php';
                                 } else {
                                     $files = 'pages/home.php';
