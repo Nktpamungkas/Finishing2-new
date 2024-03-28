@@ -65,7 +65,7 @@ include('../koneksi.php');
         <table width="650" border="0">
             <tr>
                 <td colspan="3">
-                    <div align="center"><strong>SCHEDULE FINISHING</strong></div>
+                    <div align="center"><strong>KK MASUK FINISHING</strong></div>
                     <?php
                     $user_name = $_SESSION['username'];
                     date_default_timezone_set('Asia/Jakarta');
@@ -83,12 +83,10 @@ include('../koneksi.php');
                         <option value="-" disabled selected>Pilih</option>
                         <?php
                         $q_mesin    = mysqli_query($con, "SELECT
-                                                                DISTINCT
-                                                                no_mesin 
-                                                            FROM
-                                                                `tbl_schedule_new`
-                                                            ORDER BY
-	                                                            RIGHT(no_mesin, 3) ASC");
+                                                                    DISTINCT
+                                                                    no_mesin 
+                                                                FROM
+                                                                    `tbl_schedule_new`");
                         ?>
                         <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
                             <option value="<?= $row_mesin['no_mesin']; ?>" <?php if ($row_mesin['no_mesin'] == $_POST['no_mesin']) {
@@ -106,12 +104,10 @@ include('../koneksi.php');
                         <option value="-" disabled selected>Pilih</option>
                         <?php
                         $q_mesin    = mysqli_query($con, "SELECT
-                                                                DISTINCT
-                                                                nama_mesin 
-                                                            FROM
-                                                                `tbl_schedule_new`
-                                                            ORDER BY
-	                                                            RIGHT(no_mesin, 3)");
+                                                                    DISTINCT
+                                                                    nama_mesin 
+                                                                FROM
+                                                                    `tbl_schedule_new`");
                         ?>
                         <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
                             <option value="<?= $row_mesin['nama_mesin']; ?>" <?php if ($row_mesin['nama_mesin'] == $_POST['nama_mesin']) {
@@ -162,9 +158,8 @@ include('../koneksi.php');
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY YD</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATIONDATETIME</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">KETERANGAN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;" width="8%">OPSI</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;" width="10%">OPSI</th>
             </tr>
         </thead>
         <tbody>
@@ -209,24 +204,8 @@ include('../koneksi.php');
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['catatan'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['creationdatetime'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;">
-                    <?php
-                        //  field NAMA_MESIN di TBL_PRODUKSI adalah OPERATION di tabel tbl_schedule_new
-                        $q_produksi     = mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND nama_mesin = '$row_schedule[operation]'");
-                        $row_produksi   = mysqli_fetch_assoc($q_produksi);
-                    ?>
-                    <?php if($row_produksi) : ?>
-                        Tgl Buat : <b><?= $row_produksi['tgl_buat'] ?></b> <br>
-                        No Gerobak : <b><?= $row_produksi['no_gerobak'] ?></b> <br>
-                        Proses : <b><?= $row_produksi['proses'] ?></b> <br>
-                        Qty (Kg) : <b><?= $row_produksi['qty'] ?></b> <br>
-                        Panjang Aktual (Yard) : <b><?= $row_produksi['panjang'] ?></b> <br>
-                    <?php endif; ?>
-                    </td>
-                    <td style="border:1px solid;vertical-align:middle;">
-                        <?php if(empty($row_produksi)) : ?>
-                            <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
-                            <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
-                        <?php endif; ?>
+                        <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
+                        <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
                     </td>
                 </tr>
             <?php endwhile; ?>

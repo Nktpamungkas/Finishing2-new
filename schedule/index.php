@@ -1,7 +1,7 @@
 <?php
     ini_set("error_reporting", 1);
     session_start();
-    $timeout = 15; // Set timeout menit
+    $timeout = 10; // Set timeout menit
     $logout_redirect_url = "../login.php"; // Set logout URL
 
     $timeout = $timeout * 60; // Ubah menit ke detik

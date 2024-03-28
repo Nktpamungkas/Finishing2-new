@@ -127,11 +127,10 @@
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO WARNA</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">MESIN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PERSONIL</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATIONDATETIME</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPSI</th>
             </tr>
         </thead>
@@ -169,9 +168,8 @@
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nama_mesin'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['operation'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['personil'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; color: red;"><?= $row_tblmasuk['catatan'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['catatan'] ?></td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['creationdatetime'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;">
                         <button class="button" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
