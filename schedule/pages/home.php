@@ -179,7 +179,7 @@
 				$row_schedule	= mysqli_fetch_assoc($q_schedule);
 
 				$operation		= $row_kkmasuk['operation'];
-				if(empty($row_kkmasuk)){
+				if(empty($row_kkmasuk)){ // JIKA DATANYA BELUM ADA DI DATABASE KK MASUK
 					echo 	"<script>
 								swal({
 									title: 'Kartu Kerja belum di input di KK MASUK',   
@@ -193,7 +193,7 @@
 							</script>";
 				}
 
-				if (!empty($row_schedule)) {
+				if (!empty($row_schedule)) { // JIKA DATANYA SUDAH ADA DI SHCEDULE
 					echo 	"<script>
 								swal({
 									title: 'Kartu Kerja sudah di input',   
@@ -212,7 +212,24 @@
 	<?php
 		 if (isset($_POST['btnSimpan'])) {
 			$creationdatetime	= date('Y-m-d H:i:s');
-			$simpanSql = "INSERT INTO tbl_schedule_new (nokk,
+			$jenis_kain		= addslashes($_POST['jenis_kain']);
+			$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$nomordemand'");
+			$row_schedule	= mysqli_fetch_assoc($q_schedule);
+			if (!empty($row_schedule)) { // JIKA DATANYA SUDAH ADA DI SHCEDULE
+				mysqli_query($con, "INSERT INTO tbl_log	(akun, ipaddress, creationdatetime, catatan) VALUES('$_SESSION[usr]', '$_SERVER[REMOTE_ADDR]', '$creationdatetime', 'Aktivitas Illegal, Schedule input double.')");
+				echo 	"<script>
+							swal({
+								title: 'Anda telah dicatat melakukan aktivias ilegal memasukan schedule lebih dari 1x',   
+								text: 'Klik Ok untuk input data kembali',
+								type: 'warning',
+							}).then((result) => {
+								if (result.value) {
+									window.location.href = 'http://online.indotaichen.com/finishing2-new/schedule/?typekk=NOW'; 
+								}
+							});
+						</script>";
+			}else{
+				$simpanSql = "INSERT INTO tbl_schedule_new (nokk,
 														nodemand,
 														nourut,
 														langganan,
@@ -244,7 +261,7 @@
 													'$row_kkmasuk[langganan]',
 													'$row_kkmasuk[buyer]',
 													'$_POST[no_order]',
-													'$_POST[jenis_kain]',
+													'$jenis_kain',
 													'$_POST[tgl_delivery]',
 													'$_POST[lebar]',
 													'$_POST[gramasi]',
@@ -264,20 +281,20 @@
 													'SCHEDULE',
 													'$creationdatetime',
 													'$_SERVER[REMOTE_ADDR]')";
-			$simpan = mysqli_query($con, $simpanSql);
-
-			if($simpan){
-				echo 	"<script>
-							swal({
-								title: 'Data Tersimpan',   
-								text: 'Klik Ok untuk input data kembali',
-								type: 'success',
-							}).then((result) => {
-								if (result.value) {
-									window.location.href = 'http://online.indotaichen.com/finishing2-new/schedule/?typekk=NOW'; 
-								}
-							});
-						</script>";
+				$simpan = mysqli_query($con, $simpanSql);
+				if($simpan){
+					echo 	"<script>
+								swal({
+									title: 'Data Tersimpan',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'success',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/schedule/?typekk=NOW'; 
+									}
+								});
+							</script>";
+				}
 			}
 		}
 	?>
@@ -511,7 +528,7 @@
                         </select>
 
                         <strong  style="color: red;">No Urut :</strong>
-                        <select name="no_urut" class="form-control select2" id="no_urut" required>
+                        <select name="no_urut" class="form-control select2" id="no_urut">
 							<option value="">Pilih</option>
 							<?php
 								$q_nourut		= mysqli_query($con, "SELECT

@@ -114,6 +114,7 @@
 				}
 				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
 				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+				include_once("../now.php");
 			}
 		}
 	?>
@@ -492,7 +493,7 @@
 					<td width="26%">
 						<input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
 
-						<?php if ($_GET['typekk'] == 'NOW' OR $_GET['typekk'] == 'SCHEDULE') { ?>
+						<?php if ($_GET['typekk'] == 'NOW') { ?>
 							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
 								<?php
@@ -502,6 +503,18 @@
 									<option value="<?= $r_demand['DEMAND']; ?>" <?php if ($r_demand['DEMAND'] == $_GET['demand']) {
 																					echo 'SELECTED';
 																				} ?>><?= $r_demand['DEMAND']; ?></option>
+								<?php endwhile; ?>
+							</select>
+						<?php }elseif($_GET['typekk'] == 'SCHEDULE'){ ?>
+                            <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
+								<option value="" disabled selected>Pilih Nomor Demand</option>
+								<?php
+									$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT nodemand FROM tbl_masuk WHERE nokk = '$idkk'");
+									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
+								?>
+									<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
+																					echo 'SELECTED';
+																				} ?>><?= $r_demand['nodemand']; ?></option>
 								<?php endwhile; ?>
 							</select>
 						<?php } else { ?>
@@ -514,9 +527,9 @@
 					<td width="1%">:</td>
 					<td colspan="2"><select name="shift" id="shift" required>
 							<option value="">Pilih</option>
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
+							<option value="A" <?php if ($row_kkmasuk['group_shift'] == "A") { echo "SELECTED";} ?>>A</option>
+							<option value="B" <?php if ($row_kkmasuk['group_shift'] == "B") { echo "SELECTED";} ?>>B</option>
+							<option value="C" <?php if ($row_kkmasuk['group_shift'] == "C") { echo "SELECTED";} ?>>C</option>
 						</select></td>
 				</tr>
 				<tr>
@@ -528,32 +541,39 @@
 						<select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
 							<option value="">Pilih</option>
 							<?php
-							$qry1 = db2_exec($conn_db2, "SELECT 
-															*
-														FROM
-														(SELECT DISTINCT 
-															TRIM(OPERATIONCODE) AS OPERATIONCODE,
-															LONGDESCRIPTION 
-														FROM 
-															WORKCENTERANDOPERATTRIBUTES
-														WHERE
-															(SUBSTR(WORKCENTERCODE, 1,4) = 'P3LI' OR SUBSTR(WORKCENTERCODE, 1,4) = 'P3BC' OR SUBSTR(WORKCENTERCODE, 1,4) = 'P3IN') 
-														ORDER BY
-															OPERATIONCODE ASC)
-														WHERE 
-															NOT OPERATIONCODE = 'INS1'
-															AND NOT OPERATIONCODE = 'INS2'
-															AND NOT OPERATIONCODE = 'INS3'
-															AND NOT OPERATIONCODE = 'INS4'
-															AND NOT OPERATIONCODE = 'INS7'
-															AND NOT OPERATIONCODE = 'KKT'
-															AND NOT OPERATIONCODE = 'PQC'
-															AND NOT OPERATIONCODE = 'CNP1'
-															AND NOT LONGDESCRIPTION = 'Folding'
-															AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'");
-							while ($r = db2_fetch_assoc($qry1)) {
+								$qry1 = db2_exec($conn_db2, "SELECT 
+																*
+															FROM
+															(SELECT DISTINCT 
+																TRIM(OPERATIONCODE) AS OPERATIONCODE,
+																LONGDESCRIPTION 
+															FROM 
+																WORKCENTERANDOPERATTRIBUTES
+															WHERE
+																(SUBSTR(WORKCENTERCODE, 1,4) = 'P3LI' OR SUBSTR(WORKCENTERCODE, 1,4) = 'P3BC' OR SUBSTR(WORKCENTERCODE, 1,4) = 'P3IN') 
+															ORDER BY
+																OPERATIONCODE ASC)
+															WHERE 
+																NOT OPERATIONCODE = 'INS1'
+																AND NOT OPERATIONCODE = 'INS2'
+																AND NOT OPERATIONCODE = 'INS3'
+																AND NOT OPERATIONCODE = 'INS4'
+																AND NOT OPERATIONCODE = 'INS7'
+																AND NOT OPERATIONCODE = 'KKT'
+																AND NOT OPERATIONCODE = 'PQC'
+																AND NOT OPERATIONCODE = 'CNP1'
+																AND NOT LONGDESCRIPTION = 'Folding'
+																AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'");
+								if($_GET['typekk'] == 'NOW'){
+									$if_operation   = "$_GET[operation]";
+									$selected       = "";
+								}elseif($_GET['typekk'] == 'SCHEDULE'){
+									$if_operation   = "$row_kkmasuk[group_shift]";
+									$selected       = "SELECTED";
+								}
+								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($if_operation == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>

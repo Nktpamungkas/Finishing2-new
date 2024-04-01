@@ -145,6 +145,7 @@ include('../koneksi.php');
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO MESIN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">GROUP SHIFT</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO KK</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO DEMAND</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LANGGANAN</th>
@@ -181,7 +182,7 @@ include('../koneksi.php');
                 } else {
                     $where_tgl  = "";
                 }
-                $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin");
+                $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin ORDER BY no_mesin, nama_mesin, nourut ASC");
             ?>
             <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                 <tr>
@@ -189,6 +190,7 @@ include('../koneksi.php');
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['no_mesin'] ?></td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nokk'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nodemand'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>

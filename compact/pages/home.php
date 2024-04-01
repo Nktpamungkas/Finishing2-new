@@ -114,6 +114,7 @@
 				}
 				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
 				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+				include_once("../now.php");
 			}
 		}
 	?>
@@ -470,7 +471,7 @@
 							<option value="SCHEDULE" <?php if ($_GET['typekk'] == "SCHEDULE") {
 													echo "SELECTED";
 												} ?>>SCHEDULE</option>
-							</select=>
+						</select>
 					</td>
 				</tr>
 				<tr>
@@ -481,7 +482,7 @@
 					<td width="26%">
 						<input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
 
-						<?php if ($_GET['typekk'] == 'NOW' OR $_GET['typekk'] == 'SCHEDULE') { ?>
+						<?php if ($_GET['typekk'] == 'NOW') { ?>
 							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
 								<?php 
@@ -489,6 +490,18 @@
 								while ($r_demand = db2_fetch_assoc($sql_ITXVIEWKK_demand)) :
 								?>
 								<option value="<?= $r_demand['DEMAND']; ?>" <?php if($r_demand['DEMAND'] == $_GET['demand']){ echo 'SELECTED'; } ?>><?= $r_demand['DEMAND']; ?></option>
+								<?php endwhile; ?>
+							</select>
+						<?php }elseif($_GET['typekk'] == 'SCHEDULE'){ ?>
+                            <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
+								<option value="" disabled selected>Pilih Nomor Demand</option>
+								<?php
+									$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT nodemand FROM tbl_masuk WHERE nokk = '$idkk'");
+									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
+								?>
+									<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
+																					echo 'SELECTED';
+																				} ?>><?= $r_demand['nodemand']; ?></option>
 								<?php endwhile; ?>
 							</select>
 						<?php } else { ?>
@@ -499,12 +512,14 @@
 						<h4>Group Shift</h4>
 					</td>
 					<td width="1%">:</td>
-					<td colspan="2"><select name="shift" id="shift" required>
+					<td colspan="2">
+						<select name="shift" id="shift" required>
 							<option value="">Pilih</option>
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-						</select></td>
+							<option value="A" <?php if ($row_kkmasuk['group_shift'] == "A") { echo "SELECTED";} ?>>A</option>
+							<option value="B" <?php if ($row_kkmasuk['group_shift'] == "B") { echo "SELECTED";} ?>>B</option>
+							<option value="C" <?php if ($row_kkmasuk['group_shift'] == "C") { echo "SELECTED";} ?>>C</option>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<td>
@@ -525,9 +540,16 @@
 																AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
 															ORDER BY
 																OPERATIONCODE ASC");
+								if($_GET['typekk'] == 'NOW'){
+									$if_operation   = "$_GET[operation]";
+									$selected       = "";
+								}elseif($_GET['typekk'] == 'SCHEDULE'){
+									$if_operation   = "$row_kkmasuk[group_shift]";
+									$selected       = "SELECTED";
+								}
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($if_operation == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -588,18 +610,26 @@
 															ORDER BY iptip.MULAI ASC");
 								$row_mesin = db2_fetch_assoc($q_mesin);
 
+								if($_GET['typekk'] == 'SCHEDULE'){
+									$where_schedule     = "AND CODE = '$row_kkmasuk[no_mesin]'";
+									$selected           = "SELECTED";
+								}else{
+									$where_schedule     = "";
+									$selected           = "";
+								}
+
 								$qry1 = db2_exec($conn_db2, "SELECT
 																	*
 																FROM
 																	RESOURCES r
 																WHERE
-																	SUBSTR(CODE, 1,4) = 'P3CP'
+																	SUBSTR(CODE, 1,4) = 'P3CP' $where_schedule
 																ORDER BY 
 																	SUBSTR(CODE, 6,2) 
 																ASC");
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) { echo "SELECTED"; } ?>><?php echo $r['CODE']; ?></option>
+								<option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) { echo "SELECTED"; } ?> <?= $selected ?>><?php echo $r['CODE']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -629,6 +659,11 @@
 								$langganan_buyer =  $rw['langganan'];
 							} ?>
 						<?php endif; ?>
+
+						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+                            <?php $langganan_buyer  = $row_kkmasuk['langganan'].'/'.$row_kkmasuk['buyer']; ?>
+                        <?php endif; ?>
+
 						<input name="buyer" type="text" id="buyer" size="30" value="<?= $langganan_buyer; ?>">
 					</td>
 					<td>
@@ -640,7 +675,7 @@
 							<?php $qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='compact' ORDER BY id ASC");
 							while ($r = mysqli_fetch_array($qry1)) {
 							?>
-								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
+								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($row_kkmasuk['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
 																									echo "SELECTED";
 																								} ?>><?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
 							<?php } ?>
@@ -671,21 +706,17 @@
 															echo "SELECTED";
 														} ?>>CAMPURAN</option>
 							</select>
-							<?php else : ?>
+						<?php else : ?>
 							<select name="kd_buyer" id="kd_buyer" required="required">
-								<option value="">Pilih</option>
-								<option value="ADIDAS" <?php if ($ssr2['partnername'] == "ADIDAS") {
-														echo "SELECTED";
-														} ?>>ADIDAS</option>
-								<option value="NIKE" <?php if ($ssr2['partnername'] == "NIKE") {
-														echo "SELECTED";
-													} ?>>NIKE</option>
-								<option value="CAMPURAN" <?php if ($ssr2['partnername'] == "NIKE") {
-														} else if ($ssr2['partnername'] == "ADIDAS") {
-														} else {
-															echo "SELECTED";
-														} ?>>CAMPURAN</option>
-							</select>
+                                <option value="">Pilih</option>
+                                <option value="ADIDAS" <?php if ($row_kkmasuk['buyer'] == "ADIDAS") { echo "SELECTED"; } ?>>ADIDAS</option>
+                                <option value="NIKE" <?php if ($row_kkmasuk['buyer'] == "NIKE") { echo "SELECTED"; } ?>>NIKE</option>
+                                <option value="CAMPURAN" <?php if ($row_kkmasuk['buyer'] == "NIKE") { 
+                                                            } else if ($row_kkmasuk['buyer'] == "ADIDAS") {
+                                                            } else {
+                                                                echo "SELECTED";
+                                                            } ?>>CAMPURAN</option>
+                            </select>
 						<?php endif; ?>
 					</td>
 					<td>
@@ -711,6 +742,10 @@
 								$no_order = $rwAdm['no_order'];
 							} ?>
 						<?php endif; ?>
+
+						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+                            <?php $no_order =  $row_kkmasuk['no_order']; ?>
+                        <?php endif; ?>
 						<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
 					</td>
 					
@@ -732,13 +767,22 @@
 								$jk = $rwAdm['jenis_kain'];
 							} ?>
 						<?php endif; ?>
+
+						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+                            <?php $jk =  $row_kkmasuk['jenis_kain']; ?>
+                        <?php endif; ?>
 						<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
 					</td>
 					<td valign="top">
 						<h4>Catatan</h4>
 					</td>
 					<td valign="top">:</td>
-					<td colspan="2" valign="top"><textarea name="catatan" cols="35" id="catatan"><?php echo $rw['catatan']; ?></textarea></td>
+					<td colspan="2" valign="top">
+						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+                            <?php $catatan =  $row_kkmasuk['catatan']; ?>
+                        <?php endif; ?>
+                        <textarea name="catatan" cols="35" id="catatan"><?= $catatan; ?></textarea>
+					</td>
 				</tr>
 
 				<tr>
@@ -747,7 +791,7 @@
 					</td>
 					<td>:</td>
 					<td>
-						<?php if ($_GET['typekk'] == "NOW") : ?>
+						<?php if ($_GET['typekk'] == "NOW" OR $_GET['typekk'] == "SCHEDULE") : ?>
 							<?php $hanger = $dt_ITXVIEWKK['NO_HANGER']; ?>
 						<?php else : ?>
 							<?php if ($cek > 0) {
@@ -791,29 +835,32 @@
 								$nomor_warna = $rwAdm['no_warna'];
 							}?>
 						<?php endif; ?>
+
+						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+                            <?php $nomor_warna =  $row_kkmasuk['no_warna']; ?>
+                        <?php endif; ?>
+
 						<input name="no_warna" type="text" id="no_warna" size="30" value="<?= $nomor_warna; ?>" />
 					</td>
 					<td width="14%"><strong>Quantity (Kg)</strong></td>
 					<td width="1%">:</td>
-					<td colspan="2"><input name="qty" type="text" id="qty" size="5" value="<?= $dt_qtyorder['QTY_ORDER']; ?><?php if ($cLot > 0) {
-																								echo round($sLot['Weight'], 2);
-																							} else if ($rc > 0) {
-																								echo round($rw['qty'], 2);
-																							} else if ($rcAdm > 0) {
-																								echo round($rwAdm['qty'], 2);
-																							} ?>" placeholder="0.00" />
+
+					<?php if ($_GET['typekk'] == "NOW") : ?>
+						<?php $berat =  $dt_qtyorder['QTY_ORDER']; ?>
+					<?php endif; ?>
+					<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+						<?php $berat =  $row_kkmasuk['qty_order']; ?>
+					<?php endif; ?>
+
+					<td colspan="2"><input name="qty" type="text" id="qty" size="5" value="<?= $berat; ?>" placeholder="0.00" />
 						&nbsp;&nbsp;&nbsp;
 						<strong>Gramasi</strong>:
-						<input name="lebar" type="text" id="lebar" size="6" value="<?= floor($dt_lg['LEBAR']); ?><?php if ($cek > 0) {
-																									echo round($ssr['cuttablewidth'], 2);
-																								} else if ($rcAdm > 0) {
-																									echo $rwAdm['lebar'];
-																								} ?>" placeholder="0" />
-						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= floor($dt_lg['GRAMASI']); ?><?php if ($cek > 0) {
-																							echo round($ssr['weight'], 2);
-																						} else if ($rcAdm > 0) {
-																							echo $rwAdm['gramasi'];
-																						} ?>" placeholder="0" />
+						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+                            <?php $nlebar =  $row_kkmasuk['lebar']; ?>
+                            <?php $ngramasi =  $row_kkmasuk['gramasi']; ?>
+                        <?php endif; ?>
+						<input name="lebar" type="text" id="lebar" size="6" value="<?= $nlebar; ?>" placeholder="0" />
+						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= $ngramasi; ?>" placeholder="0" />
 					</td>
 				</tr>
 				<tr>
@@ -821,16 +868,22 @@
 						<h4>Warna</h4>
 					</td>
 					<td>:</td>
-					<td><input name="warna" type="text" id="warna" size="30" value="<?= $dt_warna['WARNA']; ?><?php if ($cek > 0) {
-																						echo $ssr['color'];
-																					} else if ($rc > 0) {
-																						echo $rw['warna'];
-																					} else if ($rcAdm > 0) {
-																						echo $rwAdm['warna'];
-																					} ?>" /></td>
+					<?php if ($_GET['typekk'] == "NOW") : ?>
+						<?php $nama_warna =  $dt_warna['WARNA']; ?>
+					<?php endif; ?>
+					<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+						<?php $nama_warna =  $row_kkmasuk['warna']; ?>
+					<?php endif; ?>
+					<td><input name="warna" type="text" id="warna" size="30" value="<?= $nama_warna; ?>" /></td>
 					<td width="14%"><strong>Panjang (Yard)</strong></td>
 					<td>:</td>
-					<td colspan="2"><input name="qty2" type="text" id="qty2" size="8" value="<?= $dt_qtyorder['QTY_ORDER_YARD']; ?><?php echo $rw['panjang']; ?>" placeholder="0.00" onfocus="jumlah();" /></td>
+					<?php if ($_GET['typekk'] == "NOW") : ?>
+                        <?php $qty_order_yd =  $dt_qtyorder['QTY_ORDER_YARD']; ?>
+                    <?php endif; ?>
+                    <?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+                        <?php $qty_order_yd =  $row_kkmasuk['qty_order_yd']; ?>
+                    <?php endif; ?>
+					<td colspan="2"><input name="qty2" type="text" id="qty2" size="8" value="<?= $qty_order_yd; ?>" placeholder="0.00" onfocus="jumlah();" /></td>
 				</tr>
 				<tr>
 					<td scope="row">
@@ -853,27 +906,23 @@
 						<h4>Lot</h4>
 					</td>
 					<td>:</td>
-					<td><input name="lot" type="text" id="lot" size="5" value="<?php if ($cLot > 0) {
-																					echo $rowLot['TotalLot'] . "-" . $nomorLot;
-																				} else if ($rc > 0) {
-																					echo $rw['lot'];
-																				} else if ($rcAdm > 0) {
-																					echo $rwAdm['lot'];
-																				} ?>" /></td>
-					
+					<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+						<?php $lot =  $row_kkmasuk['lot']; ?>
+					<?php endif; ?>
+					<td><input name="lot" type="text" id="lot" size="5" value="<?= $lot; ?>" /></td>
 				</tr>
 				<tr>
 					<td scope="row">
 						<h4>Roll</h4>
 					</td>
 					<td>:</td>
-					<td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $dt_roll['ROLL']; ?><?php if ($cLot > 0) {
-																														echo $sLot['RollCount'];
-																													} else if ($rc > 0) {
-																														echo $rw['rol'];
-																													} else if ($rcAdm > 0) {
-																														echo $rwAdm['rol'];
-																													} ?>" /></td>
+					<?php if ($_GET['typekk'] == "NOW") : ?>
+						<?php $rol =  $dt_roll['ROLL']; ?>
+					<?php endif; ?>
+					<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+						<?php $rol =  $row_kkmasuk['roll']; ?>
+					<?php endif; ?>
+					<td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $rol; ?>" /></td>
 					
 				</tr>
 				<tr>
