@@ -565,7 +565,7 @@
                     </td>
                     <td>:</td>
                     <td>
-                        <select name="g_shift" class="form-control select2" required>
+                        <select name="g_shift" class="form-control select2">
 							<option value="">Pilih</option>
 							<option value="A">A</option>
 							<option value="B">B</option>
