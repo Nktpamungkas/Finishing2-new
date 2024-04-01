@@ -542,19 +542,17 @@
 																OPERATIONCODE ASC");
 								if($_GET['typekk'] == 'NOW'){
 									$if_operation   = "$_GET[operation]";
-									$selected       = "";
 								}elseif($_GET['typekk'] == 'SCHEDULE'){
-									$if_operation   = "$row_kkmasuk[group_shift]";
-									$selected       = "SELECTED";
+									$if_operation   = "$row_kkmasuk[operation]";
 								}
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
 								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($if_operation == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
-						<?php if ($_SESSION['lvl'] == "SPV") { ?>
+						<!-- <?php if ($_SESSION['lvl'] == "SPV") { ?>
 							<input type="button" name="btnmesin2" id="btnmesin2" value="..." onclick="window.open('pages/mesin.php','MyWindow','height=400,width=650');" />
-						<?php } ?>
+						<?php } ?> -->
 					</td>
 					<td width="14%">
 						<h4>Shift</h4>
@@ -855,7 +853,11 @@
 					<td colspan="2"><input name="qty" type="text" id="qty" size="5" value="<?= $berat; ?>" placeholder="0.00" />
 						&nbsp;&nbsp;&nbsp;
 						<strong>Gramasi</strong>:
-						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+						<?php if ($_GET['typekk'] == "NOW") : ?>
+                            <?php $nlebar = floor($dt_lg['LEBAR']); ?>
+                        <?php endif; ?>
+
+                        <?php if ($_GET['typekk'] == "SCHEDULE") : ?>
                             <?php $nlebar =  $row_kkmasuk['lebar']; ?>
                             <?php $ngramasi =  $row_kkmasuk['gramasi']; ?>
                         <?php endif; ?>
@@ -868,6 +870,7 @@
 						<h4>Warna</h4>
 					</td>
 					<td>:</td>
+
 					<?php if ($_GET['typekk'] == "NOW") : ?>
 						<?php $nama_warna =  $dt_warna['WARNA']; ?>
 					<?php endif; ?>
@@ -875,6 +878,7 @@
 						<?php $nama_warna =  $row_kkmasuk['warna']; ?>
 					<?php endif; ?>
 					<td><input name="warna" type="text" id="warna" size="30" value="<?= $nama_warna; ?>" /></td>
+					
 					<td width="14%"><strong>Panjang (Yard)</strong></td>
 					<td>:</td>
 					<?php if ($_GET['typekk'] == "NOW") : ?>
@@ -906,9 +910,15 @@
 						<h4>Lot</h4>
 					</td>
 					<td>:</td>
+
+					<?php if ($_GET['typekk'] == "NOW") : ?>
+                            <?php $lot =  $dt_ITXVIEWKK['LOT']; ?>
+                        <?php endif; ?>
+
 					<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
 						<?php $lot =  $row_kkmasuk['lot']; ?>
 					<?php endif; ?>
+					
 					<td><input name="lot" type="text" id="lot" size="5" value="<?= $lot; ?>" /></td>
 				</tr>
 				<tr>

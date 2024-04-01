@@ -172,7 +172,7 @@
             } else {
                 $anddemand = "";
             }
-            $q_kkmasuk        = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
+            $q_kkmasuk      = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
             $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
             include_once("../now.php");
         }
@@ -607,34 +607,30 @@
                             <option value="">Pilih</option>
                             <?php
                                 $qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
-                                                    TRIM(OPERATIONCODE) AS OPERATIONCODE,
-                                                    LONGDESCRIPTION 
-                                                FROM 
-                                                    WORKCENTERANDOPERATTRIBUTES
-                                                WHERE
-                                                    SUBSTR(WORKCENTERCODE, 1,4) = 'P3ST' 
-                                                    AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
-                                                ORDER BY
-                                                    OPERATIONCODE ASC");
+                                                                TRIM(OPERATIONCODE) AS OPERATIONCODE,
+                                                                LONGDESCRIPTION 
+                                                            FROM 
+                                                                WORKCENTERANDOPERATTRIBUTES
+                                                            WHERE
+                                                                SUBSTR(WORKCENTERCODE, 1,4) = 'P3ST' 
+                                                                AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
+                                                            ORDER BY
+                                                                OPERATIONCODE ASC");
 
                                 if($_GET['typekk'] == 'NOW'){
                                     $if_operation   = "$_GET[operation]";
-                                    $selected       = "";
                                 }elseif($_GET['typekk'] == 'SCHEDULE'){
-                                    $if_operation   = "$row_kkmasuk[group_shift]";
-                                    $selected       = "SELECTED";
+                                    $if_operation   = "$row_kkmasuk[operation]";
                                 }
-
                                 while ($r = db2_fetch_assoc($qry1)) {
                             ?>
-                                <option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($if_operation == $r['OPERATIONCODE']) {
-                                                                                        echo "SELECTED";
-                                                                                    } ?> <?= $selected; ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+                                <option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($r['OPERATIONCODE'] == $if_operation) { echo "SELECTED"; } ?>><?= $r['OPERATIONCODE']; ?> <?= $r['LONGDESCRIPTION']; ?></option>
+
                             <?php } ?>
                         </select>
-                        <?php if ($_SESSION['lvl'] == "SPV") { ?>
+                        <!-- <?php if ($_SESSION['lvl'] == "SPV") { ?>
                             <input type="button" name="btnmesin2" id="btnmesin2" value="..." onclick="window.open('pages/mesin.php','MyWindow','height=400,width=650');" />
-                        <?php } ?>
+                        <?php } ?> -->
                     </td>
                     <td width="14%">
                         <h4>Shift</h4>
@@ -657,37 +653,37 @@
                             <option value="">Pilih</option>
                             <?php
                             $q_mesin = db2_exec($conn_db2, "SELECT
-                                                    p.WORKCENTERCODE,
-                                                    CASE
-                                                        WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
-                                                        WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
-                                                        ELSE p.PRODRESERVATIONLINKGROUPCODE
-                                                    END	AS OPERATIONCODE,
-                                                    TRIM(o.OPERATIONGROUPCODE) AS OPERATIONGROUPCODE,
-                                                    o.LONGDESCRIPTION,
-                                                    iptip.MULAI,
-                                                    iptop.SELESAI,
-                                                    p.PRODUCTIONORDERCODE,
-                                                    p.PRODUCTIONDEMANDCODE,
-                                                    p.GROUPSTEPNUMBER AS STEPNUMBER,
-                                                    CASE
-                                                        WHEN iptip.MACHINECODE = iptop.MACHINECODE THEN iptip.MACHINECODE
-                                                        ELSE iptip.MACHINECODE || '-' ||iptop.MACHINECODE
-                                                    END AS MESIN   
-                                                    FROM 
-                                                        PRODUCTIONDEMANDSTEP p 
-                                                    LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
-                                                    LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-                                                    LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-                                                    WHERE
-                                                        p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' 
-                                                        AND 
-                                                        CASE
-                                                            WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
-                                                            WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
-                                                            ELSE p.PRODRESERVATIONLINKGROUPCODE
-                                                        END = '$_GET[operation]'
-                                                    ORDER BY iptip.MULAI ASC");
+                                                                p.WORKCENTERCODE,
+                                                                CASE
+                                                                    WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+                                                                    WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+                                                                    ELSE p.PRODRESERVATIONLINKGROUPCODE
+                                                                END	AS OPERATIONCODE,
+                                                                TRIM(o.OPERATIONGROUPCODE) AS OPERATIONGROUPCODE,
+                                                                o.LONGDESCRIPTION,
+                                                                iptip.MULAI,
+                                                                iptop.SELESAI,
+                                                                p.PRODUCTIONORDERCODE,
+                                                                p.PRODUCTIONDEMANDCODE,
+                                                                p.GROUPSTEPNUMBER AS STEPNUMBER,
+                                                                CASE
+                                                                    WHEN iptip.MACHINECODE = iptop.MACHINECODE THEN iptip.MACHINECODE
+                                                                    ELSE iptip.MACHINECODE || '-' ||iptop.MACHINECODE
+                                                                END AS MESIN   
+                                                            FROM 
+                                                                PRODUCTIONDEMANDSTEP p 
+                                                            LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+                                                            LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+                                                            LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+                                                            WHERE
+                                                                p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' 
+                                                                AND 
+                                                                CASE
+                                                                    WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+                                                                    WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+                                                                    ELSE p.PRODRESERVATIONLINKGROUPCODE
+                                                                END = '$_GET[operation]'
+                                                            ORDER BY iptip.MULAI ASC");
                             $row_mesin = db2_fetch_assoc($q_mesin);
                             
                             if($_GET['typekk'] == 'SCHEDULE'){
@@ -917,29 +913,22 @@
                         <input name="qty" type="text" id="qty" size="5" value="<?= $berat; ?>" placeholder="0.00" />
 
                         &nbsp;&nbsp;&nbsp;&nbsp;<strong>Gramasi</strong>:
+
                         <?php if ($_GET['typekk'] == "NOW") : ?>
                             <?php $nlebar = floor($dt_lg['LEBAR']); ?>
-                        <?php else : ?>
-                            <?php if ($cek > 0) {
-                                $nlebar = round($ssr['cuttablewidth'], 2);
-                            } else if ($rcAdm > 0) {
-                                $nlebar = $rwAdm['lebar'];
-                            } ?>
                         <?php endif; ?>
+
                         <?php if ($_GET['typekk'] == "SCHEDULE") : ?>
                             <?php $nlebar =  $row_kkmasuk['lebar']; ?>
                             <?php $ngramasi =  $row_kkmasuk['gramasi']; ?>
                         <?php endif; ?>
+
                         <input name="lebar" type="text" id="lebar" size="6" value="<?= $nlebar; ?>" placeholder="0" />
+
                         <?php if ($_GET['typekk'] == "NOW") : ?>
                             <?php $ngramasi = floor($dt_lg['GRAMASI']) ?>
-                        <?php else : ?>
-                            <?php if ($cek > 0) {
-                                $ngramasi = round($ssr['weight'], 2);
-                            } else if ($rcAdm > 0) {
-                                $ngramasi = $rwAdm['gramasi'];
-                            } ?>
                         <?php endif; ?>
+
                         <input name="gramasi" type="text" id="gramasi" size="6" value="<?= $ngramasi; ?>" placeholder="0" />
                     </td>
                 </tr>
@@ -1020,6 +1009,9 @@
                     </td>
                     <td>:</td>
                     <td>
+                        <?php if ($_GET['typekk'] == "NOW") : ?>
+                            <?php $lot =  $dt_ITXVIEWKK['LOT']; ?>
+                        <?php endif; ?>
                         <?php if ($_GET['typekk'] == "SCHEDULE") : ?>
                             <?php $lot =  $row_kkmasuk['lot']; ?>
                         <?php endif; ?>
