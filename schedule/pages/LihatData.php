@@ -17,7 +17,8 @@ include('../koneksi.php');
                 "sScrollX": "100%",
                 "bScrollCollapse": false,
                 "bPaginate": false,
-                "bJQueryUI": true
+                "bJQueryUI": true,
+                "bSort": false
             });
         })
     </script>
@@ -65,7 +66,7 @@ include('../koneksi.php');
         <table width="650" border="0">
             <tr>
                 <td colspan="3">
-                    <div align="center"><strong>KK MASUK FINISHING</strong></div>
+                    <div align="center"><strong>SCHEDULE FINISHING</strong></div>
                     <?php
                     $user_name = $_SESSION['username'];
                     date_default_timezone_set('Asia/Jakarta');
@@ -83,15 +84,17 @@ include('../koneksi.php');
                         <option value="-" disabled selected>Pilih</option>
                         <?php
                         $q_mesin    = mysqli_query($con, "SELECT
-                                                                    DISTINCT
-                                                                    no_mesin 
-                                                                FROM
-                                                                    `tbl_schedule_new`");
+                                                                DISTINCT
+                                                                no_mesin,
+                                                                SUBSTR(TRIM(no_mesin), -5, 2) AS singaktan_mesin,
+                                                                SUBSTR(TRIM(no_mesin), -2) AS nomesin
+                                                            FROM
+                                                                `tbl_schedule_new`");
                         ?>
                         <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
                             <option value="<?= $row_mesin['no_mesin']; ?>" <?php if ($row_mesin['no_mesin'] == $_POST['no_mesin']) {
                                                                                 echo 'SELECTED';
-                                                                            } ?>><?= $row_mesin['no_mesin']; ?></option>
+                                                                            } ?>><?= $row_mesin['singaktan_mesin']; ?><?= $row_mesin['nomesin']; ?></option>
                         <?php endwhile; ?>
                     </select>
                 </td>
@@ -133,6 +136,13 @@ include('../koneksi.php');
                     <?php if(isset($_POST['button'])) : ?>
                         <input type="button" name="batal" value="Reset" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
                         <a href="pages/ExportData.php?no_mesin=<?= $_POST['no_mesin'] ?>&nama_mesin=<?= $_POST['nama_mesin'] ?>&awal=<?= $_POST['awal'] ?>&akhir=<?= $_POST['akhir']; ?>" class="art-button">Cetak Ke Excel</a>
+                        <a href="pages/cetak_schedule_p1.php?no_mesin=<?= $_POST['no_mesin'] ?>&nama_mesin=<?= $_POST['nama_mesin'] ?>&awal=<?= $_POST['awal'] ?>&akhir=<?= $_POST['akhir']; ?>" class="art-button" target="_blank">Cetak Ke PDF</a>
+                    <?php endif; ?>
+                    <?php if(!isset($_POST['kkbelumsusun'])) : ?>
+                        <input type="submit" name="kkbelumsusun" value="KK belum tersusun" class="art-button" />
+                    <?php endif; ?>
+                    <?php if(isset($_POST['kkbelumsusun'])) : ?>
+		                <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../schedule/index.php?p=LihatData'" class="art-button" />
                     <?php endif; ?>
                 </td>
             </tr>
@@ -178,19 +188,32 @@ include('../koneksi.php');
                 }
 
                 if ($_POST['awal']) {
-                    $where_tgl  = "AND creationdatetime BETWEEN '$_POST[awal]' AND '$_POST[akhir]'";
+                    $where_tgl  = "AND SUBSTR(creationdatetime, 1, 10) BETWEEN '$_POST[awal]' AND '$_POST[akhir]'";
                 } else {
                     $where_tgl  = "";
                 }
-                $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin ORDER BY no_mesin, nama_mesin, nourut ASC");
+
+                if(isset($_POST['kkbelumsusun'])){
+                    $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC");
+                }elseif(isset($_POST['button'])){
+                    $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC");
+                }else{
+                    $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC");
+                }
             ?>
             <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                <?php
+                    // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
+                    $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
+                    $data_proses  = mysqli_fetch_assoc($cek_proses);
+                ?>
+                <?php if(empty($data_proses['jml'])) : ?>
                 <tr>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['no_mesin'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?php if($row_schedule['nourut'] == '0'){ echo '-'; } else { echo $row_schedule['nourut']; } ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']).'<br>'.substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?php if($row_schedule['group_shift'] == ''){ echo '-'; } else { echo $row_schedule['group_shift']; } ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nokk'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nodemand'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
@@ -210,8 +233,8 @@ include('../koneksi.php');
                         <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
                     </td>
                 </tr>
+            <?php endif; ?>
             <?php endwhile; ?>
-            
         </tbody>
     </table>
     <div id="confirmation-modal" class="modal">

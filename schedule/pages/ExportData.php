@@ -49,7 +49,7 @@
             }
 
             if ($_GET['awal']) {
-                $where_tgl  = "AND creationdatetime BETWEEN '$_GET[awal]' AND '$_GET[akhir]'";
+                $where_tgl  = "AND SUBSTR(creationdatetime, 1, 10) BETWEEN '$_GET[awal]' AND '$_GET[akhir]'";
             } else {
                 $where_tgl  = "";
             }

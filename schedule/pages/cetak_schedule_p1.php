@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../../styles_cetak.css" rel="stylesheet" type="text/css">
+    <title>Cetak Schedule Page 1</title>
+    <style>
+        .hurufvertical {
+            writing-mode: tb-rl;
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            -o-transform: rotate(-90deg);
+            -ms-transform: rotate(-90deg);
+            transform: rotate(180deg);
+            white-space: nowrap;
+            float: left;
+        }
+
+        input {
+            text-align: center;
+            border: hidden;
+        }
+
+        @media print {
+            ::-webkit-input-placeholder {
+                /* WebKit browsers */
+                color: transparent;
+            }
+
+            :-moz-placeholder {
+                /* Mozilla Firefox 4 to 18 */
+                color: transparent;
+            }
+
+            ::-moz-placeholder {
+                /* Mozilla Firefox 19+ */
+                color: transparent;
+            }
+
+            :-ms-input-placeholder {
+                /* Internet Explorer 10+ */
+                color: transparent;
+            }
+
+            .pagebreak {
+                page-break-before: always;
+            }
+
+            .header {
+                display: block
+            }
+
+            table thead {
+                display: table-header-group;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table width="100%">
+        <thead>
+            <tr>
+                <td>
+                    <table width="100%" border="1" class="table-list1">
+                        <tr>
+                            <td width="9%" align="center"><img src="../../indo.jpg" width="40" height="40" /></td>
+                            <td align="center" valign="middle"><strong>
+                                    <font size="+1">SCHEDULE FINISHING <?php echo strtoupper($_GET['no_mesin']); ?></font><br>FW-14-PPC-11/00
+                                </strong></td>
+                        </tr>
+                    </table>
+                    <table width="100%" border="0">
+                        <tbody>
+                            <tr>
+                                <td width="78%">
+                                    <?php 
+                                        // Set lokasi timezone ke Waktu Indonesia Barat
+                                        date_default_timezone_set('Asia/Jakarta');
+
+                                        // Tanggal dalam format Y-m-d H:i:s
+                                        $date = date('Y-m-d H:i:s');
+
+                                        // Array nama hari dalam bahasa Indonesia
+                                        $hari = array("Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu");
+
+                                        // Array nama bulan dalam bahasa Indonesia
+                                        $bulan = array("","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember");
+
+                                        // Pisahkan tanggal, bulan, dan tahun
+                                        $timestamp = strtotime($date);
+                                        $hari_indonesia = $hari[date('w', $timestamp)];
+                                        $bulan_indonesia = $bulan[date('n', $timestamp)];
+                                        $tanggal_indonesia = date('d', $timestamp);
+                                        $tahun_indonesia = date('Y', $timestamp);
+
+                                        // Format tanggal dalam bahasa Indonesia
+                                        $tanggal_lengkap        = $hari_indonesia . ', ' . $tanggal_indonesia . ' ' . $bulan_indonesia . ' ' . $tahun_indonesia;
+                                        $tanggal_lengkap_ttd    = $tanggal_indonesia . ' ' . $bulan_indonesia . ' ' . $tahun_indonesia;
+
+                                        // Tampilkan tanggal dengan format Indonesia
+                                    ?>
+                                    <font size="-1">Hari/Tanggal : <?=  $tanggal_lengkap ?></font><br />
+                                </td>
+                                <td width="22%" align="right"><!--Jam: <?php echo date('H:i:s', strtotime($jam)); ?>--></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </thead>
+        <tr>
+            <td>
+                <table width="100%" border="1" class="table-list1">
+                    <thead>
+                        <tr>
+                            <td width="3%" rowspan="2" scope="col">
+                                <div align="center">No. Urut</div>
+                            </td>
+                            <td width="3%" rowspan="2" scope="col">
+                                <div align="center">Mesin</div>
+                            </td>
+                            <td width="3%" rowspan="2" scope="col">
+                                <div align="center">Shift</div>
+                            </td>
+                            <td width="18%" rowspan="2" scope="col">
+                                <div align="center">Langganan</div>
+                            </td>
+                            <td width="8%" rowspan="2" scope="col">
+                                <div align="center">No. Order</div>
+                            </td>
+                            <td width="14%" rowspan="2" scope="col">
+                                <div align="center">Jenis Kain</div>
+                            </td>
+                            <td width="8%" rowspan="2" scope="col">
+                                <div align="center">Lebar/Grms</div>
+                            </td>
+                            <td width="8%" rowspan="2" scope="col">
+                                <div align="center">Warna</div>
+                            </td>
+                            <td width="3%" rowspan="2" scope="col">
+                                <div align="center">Lot</div>
+                            </td>
+                            <td width="6%" rowspan="2" scope="col">
+                                <div align="center">Tanggal Delivery</div>
+                            </td>
+                            <td colspan="2" scope="col">
+                                <div align="center">Quantity</div>
+                            </td>
+                            <td width="20%" rowspan="2" scope="col">
+                                <div align="center">Keterangan</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="3%">
+                                <div align="center">Roll</div>
+                            </td>
+                            <td width="6%">
+                                <div align="center">Kg</div>
+                            </td>
+                        </tr>
+                    </thead>
+
+                    <?php
+                        include('../../koneksi.php');
+                        if ($_GET['no_mesin']) {
+                            $where_no_mesin  = "AND no_mesin = '$_GET[no_mesin]'";
+                        } else {
+                            $where_no_mesin  = "";
+                        }
+            
+                        if ($_GET['nama_mesin']) {
+                            $where_nama_mesin  = "AND nama_mesin = '$_GET[nama_mesin]'";
+                        } else {
+                            $where_nama_mesin  = "";
+                        }
+            
+                        if ($_GET['awal']) {
+                            $where_tgl  = "AND SUBSTR(creationdatetime, 1, 10) BETWEEN '$_GET[awal]' AND '$_GET[akhir]'";
+                        } else {
+                            $where_tgl  = "";
+                        }
+                        $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin");
+                        $q_roll         = mysqli_query($con, "SELECT SUM(roll) as roll FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin");
+                        $count_roll     = mysqli_fetch_assoc($q_roll);
+
+                        $q_qty_order         = mysqli_query($con, "SELECT SUM(qty_order) as qty_order FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin");
+                        $count_qty_order     = mysqli_fetch_assoc($q_qty_order);
+
+                    ?>
+                    <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                        <?php
+                            // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
+                            $cek_proses   = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
+                            $data_proses  = mysqli_fetch_assoc($cek_proses);
+                            error_reporting(0);
+                        ?>
+                        <tr>
+                            <td align="center" valign="top" style="height: 0.35in;"><?= $row_schedule['nourut']; ?></td>
+                            <td align="center" valign="top"><?= $row_schedule['nama_mesin']; ?> <br> <?= substr(TRIM($data_proses['no_mesin']), -5, 2).substr(TRIM($data_proses['no_mesin']), -2); ?></td>
+                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['group_shift']; ?></span></td>
+                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['langganan'] . "/" . $row_schedule['buyer']; ?></span></td>
+                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['no_order']; ?></span></td>
+                            <td align="left" valign="top"><span style="height: 0.35in;"><?= $row_schedule['jenis_kain']; ?></span></td>
+                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lebar'] . "X" . $row_schedule['gramasi']; ?></span></td>
+                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['warna']; ?></span></td>
+                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lot']; ?></span></td>
+                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['tgl_delivery']; ?></span></td>
+                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['roll']; ?></span></td>
+                            <td align="right" valign="top"><span style="height: 0.35in;"><?= $row_schedule['qty_order']; ?></span></td>
+                            <td valign="top">
+                                <span style="height: 0.35in;">
+                                    <?= $row_schedule['proses']; ?><br><br>
+                                    <?= $data_proses['tgl_buat']; ?><br>
+                                    <?= TRIM($data_proses['no_mesin']).' - '.substr(TRIM($data_proses['no_mesin']), -5, 2).substr(TRIM($data_proses['no_mesin']), -2); ?><br>
+                                    <?= $data_proses['tgl_update']; ?>
+                                </span>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                        <tr>
+                            <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="right" valign="top"><strong>TOTAL</strong></td>
+                            <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
+                            <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
+                            <td valign="top">&nbsp;</td>
+                        </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="100%" border="1" class="table-list1">
+                    <tr>
+                        <td width="16%" scope="col">&nbsp;</td>
+                        <td width="29%" scope="col">
+                            <div align="center">Dibuat Oleh</div>
+                        </td>
+                        <td width="29%" scope="col">
+                            <div align="center">DIperiksa Oleh</div>
+                        </td>
+                        <td width="26%" scope="col">
+                            <div align="center">Diketahui Oleh</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nama</td>
+                        <td align="center">Husni Jr</td>
+                        <td align="center">Putri</td>
+                        <td align="center">Yayan</td>
+                    </tr>
+                    <tr>
+                        <td>Jabatan</td>
+                        <td align="center">Staff Schedule</td>
+                        <td align="center">SPV</td>
+                        <td align="center"> Ast. Manager</td>
+                    </tr>
+                    <tr>
+                        <td>Tanggal</td>
+                        <td align="center"><?=  $tanggal_lengkap_ttd ?></td>
+                        <td align="center"><?=  $tanggal_lengkap_ttd ?></td>
+                        <td align="center"><?=  $tanggal_lengkap_ttd ?></td>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="height: 0.5in;">Tanda Tangan</td>
+                        <td align="center"><img src="../../ttd/husni.jpg" width="80" height="73" alt="" /></td>
+                        <td align="center"><img src="../../ttd/putri.jpg" width="80" height="73" alt="" /></td>
+                        <td align="center"><img src="../../ttd/yayan.jpg" width="80" height="73" alt="" /></td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+
+    </table>
+    <table width="100%" border="0">
+        <tbody>
+            <tr>
+                <td width="87%">&nbsp;</td>
+                <td width="13%">&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        //alert('cetak');window.print();
+    </script>
+</body>
+
+</html>

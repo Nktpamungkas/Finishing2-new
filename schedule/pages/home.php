@@ -409,7 +409,8 @@
                             <?php
 								$query_namamesin	= "SELECT
 															DISTINCT 
-															TRIM(p.WORKCENTERCODE) AS WORKCENTERCODE,
+															-- TRIM(p.WORKCENTERCODE) AS WORKCENTERCODE,
+															SUBSTR(TRIM(p.WORKCENTERCODE), 1, 4) AS WORKCENTERCODE,
 															SUBSTR(TRIM(p.WORKCENTERCODE), 1,4) AS WORKCENTERCODE_CODE,
 															w2.LONGDESCRIPTION 
 														FROM
