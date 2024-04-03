@@ -101,10 +101,6 @@
                     <!-- <li><a href="../belah-lipat/">Belah &amp; Lipat</a></li> -->
                     <!-- <li><a href="../oven/">Oven</a></li> -->
                     <!-- <li><a href="../steamer/">Steamer</a></li> -->
-                    <?php if ($_SESSION['lvl'] != "Operator") { ?>
-                        <li><a href="../keluar/">Keluar</a></li>
-                    <?php } ?>
-                    <li><a href="../reports/">Reports</a></li>
                     <?php if (!isset($_SESSION['usr']) || !isset($_SESSION['pass'])) { ?>
                         <li><a href="../login.php">Log In</a></li>
                     <?php } else { ?>

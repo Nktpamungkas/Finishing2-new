@@ -89,7 +89,9 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(no_mesin), -5, 2) AS singaktan_mesin,
                                                                 SUBSTR(TRIM(no_mesin), -2) AS nomesin
                                                             FROM
-                                                                `tbl_schedule_new`");
+                                                                `tbl_schedule_new` 
+                                                            ORDER BY
+                                                                SUBSTR(TRIM(no_mesin), -2) ASC");
                         ?>
                         <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
                             <option value="<?= $row_mesin['no_mesin']; ?>" <?php if ($row_mesin['no_mesin'] == $_POST['no_mesin']) {
@@ -133,8 +135,9 @@ include('../koneksi.php');
             <tr>
                 <td colspan="3">
                     <input type="submit" name="button" id="button" value="Cari data" class="art-button" />
-                    <?php if(isset($_POST['button'])) : ?>
-                        <input type="button" name="batal" value="Reset" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
+                    <input type="button" name="batal" value="Reset" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
+                    <input type="button" name="batal" value="View Report" onclick="window.location.href='index.php?p=Reports'" class="art-button">
+                    <!-- <?php if(isset($_POST['button'])) : ?>
                         <a href="pages/ExportData.php?no_mesin=<?= $_POST['no_mesin'] ?>&nama_mesin=<?= $_POST['nama_mesin'] ?>&awal=<?= $_POST['awal'] ?>&akhir=<?= $_POST['akhir']; ?>" class="art-button">Cetak Ke Excel</a>
                         <a href="pages/cetak_schedule_p1.php?no_mesin=<?= $_POST['no_mesin'] ?>&nama_mesin=<?= $_POST['nama_mesin'] ?>&awal=<?= $_POST['awal'] ?>&akhir=<?= $_POST['akhir']; ?>" class="art-button" target="_blank">Cetak Ke PDF</a>
                     <?php endif; ?>
@@ -143,7 +146,7 @@ include('../koneksi.php');
                     <?php endif; ?>
                     <?php if(isset($_POST['kkbelumsusun'])) : ?>
 		                <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../schedule/index.php?p=LihatData'" class="art-button" />
-                    <?php endif; ?>
+                    <?php endif; ?> -->
                 </td>
             </tr>
         </table>
@@ -193,12 +196,16 @@ include('../koneksi.php');
                     $where_tgl  = "";
                 }
 
-                if(isset($_POST['kkbelumsusun'])){
-                    $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC");
-                }elseif(isset($_POST['button'])){
-                    $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC");
+                // if(isset($_POST['kkbelumsusun'])){
+                //     $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
+                //     $q_schedule     = mysqli_query($con, $query_schedule);
+                // }else
+                if(isset($_POST['button'])){
+                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
+                    $q_schedule     = mysqli_query($con, $query_schedule);
                 }else{
-                    $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC");
+                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
+                    $q_schedule     = mysqli_query($con, $query_schedule);
                 }
             ?>
             <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
@@ -209,11 +216,11 @@ include('../koneksi.php');
                 ?>
                 <?php if(empty($data_proses['jml'])) : ?>
                 <tr>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?php if($row_schedule['nourut'] == '0'){ echo '-'; } else { echo $row_schedule['nourut']; } ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']).'<br>'.substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?php if($row_schedule['group_shift'] == ''){ echo '-'; } else { echo $row_schedule['group_shift']; } ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nokk'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nodemand'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
@@ -226,7 +233,7 @@ include('../koneksi.php');
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order_yd'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['catatan'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['creationdatetime'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;">
                         <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>

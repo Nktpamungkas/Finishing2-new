@@ -67,7 +67,7 @@
                         <tr>
                             <td width="9%" align="center"><img src="../../indo.jpg" width="40" height="40" /></td>
                             <td align="center" valign="middle"><strong>
-                                    <font size="+1">SCHEDULE FINISHING <?php echo strtoupper($_GET['no_mesin']); ?></font><br>FW-14-PPC-11/00
+                                    <font size="+1">SCHEDULE FINISHING <?php if(empty($_GET['no_mesin'])){ echo "SEMUA MESIN"; } ?></font><br>FW-14-PPC-11/00
                                 </strong></td>
                         </tr>
                     </table>
@@ -104,6 +104,24 @@
                                     <font size="-1">Hari/Tanggal : <?=  $tanggal_lengkap ?></font><br />
                                 </td>
                                 <td width="22%" align="right"><!--Jam: <?php echo date('H:i:s', strtotime($jam)); ?>--></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?php if($_GET['kksudahproses'] == '1'){ echo "<li style='font-size: 10px;'>Hanya menampilkan data yang <b>belum</b> dan <b>sudah</b> selesai diproses.</li>"; } ?>
+                                    <?php if($_GET['kksudahproses'] == '2'){ echo "<li style='font-size: 10px;'>Hanya menampilkan data yang <b>sudah</b> selesai diproses.</li>"; } ?>
+                                    <?php if($_GET['kksudahproses'] == '3'){ echo "<li style='font-size: 10px;'>Hanya menampilkan data yang <b>belum</b> selesai diproses.</li>"; } ?>
+                                    
+                                    <?php if($_GET['nourut']){ echo "<li style='font-size: 10px;'>Hanya menampilkan dengan nomor urut <b>$_GET[nourut]</b>.</li>"; } ?>
+
+                                    <?php if($_GET['no_mesin']){ echo "<li style='font-size: 10px;'>Hanya menampilkan dengan nomor mesin <b>$_GET[no_mesin] - ".substr(TRIM($_GET['no_mesin']), -5, 2).substr(TRIM($_GET['no_mesin']), -2)."</b>.</li>"; } ?>
+                                
+                                    <?php if($_GET['nama_mesin']){ echo "<li style='font-size: 10px;'>Hanya menampilkan dengan nama mesin <b>$_GET[nama_mesin]</b>.</li>"; } ?>
+
+                                    <?php if($_GET['proses']){ echo "<li style='font-size: 10px;'>Hanya menampilkan dengan proses <b>$_GET[proses]</b>.</li>"; } ?>
+
+                                    <?php if($_GET['awal'] && $_GET['akhir']){ echo "<li style='font-size: 10px;'>Hanya menampilkan dengan range tanggal <b>$_GET[awal]</b> s/d <b>$_GET[akhir]</b>.</li>"; } ?>
+                                
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -164,6 +182,13 @@
 
                     <?php
                         include('../../koneksi.php');
+                        ini_set("error_reporting", 0);
+                        if ($_GET['nourut'] OR $_GET['nourut'] == '0') {
+                            $where_nourut  = "AND nourut = '$_GET[nourut]'";
+                        } else {
+                            $where_nourut  = "";
+                        }
+                        
                         if ($_GET['no_mesin']) {
                             $where_no_mesin  = "AND no_mesin = '$_GET[no_mesin]'";
                         } else {
@@ -175,65 +200,170 @@
                         } else {
                             $where_nama_mesin  = "";
                         }
+                        
+                        if ($_GET['proses']) {
+                            $where_proses  = "AND proses = '$_GET[proses]'";
+                        } else {
+                            $where_proses  = "";
+                        }
             
                         if ($_GET['awal']) {
                             $where_tgl  = "AND SUBSTR(creationdatetime, 1, 10) BETWEEN '$_GET[awal]' AND '$_GET[akhir]'";
                         } else {
                             $where_tgl  = "";
                         }
-                        $q_schedule     = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin");
-                        $q_roll         = mysqli_query($con, "SELECT SUM(roll) as roll FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin");
+                        $no = 1;
+                        $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin";
+                        $q_schedule     = mysqli_query($con, $query_schedule);
+
+                        $q_roll         = mysqli_query($con, "SELECT SUM(roll) as roll FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin");
                         $count_roll     = mysqli_fetch_assoc($q_roll);
 
-                        $q_qty_order         = mysqli_query($con, "SELECT SUM(qty_order) as qty_order FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin");
+                        $q_qty_order         = mysqli_query($con, "SELECT SUM(qty_order) as qty_order FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin");
                         $count_qty_order     = mysqli_fetch_assoc($q_qty_order);
-
                     ?>
                     <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                         <?php
-                            // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
-                            $cek_proses   = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
+                            $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
                             $data_proses  = mysqli_fetch_assoc($cek_proses);
-                            error_reporting(0);
                         ?>
-                        <tr>
-                            <td align="center" valign="top" style="height: 0.35in;"><?= $row_schedule['nourut']; ?></td>
-                            <td align="center" valign="top"><?= $row_schedule['nama_mesin']; ?> <br> <?= substr(TRIM($data_proses['no_mesin']), -5, 2).substr(TRIM($data_proses['no_mesin']), -2); ?></td>
-                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['group_shift']; ?></span></td>
-                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['langganan'] . "/" . $row_schedule['buyer']; ?></span></td>
-                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['no_order']; ?></span></td>
-                            <td align="left" valign="top"><span style="height: 0.35in;"><?= $row_schedule['jenis_kain']; ?></span></td>
-                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lebar'] . "X" . $row_schedule['gramasi']; ?></span></td>
-                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['warna']; ?></span></td>
-                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lot']; ?></span></td>
-                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['tgl_delivery']; ?></span></td>
-                            <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['roll']; ?></span></td>
-                            <td align="right" valign="top"><span style="height: 0.35in;"><?= $row_schedule['qty_order']; ?></span></td>
-                            <td valign="top">
-                                <span style="height: 0.35in;">
-                                    <?= $row_schedule['proses']; ?><br><br>
-                                    <?= $data_proses['tgl_buat']; ?><br>
-                                    <?= TRIM($data_proses['no_mesin']).' - '.substr(TRIM($data_proses['no_mesin']), -5, 2).substr(TRIM($data_proses['no_mesin']), -2); ?><br>
-                                    <?= $data_proses['tgl_update']; ?>
-                                </span>
-                            </td>
-                        </tr>
+                        <?php if(empty($data_proses['jml']) AND $_GET['kksudahproses'] == '3') : ?>
+                            <tr>
+                                <td align="center" valign="top" style="height: 0.35in;"><?= $row_schedule['nourut']; ?></td>
+                                <td align="center" valign="top"><?= $row_schedule['no_mesin']; ?> <br> <?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['group_shift']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['langganan'] . "/" . $row_schedule['buyer']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['no_order']; ?></span></td>
+                                <td align="left" valign="top"><span style="height: 0.35in;"><?= $row_schedule['jenis_kain']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lebar'] . "X" . $row_schedule['gramasi']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['warna']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lot']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['tgl_delivery']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['roll']; ?></span></td>
+                                <td align="right" valign="top"><span style="height: 0.35in;"><?= $row_schedule['qty_order']; ?></span></td>
+                                <td valign="top">
+                                    Nokk : <?= $row_schedule['nokk'] ?><br>
+                                    No demand : <?= $row_schedule['nodemand'] ?><br>
+                                    <?php
+                                        // CEK JIKA SUDAH PROSES MAKA MUNCULIN DI KETERANGAN
+                                        $cek_hasilproses   = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
+                                        $data_hasilproses  = mysqli_fetch_assoc($cek_hasilproses);
+                                    ?>
+                                    <?php if($data_hasilproses){ echo "Sudah Jalan"; } ?><br>
+                                    <?= $data_hasilproses['tgl_buat']; ?><br>
+                                    <?= $data_hasilproses['no_mesin']; ?><br>
+                                    <?= $data_hasilproses['nama_mesin']; ?><br>
+                                    <?= $data_hasilproses['proses']; ?><br>
+                                </td>
+                            </tr>
+                        <?php elseif (!empty($data_proses['jml']) AND $_GET['kksudahproses'] == '2') : ?>
+                            <tr>
+                                <td align="center" valign="top" style="height: 0.35in;"><?= $row_schedule['nourut']; ?></td>
+                                <td align="center" valign="top"><?= $row_schedule['no_mesin']; ?> <br> <?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['group_shift']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['langganan'] . "/" . $row_schedule['buyer']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['no_order']; ?></span></td>
+                                <td align="left" valign="top"><span style="height: 0.35in;"><?= $row_schedule['jenis_kain']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lebar'] . "X" . $row_schedule['gramasi']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['warna']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lot']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['tgl_delivery']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['roll']; ?></span></td>
+                                <td align="right" valign="top"><span style="height: 0.35in;"><?= $row_schedule['qty_order']; ?></span></td>
+                                <td valign="top">
+                                    Nokk : <?= $row_schedule['nokk'] ?><br>
+                                    No demand : <?= $row_schedule['nodemand'] ?><br>
+                                    <?php
+                                        // CEK JIKA SUDAH PROSES MAKA MUNCULIN DI KETERANGAN
+                                        $cek_hasilproses   = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
+                                        $data_hasilproses  = mysqli_fetch_assoc($cek_hasilproses);
+                                    ?>
+                                    <?php if($data_hasilproses){ echo "Sudah Jalan"; } ?><br>
+                                    <?= $data_hasilproses['tgl_buat']; ?><br>
+                                    <?= $data_hasilproses['no_mesin']; ?><br>
+                                    <?= $data_hasilproses['nama_mesin']; ?><br>
+                                    <?= $data_hasilproses['proses']; ?><br>
+                                </td>
+                            </tr>
+                        <?php elseif ((!empty($data_proses['jml']) OR empty($data_proses['jml'])) AND $_GET['kksudahproses'] == '1') : ?>
+                            <tr>
+                                <td align="center" valign="top" style="height: 0.35in;"><?= $row_schedule['nourut']; ?></td>
+                                <td align="center" valign="top"><?= $row_schedule['no_mesin']; ?> <br> <?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['group_shift']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['langganan'] . "/" . $row_schedule['buyer']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['no_order']; ?></span></td>
+                                <td align="left" valign="top"><span style="height: 0.35in;"><?= $row_schedule['jenis_kain']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lebar'] . "X" . $row_schedule['gramasi']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['warna']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['lot']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['tgl_delivery']; ?></span></td>
+                                <td align="center" valign="top"><span style="height: 0.35in;"><?= $row_schedule['roll']; ?></span></td>
+                                <td align="right" valign="top"><span style="height: 0.35in;"><?= $row_schedule['qty_order']; ?></span></td>
+                                <td valign="top">
+                                    Nokk : <?= $row_schedule['nokk'] ?><br>
+                                    No demand : <?= $row_schedule['nodemand'] ?><br>
+                                    <?php
+                                        // CEK JIKA SUDAH PROSES MAKA MUNCULIN DI KETERANGAN
+                                        $cek_hasilproses   = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
+                                        $data_hasilproses  = mysqli_fetch_assoc($cek_hasilproses);
+                                    ?>
+                                    <?php if($data_hasilproses){ echo "Sudah Jalan"; } ?><br>
+                                    <?= $data_hasilproses['tgl_buat']; ?><br>
+                                    <?= $data_hasilproses['no_mesin']; ?><br>
+                                    <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?><br>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     <?php endwhile; ?>
-                        <tr>
-                            <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
-                            <td align="center" valign="top">&nbsp;</td>
-                            <td align="center" valign="top">&nbsp;</td>
-                            <td align="center" valign="top">&nbsp;</td>
-                            <td align="center" valign="top">&nbsp;</td>
-                            <td align="center" valign="top">&nbsp;</td>
-                            <td align="center" valign="top">&nbsp;</td>
-                            <td align="center" valign="top">&nbsp;</td>
-                            <td align="center" valign="top">&nbsp;</td>
-                            <td align="right" valign="top"><strong>TOTAL</strong></td>
-                            <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
-                            <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
-                            <td valign="top">&nbsp;</td>
-                        </tr>
+                        <?php if(empty($data_proses['jml']) AND $_GET['kksudahproses'] == '3') : ?>
+                            <tr>
+                                <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="right" valign="top"><strong>TOTAL</strong></td>
+                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
+                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
+                                <td valign="top">&nbsp;</td>
+                            </tr>
+                        <?php elseif (!empty($data_proses['jml']) AND $_GET['kksudahproses'] == '2') : ?>
+                            <tr>
+                                <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="right" valign="top"><strong>TOTAL</strong></td>
+                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
+                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
+                                <td valign="top">&nbsp;</td>
+                            </tr>
+                        <?php elseif ((!empty($data_proses['jml']) OR empty($data_proses['jml'])) AND $_GET['kksudahproses'] == '1') : ?>
+                            <tr>
+                                <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="center" valign="top">&nbsp;</td>
+                                <td align="right" valign="top"><strong>TOTAL</strong></td>
+                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
+                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
+                                <td valign="top">&nbsp;</td>
+                            </tr>
+                        <?php endif; ?>
                 </table>
             </td>
         </tr>
