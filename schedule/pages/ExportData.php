@@ -4,7 +4,7 @@
     header("Pragma: no-cache");
     header("Expires: 0");
 ?>
-<table border="1" width="100%">
+<table border="1">
     <thead>
         <tr>
             <th>NO</th>
@@ -81,7 +81,7 @@
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= $row_schedule['nourut'] ?></td>
-                    <td><?= $row_schedule['no_mesin'] ?></td>
+                    <td><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
                     <td><?= $row_schedule['nama_mesin'] ?></td>
                     <td><?= $row_schedule['group_shift'] ?></td>
                     <td>`<?= $row_schedule['nokk'] ?></td>
@@ -120,7 +120,7 @@
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= $row_schedule['nourut'] ?></td>
-                    <td><?= $row_schedule['no_mesin'] ?></td>
+                    <td><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
                     <td><?= $row_schedule['nama_mesin'] ?></td>
                     <td><?= $row_schedule['group_shift'] ?></td>
                     <td>`<?= $row_schedule['nokk'] ?></td>
@@ -159,7 +159,7 @@
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= $row_schedule['nourut'] ?></td>
-                    <td><?= $row_schedule['no_mesin'] ?></td>
+                    <td><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
                     <td><?= $row_schedule['nama_mesin'] ?></td>
                     <td><?= $row_schedule['group_shift'] ?></td>
                     <td>`<?= $row_schedule['nokk'] ?></td>

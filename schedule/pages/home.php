@@ -427,16 +427,22 @@
 								$q_namamesin 		= db2_exec($conn_db2, $query_namamesin);
 								$workcenter			= db2_exec($conn_db2, $query_namamesin);
 								$data_workcenter	= db2_fetch_assoc($workcenter);
+
+								if($data_workcenter['WORKCENTERCODE_CODE'] == 'P3ST'){
+									$where_st_oven	= "(SUBSTR(CODE, 1,4) = 'P3ST' OR SUBSTR(CODE, 1,4) = 'P3DR')";
+								}else{
+									$where_st_oven	= "SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]'";
+								}
 								
 								$q_nomormesin 		= db2_exec($conn_db2, "SELECT
-																*
-															FROM
-																RESOURCES r
-															WHERE
-																SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]' 
-															ORDER BY 
-																SUBSTR(CODE, 6,2) 
-															ASC");
+																				*
+																			FROM
+																				RESOURCES r
+																			WHERE
+																				$where_st_oven
+																			ORDER BY 
+																				SUBSTR(CODE, 6,2) 
+																			ASC");
 								while ($row_nomormesin = db2_fetch_assoc($q_nomormesin)) {
                             ?>
                                 <option value="<?php echo $row_nomormesin['CODE']; ?>"><?php echo $row_nomormesin['CODE']; ?> - <?php echo $row_nomormesin['LONGDESCRIPTION']; ?></option>
