@@ -87,7 +87,8 @@ include('../koneksi.php');
                 <td>
                     <select name="nourut" class="form-control select2">
                         <option value="-" disabled selected>Pilih</option>
-                        <option value="">Semua Nomor Urut</option>
+                        <option value="with0" <?php if($_POST['nourut'] == 'with0'){ echo "SELECTED"; } ?>>Semua nomor urut dengan 0</option>
+                        <option value="without0" <?php if($_POST['nourut'] == 'without0'){ echo "SELECTED"; } ?>>Semua nomor urut tidak dengan 0</option>
                         <?php
                             $q_nourut    = mysqli_query($con, "SELECT
                                                                     DISTINCT
@@ -238,9 +239,9 @@ include('../koneksi.php');
                 <?php
                     include('../../koneksi.php');
                     ini_set("error_reporting", 0);
-                    if ($_POST['nourut'] OR $_POST['nourut'] == '0') {
-                        $where_nourut  = "AND nourut = '$_POST[nourut]'";
-                    } else {
+                    if($_POST['nourut'] == 'without0'){
+                        $where_nourut  = "AND NOT nourut = '0'";
+                    }else{
                         $where_nourut  = "";
                     }
                     

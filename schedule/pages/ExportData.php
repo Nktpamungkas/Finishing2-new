@@ -39,9 +39,9 @@
         <?php
             include('../../koneksi.php');
             ini_set("error_reporting", 0);
-            if ($_GET['nourut'] OR $_GET['nourut'] == '0') {
-                $where_nourut  = "AND nourut = '$_GET[nourut]'";
-            } else {
+            if($_GET['nourut'] == 'without0'){
+                $where_nourut  = "AND NOT nourut = '0'";
+            }else{
                 $where_nourut  = "";
             }
             
