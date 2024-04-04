@@ -147,6 +147,7 @@ include('../koneksi.php');
             </tr>
         </table>
     </form>
+    
     <table width="100%" border="1" id="datatables" class="display">
         <thead>
             <tr>
@@ -196,13 +197,16 @@ include('../koneksi.php');
                     $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
                     $q_schedule     = mysqli_query($con, $query_schedule);
                 }elseif(isset($_POST['button'])){
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
+                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
                     $q_schedule     = mysqli_query($con, $query_schedule);
                 }else{
                     $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
                     $q_schedule     = mysqli_query($con, $query_schedule);
                 }
+                $totalQty = 0;
+                $totalRoll = 0;
             ?>
+            
             <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                 <?php
                     // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
@@ -234,9 +238,33 @@ include('../koneksi.php');
                         <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
                         <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
                     </td>
+                    <?php $totalQty += $row_schedule['qty_order']; ?>
+                    <?php $totalRoll += $row_schedule['roll']; ?>
                 </tr>
             <?php endif; ?>
             <?php endwhile; ?>
+                <tr>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalRoll; ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalQty; ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                </tr>
         </tbody>
     </table>
     <div id="confirmation-modal" class="modal">
