@@ -111,9 +111,38 @@
                 } else {
                     $anddemand = "";
                 }
-                $q_kkmasuk      = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
-                $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
-				include_once("../now.php");
+                // CEK JIKA blm ada nomor urut dan group shift kasih peringatan tidak bisa input saat operator mau proses
+				$q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
+				$row_cekschedule = mysqli_fetch_assoc($q_cekshedule);
+				if(empty($row_cekschedule['nourut']) AND $_GET['demand']){
+					echo     "<script>
+								swal({
+									title: 'Silakan hubungi pemimpin (leader) Anda untuk pengaturan NOMOR URUT yang tepat.',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/oven/?typekk=SCHEDULE'; 
+									}
+								});
+							</script>";
+				}elseif (empty($row_cekschedule['group_shift']) AND $_GET['demand']) {
+					echo     "<script>
+								swal({
+									title: 'Silakan hubungi pemimpin (leader) Anda untuk pengaturan GROUP SHIFT yang tepat.',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/oven/?typekk=SCHEDULE'; 
+									}
+								});
+							</script>";
+				}else{
+					$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
+					$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+					include_once("../now.php");
+				}
             }
         }
     ?>
