@@ -213,13 +213,13 @@
                             $where_tgl  = "";
                         }
                         $no = 1;
-                        $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin";
+                        $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
                         $q_schedule     = mysqli_query($con, $query_schedule);
 
-                        $q_roll         = mysqli_query($con, "SELECT SUM(roll) as roll FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin");
+                        $q_roll         = mysqli_query($con, "SELECT SUM(roll) as roll FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC");
                         $count_roll     = mysqli_fetch_assoc($q_roll);
 
-                        $q_qty_order         = mysqli_query($con, "SELECT SUM(qty_order) as qty_order FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin");
+                        $q_qty_order         = mysqli_query($con, "SELECT SUM(qty_order) as qty_order FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC");
                         $count_qty_order     = mysqli_fetch_assoc($q_qty_order);
                     ?>
                     <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>

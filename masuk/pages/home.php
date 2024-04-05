@@ -164,22 +164,19 @@
 							}
 						});
 					</script>";
-		} elseif ($_GET['typekk'] == "NOW") {
+		} elseif ($_GET['typekk'] == "NOW" OR $_GET['operation']) {
 			if ($idkk != "") {
-				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]'");
-				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
-				if($row_kkmasuk){
+				$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
+				$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
+				if($row_kkproses){
 					echo 	"<script>
 								swal({
-									title: 'Kartu Kerja sudah ada.',   
+									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah selesai diproses.',   
 									text: 'Klik Ok untuk input data kembali',
 									type: 'warning',
-								}).then((result) => {
-									if (result.value) {
-										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
-									}
 								});
 							</script>";
+					include_once("../now.php");
 				}else{
 					include_once("../now.php");
 				}
@@ -190,67 +187,84 @@
 		 if (isset($_POST['btnSimpan'])) {
 			$creationdatetime	= date('Y-m-d H:i:s');
 			$jenis_kain		= addslashes($_POST['jenis_kain']);
-			$simpanSql = "INSERT INTO tbl_masuk (nokk,
-												nodemand,
-												operation,
-												nama_mesin,
-												langganan,
-												buyer,
-												no_order,
-												tgl_delivery,
-												jenis_kain,
-												lebar,
-												gramasi,
-												warna,
-												no_warna,
-												qty_order,
-												qty_order_yd,
-												lot,
-												roll,
-												proses,
-												personil,
-												catatan,
-												`status`,
-												creationdatetime,
-												ipaddress) 
-									VALUES('$_POST[nokk]',
-											'$_POST[demand]',
-											'$_POST[operation]',
-											'$_POST[nama_mesin]',
-											'$dt_pelanggan_buyer[PELANGGAN]',
-											'$dt_pelanggan_buyer[BUYER]',
-											'$_POST[no_order]',
-											'$_POST[tgl_delivery]',
-											'$jenis_kain',
-											'$_POST[lebar]',
-											'$_POST[gramasi]',
-											'$_POST[warna]',
-											'$_POST[no_warna]',
-											'$_POST[qty]',
-											'$_POST[qty2]',
-											'$_POST[lot]',
-											'$_POST[rol]',
-											'$_POST[proses]',
-											'$_POST[personil]',
-											'$_POST[catatan]',
-											'KK MASUK',
-											'$creationdatetime',
-											'$_SERVER[REMOTE_ADDR]')";
-			mysqli_query($con, $simpanSql);
 
-			// Refresh form
-			// echo "<meta http-equiv='refresh' content='0; url=?typekk=NOW&idkk=$idkk&status=Data Sudah DiSimpan'>";
-			echo 	"<script>
-						swal({
-							title: 'Data Tersimpan',   
-							text: 'Klik Ok untuk input data kembali',
-							type: 'success',
-						}).then((result) => {
-							if (result.value) {
-								window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
-							}
-						});
-					</script>";
+			$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
+			$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
+			if($row_kkproses){
+				echo 	"<script>
+							swal({
+								title: 'Data tidak Tersimpan, karena Kartu kerja untuk operasi ".$_GET['operation']." sudah selesai diproses.',   
+								text: 'Klik Ok untuk input data kembali',
+								type: 'warning',
+							}).then((result) => {
+								if (result.value) {
+									window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+								}
+							});
+						</script>";
+			}else{
+				$simpanSql = "INSERT INTO tbl_masuk (nokk,
+													nodemand,
+													operation,
+													nama_mesin,
+													langganan,
+													buyer,
+													no_order,
+													tgl_delivery,
+													jenis_kain,
+													lebar,
+													gramasi,
+													warna,
+													no_warna,
+													qty_order,
+													qty_order_yd,
+													lot,
+													roll,
+													proses,
+													personil,
+													catatan,
+													`status`,
+													creationdatetime,
+													ipaddress) 
+										VALUES('$_POST[nokk]',
+												'$_POST[demand]',
+												'$_POST[operation]',
+												'$_POST[nama_mesin]',
+												'$dt_pelanggan_buyer[PELANGGAN]',
+												'$dt_pelanggan_buyer[BUYER]',
+												'$_POST[no_order]',
+												'$_POST[tgl_delivery]',
+												'$jenis_kain',
+												'$_POST[lebar]',
+												'$_POST[gramasi]',
+												'$_POST[warna]',
+												'$_POST[no_warna]',
+												'$_POST[qty]',
+												'$_POST[qty2]',
+												'$_POST[lot]',
+												'$_POST[rol]',
+												'$_POST[proses]',
+												'$_POST[personil]',
+												'$_POST[catatan]',
+												'KK MASUK',
+												'$creationdatetime',
+												'$_SERVER[REMOTE_ADDR]')";
+				mysqli_query($con, $simpanSql);
+
+				// Refresh form
+				// echo "<meta http-equiv='refresh' content='0; url=?typekk=NOW&idkk=$idkk&status=Data Sudah DiSimpan'>";
+				echo 	"<script>
+							swal({
+								title: 'Data Tersimpan',   
+								text: 'Klik Ok untuk input data kembali',
+								type: 'success',
+							}).then((result) => {
+								if (result.value) {
+									window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+								}
+							});
+						</script>";
+			}
 		}
 	?>
 	<form id="form1" name="form1" method="post" action="">
@@ -275,7 +289,7 @@
 													} ?>>KK Lama</option>
 							<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
 													echo "SELECTED";
-												} ?>>KK NOW</option> -->
+												} ?>>KK NOW</option>
 							</select=>
 					</td>
 					<td>
@@ -357,9 +371,7 @@
 															ORDER BY p.STEPNUMBER ASC");
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) {
-																						echo "SELECTED";
-																					} ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+								<option value="<?= $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?= $r['OPERATIONCODE']; ?> <?= $r['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
 					</td>

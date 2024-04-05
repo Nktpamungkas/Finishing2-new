@@ -21,6 +21,17 @@ include('../koneksi.php');
                 "bSort": false
             });
         })
+        
+        $(document).ready(function() {
+            $('#datatables_rangkuman').dataTable({
+                "sScrollY": "100px",
+                "sScrollX": "100%",
+                "bScrollCollapse": false,
+                "bPaginate": false,
+                "bJQueryUI": true,
+                "bSort": false
+            });
+        })
     </script>
     
     <style>
@@ -63,91 +74,128 @@ include('../koneksi.php');
 
 <body>
     <form id="form1" name="form1" method="post" action="">
-        <table width="650" border="0">
-            <tr>
-                <td colspan="3">
-                    <div align="center"><strong>SCHEDULE FINISHING</strong></div>
-                    <?php
-                    $user_name = $_SESSION['username'];
-                    date_default_timezone_set('Asia/Jakarta');
-                    $tgl = date("Y-M-d h:i:s A");
-                    echo $tgl;
-                    ?>
-                    <br>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Nomor Mesin</strong></td>
-                <td>:</td>
-                <td>
-                    <select name="no_mesin" class="form-control select2">
-                        <option value="-" disabled selected>Pilih</option>
-                        <?php
-                        $q_mesin    = mysqli_query($con, "SELECT
-                                                                DISTINCT
-                                                                no_mesin,
-                                                                SUBSTR(TRIM(no_mesin), -5, 2) AS singaktan_mesin,
-                                                                SUBSTR(TRIM(no_mesin), -2) AS nomesin
-                                                            FROM
-                                                                `tbl_schedule_new` 
-                                                            ORDER BY
-                                                                SUBSTR(TRIM(no_mesin), -2) ASC");
-                        ?>
-                        <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
-                            <option value="<?= $row_mesin['no_mesin']; ?>" <?php if ($row_mesin['no_mesin'] == $_POST['no_mesin']) {
-                                                                                echo 'SELECTED';
-                                                                            } ?>><?= $row_mesin['singaktan_mesin']; ?><?= $row_mesin['nomesin']; ?></option>
-                        <?php endwhile; ?>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Nama Mesin</strong></td>
-                <td>:</td>
-                <td>
-                    <select name="nama_mesin" class="form-control select2">
-                        <option value="-" disabled selected>Pilih</option>
-                        <?php
-                        $q_mesin    = mysqli_query($con, "SELECT
+        <div style="display: flex; border: 0px solid black; height: 185px;">
+            <div style="flex: 1;">
+                <table width="650" border="0">
+                    <tr>
+                        <td colspan="3">
+                            <div align="center"><strong>SCHEDULE FINISHING</strong></div>
+                            <?php
+                            $user_name = $_SESSION['username'];
+                            date_default_timezone_set('Asia/Jakarta');
+                            $tgl = date("Y-M-d h:i:s A");
+                            echo $tgl;
+                            ?>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nomor Mesin</strong></td>
+                        <td>:</td>
+                        <td>
+                            <select name="no_mesin" class="form-control select2">
+                                <option value="-" disabled selected>Pilih</option>
+                                <?php
+                                $q_mesin    = mysqli_query($con, "SELECT
+                                                                        DISTINCT
+                                                                        no_mesin,
+                                                                        SUBSTR(TRIM(no_mesin), -5, 2) AS singaktan_mesin,
+                                                                        SUBSTR(TRIM(no_mesin), -2) AS nomesin
+                                                                    FROM
+                                                                        `tbl_schedule_new` 
+                                                                    ORDER BY
+                                                                        CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC");
+                                ?>
+                                <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
+                                    <option value="<?= $row_mesin['no_mesin']; ?>" <?php if ($row_mesin['no_mesin'] == $_POST['no_mesin']) {
+                                                                                        echo 'SELECTED';
+                                                                                    } ?>><?= $row_mesin['singaktan_mesin']; ?><?= $row_mesin['nomesin']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nama Mesin</strong></td>
+                        <td>:</td>
+                        <td>
+                            <select name="nama_mesin" class="form-control select2">
+                                <option value="-" disabled selected>Pilih</option>
+                                <?php
+                                $q_mesin    = mysqli_query($con, "SELECT
                                                                     DISTINCT
                                                                     nama_mesin 
                                                                 FROM
-                                                                    `tbl_schedule_new`");
+                                                                    `tbl_schedule_new`
+                                                                ORDER BY 
+                                                                    CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC");
+                                ?>
+                                <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
+                                    <option value="<?= $row_mesin['nama_mesin']; ?>" <?php if ($row_mesin['nama_mesin'] == $_POST['nama_mesin']) {
+                                                                                            echo 'SELECTED';
+                                                                                        } ?>><?= $row_mesin['nama_mesin']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr valign="middle">
+                        <td width="127"><strong>Tanggal Awal</strong></td>
+                        <td width="3">:</td>
+                        <td width="280"><input name="awal" type="text" id="awal" value="<?= $_POST['awal'] ?>" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.awal);return false;" size="14" /><a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.awal);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tanggal Akhir</strong></td>
+                        <td>:</td>
+                        <td width="280"><input name="akhir" type="text" id="akhir" value="<?= $_POST['akhir'] ?>" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.akhir);return false;" size="14" /><a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.akhir);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <input type="submit" name="button" id="button" value="Cari data" class="art-button" />
+                            <input type="button" name="batal" value="Reset" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
+                            <input type="button" name="batal" value="View Report" onclick="window.location.href='index.php?p=Reports'" class="art-button">
+                            <?php if(!isset($_POST['kkbelumsusun'])) : ?>
+                                <input type="submit" name="kkbelumsusun" value="KK belum tersusun" class="art-button" />
+                            <?php endif; ?>
+                            <?php if(isset($_POST['kkbelumsusun'])) : ?>
+                                <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../schedule/index.php?p=LihatData'" class="art-button" />
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="flex: 1;">
+                <table width="100%" border="1" id="datatables_rangkuman" class="display">
+                    <thead>
+                        <tr>
+                            <th style="border:1px solid;vertical-align:middle; text-align: center;">No Mesin</th>
+                            <th style="border:1px solid;vertical-align:middle; text-align: center;">Jumlah KK</th>
+                            <th style="border:1px solid;vertical-align:middle; text-align: center;">Bruto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            $q_rangkuman    = mysqli_query($con, "SELECT
+                                                                    CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) AS nomesin,
+                                                                    COUNT(nokk) AS jml_kk,
+                                                                    SUM(qty_order) AS bruto
+                                                                FROM
+                                                                    `tbl_schedule_new` 
+                                                                GROUP BY
+                                                                    no_mesin
+                                                                ORDER BY
+                                                                    CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC");
                         ?>
-                        <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
-                            <option value="<?= $row_mesin['nama_mesin']; ?>" <?php if ($row_mesin['nama_mesin'] == $_POST['nama_mesin']) {
-                                                                                    echo 'SELECTED';
-                                                                                } ?>><?= $row_mesin['nama_mesin']; ?></option>
+                        <?php while($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
+                        <tr>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['nomesin']; ?></td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['jml_kk']; ?></td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= number_format($row_rangkuman['bruto'], 2); ?></td>
+                        </tr>
                         <?php endwhile; ?>
-                    </select>
-                </td>
-            </tr>
-            <tr valign="middle">
-                <td width="127"><strong>Tanggal Awal</strong></td>
-                <td width="3">:</td>
-                <td width="280"><input name="awal" type="text" id="awal" value="<?= $_POST['awal'] ?>" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.awal);return false;" size="14" /><a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.awal);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a></td>
-            </tr>
-            <tr>
-                <td><strong>Tanggal Akhir</strong></td>
-                <td>:</td>
-                <td width="280"><input name="akhir" type="text" id="akhir" value="<?= $_POST['akhir'] ?>" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.akhir);return false;" size="14" /><a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.akhir);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a></td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <input type="submit" name="button" id="button" value="Cari data" class="art-button" />
-                    <input type="button" name="batal" value="Reset" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
-                    <input type="button" name="batal" value="View Report" onclick="window.location.href='index.php?p=Reports'" class="art-button">
-                    <?php if(!isset($_POST['kkbelumsusun'])) : ?>
-                        <input type="submit" name="kkbelumsusun" value="KK belum tersusun" class="art-button" />
-                    <?php endif; ?>
-                    <?php if(isset($_POST['kkbelumsusun'])) : ?>
-		                <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../schedule/index.php?p=LihatData'" class="art-button" />
-                    <?php endif; ?>
-                </td>
-            </tr>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </form>
-    
     <table width="100%" border="1" id="datatables" class="display">
         <thead>
             <tr>
@@ -194,13 +242,13 @@ include('../koneksi.php');
                 }
 
                 if(isset($_POST['kkbelumsusun'])){
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
+                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
                     $q_schedule     = mysqli_query($con, $query_schedule);
                 }elseif(isset($_POST['button'])){
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
+                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
                     $q_schedule     = mysqli_query($con, $query_schedule);
                 }else{
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY SUBSTR(TRIM(no_mesin), -2) ASC, nourut ASC";
+                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
                     $q_schedule     = mysqli_query($con, $query_schedule);
                 }
                 $totalQty = 0;

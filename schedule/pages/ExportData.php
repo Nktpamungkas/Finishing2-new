@@ -69,7 +69,7 @@
                 $where_tgl  = "";
             }
             $no = 1;
-            $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin";
+            $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
             $q_schedule     = mysqli_query($con, $query_schedule);
         ?>
         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
