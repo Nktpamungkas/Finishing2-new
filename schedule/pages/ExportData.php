@@ -7,6 +7,20 @@
 <table border="1">
     <thead>
         <tr>
+            <th colspan="3" align="center">
+                <img src="../../indo.jpg" width="40" height="40">
+            </th>
+            <th colspan="23" align="center" valign="middle">
+                <strong>
+                    <font size="+1">
+                        SCHEDULE FINISHING <?php if(empty($_GET['no_mesin'])){ echo "SEMUA MESIN"; } ?>
+                    </font>
+                    <br>
+                    FW-14-PPC-11/00
+                </strong>
+            </th>
+        </tr>
+        <tr>
             <th>NO</th>
             <th>NO URUT</th>
             <th>NO MESIN</th>
@@ -79,119 +93,119 @@
             ?>
             <?php if(empty($data_proses['jml']) AND $_GET['kksudahproses'] == '3') : ?>
                 <tr>
-                    <td><?= $no++; ?></td>
-                    <td><?= $row_schedule['nourut'] ?></td>
-                    <td><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
-                    <td><?= $row_schedule['nama_mesin'] ?></td>
-                    <td><?= $row_schedule['group_shift'] ?></td>
-                    <td>`<?= $row_schedule['nokk'] ?></td>
-                    <td>`<?= $row_schedule['nodemand'] ?></td>
-                    <td><?= $row_schedule['langganan'] ?></td>
-                    <td><?= $row_schedule['buyer'] ?></td>
-                    <td><?= $row_schedule['no_order'] ?></td>
-                    <td><?= $row_schedule['tgl_delivery'] ?></td>
-                    <td><?= $row_schedule['jenis_kain'] ?></td>
-                    <td><?= $row_schedule['lebar'] ?></td>
-                    <td><?= $row_schedule['gramasi'] ?></td>
-                    <td><?= $row_schedule['warna'] ?></td>
-                    <td><?= $row_schedule['no_warna'] ?></td>
-                    <td><?= $row_schedule['lot'] ?></td>
-                    <td><?= $row_schedule['roll'] ?></td>
-                    <td><?= $row_schedule['qty_order'] ?></td>
-                    <td><?= $row_schedule['qty_order_yd'] ?></td>
-                    <td><?= $row_schedule['operation'] ?></td>
-                    <td><?= $row_schedule['proses'] ?></td>
-                    <td><?= $row_schedule['personil'] ?></td>
-                    <td><?= $row_schedule['catatan'] ?></td>
-                    <td><?= $row_schedule['creationdatetime'] ?></td>
-                    <td>
+                    <td style="white-space: nowrap;"><?= $no++; ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['nourut'] ?></td>
+                    <td style="white-space: nowrap;"><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['nama_mesin'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['group_shift'] ?></td>
+                    <td style="white-space: nowrap;">`<?= $row_schedule['nokk'] ?></td>
+                    <td style="white-space: nowrap;">`<?= $row_schedule['nodemand'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['langganan'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['buyer'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['no_order'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['tgl_delivery'] ?></td>
+                    <td style="white-space: nowrap;" style="white-space: nowrap;"><?= $row_schedule['jenis_kain'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['lebar'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['gramasi'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['warna'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['no_warna'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['lot'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['roll'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['qty_order'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['qty_order_yd'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['operation'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['proses'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['personil'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['catatan'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['creationdatetime'] ?></td>
+                    <td  style="white-space: nowrap;">
                         <?php
                             // CEK JIKA SUDAH PROSES MAKA MUNCULIN DI KETERANGAN
                             $cek_hasilproses   = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
                             $data_hasilproses  = mysqli_fetch_assoc($cek_hasilproses);
                         ?>
-                        <?php if($data_hasilproses){ echo "Sudah Jalan"; } ?><br>
-                        <?= $data_hasilproses['tgl_buat']; ?><br>
-                        <?= $data_hasilproses['no_mesin']; ?><br>
-                        <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?><br>
+                        <?php if($data_hasilproses){ echo "Sudah Jalan"; } ?>,
+                        <?= $data_hasilproses['tgl_buat']; ?>,
+                        <?= $data_hasilproses['no_mesin']; ?>,
+                        <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?>
                     </td>
                 </tr>
             <?php elseif (!empty($data_proses['jml']) AND $_GET['kksudahproses'] == '2') : ?>
                 <tr>
-                    <td><?= $no++; ?></td>
-                    <td><?= $row_schedule['nourut'] ?></td>
-                    <td><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
-                    <td><?= $row_schedule['nama_mesin'] ?></td>
-                    <td><?= $row_schedule['group_shift'] ?></td>
-                    <td>`<?= $row_schedule['nokk'] ?></td>
-                    <td>`<?= $row_schedule['nodemand'] ?></td>
-                    <td><?= $row_schedule['langganan'] ?></td>
-                    <td><?= $row_schedule['buyer'] ?></td>
-                    <td><?= $row_schedule['no_order'] ?></td>
-                    <td><?= $row_schedule['tgl_delivery'] ?></td>
-                    <td><?= $row_schedule['jenis_kain'] ?></td>
-                    <td><?= $row_schedule['lebar'] ?></td>
-                    <td><?= $row_schedule['gramasi'] ?></td>
-                    <td><?= $row_schedule['warna'] ?></td>
-                    <td><?= $row_schedule['no_warna'] ?></td>
-                    <td><?= $row_schedule['lot'] ?></td>
-                    <td><?= $row_schedule['roll'] ?></td>
-                    <td><?= $row_schedule['qty_order'] ?></td>
-                    <td><?= $row_schedule['qty_order_yd'] ?></td>
-                    <td><?= $row_schedule['operation'] ?></td>
-                    <td><?= $row_schedule['proses'] ?></td>
-                    <td><?= $row_schedule['personil'] ?></td>
-                    <td><?= $row_schedule['catatan'] ?></td>
-                    <td><?= $row_schedule['creationdatetime'] ?></td>
-                    <td>
+                    <td style="white-space: nowrap;"><?= $no++; ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['nourut'] ?></td>
+                    <td style="white-space: nowrap;"><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['nama_mesin'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['group_shift'] ?></td>
+                    <td style="white-space: nowrap;">`<?= $row_schedule['nokk'] ?></td>
+                    <td style="white-space: nowrap;">`<?= $row_schedule['nodemand'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['langganan'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['buyer'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['no_order'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['tgl_delivery'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['jenis_kain'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['lebar'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['gramasi'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['warna'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['no_warna'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['lot'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['roll'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['qty_order'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['qty_order_yd'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['operation'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['proses'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['personil'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['catatan'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['creationdatetime'] ?></td>
+                    <td style="white-space: nowrap;">
                         <?php
                             // CEK JIKA SUDAH PROSES MAKA MUNCULIN DI KETERANGAN
                             $cek_hasilproses   = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
                             $data_hasilproses  = mysqli_fetch_assoc($cek_hasilproses);
                         ?>
-                        <?php if($data_hasilproses){ echo "Sudah Jalan"; } ?><br>
-                        <?= $data_hasilproses['tgl_buat']; ?><br>
-                        <?= $data_hasilproses['no_mesin']; ?><br>
-                        <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?><br>
+                        <?php if($data_hasilproses){ echo "Sudah Jalan"; } ?>,
+                        <?= $data_hasilproses['tgl_buat']; ?>,
+                        <?= $data_hasilproses['no_mesin']; ?>,
+                        <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?>
                     </td>
                 </tr>
             <?php elseif ((!empty($data_proses['jml']) OR empty($data_proses['jml'])) AND $_GET['kksudahproses'] == '1') : ?>
                 <tr>
-                    <td><?= $no++; ?></td>
-                    <td><?= $row_schedule['nourut'] ?></td>
-                    <td><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
-                    <td><?= $row_schedule['nama_mesin'] ?></td>
-                    <td><?= $row_schedule['group_shift'] ?></td>
-                    <td>`<?= $row_schedule['nokk'] ?></td>
-                    <td>`<?= $row_schedule['nodemand'] ?></td>
-                    <td><?= $row_schedule['langganan'] ?></td>
-                    <td><?= $row_schedule['buyer'] ?></td>
-                    <td><?= $row_schedule['no_order'] ?></td>
-                    <td><?= $row_schedule['tgl_delivery'] ?></td>
-                    <td><?= $row_schedule['jenis_kain'] ?></td>
-                    <td><?= $row_schedule['lebar'] ?></td>
-                    <td><?= $row_schedule['gramasi'] ?></td>
-                    <td><?= $row_schedule['warna'] ?></td>
-                    <td><?= $row_schedule['no_warna'] ?></td>
-                    <td><?= $row_schedule['lot'] ?></td>
-                    <td><?= $row_schedule['roll'] ?></td>
-                    <td><?= $row_schedule['qty_order'] ?></td>
-                    <td><?= $row_schedule['qty_order_yd'] ?></td>
-                    <td><?= $row_schedule['operation'] ?></td>
-                    <td><?= $row_schedule['proses'] ?></td>
-                    <td><?= $row_schedule['personil'] ?></td>
-                    <td><?= $row_schedule['catatan'] ?></td>
-                    <td><?= $row_schedule['creationdatetime'] ?></td>
-                    <td>
+                    <td style="white-space: nowrap;"><?= $no++; ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['nourut'] ?></td>
+                    <td style="white-space: nowrap;"><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['nama_mesin'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['group_shift'] ?></td>
+                    <td style="white-space: nowrap;">`<?= $row_schedule['nokk'] ?></td>
+                    <td style="white-space: nowrap;">`<?= $row_schedule['nodemand'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['langganan'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['buyer'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['no_order'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['tgl_delivery'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['jenis_kain'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['lebar'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['gramasi'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['warna'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['no_warna'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['lot'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['roll'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['qty_order'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['qty_order_yd'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['operation'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['proses'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['personil'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['catatan'] ?></td>
+                    <td style="white-space: nowrap;"><?= $row_schedule['creationdatetime'] ?></td>
+                    <td style="white-space: nowrap;">
                         <?php
                             // CEK JIKA SUDAH PROSES MAKA MUNCULIN DI KETERANGAN
                             $cek_hasilproses   = mysqli_query($con, "SELECT * FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
                             $data_hasilproses  = mysqli_fetch_assoc($cek_hasilproses);
                         ?>
-                        <?php if($data_hasilproses){ echo "Sudah Jalan"; } ?><br>
-                        <?= $data_hasilproses['tgl_buat']; ?><br>
-                        <?= $data_hasilproses['no_mesin']; ?><br>
-                        <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?><br>
+                        <?php if($data_hasilproses){ echo "Sudah Jalan"; } ?>,
+                        <?= $data_hasilproses['tgl_buat']; ?>,
+                        <?= $data_hasilproses['no_mesin']; ?>,
+                        <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?>
                     </td>
                 </tr>
             <?php endif; ?>
