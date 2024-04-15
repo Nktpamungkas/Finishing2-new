@@ -99,7 +99,7 @@
                     <td style="white-space: nowrap;"><?= $row_schedule['nama_mesin'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['group_shift'] ?></td>
                     <td style="white-space: nowrap;">`<?= $row_schedule['nokk'] ?></td>
-                    <td style="white-space: nowrap;">`<?= $row_schedule['nodemand'] ?></td>
+                    <td style="white-space: nowrap;">`<a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand'] ?></a></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['langganan'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['buyer'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['no_order'] ?></td>

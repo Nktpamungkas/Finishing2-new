@@ -55,8 +55,8 @@
             ?>
             <?php if(empty($data_schedule['jml'])) : ?>
             <tr>
-                <td><?= $row_tblmasuk['nokk'] ?></td>
-                <td><?= $row_tblmasuk['nodemand'] ?></td>
+                <td>`<?= $row_tblmasuk['nokk'] ?></td>
+                <td><a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_tblmasuk['nodemand']; ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>">`<?= $row_tblmasuk['nodemand'] ?></a></td>
                 <td><?= $row_tblmasuk['langganan'] ?></td>
                 <td><?= $row_tblmasuk['buyer'] ?></td>
                 <td><?= $row_tblmasuk['no_order'] ?></td>

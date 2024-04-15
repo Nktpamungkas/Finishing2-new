@@ -254,7 +254,6 @@ include('../koneksi.php');
                 $totalQty = 0;
                 $totalRoll = 0;
             ?>
-            
             <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                 <?php
                     // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
@@ -262,58 +261,60 @@ include('../koneksi.php');
                     $data_proses  = mysqli_fetch_assoc($cek_proses);
                 ?>
                 <?php if(empty($data_proses['jml'])) : ?>
-                <tr>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']).'<br>'.substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nokk'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nodemand'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['buyer'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_order'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['jenis_kain'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_warna'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['warna'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['roll'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order_yd'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['creationdatetime'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;">
-                        <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
-                        <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
-                    </td>
-                    <?php $totalQty += $row_schedule['qty_order']; ?>
-                    <?php $totalRoll += $row_schedule['roll']; ?>
-                </tr>
-            <?php endif; ?>
+                    <tr>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']).'<br>'.substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nokk'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand'] ?></a></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['buyer'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_order'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['jenis_kain'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_warna'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['warna'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['roll'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order_yd'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['creationdatetime'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;">
+                            <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
+                            <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
+                        </td>
+                        <?php $totalQty += $row_schedule['qty_order']; ?>
+                        <?php $totalRoll += $row_schedule['roll']; ?>
+                    </tr>
+                <?php endif; ?>
             <?php endwhile; ?>
-                <tr>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalRoll; ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalQty; ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalRoll; ?></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalQty; ?></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+            </tr>
+        </tfoot>
     </table>
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">

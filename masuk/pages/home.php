@@ -180,6 +180,25 @@
 				}else{
 					include_once("../now.php");
 				}
+
+				$q_kkmasuk	= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
+				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+				if($row_kkmasuk){
+					echo 	"<script>
+								swal({
+									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah pernah di input.',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+									}
+								});
+							</script>";
+					include_once("../now.php");
+				}else{
+					include_once("../now.php");
+				}
 			}
 		}
 	?>
