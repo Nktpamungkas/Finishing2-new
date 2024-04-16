@@ -93,19 +93,18 @@ $page    = strtolower($page);
                     <li><a href="../index.php">Main</a></li>
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
                         <li><a href="../masuk/?typekk=NOW">Masuk</a></li>
-                        <!-- <li><a href="../masuk/?typekk=SCHEDULE">Masuk</a></li> -->
                     <?php } ?>
-                    <!-- <li><a href="../stenter/?typekk=NOW">Stenter</a></li>
+                    <li><a href="../stenter/?typekk=NOW">Stenter</a></li>
                     <li><a href="../compact/?typekk=NOW">Compact</a></li>
                     <li><a href="../belah-lipat/?typekk=NOW">Belah &amp; Lipat</a></li>
                     <li><a href="index.php?typekk=NOW" class="active">Oven</a></li>
-                    <li><a href="../steamer/?typekk=NOW">Steamer</a></li> -->
+                    <li><a href="../steamer/?typekk=NOW">Steamer</a></li>
                     
-                    <li><a href="../stenter/?typekk=SCHEDULE">Stenter</a></li>
+                    <!-- <li><a href="../stenter/?typekk=SCHEDULE">Stenter</a></li>
                     <li><a href="../compact/?typekk=SCHEDULE">Compact</a></li>
                     <li><a href="../belah-lipat/?typekk=NOW">Belah &amp; Lipat</a></li>
                     <li><a href="index.php?typekk=SCHEDULE" class="active">Oven</a></li>
-                    <li><a href="../steamer/?typekk=SCHEDULE">Steamer</a></li>
+                    <li><a href="../steamer/?typekk=SCHEDULE">Steamer</a></li> -->
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
                         <li><a href="../keluar/">Keluar</a></li>
                     <?php } ?>

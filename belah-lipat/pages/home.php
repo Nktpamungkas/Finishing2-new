@@ -96,7 +96,7 @@
 							type: 'warning',
 						}).then((result) => {
 							if (result.value) {
-								window.location.href = 'http://online.indotaichen.com/finishing2-new/belah-lipat/?typekk=SCHEDULE'; 
+								window.location.href = 'http://online.indotaichen.com/finishing2-new/belah-lipat/?typekk=NOW'; 
 							}
 						});
 					</script>";
@@ -508,9 +508,9 @@
 							<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
 													echo "SELECTED";
 												} ?>>KK NOW</option>
-							<!-- <option value="SCHEDULE" <?php if ($_GET['typekk'] == "SCHEDULE") {
+							<option value="SCHEDULE" <?php if ($_GET['typekk'] == "SCHEDULE") {
 													echo "SELECTED";
-												} ?>>SCHEDULE</option> -->
+												} ?>>SCHEDULE</option>
 						</select>
 					</td>
 				</tr>
