@@ -97,7 +97,7 @@
                         <li><a href="?typekk=NOW" class="active">Masuk</a></li>
                     <?php } ?>
                     <li><a href="../schedule/?typekk=NOW">Schedule</a></li>
-                    <li><a href="../statusmesin/" target="_blank">Status Mesin</a></li>
+                    <li><a href="../statusmesin/">Status Mesin</a></li>
                     <!-- <li><a href="../belah-lipat/">Belah &amp; Lipat</a></li> -->
                     <!-- <li><a href="../oven/">Oven</a></li> -->
                     <!-- <li><a href="../steamer/">Steamer</a></li> -->

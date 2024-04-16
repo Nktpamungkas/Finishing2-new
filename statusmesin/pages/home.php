@@ -3,32 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-    /* Styling untuk tabel */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    /* Hover efek pada baris */
-    tr:hover {
-        background-color: #f5f5f5;
-    }
-    </style>
 </head>
 <?php include('../koneksi.php'); ?>
 <body>
-    <table width="100%" border="1">
+    <table width="100%">
         <tbody>
             <tr>
                 <?php
@@ -40,7 +18,7 @@
                                                         CONCAT(SUBSTR( TRIM( no_mesin ), - 5, 2 ), SUBSTR( TRIM( no_mesin ), - 2 )) ASC, nourut ASC");
                 ?>
                 <?php while ($row_nomesin = mysqli_fetch_array($q_nomesin)) : ?>
-                    <td style="text-align: center;"><?= $row_nomesin['nomesin']; ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center; background-color: #F1F1F1;"><?= $row_nomesin['nomesin']; ?></td>
                 <?php endwhile; ?>
             </tr>
         </tbody>

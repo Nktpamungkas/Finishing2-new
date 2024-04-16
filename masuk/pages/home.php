@@ -390,7 +390,9 @@
 															ORDER BY p.STEPNUMBER ASC");
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?= $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?= $r['OPERATIONCODE']; ?> <?= $r['LONGDESCRIPTION']; ?></option>
+								<option value="<?= $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>>
+									<?= $r['OPERATIONCODE']; ?> - <?= $r['LONGDESCRIPTION']; ?> (STATUS NOW : <?= $r['STATUS_OPERATION']; ?>)
+								</option>
 							<?php } ?>
 						</select>
 					</td>
