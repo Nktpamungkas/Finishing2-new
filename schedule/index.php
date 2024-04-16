@@ -97,7 +97,7 @@
                         <li><a href="../masuk/?typekk=NOW">Masuk</a></li>
                     <?php } ?>
                     <li><a href="?typekk=NOW" class="active">Schedule</a></li>
-                    <li><a href="../statusmesin/">Status Mesin</a></li>
+                    <li><a href="../statusmesin/"  target="_blank">Status Mesin</a></li>
                     <?php if (!isset($_SESSION['usr']) || !isset($_SESSION['pass'])) { ?>
                         <li><a href="../login.php">Log In</a></li>
                     <?php } else { ?>

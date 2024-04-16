@@ -93,10 +93,10 @@
 						swal({
 							title: 'SYSTEM OFFLINE',   
 							text: 'Klik Ok untuk input data kembali',
-							type: 'success',
+							type: 'warning',
 						}).then((result) => {
 							if (result.value) {
-								window.location.href = 'http://online.indotaichen.com/finishing2-new/compact/?typekk=NOW'; 
+								window.location.href = 'http://online.indotaichen.com/finishing2-new/compact/?typekk=SCHEDULE'; 
 							}
 						});
 					</script>";
@@ -494,9 +494,9 @@
 							<option value="KKLama" <?php if ($_GET['typekk'] == "KKLama") {
 														echo "SELECTED";
 													} ?>>KK Lama</option>
-							<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
+							<!-- <option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
 													echo "SELECTED";
-												} ?>>KK NOW</option>
+												} ?>>KK NOW</option> -->
 							<option value="SCHEDULE" <?php if ($_GET['typekk'] == "SCHEDULE") {
 													echo "SELECTED";
 												} ?>>SCHEDULE</option>
