@@ -168,16 +168,11 @@
 			if ($idkk != "") {
 				if ($_GET['demand'] != "") {
 					$nomordemand = $_GET['demand'];
-					$anddemand = "AND a.nodemand = '$nomordemand'";
+					$anddemand = "AND nodemand = '$nomordemand'";
 				}else{
 					$anddemand = "";
 				}
-				$q_kkmasuk		= mysqli_query($con, "SELECT
-															a.*
-														FROM
-															tbl_masuk a
-														RIGHT JOIN tbl_produksi b ON b.nokk = a.nokk AND b.demandno = a.nodemand AND NOT b.nama_mesin = a.operation 
-														WHERE a.nokk = '$idkk'$anddemand");
+				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$idkk' $anddemand");
 				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
 				
 				$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$nomordemand'");
@@ -198,7 +193,7 @@
 							</script>";
 				}
 
-				if (!empty($row_schedule)) { // JIKA DATANYA SUDAH ADA DI SHCEDULE
+				if (!empty($row_schedule)) { // JIKA DATANYA SUDAH ADA DI SCHEDULE
 					echo 	"<script>
 								swal({
 									title: 'Kartu Kerja sudah di input',   
@@ -346,12 +341,7 @@
 							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
 								<?php
-									$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT
-																						a.*
-																					FROM
-																						tbl_masuk a
-																					RIGHT JOIN tbl_produksi b ON b.nokk = a.nokk AND b.demandno = a.nodemand AND NOT b.nama_mesin = a.operation 
-																					WHERE a.nokk = '$idkk'$anddemand");
+									$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$idkk' $anddemand");
 									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
 								?>
 									<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {

@@ -162,29 +162,29 @@
                     $data_schedule  = mysqli_fetch_assoc($cek_schedule);
                 ?>
                 <?php if(empty($data_schedule['jml'])) : ?>
-                <tr>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['operation'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nokk'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_tblmasuk['nodemand']; ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nodemand'] ?></a></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['langganan'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['buyer'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_order'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['jenis_kain'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['warna'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['roll'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order_yd'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_tblmasuk['catatan'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['creationdatetime'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;">
-                        <button class="button" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
-                    </td>
-                    <?php $totalQty += $row_tblmasuk['qty_order']; ?>
-                    <?php $totalRoll += $row_tblmasuk['roll']; ?>
-                </tr>
+                    <tr>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['operation'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nokk'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_tblmasuk['nodemand']; ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nodemand'] ?></a></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['langganan'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['buyer'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_order'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['jenis_kain'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['warna'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['roll'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order_yd'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_tblmasuk['catatan'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['creationdatetime'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;">
+                            <button class="button" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
+                        </td>
+                        <?php $totalQty += $row_tblmasuk['qty_order']; ?>
+                        <?php $totalRoll += $row_tblmasuk['roll']; ?>
+                    </tr>
                 <?php endif; ?>
             <?php endwhile; ?>
                 
