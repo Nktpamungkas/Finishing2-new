@@ -17,7 +17,8 @@
         "sScrollX": "100%",
         "bScrollCollapse": false,
         "bPaginate": false,
-        "bJQueryUI": true
+        "bJQueryUI": true,
+        "bSort": false // Menonaktifkan sort
       });
     })
   </script>
@@ -151,7 +152,7 @@
                     $where_tgl  = "";
                 }
 
-                $q_tblmasuk     = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE `status` = 'KK MASUK' $where_tgl $where_nama_mesin");
+                $q_tblmasuk     = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE `status` = 'KK MASUK' $where_tgl $where_nama_mesin ORDER BY id ASC");
                 $totalQty = 0;
                 $totalRoll = 0;
             ?>
