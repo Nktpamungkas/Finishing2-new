@@ -158,7 +158,7 @@
             <?php while ($row_tblmasuk  = mysqli_fetch_array($q_tblmasuk)) : ?>
                 <?php
                     // CEK, JIKA KARTU KERJA SUDAH DIBIKIN SCHEDULE MAKA TIDAK AKAN MUNCUL DI KK MASUK. 
-                    $cek_schedule   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_schedule_new WHERE nokk = '$row_tblmasuk[nokk]' AND nodemand = '$row_tblmasuk[nodemand]'");
+                    $cek_schedule   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_schedule_new WHERE nokk = '$row_tblmasuk[nokk]' AND nodemand = '$row_tblmasuk[nodemand]' AND operation = '$row_tblmasuk[operation]'");
                     $data_schedule  = mysqli_fetch_assoc($cek_schedule);
                 ?>
                 <?php if(empty($data_schedule['jml'])) : ?>

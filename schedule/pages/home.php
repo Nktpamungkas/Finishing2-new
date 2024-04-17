@@ -172,17 +172,43 @@
 				}else{
 					$anddemand = "";
 				}
-				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$idkk' $anddemand");
-				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
-				
-				$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$nomordemand'");
+				$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
+				$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
+
+				$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
 				$row_schedule	= mysqli_fetch_assoc($q_schedule);
 
-				$operation		= $row_kkmasuk['operation'];
-				if(empty($row_kkmasuk)){ // JIKA DATANYA BELUM ADA DI DATABASE KK MASUK
+				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' $anddemand ORDER BY id DESC");
+				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+				
+				if($row_kkproses){ // JIKA DATANYA SUDAH DI PROSES
 					echo 	"<script>
 								swal({
-									title: 'Kartu Kerja belum di input di KK MASUK',   
+									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah di proses.',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/schedule/?typekk=NOW'; 
+									}
+								});
+							</script>";
+				}elseif($row_schedule){ // JIKA DATANYA SUDAH ADA DI SCHEDULE
+					echo "<script>
+							swal({
+								title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah sampai SHCEDULE.',   
+								text: 'Klik Ok untuk input data kembali',
+								type: 'warning',
+							}).then((result) => {
+								if (result.value) {
+									window.location.href = 'http://online.indotaichen.com/finishing2-new/schedule/?typekk=NOW'; 
+								}
+							});
+						</script>";
+				}elseif(empty($row_kkmasuk)){ // JIKA DATANYA BELUM ADA DI KK MASUK
+					echo 	"<script>
+								swal({
+									title: 'Kartu kerja belum pernah di input di KK MASUK.',   
 									text: 'Klik Ok untuk input data kembali',
 									type: 'warning',
 								}).then((result) => {
@@ -192,22 +218,6 @@
 								});
 							</script>";
 				}
-
-				if (!empty($row_schedule)) { // JIKA DATANYA SUDAH ADA DI SCHEDULE
-					echo 	"<script>
-								swal({
-									title: 'Kartu Kerja sudah di input',   
-									text: 'Klik Ok untuk input data kembali',
-									type: 'warning',
-								}).then((result) => {
-									if (result.value) {
-										window.location.href = 'http://online.indotaichen.com/finishing2-new/schedule/?typekk=NOW'; 
-									}
-								});
-							</script>";
-				}
-
-
 			}
 		}
 	?>
@@ -215,7 +225,7 @@
 		 if (isset($_POST['btnSimpan'])) {
 			$creationdatetime	= date('Y-m-d H:i:s');
 			$jenis_kain		= addslashes($_POST['jenis_kain']);
-			$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$nomordemand'");
+			$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$nomordemand' AND operation = '$_GET[operation]'");
 			$row_schedule	= mysqli_fetch_assoc($q_schedule);
 			if (!empty($row_schedule)) { // JIKA DATANYA SUDAH ADA DI SHCEDULE
 				mysqli_query($con, "INSERT INTO tbl_log	(akun, ipaddress, creationdatetime, catatan) VALUES('$_SESSION[usr]', '$_SERVER[REMOTE_ADDR]', '$creationdatetime', 'Aktivitas Illegal, Schedule input double.')");
@@ -341,12 +351,19 @@
 							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
 								<?php
-									$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$idkk' $anddemand");
+									$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk'");
 									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
 								?>
+								<?php
+									// CEK, JIKA KARTU KERJA SUDAH DIBIKIN SCHEDULE MAKA TIDAK AKAN MUNCUL DI KK MASUK. 
+									$cek_schedule   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_schedule_new WHERE nokk = '$r_demand[nokk]' AND nodemand = '$r_demand[nodemand]' AND operation = '$r_demand[operation]'");
+									$data_schedule  = mysqli_fetch_assoc($cek_schedule);
+								?>
+								<?php if(empty($data_schedule['jml'])) : ?>
 									<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
 																					echo 'SELECTED';
 																				} ?>><?= $r_demand['nodemand']; ?></option>
+                				<?php endif; ?>
 								<?php endwhile; ?>
 							</select>
 						<?php } else { ?>
@@ -507,31 +524,79 @@
                             <option value="">Pilih</option>
                             <?php
                                 $qry1 = db2_exec($conn_db2, "SELECT
-                                                                DISTINCT 
-                                                                p.STEPNUMBER,
-                                                            --	p.GROUPSTEPNUMBER,
-                                                                TRIM(o.OPERATIONGROUPCODE) AS DEPT,
-                                                                CASE
-                                                                    WHEN TRIM(w.PRODRESERVATIONLINKGROUPCODE) IS NOT NULL THEN TRIM(w.PRODRESERVATIONLINKGROUPCODE)
-                                                                    ELSE TRIM(w.OPERATIONCODE)
-                                                                END AS OPERATIONCODE,	
-                                                                p.LONGDESCRIPTION
-                                                            FROM
-                                                                WORKCENTERANDOPERATTRIBUTES w
-                                                            LEFT JOIN OPERATION o ON o.CODE = w.OPERATIONCODE 
-                                                            LEFT JOIN PRODUCTIONDEMANDSTEP p ON p.OPERATIONCODE = o.CODE 
-                                                            WHERE
-                                                                NOT w.LONGDESCRIPTION = 'JANGAN DIPAKE'
-                                                                AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
-                                                                AND p.PRODUCTIONORDERCODE  = '$_GET[idkk]' 
-                                                                AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]'
-                                                            ORDER BY 
-                                                                p.STEPNUMBER ASC");
+																p.PRODUCTIONORDERCODE,
+																p.STEPNUMBER AS STEPNUMBER,
+																CASE
+																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+																	ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+																END AS OPERATIONCODE,
+																TRIM(o.OPERATIONGROUPCODE) AS DEPT,
+																o.LONGDESCRIPTION,
+																CASE
+																	WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
+																	WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
+																	WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
+																	WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
+																END AS STATUS_OPERATION,
+																iptip.MULAI,
+																CASE
+																	WHEN p.PROGRESSSTATUS = 3 THEN COALESCE(iptop.SELESAI, SUBSTRING(p.LASTUPDATEDATETIME, 1, 19) || '(Run Manual Closures)')
+																	ELSE iptop.SELESAI
+																END AS SELESAI,
+																p.PRODUCTIONORDERCODE,
+																p.PRODUCTIONDEMANDCODE,
+																iptip.LONGDESCRIPTION AS OP1,
+																iptop.LONGDESCRIPTION AS OP2,
+																CASE
+																	WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
+																	ELSE LISTAGG(FLOOR(idqd.VALUEQUANTITY), ', ')
+																END AS GEROBAK 
+															FROM 
+																PRODUCTIONDEMANDSTEP p 
+															LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+															LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
+															LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+															LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+															LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
+																								-- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
+																								AND idqd.OPERATIONCODE = CASE
+																															WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+																															ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+																														END
+																								AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
+																								AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
+																									idqd.CHARACTERISTICCODE = 'GRB2' OR
+																									idqd.CHARACTERISTICCODE = 'GRB3' OR
+																									idqd.CHARACTERISTICCODE = 'GRB4' OR
+																									idqd.CHARACTERISTICCODE = 'GRB5' OR
+																									idqd.CHARACTERISTICCODE = 'GRB6' OR
+																									idqd.CHARACTERISTICCODE = 'GRB7' OR
+																									idqd.CHARACTERISTICCODE = 'GRB8')
+																								AND NOT (idqd.VALUEQUANTITY = 9 OR idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 1 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
+															WHERE
+																p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
+															GROUP BY
+																p.PRODUCTIONORDERCODE,
+																p.STEPNUMBER,
+																p.OPERATIONCODE,
+																p.PRODRESERVATIONLINKGROUPCODE,
+																o.OPERATIONGROUPCODE,
+																o.LONGDESCRIPTION,
+																p.PROGRESSSTATUS,
+																iptip.MULAI,
+																iptop.SELESAI,
+																p.LASTUPDATEDATETIME,
+																p.PRODUCTIONORDERCODE,
+																p.PRODUCTIONDEMANDCODE,
+																iptip.LONGDESCRIPTION,
+																iptop.LONGDESCRIPTION,
+																a.VALUEBOOLEAN
+															ORDER BY p.STEPNUMBER ASC");
                                 while ($r = db2_fetch_assoc($qry1)) {
                             ?>
-                                <option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($row_kkmasuk['operation'] == $r['OPERATIONCODE']) {
-                                                                                        echo "SELECTED";
-                                                                                    } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
+								<option value="<?= $r['OPERATIONCODE']; ?>" <?php if ($row_kkmasuk['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>>
+									<?= $r['OPERATIONCODE']; ?> - <?= $r['LONGDESCRIPTION']; ?> (STATUS NOW : <?= $r['STATUS_OPERATION']; ?>)
+								</option>
                             <?php } ?>
                         </select>
 

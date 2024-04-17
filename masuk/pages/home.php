@@ -168,25 +168,17 @@
 			if ($idkk != "") {
 				$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
 				$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
-				if($row_kkproses){
-					echo 	"<script>
-								swal({
-									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah selesai diproses.',   
-									text: 'Klik Ok untuk input data kembali',
-									type: 'warning',
-								});
-							</script>";
-					include_once("../now.php");
-				}else{
-					include_once("../now.php");
-				}
 
-				$q_kkmasuk	= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
+				$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
+				$row_schedule	= mysqli_fetch_assoc($q_schedule);
+
+				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
 				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
-				if($row_kkmasuk){
+				
+				if($row_kkproses){ // JIKA DATANYA SUDAH DI PROSES
 					echo 	"<script>
 								swal({
-									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah pernah di input.',   
+									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah di proses.',   
 									text: 'Klik Ok untuk input data kembali',
 									type: 'warning',
 								}).then((result) => {
@@ -195,10 +187,32 @@
 									}
 								});
 							</script>";
-					include_once("../now.php");
-				}else{
-					include_once("../now.php");
+				}elseif($row_schedule){ // JIKA DATANYA SUDAH ADA DI SCHEDULE
+					echo "<script>
+							swal({
+								title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah sampai SHCEDULE.',   
+								text: 'Klik Ok untuk input data kembali',
+								type: 'warning',
+							}).then((result) => {
+								if (result.value) {
+									window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+								}
+							});
+						</script>";
+				}elseif($row_kkmasuk){ // JIKA DATANYA SUDAH ADA DI KK MASUK
+					echo 	"<script>
+								swal({
+									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah pernah di input di KK MASUK.',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+									}
+								});
+							</script>";
 				}
+				include_once("../now.php");
 			}
 		}
 	?>
