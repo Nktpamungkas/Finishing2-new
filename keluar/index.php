@@ -89,12 +89,20 @@ $page    = strtolower($page);
             <div class="art-nav-inner">
                 <ul class="art-hmenu">
                     <li><a href="../index.php">Main</a></li>
-                    <li><a href="../masuk/?typekk=NOW">Masuk</a></li>
+                    <!-- <li><a href="../masuk/?typekk=NOW">Masuk</a></li>
                     <li><a href="../stenter/?typekk=NOW">Stenter</a></li>
                     <li><a href="../compact/?typekk=NOW">Compact</a></li>
                     <li><a href="../belah-lipat/?typekk=NOW">Belah &amp; Lipat</a></li>
                     <li><a href="../oven/?typekk=NOW">Oven</a></li>
                     <li><a href="../steamer/?typekk=NOW">Steamer</a></li>
+                    <li><a href="index.php" class="active">Keluar</a></li> -->
+                    <
+                    li><a href="../masuk/?typekk=SCHEDULE">Masuk</a></>
+                    <li><a href="../stenter/?typekk=SCHEDULE">Stenter</a></li>
+                    <li><a href="../compact/?typekk=SCHEDULE">Compact</a></li>
+                    <li><a href="../belah-lipat/?typekk=NOW">Belah &amp; Lipat</a></li>
+                    <li><a href="../oven/?typekk=SCHEDULE">Oven</a></li>
+                    <li><a href="../steamer/?typekk=SCHEDULE">Steamer</a></li>
                     <li><a href="index.php" class="active">Keluar</a></li>
                     <li><a href="../reports/">Reports</a>
                         <?php if (!isset($_SESSION['usr']) || !isset($_SESSION['pass'])) { ?>

@@ -188,20 +188,29 @@ include('../koneksi.php');
                                                                                 b.nokk = a.nokk 
                                                                                 AND b.demandno = a.nodemand 
                                                                                 AND b.nama_mesin = a.operation
+                                                                                AND b.no_mesin = a.no_mesin
                                                                         ) 
                                                                         AND NOT a.nourut = 0 AND NOT group_shift IS NULL
                                                                     GROUP BY
                                                                         a.no_mesin
                                                                     ORDER BY
                                                                         CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
+                            $sum_totalQty = 0;
                         ?>
                         <?php while($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
+                            <?php $sum_totalkk += $row_rangkuman['jml_kk']; ?>
+                            <?php $sum_totalQty += $row_rangkuman['bruto']; ?>
                         <tr>
                             <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['nomesin']; ?></td>
                             <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['jml_kk']; ?></td>
                             <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= number_format($row_rangkuman['bruto'], 2); ?></td>
                         </tr>
                         <?php endwhile; ?>
+                        <tfoot>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $sum_totalkk; ?></td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $sum_totalQty; ?></td>
+                        </tfoot>
                     </tbody>
                 </table>
             </div>

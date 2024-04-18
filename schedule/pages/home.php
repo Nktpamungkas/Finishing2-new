@@ -228,10 +228,12 @@
 			$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$nomordemand' AND operation = '$_GET[operation]'");
 			$row_schedule	= mysqli_fetch_assoc($q_schedule);
 			if (!empty($row_schedule)) { // JIKA DATANYA SUDAH ADA DI SHCEDULE
-				mysqli_query($con, "INSERT INTO tbl_log	(akun, ipaddress, creationdatetime, catatan) VALUES('$_SESSION[usr]', '$_SERVER[REMOTE_ADDR]', '$creationdatetime', 'Aktivitas Illegal, Schedule input double.')");
+				$nokk	= $_POST['nokk'];
+				$demand	= $_POST['demand'];
+				mysqli_query($con, "INSERT INTO tbl_log	(akun, ipaddress, creationdatetime, catatan) VALUES('$_SESSION[usr]', '$_SERVER[REMOTE_ADDR]', '$creationdatetime', 'Aktivitas Illegal, Schedule input double. $nokk, $demand')");
 				echo 	"<script>
 							swal({
-								title: 'Anda telah dicatat melakukan aktivias ilegal memasukan schedule lebih dari 1x',   
+								title: 'Anda telah dicatat melakukan aktivias ilegal memasukan schedule lebih dari 1x. Data tidak tersimpan',   
 								text: 'Klik Ok untuk input data kembali',
 								type: 'warning',
 							}).then((result) => {

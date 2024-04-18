@@ -150,13 +150,12 @@
                                                                         NOT EXISTS (
                                                                                 SELECT 1
                                                                                 FROM
-                                                                                        `tbl_schedule_new` b
+                                                                                    `tbl_schedule_new` b
                                                                                 WHERE
-                                                                                        b.nokk = a.nokk 
-                                                                                        AND b.nodemand = a.nodemand 
-                                                                                        AND b.operation = a.operation
+                                                                                    b.nokk = a.nokk 
+                                                                                    AND b.nodemand = a.nodemand 
+                                                                                    AND b.operation = a.operation
                                                                         )
-                                                                    AND NOT a.nourut = 0 AND NOT group_shift IS NULL
                                                                     GROUP BY
                                                                         a.nama_mesin
                                                                     ORDER BY
