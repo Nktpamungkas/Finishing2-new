@@ -140,7 +140,7 @@
 								});
 							</script>";
 				}else{
-					$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
+					$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand ORDER BY id DESC LIMIT 1");
 					$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
 					include_once("../now.php");
 				}
@@ -537,13 +537,18 @@
                             <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
 								<?php
-									$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT nodemand FROM tbl_masuk WHERE nokk = '$idkk'");
+                                    $sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE nokk = '$idkk'");
 									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
-								?>
-									<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
-																					echo 'SELECTED';
-																				} ?>><?= $r_demand['nodemand']; ?></option>
-								<?php endwhile; ?>
+                                ?>
+                                    <?php
+                                        // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TIDAK AKAN MUNCUL. 
+                                        $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$r_demand[nokk]' AND demandno = '$r_demand[nodemand]' AND nama_mesin = '$r_demand[operation]'");
+                                        $data_proses  = mysqli_fetch_assoc($cek_proses);
+                                    ?>
+                                    <?php if(empty($data_proses['jml'])) : ?>
+										<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) { echo 'SELECTED'; } ?>><?= $r_demand['nodemand']; ?></option>
+                                    <?php endif; ?>
+                                <?php endwhile; ?>
 							</select>
 						<?php } else { ?>
 							<input name="demand" id="demand" type="text" placeholder="Nomor Demand">
@@ -582,7 +587,11 @@
 							if($_GET['typekk'] == 'NOW'){
                                 $if_operation   = "$_GET[operation]";
                             }elseif($_GET['typekk'] == 'SCHEDULE'){
-                                $if_operation   = "$row_kkmasuk[operation]";
+								if($_GET['operation']){
+                                	$if_operation   = "$_GET[operation]";
+								}else{
+                                	$if_operation   = "$row_kkmasuk[operation]";
+								}
                             }
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>

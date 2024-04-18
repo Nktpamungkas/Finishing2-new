@@ -685,7 +685,13 @@
 				</tr>
 			</table>
 		</fieldset>
-		<br>
+		<fieldset>
+			<legend>KETENTUAN INPUT KK MASUK</legend>
+			<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b>, maka data tersebut tidak dapat disimpan atau dimasukkan ke dalam sistem.</li>
+			<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di susun schedule</span>, maka data tersebut tidak dapat disimpan atau dimasukkan ke dalam sistem.</li>
+			<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di proses</span>, maka data tersebut tidak dapat disimpan atau dimasukkan ke dalam sistem.</li>
+		</fieldset>
+		<br><br>
 		<input type="submit" name="btnSimpan" id="btnSimpan" value="Simpan" class="art-button" />
 		<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../index.php'" class="art-button" />
 		<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button green">

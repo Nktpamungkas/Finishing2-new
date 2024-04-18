@@ -21,6 +21,17 @@
         "bSort": false // Menonaktifkan sort
       });
     })
+
+    $(document).ready(function() {
+        $('#datatables_rangkuman').dataTable({
+            "sScrollY": "100px",
+            "sScrollX": "100%",
+            "bScrollCollapse": false,
+            "bPaginate": false,
+            "bJQueryUI": true,
+            "bSort": false
+        });
+    })
   </script>
 </head>
 <style>
@@ -62,59 +73,107 @@
 
 <body>
     <form id="form1" name="form1" method="post" action="">
-        <table width="650" border="0">
-            <tr>
-                <td colspan="3">
-                    <div align="center"><strong>KK MASUK FINISHING</strong></div>
-                    <?php
-                        $user_name = $_SESSION['username'];
-                        date_default_timezone_set('Asia/Jakarta');
-                        $tgl = date("Y-M-d h:i:s A");
-                        echo $tgl; 
-                    ?>
-                    <br>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Mesin</strong></td>
-                <td>:</td>
-                <td>
-                    <select name="nama_mesin" class="form-control select2">
-                        <option value="-" disabled selected>-nama mesin-</option>
+        <div style="display: flex; border: 0px solid black; height: 185px;">
+            <div style="flex: 1;">
+                <table width="650" border="0">
+                    <tr>
+                        <td colspan="3">
+                            <div align="center"><strong>KK MASUK FINISHING</strong></div>
+                            <?php
+                                $user_name = $_SESSION['username'];
+                                date_default_timezone_set('Asia/Jakarta');
+                                $tgl = date("Y-M-d h:i:s A");
+                                echo $tgl; 
+                            ?>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mesin</strong></td>
+                        <td>:</td>
+                        <td>
+                            <select name="nama_mesin" class="form-control select2">
+                                <option value="-" disabled selected>-nama mesin-</option>
+                                <?php
+                                    $q_mesin    = mysqli_query($con, "SELECT
+                                                                            DISTINCT
+                                                                            nama_mesin
+                                                                        FROM
+                                                                            `tbl_masuk`");
+                                ?>
+                                <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
+                                    <option value="<?= $row_mesin['nama_mesin']; ?>" <?php if($row_mesin['nama_mesin'] == $_POST['nama_mesin']){ echo 'SELECTED'; } ?>><?= $row_mesin['nama_mesin']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr valign="middle">
+                        <td width="127"><strong>Tanggal Awal</strong></td>
+                        <td width="3">:</td>
+                        <td width="280"><input name="awal" type="text" id="awal" value="<?= $_POST['awal'] ?>" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.awal);return false;" size="14" /><a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.awal);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tanggal Akhir</strong></td>
+                        <td>:</td>
+                        <td width="280"><input name="akhir" type="text" id="akhir" value="<?= $_POST['akhir'] ?>" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.akhir);return false;" size="14" /><a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.akhir);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <input type="submit" name="button" id="button" value="Cari data" class="art-button"> 
+                            <?php if(isset($_POST['button'])) : ?>
+                                <input type="button" name="batal" value="Reset" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
+                                <a href="pages/ExportData.php?nama_mesin=<?= $_POST['nama_mesin'] ?>&awal=<?= $_POST['awal'] ?>&akhir=<?= $_POST['akhir']; ?>" class="art-button">Cetak Ke Excel</a>
+                                
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="flex: 1;">
+                <table width="100%" border="1" id="datatables_rangkuman" class="display">
+                    <thead>
+                        <tr>
+                            <th style="border:1px solid;vertical-align:middle; text-align: center;">No Mesin</th>
+                            <th style="border:1px solid;vertical-align:middle; text-align: center;">Jumlah KK</th>
+                            <th style="border:1px solid;vertical-align:middle; text-align: center;">Bruto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <?php
-                            $q_mesin    = mysqli_query($con, "SELECT
-                                                                    DISTINCT
-                                                                    nama_mesin
-                                                                FROM
-                                                                    `tbl_masuk`");
+                            $q_rangkuman    = mysqli_query($con, "SELECT
+                                                                        a.nama_mesin,
+                                                                        COUNT(a.nokk) AS jml_kk,
+                                                                        SUM(a.qty_order) AS bruto
+                                                                    FROM
+                                                                        `tbl_masuk` a
+                                                                    WHERE
+                                                                        NOT EXISTS (
+                                                                                SELECT 1
+                                                                                FROM
+                                                                                        `tbl_schedule_new` b
+                                                                                WHERE
+                                                                                        b.nokk = a.nokk 
+                                                                                        AND b.nodemand = a.nodemand 
+                                                                                        AND b.operation = a.operation
+                                                                        )
+                                                                    AND NOT a.nourut = 0 AND NOT group_shift IS NULL
+                                                                    GROUP BY
+                                                                        a.nama_mesin
+                                                                    ORDER BY
+                                                                        a.nama_mesin ASC");
                         ?>
-                        <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
-                            <option value="<?= $row_mesin['nama_mesin']; ?>" <?php if($row_mesin['nama_mesin'] == $_POST['nama_mesin']){ echo 'SELECTED'; } ?>><?= $row_mesin['nama_mesin']; ?></option>
+                        <?php while($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
+                        <tr>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['nama_mesin']; ?></td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['jml_kk']; ?></td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= number_format($row_rangkuman['bruto'], 2); ?></td>
+                        </tr>
                         <?php endwhile; ?>
-                    </select>
-                </td>
-            </tr>
-            <tr valign="middle">
-                <td width="127"><strong>Tanggal Awal</strong></td>
-                <td width="3">:</td>
-                <td width="280"><input name="awal" type="text" id="awal" value="<?= $_POST['awal'] ?>" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.awal);return false;" size="14" /><a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.awal);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a></td>
-            </tr>
-            <tr>
-                <td><strong>Tanggal Akhir</strong></td>
-                <td>:</td>
-                <td width="280"><input name="akhir" type="text" id="akhir" value="<?= $_POST['akhir'] ?>" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.akhir);return false;" size="14" /><a href="javascript:void(0)" onclick="if(self.gfPop)gfPop.fPopCalendar(document.form1.akhir);return false;"><img src="../calender/calender.jpeg" alt="" name="popcal" width="30" height="25" id="popcal" style="border:none" align="absmiddle" border="0" /></a></td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <input type="submit" name="button" id="button" value="Cari data" class="art-button"> 
-		            <?php if(isset($_POST['button'])) : ?>
-                        <input type="button" name="batal" value="Reset" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
-                        <a href="pages/ExportData.php?nama_mesin=<?= $_POST['nama_mesin'] ?>&awal=<?= $_POST['awal'] ?>&akhir=<?= $_POST['akhir']; ?>" class="art-button">Cetak Ke Excel</a>
-                        
-                    <?php endif; ?>
-                </td>
-            </tr>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
     </form>
     <table width="100%" border="1" id="datatables" class="display">
         <thead>
@@ -129,6 +188,7 @@
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">JENIS KAIN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO WARNA</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LOT</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY YD</th>
@@ -166,14 +226,15 @@
                     <tr>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['operation'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['nokk'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_tblmasuk['nodemand']; ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nodemand'] ?></a></td>
+                        <td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= TRIM($row_tblmasuk['nodemand']); ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nokk'] ?></a></td>
+                        <td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_tblmasuk['nodemand']; ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nodemand'] ?></a></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['langganan'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['buyer'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_order'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['jenis_kain'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['warna'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['lot'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['roll'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order_yd'] ?></td>
@@ -192,6 +253,7 @@
         </tbody>
         <tfoot>
             <tr>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
                 <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
                 <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
                 <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>

@@ -174,15 +174,26 @@ include('../koneksi.php');
                     <tbody>
                         <?php
                             $q_rangkuman    = mysqli_query($con, "SELECT
-                                                                    CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) AS nomesin,
-                                                                    COUNT(nokk) AS jml_kk,
-                                                                    SUM(qty_order) AS bruto
-                                                                FROM
-                                                                    `tbl_schedule_new` 
-                                                                GROUP BY
-                                                                    no_mesin
-                                                                ORDER BY
-                                                                    CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC");
+                                                                        CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) AS nomesin,
+                                                                        COUNT(a.nokk) AS jml_kk,
+                                                                        SUM(a.qty_order) AS bruto
+                                                                    FROM
+                                                                        `tbl_schedule_new` a
+                                                                    WHERE
+                                                                        NOT EXISTS (
+                                                                            SELECT 1
+                                                                            FROM
+                                                                                `tbl_produksi` b
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation
+                                                                        ) 
+                                                                        AND NOT a.nourut = 0 AND NOT group_shift IS NULL
+                                                                    GROUP BY
+                                                                        a.no_mesin
+                                                                    ORDER BY
+                                                                        CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
                         ?>
                         <?php while($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
                         <tr>
@@ -212,6 +223,7 @@ include('../koneksi.php');
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">JENIS KAIN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO WARNA</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LOT</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY YD</th>
@@ -267,14 +279,15 @@ include('../koneksi.php');
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['nokk'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand'] ?></a></td>
+                        <td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nokk'] ?></a></td>
+                        <td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand'] ?></a></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['buyer'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_order'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['jenis_kain'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_warna'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['warna'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lot'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['roll'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order_yd'] ?></td>
