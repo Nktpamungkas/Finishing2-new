@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <?php
-include('../koneksi.php');
+    include('../koneksi.php');
 ?>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -79,7 +79,11 @@ include('../koneksi.php');
                 <table width="650" border="0">
                     <tr>
                         <td colspan="3">
-                            <div align="center"><strong>SCHEDULE FINISHING</strong></div>
+                            <?php if(isset($_POST['kkbelumsusun'])) : ?>
+                                <div align="center"><strong>SCHEDULE FINISHING BELUM TERSUSUN</strong></div>
+                            <?php else : ?>
+                                <div align="center"><strong>SCHEDULE FINISHING</strong></div>
+                            <?php endif; ?>
                             <?php
                             $user_name = $_SESSION['username'];
                             date_default_timezone_set('Asia/Jakarta');
@@ -173,6 +177,12 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
+                            if(isset($_POST['kkbelumsusun'])){
+                                $nourut = "AND a.nourut = 0";
+                            }else{
+                                $nourut = "AND NOT a.nourut = 0";
+                            }
+
                             $q_rangkuman    = mysqli_query($con, "SELECT
                                                                         CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) AS nomesin,
                                                                         COUNT(a.nokk) AS jml_kk,
@@ -190,7 +200,7 @@ include('../koneksi.php');
                                                                                 AND b.nama_mesin = a.operation
                                                                                 AND b.no_mesin = a.no_mesin
                                                                         ) 
-                                                                        AND NOT a.nourut = 0 AND NOT group_shift IS NULL
+                                                                        $nourut AND NOT group_shift IS NULL
                                                                     GROUP BY
                                                                         a.no_mesin
                                                                     ORDER BY

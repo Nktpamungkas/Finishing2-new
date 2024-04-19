@@ -10,15 +10,29 @@
         <tbody>
             <tr>
                 <?php
-                    $q_nomesin = mysqli_query($con, "SELECT DISTINCT
-                                                        CONCAT(SUBSTR( TRIM( no_mesin ), - 5, 2 ), SUBSTR( TRIM( no_mesin ), - 2 )) AS nomesin 
+                    $q_nomesin = mysqli_query($con, "SELECT
+                                                        a.nama_mesin
                                                     FROM
-                                                        `tbl_schedule_new` 
+                                                        `tbl_masuk` a
+                                                    WHERE
+                                                        NOT EXISTS (
+                                                                SELECT 1
+                                                                FROM
+                                                                    `tbl_schedule_new` b
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.nodemand = a.nodemand 
+                                                                    AND b.operation = a.operation
+                                                        )
+                                                    GROUP BY
+                                                        a.nama_mesin
                                                     ORDER BY
-                                                        CONCAT(SUBSTR( TRIM( no_mesin ), - 5, 2 ), SUBSTR( TRIM( no_mesin ), - 2 )) ASC, nourut ASC");
+                                                        a.nama_mesin ASC");
                 ?>
                 <?php while ($row_nomesin = mysqli_fetch_array($q_nomesin)) : ?>
-                    <td style="border:1px solid;vertical-align:middle; text-align: center; background-color: #F1F1F1;"><?= $row_nomesin['nomesin']; ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center; background-color: #F1F1F1;">
+                        <span style="border:1px solid; background-color: #C0F3FC; font-size: 12px;"><?= $row_nomesin['nama_mesin']; ?></span>
+                    </td>
                 <?php endwhile; ?>
             </tr>
         </tbody>
