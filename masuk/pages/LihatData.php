@@ -160,14 +160,23 @@
                                                                         a.nama_mesin
                                                                     ORDER BY
                                                                         a.nama_mesin ASC");
+                                $sum_totalkk = 0;
+                                $sum_totalQty = 0;
                         ?>
                         <?php while($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
+                            <?php $sum_totalkk += $row_rangkuman['jml_kk']; ?>
+                            <?php $sum_totalQty += $row_rangkuman['bruto']; ?>
                         <tr>
                             <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['nama_mesin']; ?></td>
                             <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['jml_kk']; ?></td>
                             <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= number_format($row_rangkuman['bruto'], 2); ?></td>
                         </tr>
                         <?php endwhile; ?>
+                        <tfoot>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;">TOTAL</td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $sum_totalkk; ?></td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($sum_totalQty, 2); ?></td>
+                        </tfoot>
                     </tbody>
                 </table>
             </div>
@@ -252,24 +261,10 @@
         </tbody>
         <tfoot>
             <tr>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalRoll; ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalQty; ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="11">TOTAL</td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $totalRoll; ?></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($totalQty, 2); ?></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td>
             </tr>
         </tfoot>
     </table>

@@ -166,9 +166,9 @@ include('../koneksi.php');
                 <table width="100%" border="1" id="datatables_rangkuman" class="display">
                     <thead>
                         <tr>
-                            <th style="border:1px solid;vertical-align:middle; text-align: center;">No Mesin</th>
-                            <th style="border:1px solid;vertical-align:middle; text-align: center;">Jumlah KK</th>
-                            <th style="border:1px solid;vertical-align:middle; text-align: center;">Bruto</th>
+                            <th style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;">No Mesin</th>
+                            <th style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;">Jumlah KK</th>
+                            <th style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;">Bruto</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -195,6 +195,7 @@ include('../koneksi.php');
                                                                         a.no_mesin
                                                                     ORDER BY
                                                                         CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
+                            $sum_totalkk = 0;
                             $sum_totalQty = 0;
                         ?>
                         <?php while($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
@@ -207,9 +208,9 @@ include('../koneksi.php');
                         </tr>
                         <?php endwhile; ?>
                         <tfoot>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $sum_totalkk; ?></td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $sum_totalQty; ?></td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;">TOTAL</td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $sum_totalkk; ?></td>
+                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($sum_totalQty, 2); ?></td>
                         </tfoot>
                     </tbody>
                 </table>
@@ -315,26 +316,10 @@ include('../koneksi.php');
         </tbody>
         <tfoot>
             <tr>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalRoll; ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $totalQty; ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;"></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="14">TOTAL</td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $totalRoll; ?></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($totalQty, 2); ?></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td>
             </tr>
         </tfoot>
     </table>
