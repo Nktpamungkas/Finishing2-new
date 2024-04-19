@@ -304,7 +304,7 @@
                     <td style="color: red;"><strong>Nomor Mesin</strong></td>
                     <td>:</td>
                     <td>
-                        <select name="no_mesin" required>
+                        <select name="no_mesin" >
                             <option value="">Pilih</option>
                             <?php
 								$query_namamesin	= "SELECT
@@ -428,7 +428,7 @@
                         </select>
 
                         <strong  style="color: red;">No Urut :</strong>
-                        <select name="no_urut" class="form-control select2" id="no_urut" required>
+                        <select name="no_urut" class="form-control select2" id="no_urut" >
 							<option value="">Pilih</option>
 							<?php
                                 $sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut ORDER BY no_urut ASC");
@@ -453,7 +453,7 @@
                     </td>
                     <td>:</td>
                     <td>
-                        <select name="g_shift" class="form-control select2" required>
+                        <select name="g_shift" class="form-control select2">
 							<option value="">Pilih</option>
 							<option value="A"<?php if("A" == $row_kkmasuk['group_shift']){ echo "SELECTED"; } ?>>A</option>
 							<option value="B"<?php if("B" == $row_kkmasuk['group_shift']){ echo "SELECTED"; } ?>>B</option>
