@@ -223,10 +223,14 @@
 
 			$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
 			$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
+
+			$q_kkmasuk		= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
+			$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+
 			if($row_kkproses){
 				echo 	"<script>
 							swal({
-								title: 'Data tidak Tersimpan, karena Kartu kerja untuk operasi ".$_GET['operation']." sudah selesai diproses.',   
+								title: 'Data tidak Tersimpan, karena Kartu kerja untuk operasi ".$_GET['operation']." sudah selesai diproses.<br> Tgl Proses : ".$row_kkproses['tgl_pro']."',   
 								text: 'Klik Ok untuk input data kembali',
 								type: 'warning',
 							}).then((result) => {
@@ -235,6 +239,21 @@
 								}
 							});
 						</script>";
+			}elseif($row_kkmasuk){
+				$nokk	= $_POST['nokk'];
+				$demand	= $_POST['demand'];
+				mysqli_query($con, "INSERT INTO tbl_log	(akun, ipaddress, creationdatetime, catatan, `status`) VALUES('$_SESSION[usr]', '$_SERVER[REMOTE_ADDR]', '$creationdatetime', 'Aktivitas Illegal, Schedule input double. $nokk, $demand', 'kkmasuk')");
+				echo 	"<script>
+								swal({
+									title: 'Anda telah dicatat melakukan aktivias ilegal memasukan kk masuk lebih dari 1x dengan operation yang sama. <br> Data tidak tersimpan',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+									}
+								});
+							</script>";
 			}else{
 				$simpanSql = "INSERT INTO tbl_masuk (nokk,
 													nodemand,
