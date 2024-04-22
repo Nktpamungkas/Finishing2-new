@@ -194,6 +194,7 @@
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">BUYER</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO ORDER</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">JENIS KAIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LEBAR x GRAMASI</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO WARNA</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LOT</th>
@@ -240,6 +241,7 @@
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['buyer'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_order'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['jenis_kain'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['lebar'] ?> x <?= $row_tblmasuk['gramasi'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['warna'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['lot'] ?></td>
@@ -250,7 +252,9 @@
                         <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_tblmasuk['catatan'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['creationdatetime'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;">
-                            <button class="button" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
+		                    <?php if($_SESSION['usr'] != 'husni') : ?>
+                                <button class="button" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
+		                    <?php endif; ?>
                         </td>
                         <?php $totalQty += $row_tblmasuk['qty_order']; ?>
                         <?php $totalRoll += $row_tblmasuk['roll']; ?>

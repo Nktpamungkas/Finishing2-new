@@ -313,302 +313,306 @@
 		}
 	?>
 	<form id="form1" name="form1" method="post" action="">
-		<fieldset>
-			<legend>Data KK MASUK yang akan di atur didalam schedule </legend>
-			<table width="100%" border="0">
-				<tr>
-					<td scope="row">
-						<h4>Pilih Asal Kartu Kerja</h4>
-					</td>
-					<td width="1%">:</td>
-					<td>
-						<select style="width: 50%" id="typekk" name="typekk" onchange="window.location='?typekk='+this.value" required>
-							<option value="" disabled selected>-Pilih Tipe Kartu Kerja-</option>
-							<option value="KKLama" <?php if ($_GET['typekk'] == "KKLama") {
+		<?php if($_SESSION['usr'] == 'husni') : ?>
+			<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
+		<?php else : ?>
+			<fieldset>
+				<legend>Data KK MASUK yang akan di atur didalam schedule </legend>
+				<table width="100%" border="0">
+					<tr>
+						<td scope="row">
+							<h4>Pilih Asal Kartu Kerja</h4>
+						</td>
+						<td width="1%">:</td>
+						<td>
+							<select style="width: 50%" id="typekk" name="typekk" onchange="window.location='?typekk='+this.value" required>
+								<option value="" disabled selected>-Pilih Tipe Kartu Kerja-</option>
+								<option value="KKLama" <?php if ($_GET['typekk'] == "KKLama") {
+															echo "SELECTED";
+														} ?>>KK Lama</option>
+								<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
 														echo "SELECTED";
-													} ?>>KK Lama</option>
-							<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
-													echo "SELECTED";
-												} ?>>KK NOW</option> -->
-							</select=>
-					</td>
+													} ?>>KK NOW</option> -->
+								</select=>
+						</td>
 
-                    <td scope="row">
-						<h4>No. Warna</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<input name="no_warna" type="text" id="no_warna" size="35" value="<?= $row_kkmasuk['no_warna']; ?>" />
-					</td>
-				</tr>
-				<tr>
-					<td width="13%" scope="row">
-						<h4>Nokk</h4>
-					</td>
-					<td width="1%">:</td>
-					<td width="26%">
-						<input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
+						<td scope="row">
+							<h4>No. Warna</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<input name="no_warna" type="text" id="no_warna" size="35" value="<?= $row_kkmasuk['no_warna']; ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td width="13%" scope="row">
+							<h4>Nokk</h4>
+						</td>
+						<td width="1%">:</td>
+						<td width="26%">
+							<input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
 
-						<?php if ($_GET['typekk'] == 'NOW') {  ?>
-							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value+'&operation=<?= $row_kkmasuk['operation']; ?>'" required>
-								<option value="" disabled selected>Pilih Nomor Demand</option>
+							<?php if ($_GET['typekk'] == 'NOW') {  ?>
+								<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value+'&operation=<?= $row_kkmasuk['operation']; ?>'" required>
+									<option value="" disabled selected>Pilih Nomor Demand</option>
+									<?php
+										$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk'");
+										while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
+									?>
+									<?php
+										// CEK, JIKA KARTU KERJA SUDAH DIBIKIN SCHEDULE MAKA TIDAK AKAN MUNCUL DI KK MASUK. 
+										$cek_schedule   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_schedule_new WHERE nokk = '$r_demand[nokk]' AND nodemand = '$r_demand[nodemand]' AND operation = '$r_demand[operation]'");
+										$data_schedule  = mysqli_fetch_assoc($cek_schedule);
+									?>
+									<?php if(empty($data_schedule['jml'])) : ?>
+										<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
+																						echo 'SELECTED';
+																					} ?>><?= $r_demand['nodemand']; ?></option>
+									<?php endif; ?>
+									<?php endwhile; ?>
+								</select>
+							<?php } else { ?>
+								<input name="demand" id="demand" type="text" placeholder="Nomor Demand">
+							<?php } ?>
+						</td>
+
+
+						<td width="14%"><strong>Quantity (Kg)</strong></td>
+						<td width="1%">:</td>
+						<td colspan="">
+							<input name="qty" type="text" id="qty" size="5" value="<?= $row_kkmasuk['qty_order']; ?>" placeholder="0.00" />
+
+							<strong>Panjang (Yard)</strong>
+
+							<input name="qty2" type="text" id="qty2" size="8" value="<?= $row_kkmasuk['qty_order_yd']; ?>" placeholder="0.00" onfocus="jumlah();" />
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>Langganan/Buyer</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<input name="buyer" type="text" id="buyer" size="45" value="<?= $row_kkmasuk['langganan']; ?>/<?= $row_kkmasuk['buyer']; ?>">
+						</td>
+						<td scope="row">
+							<h4>Lot</h4>
+						</td>
+						<td>:</td>
+						<td><input name="lot" type="text" id="lot" size="5" value="<?= $row_kkmasuk['lot']; ?>" /></td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>No. Order</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<input type="text" name="no_order" id="no_order" value="<?= $row_kkmasuk['no_order']; ?>" />
+						</td>
+						
+						<td scope="row">
+							<h4>Roll</h4>
+						</td>
+						<td>:</td>
+						<td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $row_kkmasuk['roll']; ?>" /></td>
+					</tr>
+					<tr>
+						<td valign="top" scope="row">
+							<h4>Jenis Kain</h4>
+						</td>
+						<td valign="top">:</td>
+						<td>
+							<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $row_kkmasuk['jenis_kain']; ?></textarea>
+						</td>
+
+						<td style="color: red;"><strong>Nomor Mesin</strong></td>
+						<td>:</td>
+						<td>
+							<select name="no_mesin" required>
+								<option value="">Pilih</option>
 								<?php
-									$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk'");
-									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
+									$query_namamesin	= "SELECT
+																DISTINCT 
+																SUBSTR(TRIM(p.WORKCENTERCODE), 1, 4) AS WORKCENTERCODE,
+																SUBSTR(TRIM(p.WORKCENTERCODE), 1,4) AS WORKCENTERCODE_CODE,
+																w2.LONGDESCRIPTION 
+															FROM
+																WORKCENTERANDOPERATTRIBUTES w
+															LEFT JOIN OPERATION o ON o.CODE = w.OPERATIONCODE 
+															LEFT JOIN PRODUCTIONDEMANDSTEP p ON p.OPERATIONCODE = o.CODE 
+															LEFT JOIN WORKCENTER w2 ON w2.CODE = p.WORKCENTERCODE 
+															WHERE
+																NOT w.LONGDESCRIPTION = 'JANGAN DIPAKE'
+																AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
+																AND p.PRODUCTIONORDERCODE  = '$row_kkmasuk[nokk]' 
+																AND p.PRODUCTIONDEMANDCODE = '$row_kkmasuk[nodemand]'
+																AND w.OPERATIONCODE = '$_GET[operation]'";
+									$q_namamesin 		= db2_exec($conn_db2, $query_namamesin);
+									$workcenter			= db2_exec($conn_db2, $query_namamesin);
+									$data_workcenter	= db2_fetch_assoc($workcenter);
+
+									if($data_workcenter['WORKCENTERCODE_CODE'] == 'P3ST'){
+										$where_st_oven	= "(SUBSTR(CODE, 1,4) = 'P3ST' OR SUBSTR(CODE, 1,4) = 'P3DR')";
+									}else{
+										$where_st_oven	= "SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]'";
+									}
+									
+									$q_nomormesin 		= db2_exec($conn_db2, "SELECT
+																					*
+																				FROM
+																					RESOURCES r
+																				WHERE
+																					$where_st_oven
+																				ORDER BY 
+																					SUBSTR(CODE, 6,2) 
+																				ASC");
+									while ($row_nomormesin = db2_fetch_assoc($q_nomormesin)) {
 								?>
-								<?php
-									// CEK, JIKA KARTU KERJA SUDAH DIBIKIN SCHEDULE MAKA TIDAK AKAN MUNCUL DI KK MASUK. 
-									$cek_schedule   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_schedule_new WHERE nokk = '$r_demand[nokk]' AND nodemand = '$r_demand[nodemand]' AND operation = '$r_demand[operation]'");
-									$data_schedule  = mysqli_fetch_assoc($cek_schedule);
-								?>
-								<?php if(empty($data_schedule['jml'])) : ?>
-									<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
-																					echo 'SELECTED';
-																				} ?>><?= $r_demand['nodemand']; ?></option>
-                				<?php endif; ?>
-								<?php endwhile; ?>
+									<option value="<?php echo $row_nomormesin['CODE']; ?>"><?php echo $row_nomormesin['CODE']; ?> - <?php echo $row_nomormesin['LONGDESCRIPTION']; ?></option>
+								<?php } ?>
 							</select>
-						<?php } else { ?>
-							<input name="demand" id="demand" type="text" placeholder="Nomor Demand">
-						<?php } ?>
-					</td>
 
+							<strong>Nama Mesin :</strong>
+							<select name="nama_mesin" required="required">
+								<option value="">Pilih</option>
+								<?php
+									while ($row_namamesin = db2_fetch_assoc($q_namamesin)) {
+								?>
+									<option value="<?php echo $row_namamesin['WORKCENTERCODE']; ?>" SELECTED><?php echo $row_namamesin['WORKCENTERCODE']; ?> - <?php echo $row_namamesin['LONGDESCRIPTION']; ?></option>
+								<?php } ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>Tgl. Delivery</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<input name="tgl_delivery" type="date" size="35" value="<?= $row_kkmasuk['tgl_delivery']; ?>" />
+						</td>
 
-                    <td width="14%"><strong>Quantity (Kg)</strong></td>
-					<td width="1%">:</td>
-					<td colspan="">
-						<input name="qty" type="text" id="qty" size="5" value="<?= $row_kkmasuk['qty_order']; ?>" placeholder="0.00" />
+						<td>
+							<h4>Proses</h4>
+						</td>
+						<td>:</td>
+						<td colspan="2">
+							<select name="proses" id="proses" required>
+								<option value="">Pilih</option>
+								<?php
+								$qry1 = mysqli_query($con, "SELECT proses,jns,ket FROM tbl_proses ORDER BY ket, id ASC");
+								while ($r = mysqli_fetch_array($qry1)) {
+								?>
+									<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($row_kkmasuk['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
+																												echo "SELECTED";
+																											} ?>><?= $r['ket'] ?> - <?= $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
+								<?php } ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>Lebar x Gramasi</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<input name="lebar" type="text" id="lebar" size="6" value="<?= $row_kkmasuk['lebar']; ?>" placeholder="0" />
+							<input name="gramasi" type="text" id="gramasi" size="6" value="<?= $row_kkmasuk['gramasi']; ?>" placeholder="0" />
+						</td>
 
-                        <strong>Panjang (Yard)</strong>
+						<td>
+							<h4>Operation</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<select name="operation" id="operation" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
+								<option value="">Pilih</option>
+								<?php
+									$qry1 = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$_GET[idkk]' AND nodemand = '$_GET[demand]' ORDER BY id ASC");
+									while ($r = mysqli_fetch_array($qry1)) {
+								?>
+									<option value="<?= $r['operation']; ?>" <?php if ($_GET['operation'] == $r['operation']) { echo "SELECTED"; } ?>>
+										<?= $r['operation']; ?> 
+									</option>
+								<?php } ?>
+							</select>
 
-                        <input name="qty2" type="text" id="qty2" size="8" value="<?= $row_kkmasuk['qty_order_yd']; ?>" placeholder="0.00" onfocus="jumlah();" />
-					</td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>Langganan/Buyer</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<input name="buyer" type="text" id="buyer" size="45" value="<?= $row_kkmasuk['langganan']; ?>/<?= $row_kkmasuk['buyer']; ?>">
-					</td>
-                    <td scope="row">
-						<h4>Lot</h4>
-					</td>
-					<td>:</td>
-					<td><input name="lot" type="text" id="lot" size="5" value="<?= $row_kkmasuk['lot']; ?>" /></td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>No. Order</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<input type="text" name="no_order" id="no_order" value="<?= $row_kkmasuk['no_order']; ?>" />
-					</td>
-					
-                    <td scope="row">
-						<h4>Roll</h4>
-					</td>
-					<td>:</td>
-					<td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $row_kkmasuk['roll']; ?>" /></td>
-				</tr>
-				<tr>
-					<td valign="top" scope="row">
-						<h4>Jenis Kain</h4>
-					</td>
-					<td valign="top">:</td>
-					<td>
-						<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $row_kkmasuk['jenis_kain']; ?></textarea>
-					</td>
+							<strong  style="color: red;">No Urut :</strong>
+							<select name="no_urut" class="form-control select2" id="no_urut">
+								<option value="">Pilih</option>
+								<?php
+									$q_nourut		= mysqli_query($con, "SELECT
+																			CONCAT('\'', GROUP_CONCAT(nourut ORDER BY nourut SEPARATOR '\', \''), '\'' ) AS nourut
+																		FROM
+																			`tbl_schedule_new` 
+																		WHERE
+																			nokk = '$row_kkmasuk[nokk]' 
+																			AND nodemand = '$row_kkmasuk[nodemand]'");
+									$data_nourut	= mysqli_fetch_assoc($q_nourut);
+									if($data_nourut['nourut']){
+										$sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut WHERE NOT no_urut IN ($data_nourut[nourut]) ORDER BY no_urut ASC");
+									}else{
+										$sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut ORDER BY no_urut ASC");
+									}
+									while ($rK = mysqli_fetch_array($sqlKap)) {
+								?>
+									<option value="<?php echo $rK['no_urut']; ?>"><?php echo $rK['no_urut']; ?></option>
+								<?php } ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>Warna</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<input name="warna" type="text" id="warna" size="35" value="<?= $row_kkmasuk['warna']; ?>" />
+						</td>
+						
+						<td scope="row"  style="color: red;">
+							<h4>Group Shift</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<select name="g_shift" class="form-control select2">
+								<option value="">Pilih</option>
+								<option value="A">A</option>
+								<option value="B">B</option>
+								<option value="C">C</option>
+							</select>
+						</td>
+					</tr>			
+					<tr>
+						<td scope="row">
+							<h4>Personil</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<input type="text" name="personil" value="<?= $_SESSION['usr']; ?>" required readonly style="background-color: #BBBBBB;">
+						</td>
 
-                    <td style="color: red;"><strong>Nomor Mesin</strong></td>
-                    <td>:</td>
-                    <td>
-                        <select name="no_mesin" required>
-                            <option value="">Pilih</option>
-                            <?php
-								$query_namamesin	= "SELECT
-															DISTINCT 
-															SUBSTR(TRIM(p.WORKCENTERCODE), 1, 4) AS WORKCENTERCODE,
-															SUBSTR(TRIM(p.WORKCENTERCODE), 1,4) AS WORKCENTERCODE_CODE,
-															w2.LONGDESCRIPTION 
-														FROM
-															WORKCENTERANDOPERATTRIBUTES w
-														LEFT JOIN OPERATION o ON o.CODE = w.OPERATIONCODE 
-														LEFT JOIN PRODUCTIONDEMANDSTEP p ON p.OPERATIONCODE = o.CODE 
-														LEFT JOIN WORKCENTER w2 ON w2.CODE = p.WORKCENTERCODE 
-														WHERE
-															NOT w.LONGDESCRIPTION = 'JANGAN DIPAKE'
-															AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
-															AND p.PRODUCTIONORDERCODE  = '$row_kkmasuk[nokk]' 
-															AND p.PRODUCTIONDEMANDCODE = '$row_kkmasuk[nodemand]'
-															AND w.OPERATIONCODE = '$_GET[operation]'";
-								$q_namamesin 		= db2_exec($conn_db2, $query_namamesin);
-								$workcenter			= db2_exec($conn_db2, $query_namamesin);
-								$data_workcenter	= db2_fetch_assoc($workcenter);
-
-								if($data_workcenter['WORKCENTERCODE_CODE'] == 'P3ST'){
-									$where_st_oven	= "(SUBSTR(CODE, 1,4) = 'P3ST' OR SUBSTR(CODE, 1,4) = 'P3DR')";
-								}else{
-									$where_st_oven	= "SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]'";
-								}
-								
-								$q_nomormesin 		= db2_exec($conn_db2, "SELECT
-																				*
-																			FROM
-																				RESOURCES r
-																			WHERE
-																				$where_st_oven
-																			ORDER BY 
-																				SUBSTR(CODE, 6,2) 
-																			ASC");
-								while ($row_nomormesin = db2_fetch_assoc($q_nomormesin)) {
-                            ?>
-                                <option value="<?php echo $row_nomormesin['CODE']; ?>"><?php echo $row_nomormesin['CODE']; ?> - <?php echo $row_nomormesin['LONGDESCRIPTION']; ?></option>
-                            <?php } ?>
-                        </select>
-
-                        <strong>Nama Mesin :</strong>
-                        <select name="nama_mesin" required="required">
-                            <option value="">Pilih</option>
-                            <?php
-								while ($row_namamesin = db2_fetch_assoc($q_namamesin)) {
-                            ?>
-                                <option value="<?php echo $row_namamesin['WORKCENTERCODE']; ?>" SELECTED><?php echo $row_namamesin['WORKCENTERCODE']; ?> - <?php echo $row_namamesin['LONGDESCRIPTION']; ?></option>
-                            <?php } ?>
-                        </select>
-                    </td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>Tgl. Delivery</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<input name="tgl_delivery" type="date" size="35" value="<?= $row_kkmasuk['tgl_delivery']; ?>" />
-					</td>
-
-                    <td>
-						<h4>Proses</h4>
-					</td>
-					<td>:</td>
-					<td colspan="2">
-						<select name="proses" id="proses" required>
-							<option value="">Pilih</option>
-							<?php
-							$qry1 = mysqli_query($con, "SELECT proses,jns,ket FROM tbl_proses ORDER BY ket, id ASC");
-							while ($r = mysqli_fetch_array($qry1)) {
-							?>
-								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($row_kkmasuk['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
-																											echo "SELECTED";
-																										} ?>><?= $r['ket'] ?> - <?= $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
-							<?php } ?>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>Lebar x Gramasi</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<input name="lebar" type="text" id="lebar" size="6" value="<?= $row_kkmasuk['lebar']; ?>" placeholder="0" />
-						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= $row_kkmasuk['gramasi']; ?>" placeholder="0" />
-					</td>
-
-                    <td>
-                        <h4>Operation</h4>
-                    </td>
-                    <td>:</td>
-                    <td>
-                        <select name="operation" id="operation" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
-                            <option value="">Pilih</option>
-                            <?php
-                                $qry1 = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$_GET[idkk]' AND nodemand = '$_GET[demand]' ORDER BY id ASC");
-                                while ($r = mysqli_fetch_array($qry1)) {
-                            ?>
-								<option value="<?= $r['operation']; ?>" <?php if ($_GET['operation'] == $r['operation']) { echo "SELECTED"; } ?>>
-									<?= $r['operation']; ?> 
-								</option>
-                            <?php } ?>
-                        </select>
-
-                        <strong  style="color: red;">No Urut :</strong>
-                        <select name="no_urut" class="form-control select2" id="no_urut">
-							<option value="">Pilih</option>
-							<?php
-								$q_nourut		= mysqli_query($con, "SELECT
-																		CONCAT('\'', GROUP_CONCAT(nourut ORDER BY nourut SEPARATOR '\', \''), '\'' ) AS nourut
-																	FROM
-																		`tbl_schedule_new` 
-																	WHERE
-																		nokk = '$row_kkmasuk[nokk]' 
-																		AND nodemand = '$row_kkmasuk[nodemand]'");
-								$data_nourut	= mysqli_fetch_assoc($q_nourut);
-								if($data_nourut['nourut']){
-									$sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut WHERE NOT no_urut IN ($data_nourut[nourut]) ORDER BY no_urut ASC");
-								}else{
-									$sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut ORDER BY no_urut ASC");
-								}
-								while ($rK = mysqli_fetch_array($sqlKap)) {
-							?>
-								<option value="<?php echo $rK['no_urut']; ?>"><?php echo $rK['no_urut']; ?></option>
-							<?php } ?>
-						</select>
-                    </td>
-				</tr>
-                <tr>
-					<td scope="row">
-						<h4>Warna</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<input name="warna" type="text" id="warna" size="35" value="<?= $row_kkmasuk['warna']; ?>" />
-					</td>
-					
-                    <td scope="row"  style="color: red;">
-                        <h4>Group Shift</h4>
-                    </td>
-                    <td>:</td>
-                    <td>
-                        <select name="g_shift" class="form-control select2">
-							<option value="">Pilih</option>
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-						</select>
-                    </td>
-				</tr>			
-                <tr>
-                    <td scope="row">
-                        <h4>Personil</h4>
-                    </td>
-                    <td>:</td>
-                    <td>
-						<input type="text" name="personil" value="<?= $_SESSION['usr']; ?>" required readonly style="background-color: #BBBBBB;">
-                    </td>
-
-                    <td valign="top">
-                        <h4>Catatan</h4>
-                    </td>
-                    <td valign="top">:</td>
-                    <td colspan="2" valign="top">
-                        <textarea name="catatan" cols="35" id="catatan"><?= $row_kkmasuk['catatan']; ?></textarea>
-                    </td>
-                </tr>
-			</table>
-		</fieldset>
-		<fieldset>
-			<legend>KETENTUAN INPUT SCHEDULE</legend>
-			<li>Jika <b>tidak</b> terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> di KK MASUK, maka data tersebut tidak dapat ditampilkan ke dalam sistem.</li>
-			<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di susun schedule</span>, maka data tersebut tidak dapat ditampilkan ke dalam sistem.</li>
-			<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di proses</span>, maka data tersebut tidak dapat ditampilkan ke dalam sistem.</li>
-		</fieldset>
-		<br><br>
-		<input type="submit" name="btnSimpan" id="btnSimpan" value="Simpan" class="art-button" />
-		<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../index.php'" class="art-button" />
-		<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
+						<td valign="top">
+							<h4>Catatan</h4>
+						</td>
+						<td valign="top">:</td>
+						<td colspan="2" valign="top">
+							<textarea name="catatan" cols="35" id="catatan"><?= $row_kkmasuk['catatan']; ?></textarea>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<fieldset>
+				<legend>KETENTUAN INPUT SCHEDULE</legend>
+				<li>Jika <b>tidak</b> terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> di KK MASUK, maka data tersebut tidak dapat ditampilkan ke dalam sistem.</li>
+				<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di susun schedule</span>, maka data tersebut tidak dapat ditampilkan ke dalam sistem.</li>
+				<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di proses</span>, maka data tersebut tidak dapat ditampilkan ke dalam sistem.</li>
+			</fieldset>
+			<br><br>
+			<input type="submit" name="btnSimpan" id="btnSimpan" value="Simpan" class="art-button" />
+			<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../index.php'" class="art-button" />
+			<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
+		<?php endif; ?>
 	</form>
 </body>
 </html>

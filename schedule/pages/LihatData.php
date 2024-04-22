@@ -241,6 +241,7 @@
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">BUYER</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO ORDER</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">JENIS KAIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LEBAR X GRAMASI</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO WARNA</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LOT</th>
@@ -305,6 +306,7 @@
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['buyer'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_order'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['jenis_kain'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lebar'] ?> x <?= $row_schedule['gramasi'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_warna'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['warna'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lot'] ?></td>
@@ -315,8 +317,10 @@
                         <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['creationdatetime'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;">
-                            <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
-                            <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
+                            <?php if($_SESSION['usr'] != 'husni') : ?>
+                                <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
+                                <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
+		                    <?php endif; ?>
                         </td>
                         <?php $totalQty += $row_schedule['qty_order']; ?>
                         <?php $totalRoll += $row_schedule['roll']; ?>

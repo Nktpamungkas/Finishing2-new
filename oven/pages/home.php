@@ -139,7 +139,25 @@
 								});
 							</script>";
 				}else{
-					$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand ORDER BY id DESC LIMIT 1");
+					$q_kkmasuk		= mysqli_query($con, "SELECT
+                                                                *
+                                                            FROM
+                                                                `tbl_schedule_new` a
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                        SELECT 1
+                                                                        FROM
+                                                                                `tbl_produksi` b
+                                                                        WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation
+                                                                                AND b.no_mesin = a.no_mesin
+                                                                ) 
+                                                                AND NOT a.nourut = 0 AND NOT group_shift IS NULL
+                                                                AND nokk = '$idkk' $anddemand 
+                                                            ORDER BY
+                                                                CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
 					$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
 					include_once("../now.php");
 				}

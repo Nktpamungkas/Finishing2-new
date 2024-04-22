@@ -328,14 +328,14 @@
 								$data_workcenter	= db2_fetch_assoc($workcenter);
 								
 								$q_nomormesin 		= db2_exec($conn_db2, "SELECT
-																*
-															FROM
-																RESOURCES r
-															WHERE
-																SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]' 
-															ORDER BY 
-																SUBSTR(CODE, 6,2) 
-															ASC");
+																				*
+																			FROM
+																				RESOURCES r
+																			WHERE
+																				SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]' 
+																			ORDER BY 
+																				SUBSTR(CODE, 6,2) 
+																			ASC");
 								while ($row_nomormesin = db2_fetch_assoc($q_nomormesin)) {
                             ?>
                                 <option value="<?= $row_nomormesin['CODE']; ?>" <?php if($row_nomormesin['CODE'] == $row_kkmasuk['no_mesin']){ echo "SELECTED"; } ?>><?= $row_nomormesin['CODE']; ?> - <?= $row_nomormesin['LONGDESCRIPTION']; ?></option>

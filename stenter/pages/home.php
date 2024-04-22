@@ -200,9 +200,42 @@
                             });
                         </script>";
             }else{
-                $q_kkmasuk      = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand ORDER BY id DESC LIMIT 1");
-                $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
-                include_once("../now.php");
+                if($_GET['operation']){
+                    $andoperation   = "AND operation = '$_GET[operation]'";
+                }else{
+                    $andoperation   = "";
+                }
+                if($_GET['kklanjutan']){
+                    $q_kkmasuk      = mysqli_query($con, "SELECT
+                                                                *
+                                                            FROM
+                                                                `tbl_schedule_new` a
+                                                            WHERE nokk = '$idkk' $anddemand $andoperation");
+                    $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
+                    include_once("../now.php");
+                }else{
+                    $q_kkmasuk      = mysqli_query($con, "SELECT
+                                                                *
+                                                            FROM
+                                                                `tbl_schedule_new` a
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                        SELECT 1
+                                                                        FROM
+                                                                            `tbl_produksi` b
+                                                                        WHERE
+                                                                            b.nokk = a.nokk 
+                                                                            AND b.demandno = a.nodemand 
+                                                                            AND b.nama_mesin = a.operation
+                                                                            AND b.no_mesin = a.no_mesin
+                                                                ) 
+                                                                AND NOT a.nourut = 0 AND NOT group_shift IS NULL
+                                                                AND nokk = '$idkk' $anddemand 
+                                                            ORDER BY
+                                                                CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
+                    $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
+                    include_once("../now.php");
+                }
             }
         }
     }
@@ -514,37 +547,38 @@
                         `tgl_update`='$tgl'
                         ";
             mysqli_query($con, $simpanSql) or die("Gagal Simpan" . mysqli_error());
+            // JIKA DICEKLIST KK LANJUTAN MAKA DI tbl_schedule_new di update data nya
             //Simpan ke schedule
             $posisi = strpos($langganan, "/");
             $cus = substr($langganan, 0, $posisi);
             $byr = substr($langganan, ($posisi + 1), 100);
             $sqlData = mysqli_query($con, "INSERT INTO tbl_schedule SET
-                nokk='$nokk',
-                nodemand='$demand',
-                langganan='$cus',
-                buyer='$byr',
-                no_order='$order',
-                no_hanger='$item',
-                no_item='$item',
-                jenis_kain='$jenis_kain',
-                lebar='$lebar',
-                gramasi='$gramasi',
-                warna='$warna',
-                no_warna='$nowarna',
-                bruto='$qty',
-                lot='$lot',
-                rol='$rol',
-                shift='$shift',
-                g_shift='$shift2',
-                no_mesin='$mesin',
-                proses='$proses',
-                revisi='0',
-                tgl_masuk=now(),
-                personil='Operator Fin',
-                target='0',
-                catatan='data diinput dari finishing',
-                tgl_update=now(),
-                tampil='1'");
+                                            nokk='$nokk',
+                                            nodemand='$demand',
+                                            langganan='$cus',
+                                            buyer='$byr',
+                                            no_order='$order',
+                                            no_hanger='$item',
+                                            no_item='$item',
+                                            jenis_kain='$jenis_kain',
+                                            lebar='$lebar',
+                                            gramasi='$gramasi',
+                                            warna='$warna',
+                                            no_warna='$nowarna',
+                                            bruto='$qty',
+                                            lot='$lot',
+                                            rol='$rol',
+                                            shift='$shift',
+                                            g_shift='$shift2',
+                                            no_mesin='$mesin',
+                                            proses='$proses',
+                                            revisi='0',
+                                            tgl_masuk=now(),
+                                            personil='Operator Fin',
+                                            target='0',
+                                            catatan='data diinput dari finishing',
+                                            tgl_update=now(),
+                                            tampil='1'");
 
             // Refresh form
             echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiSimpan'>";
@@ -577,6 +611,8 @@
                                                             echo "SELECTED";
                                                         } ?>>SCHEDULE</option>
                         </select>
+
+                        <input type="checkbox" name="kklanjutan" id="kklanjutan" value="<?php if($_GET['kklanjutan']){ echo "1"; } ?>" <?php if($_GET['kklanjutan']){ echo "checked"; } ?> onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&kklanjutan=1'"> KK LANJUTAN
                     </td>
                 </tr>
                 <tr>
@@ -585,10 +621,10 @@
                     </td>
                     <td width="1%">:</td>
                     <td width="26%">
-                        <input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
+                        <input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
 
                         <?php if ($_GET['typekk'] == 'NOW') {  ?>
-                            <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
+                            <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+this.value" required>
                                 <option value="" disabled selected>Pilih Nomor Demand</option>
                                 <?php
                                     $sql_ITXVIEWKK_demand  = db2_exec($conn_db2, "SELECT DEAMAND AS DEMAND FROM ITXVIEWKK WHERE PRODUCTIONORDERCODE = '$idkk'");
@@ -600,12 +636,15 @@
                                 <?php endwhile; ?>
                             </select>
                         <?php }elseif($_GET['typekk'] == 'SCHEDULE'){ ?>
-                            <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
+                            <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
                                 <?php
                                     $sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE nokk = '$idkk'");
 									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
                                 ?>
+                                <?php if($_GET['kklanjutan']) : ?>
+                                    <option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) { echo 'SELECTED'; } ?>><?= $r_demand['nodemand']; ?></option>
+                                <?php else : ?>
                                     <?php
                                         // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TIDAK AKAN MUNCUL. 
                                         $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$r_demand[nokk]' AND demandno = '$r_demand[nodemand]' AND nama_mesin = '$r_demand[operation]'");
@@ -614,6 +653,7 @@
                                     <?php if(empty($data_proses['jml'])) : ?>
                                         <option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) { echo 'SELECTED'; } ?>><?= $r_demand['nodemand']; ?></option>
                                     <?php endif; ?>
+                                <?php endif; ?>
                                 <?php endwhile; ?>
 							</select>
                         <?php } else { ?>
@@ -637,7 +677,7 @@
                     </td>
                     <td>:</td>
                     <td>
-                        <select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
+                        <select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
                             <option value="">Pilih</option>
                             <?php
                                 $qry1 = db2_exec($conn_db2, "SELECT DISTINCT 

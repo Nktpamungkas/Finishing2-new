@@ -301,400 +301,404 @@
 		}
 	?>
 	<form id="form1" name="form1" method="post" action="">
-		<fieldset>
-			<legend>Data KK MASUK yang akan di atur didalam schedule </legend>
-			<table width="100%" border="0">
-				<tr>
-					<th colspan="7" scope="row">
-						<font color="#FF0000"><?php echo $_GET['status']; ?></font>
-					</th>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>Pilih Asal Kartu Kerja</h4>
-					</td>
-					<td width="1%">:</td>
-					<td>
-						<select style="width: 50%" id="typekk" name="typekk" onchange="window.location='?typekk='+this.value" required>
-							<option value="" disabled selected>-Pilih Tipe Kartu Kerja-</option>
-							<option value="KKLama" <?php if ($_GET['typekk'] == "KKLama") {
+		<?php if($_SESSION['usr'] == 'husni') : ?>
+			<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button green">
+		<?php else : ?>
+			<fieldset>
+				<legend>Data KK MASUK yang akan di atur didalam schedule </legend>
+				<table width="100%" border="0">
+					<tr>
+						<th colspan="7" scope="row">
+							<font color="#FF0000"><?php echo $_GET['status']; ?></font>
+						</th>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>Pilih Asal Kartu Kerja</h4>
+						</td>
+						<td width="1%">:</td>
+						<td>
+							<select style="width: 50%" id="typekk" name="typekk" onchange="window.location='?typekk='+this.value" required>
+								<option value="" disabled selected>-Pilih Tipe Kartu Kerja-</option>
+								<option value="KKLama" <?php if ($_GET['typekk'] == "KKLama") {
+															echo "SELECTED";
+														} ?>>KK Lama</option>
+								<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
 														echo "SELECTED";
-													} ?>>KK Lama</option>
-							<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
-													echo "SELECTED";
-												} ?>>KK NOW</option>
-							</select=>
-					</td>
-					<td>
-						<h4>Operation</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<select name="operation" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
-							<option value="">Pilih</option>
-							<?php
-								$qry1 = db2_exec($conn_db2, "SELECT
-																p.PRODUCTIONORDERCODE,
-																p.STEPNUMBER AS STEPNUMBER,
-																CASE
-																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
-																	ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
-																END AS OPERATIONCODE,
-																TRIM(o.OPERATIONGROUPCODE) AS DEPT,
-																o.LONGDESCRIPTION,
-																CASE
-																	WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
-																	WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
-																	WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
-																	WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
-																END AS STATUS_OPERATION,
-																iptip.MULAI,
-																CASE
-																	WHEN p.PROGRESSSTATUS = 3 THEN COALESCE(iptop.SELESAI, SUBSTRING(p.LASTUPDATEDATETIME, 1, 19) || '(Run Manual Closures)')
-																	ELSE iptop.SELESAI
-																END AS SELESAI,
-																p.PRODUCTIONORDERCODE,
-																p.PRODUCTIONDEMANDCODE,
-																iptip.LONGDESCRIPTION AS OP1,
-																iptop.LONGDESCRIPTION AS OP2,
-																CASE
-																	WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
-																	ELSE LISTAGG(FLOOR(idqd.VALUEQUANTITY), ', ')
-																END AS GEROBAK 
-															FROM 
-																PRODUCTIONDEMANDSTEP p 
-															LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
-															LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
-															LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-															LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-															LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
-																								-- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
-																								AND idqd.OPERATIONCODE = CASE
-																															WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
-																															ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
-																														END
-																								AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
-																								AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
-																									idqd.CHARACTERISTICCODE = 'GRB2' OR
-																									idqd.CHARACTERISTICCODE = 'GRB3' OR
-																									idqd.CHARACTERISTICCODE = 'GRB4' OR
-																									idqd.CHARACTERISTICCODE = 'GRB5' OR
-																									idqd.CHARACTERISTICCODE = 'GRB6' OR
-																									idqd.CHARACTERISTICCODE = 'GRB7' OR
-																									idqd.CHARACTERISTICCODE = 'GRB8')
-																								AND NOT (idqd.VALUEQUANTITY = 9 OR idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 1 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
-															WHERE
-																p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
-															GROUP BY
-																p.PRODUCTIONORDERCODE,
-																p.STEPNUMBER,
-																p.OPERATIONCODE,
-																p.PRODRESERVATIONLINKGROUPCODE,
-																o.OPERATIONGROUPCODE,
-																o.LONGDESCRIPTION,
-																p.PROGRESSSTATUS,
-																iptip.MULAI,
-																iptop.SELESAI,
-																p.LASTUPDATEDATETIME,
-																p.PRODUCTIONORDERCODE,
-																p.PRODUCTIONDEMANDCODE,
-																iptip.LONGDESCRIPTION,
-																iptop.LONGDESCRIPTION,
-																a.VALUEBOOLEAN
-															ORDER BY p.STEPNUMBER ASC");
-								while ($r = db2_fetch_assoc($qry1)) {
-							?>
-								<option value="<?= $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>>
-									<?= $r['OPERATIONCODE']; ?> - <?= $r['LONGDESCRIPTION']; ?> (STATUS NOW : <?= $r['STATUS_OPERATION']; ?>)
-								</option>
-							<?php } ?>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td width="13%" scope="row">
-						<h4>Nokk</h4>
-					</td>
-					<td width="1%">:</td>
-					<td width="26%">
-						<input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
-
-						<?php if ($_GET['typekk'] == 'NOW') {  ?>
-							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
-								<option value="" disabled selected>Pilih Nomor Demand</option>
+													} ?>>KK NOW</option>
+								</select=>
+						</td>
+						<td>
+							<h4>Operation</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<select name="operation" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
+								<option value="">Pilih</option>
 								<?php
-								$sql_ITXVIEWKK_demand  = db2_exec($conn_db2, "SELECT DEAMAND AS DEMAND FROM ITXVIEWKK WHERE PRODUCTIONORDERCODE = '$idkk'");
-								while ($r_demand = db2_fetch_assoc($sql_ITXVIEWKK_demand)) :
+									$qry1 = db2_exec($conn_db2, "SELECT
+																	p.PRODUCTIONORDERCODE,
+																	p.STEPNUMBER AS STEPNUMBER,
+																	CASE
+																		WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+																		ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+																	END AS OPERATIONCODE,
+																	TRIM(o.OPERATIONGROUPCODE) AS DEPT,
+																	o.LONGDESCRIPTION,
+																	CASE
+																		WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
+																		WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
+																		WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
+																		WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
+																	END AS STATUS_OPERATION,
+																	iptip.MULAI,
+																	CASE
+																		WHEN p.PROGRESSSTATUS = 3 THEN COALESCE(iptop.SELESAI, SUBSTRING(p.LASTUPDATEDATETIME, 1, 19) || '(Run Manual Closures)')
+																		ELSE iptop.SELESAI
+																	END AS SELESAI,
+																	p.PRODUCTIONORDERCODE,
+																	p.PRODUCTIONDEMANDCODE,
+																	iptip.LONGDESCRIPTION AS OP1,
+																	iptop.LONGDESCRIPTION AS OP2,
+																	CASE
+																		WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
+																		ELSE LISTAGG(FLOOR(idqd.VALUEQUANTITY), ', ')
+																	END AS GEROBAK 
+																FROM 
+																	PRODUCTIONDEMANDSTEP p 
+																LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+																LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
+																LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+																LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+																LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
+																									-- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
+																									AND idqd.OPERATIONCODE = CASE
+																																WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+																																ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+																															END
+																									AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
+																									AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
+																										idqd.CHARACTERISTICCODE = 'GRB2' OR
+																										idqd.CHARACTERISTICCODE = 'GRB3' OR
+																										idqd.CHARACTERISTICCODE = 'GRB4' OR
+																										idqd.CHARACTERISTICCODE = 'GRB5' OR
+																										idqd.CHARACTERISTICCODE = 'GRB6' OR
+																										idqd.CHARACTERISTICCODE = 'GRB7' OR
+																										idqd.CHARACTERISTICCODE = 'GRB8')
+																									AND NOT (idqd.VALUEQUANTITY = 9 OR idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 1 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
+																WHERE
+																	p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
+																GROUP BY
+																	p.PRODUCTIONORDERCODE,
+																	p.STEPNUMBER,
+																	p.OPERATIONCODE,
+																	p.PRODRESERVATIONLINKGROUPCODE,
+																	o.OPERATIONGROUPCODE,
+																	o.LONGDESCRIPTION,
+																	p.PROGRESSSTATUS,
+																	iptip.MULAI,
+																	iptop.SELESAI,
+																	p.LASTUPDATEDATETIME,
+																	p.PRODUCTIONORDERCODE,
+																	p.PRODUCTIONDEMANDCODE,
+																	iptip.LONGDESCRIPTION,
+																	iptop.LONGDESCRIPTION,
+																	a.VALUEBOOLEAN
+																ORDER BY p.STEPNUMBER ASC");
+									while ($r = db2_fetch_assoc($qry1)) {
 								?>
-									<option value="<?= $r_demand['DEMAND']; ?>" <?php if ($r_demand['DEMAND'] == $_GET['demand']) {
-																					echo 'SELECTED';
-																				} ?>><?= $r_demand['DEMAND']; ?></option>
-								<?php endwhile; ?>
+									<option value="<?= $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>>
+										<?= $r['OPERATIONCODE']; ?> - <?= $r['LONGDESCRIPTION']; ?> (STATUS NOW : <?= $r['STATUS_OPERATION']; ?>)
+									</option>
+								<?php } ?>
 							</select>
-						<?php } else { ?>
-							<input name="demand" id="demand" type="text" placeholder="Nomor Demand">
-						<?php } ?>
-					</td>
-					<td>
-						<h4>Proses</h4>
-					</td>
-					<td>:</td>
-					<td colspan="2">
-						<select name="proses" id="proses" required>
-							<option value="">Pilih</option>
-							<?php
-								$qry1 = mysqli_query($con, "SELECT proses,jns,ket FROM tbl_proses ORDER BY ket, id ASC");
-								while ($r = mysqli_fetch_array($qry1)) {
-							?>
-								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
-																											echo "SELECTED";
-																										} ?>><?= $r['ket'] ?> - <?= $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
-							<?php } ?>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>Langganan/Buyer</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $langganan_buyer =  $dt_pelanggan_buyer['PELANGGAN'] . '/' . $dt_pelanggan_buyer['BUYER']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$langganan_buyer =  $ssr1['partnername'] . "/" . $ssr2['partnername'];
-							} else {
-								$langganan_buyer =  $rw['langganan'];
-							} ?>
-						<?php endif; ?>
-						<input name="buyer" type="text" id="buyer" size="45" value="<?= $langganan_buyer; ?>">
-					</td>
+						</td>
+					</tr>
+					<tr>
+						<td width="13%" scope="row">
+							<h4>Nokk</h4>
+						</td>
+						<td width="1%">:</td>
+						<td width="26%">
+							<input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
 
-					<td><strong>Nama Mesin</strong></td>
-					<td>:</td>
-					<td>
-						<select name="nama_mesin" required="required">
-							<option value="">Pilih</option>
-							<?php
-							$q_mesin = db2_exec($conn_db2, "SELECT
-																p.WORKCENTERCODE,
-																CASE
-																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
-																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
-																	ELSE p.PRODRESERVATIONLINKGROUPCODE
-																END	AS OPERATIONCODE,
-																TRIM(o.OPERATIONGROUPCODE) AS OPERATIONGROUPCODE,
-																o.LONGDESCRIPTION,
-																iptip.MULAI,
-																iptop.SELESAI,
-																p.PRODUCTIONORDERCODE,
-																p.PRODUCTIONDEMANDCODE,
-																p.GROUPSTEPNUMBER AS STEPNUMBER,
-																CASE
-																	WHEN iptip.MACHINECODE = iptop.MACHINECODE THEN iptip.MACHINECODE
-																	ELSE iptip.MACHINECODE || '-' ||iptop.MACHINECODE
-																END AS MESIN   
-															FROM 
-																PRODUCTIONDEMANDSTEP p 
-															LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
-															LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-															LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+							<?php if ($_GET['typekk'] == 'NOW') {  ?>
+								<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
+									<option value="" disabled selected>Pilih Nomor Demand</option>
+									<?php
+									$sql_ITXVIEWKK_demand  = db2_exec($conn_db2, "SELECT DEAMAND AS DEMAND FROM ITXVIEWKK WHERE PRODUCTIONORDERCODE = '$idkk'");
+									while ($r_demand = db2_fetch_assoc($sql_ITXVIEWKK_demand)) :
+									?>
+										<option value="<?= $r_demand['DEMAND']; ?>" <?php if ($r_demand['DEMAND'] == $_GET['demand']) {
+																						echo 'SELECTED';
+																					} ?>><?= $r_demand['DEMAND']; ?></option>
+									<?php endwhile; ?>
+								</select>
+							<?php } else { ?>
+								<input name="demand" id="demand" type="text" placeholder="Nomor Demand">
+							<?php } ?>
+						</td>
+						<td>
+							<h4>Proses</h4>
+						</td>
+						<td>:</td>
+						<td colspan="2">
+							<select name="proses" id="proses" required>
+								<option value="">Pilih</option>
+								<?php
+									$qry1 = mysqli_query($con, "SELECT proses,jns,ket FROM tbl_proses ORDER BY ket, id ASC");
+									while ($r = mysqli_fetch_array($qry1)) {
+								?>
+									<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
+																												echo "SELECTED";
+																											} ?>><?= $r['ket'] ?> - <?= $r['proses'] . " (" . $r['jns'] . ")"; ?></option>
+								<?php } ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>Langganan/Buyer</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<?php if ($_GET['typekk'] == "NOW") : ?>
+								<?php $langganan_buyer =  $dt_pelanggan_buyer['PELANGGAN'] . '/' . $dt_pelanggan_buyer['BUYER']; ?>
+							<?php else : ?>
+								<?php if ($cek > 0) {
+									$langganan_buyer =  $ssr1['partnername'] . "/" . $ssr2['partnername'];
+								} else {
+									$langganan_buyer =  $rw['langganan'];
+								} ?>
+							<?php endif; ?>
+							<input name="buyer" type="text" id="buyer" size="45" value="<?= $langganan_buyer; ?>">
+						</td>
+
+						<td><strong>Nama Mesin</strong></td>
+						<td>:</td>
+						<td>
+							<select name="nama_mesin" required="required">
+								<option value="">Pilih</option>
+								<?php
+								$q_mesin = db2_exec($conn_db2, "SELECT
+																	p.WORKCENTERCODE,
+																	CASE
+																		WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+																		WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+																		ELSE p.PRODRESERVATIONLINKGROUPCODE
+																	END	AS OPERATIONCODE,
+																	TRIM(o.OPERATIONGROUPCODE) AS OPERATIONGROUPCODE,
+																	o.LONGDESCRIPTION,
+																	iptip.MULAI,
+																	iptop.SELESAI,
+																	p.PRODUCTIONORDERCODE,
+																	p.PRODUCTIONDEMANDCODE,
+																	p.GROUPSTEPNUMBER AS STEPNUMBER,
+																	CASE
+																		WHEN iptip.MACHINECODE = iptop.MACHINECODE THEN iptip.MACHINECODE
+																		ELSE iptip.MACHINECODE || '-' ||iptop.MACHINECODE
+																	END AS MESIN   
+																FROM 
+																	PRODUCTIONDEMANDSTEP p 
+																LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+																LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+																LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+																WHERE
+																	p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' 
+																	AND 
+																	CASE
+																		WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+																		WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+																		ELSE p.PRODRESERVATIONLINKGROUPCODE
+																	END = '$_GET[operation]'
+																ORDER BY iptip.MULAI ASC");
+								$row_mesin = db2_fetch_assoc($q_mesin);
+
+								$qry1 = db2_exec($conn_db2, "SELECT
+																DISTINCT 
+																SUBSTR(TRIM(p.WORKCENTERCODE), 1, 4) AS WORKCENTERCODE,
+																w2.LONGDESCRIPTION 
+															FROM
+																WORKCENTERANDOPERATTRIBUTES w
+															LEFT JOIN OPERATION o ON o.CODE = w.OPERATIONCODE 
+															LEFT JOIN PRODUCTIONDEMANDSTEP p ON p.OPERATIONCODE = o.CODE 
+															LEFT JOIN WORKCENTER w2 ON w2.CODE = p.WORKCENTERCODE 
 															WHERE
-																p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' 
-																AND 
-																CASE
-																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
-																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
-																	ELSE p.PRODRESERVATIONLINKGROUPCODE
-																END = '$_GET[operation]'
-															ORDER BY iptip.MULAI ASC");
-							$row_mesin = db2_fetch_assoc($q_mesin);
+																NOT w.LONGDESCRIPTION = 'JANGAN DIPAKE'
+																AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
+																AND p.PRODUCTIONORDERCODE  = '$_GET[idkk]' 
+																AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]'
+																AND w.OPERATIONCODE = '$_GET[operation]'");
+								while ($r = db2_fetch_assoc($qry1)) {
+								?>
+									<option value="<?php echo $r['WORKCENTERCODE']; ?>" SELECTED><?php echo $r['WORKCENTERCODE']; ?> - <?php echo $r['LONGDESCRIPTION']; ?></option>
+								<?php } ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>No. Order</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<?php if ($_GET['typekk'] == "NOW") : ?>
+								<?php $no_order =  $dt_ITXVIEWKK['PROJECTCODE']; ?>
+							<?php else : ?>
+								<?php if ($cek > 0) {
+									$no_order =  $ssr['documentno'];
+								} else {
+									$no_order =  $rw['no_order'];
+								} ?>
+							<?php endif; ?>
+							<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
+						</td>
+						
+						<td scope="row">
+							<h4>Personil</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<input type="text" name="personil" value="<?= $_SESSION['usr']; ?>" required readonly style="background-color: #BBBBBB;">
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>Tgl Delivery</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<input type="date" name="tgl_delivery" value="<?= $dt_ITXVIEWKK['DELIVERYDATE']; ?>" />
+						</td>
 
-							$qry1 = db2_exec($conn_db2, "SELECT
-															DISTINCT 
-															SUBSTR(TRIM(p.WORKCENTERCODE), 1, 4) AS WORKCENTERCODE,
-															w2.LONGDESCRIPTION 
-														FROM
-															WORKCENTERANDOPERATTRIBUTES w
-														LEFT JOIN OPERATION o ON o.CODE = w.OPERATIONCODE 
-														LEFT JOIN PRODUCTIONDEMANDSTEP p ON p.OPERATIONCODE = o.CODE 
-														LEFT JOIN WORKCENTER w2 ON w2.CODE = p.WORKCENTERCODE 
-														WHERE
-															NOT w.LONGDESCRIPTION = 'JANGAN DIPAKE'
-															AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
-															AND p.PRODUCTIONORDERCODE  = '$_GET[idkk]' 
-															AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]'
-															AND w.OPERATIONCODE = '$_GET[operation]'");
-							while ($r = db2_fetch_assoc($qry1)) {
-							?>
-								<option value="<?php echo $r['WORKCENTERCODE']; ?>" SELECTED><?php echo $r['WORKCENTERCODE']; ?> - <?php echo $r['LONGDESCRIPTION']; ?></option>
-							<?php } ?>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>No. Order</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $no_order =  $dt_ITXVIEWKK['PROJECTCODE']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$no_order =  $ssr['documentno'];
-							} else {
-								$no_order =  $rw['no_order'];
-							} ?>
-						<?php endif; ?>
-						<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
-					</td>
-					
-					<td scope="row">
-						<h4>Personil</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<input type="text" name="personil" value="<?= $_SESSION['usr']; ?>" required readonly style="background-color: #BBBBBB;">
-					</td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>Tgl Delivery</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<input type="date" name="tgl_delivery" value="<?= $dt_ITXVIEWKK['DELIVERYDATE']; ?>" />
-					</td>
+						<td scope="row">
+							<h4>Roll</h4>
+						</td>
+						<td>:</td>
+						<td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $dt_roll['ROLL']; ?>" /></td>
+					</tr>
+					<tr>
+						<td valign="top" scope="row">
+							<h4>Jenis Kain</h4>
+						</td>
+						<td valign="top">:</td>
+						<td>
+							<?php if ($_GET['typekk'] == "NOW") : ?>
+								<?php $jk = $dt_ITXVIEWKK['ITEMDESCRIPTION']; ?>
+							<?php else : ?>
+								<?php if ($cek > 0) {
+									$jk = $ssr['productcode'] . " / " . $ssr['description'];
+								} else {
+									$jk = $rw['jenis_kain'];
+								} ?>
+							<?php endif; ?>
+							<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
+						</td>
+						<td valign="top">
+							<h4>Catatan</h4>
+						</td>
+						<td valign="top">:</td>
+						<td colspan="2" valign="top">
+							<textarea name="catatan" cols="35" id="catatan"><?php echo $rw['catatan']; ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>No. Warna</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<?php if ($_GET['typekk'] == "NOW") : ?>
+								<?php $nomor_warna = $dt_ITXVIEWKK['NO_WARNA']; ?>
+							<?php else : ?>
+								<?php if ($cek > 0) {
+									$nomor_warna = $ssr['colorno'];
+								} else {
+									$nomor_warna = $rw['no_warna'];
+								} ?>
+							<?php endif; ?>
+							<input name="no_warna" type="text" id="no_warna" size="35" value="<?= $nomor_warna; ?>" />
+						</td>
 
-					<td scope="row">
-						<h4>Roll</h4>
-					</td>
-					<td>:</td>
-					<td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $dt_roll['ROLL']; ?>" /></td>
-				</tr>
-				<tr>
-					<td valign="top" scope="row">
-						<h4>Jenis Kain</h4>
-					</td>
-					<td valign="top">:</td>
-					<td>
-						<?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $jk = $dt_ITXVIEWKK['ITEMDESCRIPTION']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$jk = $ssr['productcode'] . " / " . $ssr['description'];
-							} else {
-								$jk = $rw['jenis_kain'];
-							} ?>
-						<?php endif; ?>
-						<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
-					</td>
-					<td valign="top">
-						<h4>Catatan</h4>
-					</td>
-					<td valign="top">:</td>
-					<td colspan="2" valign="top">
-						<textarea name="catatan" cols="35" id="catatan"><?php echo $rw['catatan']; ?></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>No. Warna</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $nomor_warna = $dt_ITXVIEWKK['NO_WARNA']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$nomor_warna = $ssr['colorno'];
-							} else {
-								$nomor_warna = $rw['no_warna'];
-							} ?>
-						<?php endif; ?>
-						<input name="no_warna" type="text" id="no_warna" size="35" value="<?= $nomor_warna; ?>" />
-					</td>
-
-					<td width="14%"><strong>Quantity (Kg)</strong></td>
-					<td width="1%">:</td>
-					<td colspan="2">
-						<?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $berat = $dt_qtyorder['QTY_ORDER']; ?>
-						<?php else : ?>
-							<?php if ($cLot > 0) {
-								$berat = round($sLot['Weight'], 2);
-							} else if ($rc > 0) {
-								$berat = round($rw['qty'], 2);
-							} else if ($rcAdm > 0) {
-								$berat = $rwAdm['qty'];
-							} ?>
-						<?php endif; ?>
-						<input name="qty" type="text" id="qty" size="5" value="<?= $berat; ?>" placeholder="0.00" />
-						&nbsp;&nbsp;&nbsp;&nbsp;<strong>Gramasi</strong>:
-						<?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $nlebar = floor($dt_lg['LEBAR']); ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$nlebar = round($ssr['cuttablewidth'], 2);
-							} else if ($rcAdm > 0) {
-								$nlebar = $rwAdm['lebar'];
-							} ?>
-						<?php endif; ?>
-						<input name="lebar" type="text" id="lebar" size="6" value="<?= $nlebar; ?>" placeholder="0" />
-						<?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $ngramasi = floor($dt_lg['GRAMASI']) ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$ngramasi = round($ssr['weight'], 2);
-							} else if ($rcAdm > 0) {
-								$ngramasi = $rwAdm['gramasi'];
-							} ?>
-						<?php endif; ?>
-						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= $ngramasi; ?>" placeholder="0" />
-					</td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>Warna</h4>
-					</td>
-					<td>:</td>
-					<td>
-						<?php if ($_GET['typekk'] == "NOW") : ?>
-							<?php $nama_warna = $dt_warna['WARNA']; ?>
-						<?php else : ?>
-							<?php if ($cek > 0) {
-								$nama_warna = $ssr['color'];
-							} else {
-								$nama_warna = $rw['warna'];
-							} ?>
-						<?php endif; ?>
-						<input name="warna" type="text" id="warna" size="35" value="<?= $nama_warna; ?>" />
-					</td>
-					<td width="14%"><strong>Panjang (Yard)</strong></td>
-					<td>:</td>
-					<td colspan="2"><input name="qty2" type="text" id="qty2" size="8" value="<?= $dt_qtyorder['QTY_ORDER_YARD']; ?><?php echo $rw['panjang']; ?>" placeholder="0.00" onfocus="jumlah();" /></td>
-				</tr>
-				<tr>
-					<td scope="row">
-						<h4>Lot</h4>
-					</td>
-					<td>:</td>
-					<td><input name="lot" type="text" id="lot" size="5" value="<?= $dt_ITXVIEWKK['LOT']; ?>" /></td>
-				</tr>
-			</table>
-		</fieldset>
-		<fieldset>
-			<legend>KETENTUAN INPUT KK MASUK</legend>
-			<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b>, maka data tersebut tidak dapat disimpan atau dimasukkan ke dalam sistem.</li>
-			<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di susun schedule</span>, maka data tersebut tidak dapat disimpan atau dimasukkan ke dalam sistem.</li>
-			<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di proses</span>, maka data tersebut tidak dapat disimpan atau dimasukkan ke dalam sistem.</li>
-		</fieldset>
-		<br><br>
-		<input type="submit" name="btnSimpan" id="btnSimpan" value="Simpan" class="art-button" />
-		<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../index.php'" class="art-button" />
-		<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button green">
+						<td width="14%"><strong>Quantity (Kg)</strong></td>
+						<td width="1%">:</td>
+						<td colspan="2">
+							<?php if ($_GET['typekk'] == "NOW") : ?>
+								<?php $berat = $dt_qtyorder['QTY_ORDER']; ?>
+							<?php else : ?>
+								<?php if ($cLot > 0) {
+									$berat = round($sLot['Weight'], 2);
+								} else if ($rc > 0) {
+									$berat = round($rw['qty'], 2);
+								} else if ($rcAdm > 0) {
+									$berat = $rwAdm['qty'];
+								} ?>
+							<?php endif; ?>
+							<input name="qty" type="text" id="qty" size="5" value="<?= $berat; ?>" placeholder="0.00" />
+							&nbsp;&nbsp;&nbsp;&nbsp;<strong>Gramasi</strong>:
+							<?php if ($_GET['typekk'] == "NOW") : ?>
+								<?php $nlebar = floor($dt_lg['LEBAR']); ?>
+							<?php else : ?>
+								<?php if ($cek > 0) {
+									$nlebar = round($ssr['cuttablewidth'], 2);
+								} else if ($rcAdm > 0) {
+									$nlebar = $rwAdm['lebar'];
+								} ?>
+							<?php endif; ?>
+							<input name="lebar" type="text" id="lebar" size="6" value="<?= $nlebar; ?>" placeholder="0" />
+							<?php if ($_GET['typekk'] == "NOW") : ?>
+								<?php $ngramasi = floor($dt_lg['GRAMASI']) ?>
+							<?php else : ?>
+								<?php if ($cek > 0) {
+									$ngramasi = round($ssr['weight'], 2);
+								} else if ($rcAdm > 0) {
+									$ngramasi = $rwAdm['gramasi'];
+								} ?>
+							<?php endif; ?>
+							<input name="gramasi" type="text" id="gramasi" size="6" value="<?= $ngramasi; ?>" placeholder="0" />
+						</td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>Warna</h4>
+						</td>
+						<td>:</td>
+						<td>
+							<?php if ($_GET['typekk'] == "NOW") : ?>
+								<?php $nama_warna = $dt_warna['WARNA']; ?>
+							<?php else : ?>
+								<?php if ($cek > 0) {
+									$nama_warna = $ssr['color'];
+								} else {
+									$nama_warna = $rw['warna'];
+								} ?>
+							<?php endif; ?>
+							<input name="warna" type="text" id="warna" size="35" value="<?= $nama_warna; ?>" />
+						</td>
+						<td width="14%"><strong>Panjang (Yard)</strong></td>
+						<td>:</td>
+						<td colspan="2"><input name="qty2" type="text" id="qty2" size="8" value="<?= $dt_qtyorder['QTY_ORDER_YARD']; ?><?php echo $rw['panjang']; ?>" placeholder="0.00" onfocus="jumlah();" /></td>
+					</tr>
+					<tr>
+						<td scope="row">
+							<h4>Lot</h4>
+						</td>
+						<td>:</td>
+						<td><input name="lot" type="text" id="lot" size="5" value="<?= $dt_ITXVIEWKK['LOT']; ?>" /></td>
+					</tr>
+				</table>
+			</fieldset>
+			<fieldset>
+				<legend>KETENTUAN INPUT KK MASUK</legend>
+				<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b>, maka data tersebut tidak dapat disimpan atau dimasukkan ke dalam sistem.</li>
+				<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di susun schedule</span>, maka data tersebut tidak dapat disimpan atau dimasukkan ke dalam sistem.</li>
+				<li>Jika terdapat kesamaan antara <b>nomor kartu kerja, nomor demand, dan operation</b> <span style="color: red;">sudah di proses</span>, maka data tersebut tidak dapat disimpan atau dimasukkan ke dalam sistem.</li>
+			</fieldset>
+			<br><br>
+			<input type="submit" name="btnSimpan" id="btnSimpan" value="Simpan" class="art-button" />
+			<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../index.php'" class="art-button" />
+			<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button green">
+		<?php endif; ?>
 	</form>
 </body>
 </html>
