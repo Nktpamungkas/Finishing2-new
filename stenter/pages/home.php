@@ -115,70 +115,43 @@
 
 <body>
     <?php
-    ini_set("error_reporting", 1);
-    session_start();
-    include('../koneksi.php');
-    function nourut()
-    {
+        ini_set("error_reporting", 1);
+        session_start();
         include('../koneksi.php');
-        $format = date("ymd");
-        $sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
-        $d = mysqli_num_rows($sql);
+        function nourut()
+        {
+            include('../koneksi.php');
+            $format = date("ymd");
+            $sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
+            $d = mysqli_num_rows($sql);
 
-        if ($d > 0) {
-            $r = mysqli_fetch_array($sql);
-            $d = $r['nokk'];
-            $str = substr($d, 6, 2);
-            $Urut = (int)$str;
-        } else {
-            $Urut = 0;
-        }
-        $Urut = $Urut + 1;
-        $Nol = "";
-        $nilai = 2 - strlen($Urut);
-        for ($i = 1; $i <= $nilai; $i++) {
-            $Nol = $Nol . "0";
-        }
-        $nipbr = $format . $Nol . $Urut;
-        return $nipbr;
-    }
-    $nou = nourut();
-    if ($_REQUEST['kk'] != '') {
-        $idkk = "";
-    } else {
-        $idkk = $_GET['idkk'];
-    }
-    if ($_GET['typekk'] == "KKLama") {
-        echo     "<script>
-						swal({
-							title: 'SYSTEM OFFLINE',   
-							text: 'Klik Ok untuk input data kembali',
-							type: 'warning',
-						}).then((result) => {
-							if (result.value) {
-								window.location.href = 'http://online.indotaichen.com/finishing2-new/stenter/?typekk=SCHEDULE'; 
-							}
-						});
-					</script>";
-    } elseif ($_GET['typekk'] == "NOW") {
-        if ($idkk != "") {
-            include_once("../now.php");
-        }
-    } elseif ($_GET['typekk'] == "SCHEDULE") {
-        if ($idkk != "") {
-            if ($_GET['demand'] != "") {
-                $nomordemand = $_GET['demand'];
-                $anddemand = "AND nodemand = '$nomordemand'";
+            if ($d > 0) {
+                $r = mysqli_fetch_array($sql);
+                $d = $r['nokk'];
+                $str = substr($d, 6, 2);
+                $Urut = (int)$str;
             } else {
-                $anddemand = "";
+                $Urut = 0;
             }
-            // CEK JIKA blm ada nomor urut dan group shift kasih peringatan tidak bisa input saat operator mau proses
-            $q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
-            $row_cekschedule = mysqli_fetch_assoc($q_cekshedule);
-            if(empty($row_cekschedule['nourut']) AND $_GET['demand']){
-                echo     "<script>
+            $Urut = $Urut + 1;
+            $Nol = "";
+            $nilai = 2 - strlen($Urut);
+            for ($i = 1; $i <= $nilai; $i++) {
+                $Nol = $Nol . "0";
+            }
+            $nipbr = $format . $Nol . $Urut;
+            return $nipbr;
+        }
+        $nou = nourut();
+        if ($_REQUEST['kk'] != '') {
+            $idkk = "";
+        } else {
+            $idkk = $_GET['idkk'];
+        }
+        if ($_GET['typekk'] == "KKLama") {
+            echo     "<script>
                             swal({
-                                title: 'Silakan hubungi pemimpin (leader) Anda untuk pengaturan NOMOR URUT yang tepat.',   
+                                title: 'SYSTEM OFFLINE',   
                                 text: 'Klik Ok untuk input data kembali',
                                 type: 'warning',
                             }).then((result) => {
@@ -187,10 +160,13 @@
                                 }
                             });
                         </script>";
-            }elseif (empty($row_cekschedule['group_shift']) AND $_GET['demand']) {
-                echo     "<script>
+        } elseif ($_GET['typekk'] == "NOW") {
+            // if ($idkk != "") {
+            //     include_once("../now.php");
+            // }
+            echo     "<script>
                             swal({
-                                title: 'Silakan hubungi pemimpin (leader) Anda untuk pengaturan GROUP SHIFT yang tepat.',   
+                                title: 'SYSTEM OFFLINE',   
                                 text: 'Klik Ok untuk input data kembali',
                                 type: 'warning',
                             }).then((result) => {
@@ -199,46 +175,81 @@
                                 }
                             });
                         </script>";
-            }else{
-                if($_GET['operation']){
-                    $andoperation   = "AND operation = '$_GET[operation]'";
-                }else{
-                    $andoperation   = "";
+        } elseif ($_GET['typekk'] == "SCHEDULE") {
+            if ($idkk != "") {
+                if ($_GET['demand'] != "") {
+                    $nomordemand = $_GET['demand'];
+                    $anddemand = "AND nodemand = '$nomordemand'";
+                } else {
+                    $anddemand = "";
                 }
-                if($_GET['kklanjutan']){
-                    $q_kkmasuk      = mysqli_query($con, "SELECT
-                                                                *
-                                                            FROM
-                                                                `tbl_schedule_new` a
-                                                            WHERE nokk = '$idkk' $anddemand $andoperation");
-                    $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
-                    include_once("../now.php");
+                // CEK JIKA blm ada nomor urut dan group shift kasih peringatan tidak bisa input saat operator mau proses
+                $q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
+                $row_cekschedule = mysqli_fetch_assoc($q_cekshedule);
+                if(empty($row_cekschedule['nourut']) AND $_GET['demand']){
+                    echo     "<script>
+                                swal({
+                                    title: 'Silakan hubungi pemimpin (leader) Anda untuk pengaturan NOMOR URUT yang tepat.',   
+                                    text: 'Klik Ok untuk input data kembali',
+                                    type: 'warning',
+                                }).then((result) => {
+                                    if (result.value) {
+                                        window.location.href = 'http://online.indotaichen.com/finishing2-new/stenter/?typekk=SCHEDULE'; 
+                                    }
+                                });
+                            </script>";
+                }elseif (empty($row_cekschedule['group_shift']) AND $_GET['demand']) {
+                    echo     "<script>
+                                swal({
+                                    title: 'Silakan hubungi pemimpin (leader) Anda untuk pengaturan GROUP SHIFT yang tepat.',   
+                                    text: 'Klik Ok untuk input data kembali',
+                                    type: 'warning',
+                                }).then((result) => {
+                                    if (result.value) {
+                                        window.location.href = 'http://online.indotaichen.com/finishing2-new/stenter/?typekk=SCHEDULE'; 
+                                    }
+                                });
+                            </script>";
                 }else{
-                    $q_kkmasuk      = mysqli_query($con, "SELECT
-                                                                *
-                                                            FROM
-                                                                `tbl_schedule_new` a
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                        SELECT 1
-                                                                        FROM
-                                                                            `tbl_produksi` b
-                                                                        WHERE
-                                                                            b.nokk = a.nokk 
-                                                                            AND b.demandno = a.nodemand 
-                                                                            AND b.nama_mesin = a.operation
-                                                                            AND b.no_mesin = a.no_mesin
-                                                                ) 
-                                                                AND NOT a.nourut = 0 AND NOT group_shift IS NULL
-                                                                AND nokk = '$idkk' $anddemand 
-                                                            ORDER BY
-                                                                CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
-                    $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
-                    include_once("../now.php");
+                    if($_GET['operation']){
+                        $andoperation   = "AND operation = '$_GET[operation]'";
+                    }else{
+                        $andoperation   = "";
+                    }
+                    if($_GET['kklanjutan']){
+                        $q_kkmasuk      = mysqli_query($con, "SELECT
+                                                                    *
+                                                                FROM
+                                                                    `tbl_schedule_new` a
+                                                                WHERE nokk = '$idkk' $anddemand $andoperation");
+                        $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
+                        include_once("../now.php");
+                    }else{
+                        $q_kkmasuk      = mysqli_query($con, "SELECT
+                                                                    *
+                                                                FROM
+                                                                    `tbl_schedule_new` a
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                            SELECT 1
+                                                                            FROM
+                                                                                `tbl_produksi` b
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation
+                                                                                AND b.no_mesin = a.no_mesin
+                                                                    ) 
+                                                                    AND NOT a.nourut = 0 AND NOT group_shift IS NULL
+                                                                    AND nokk = '$idkk' $anddemand 
+                                                                ORDER BY
+                                                                    CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
+                        $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
+                        include_once("../now.php");
+                    }
                 }
             }
         }
-    }
     ?>
 
     <?php
@@ -470,10 +481,12 @@
             $jmlKonsen5 = $_POST['jmlKonsen5'];
             $jmlKonsen6 = $_POST['jmlKonsen6'];
             $jmlKonsen7 = $_POST['jmlKonsen7'];
+            $kklanjutan = $_POST['kklanjutan'];
 
             $simpanSql = "INSERT INTO tbl_produksi SET 
                         `nokk`='$nokk',
                         `demandno`='$demand',
+                        `kklanjutan` = '$kklanjutan',
                         `shift`='$shift',
                         `shift2`='$shift2',
                         `buyer`='$buyer',
@@ -547,7 +560,6 @@
                         `tgl_update`='$tgl'
                         ";
             mysqli_query($con, $simpanSql) or die("Gagal Simpan" . mysqli_error());
-            // JIKA DICEKLIST KK LANJUTAN MAKA DI tbl_schedule_new di update data nya
             //Simpan ke schedule
             $posisi = strpos($langganan, "/");
             $cus = substr($langganan, 0, $posisi);
@@ -942,14 +954,14 @@
                         <textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
                     </td>
                     <td valign="top">
-                        <h4>Catatan</h4>
+                        <h4 style="color: red;">Catatan</h4>
                     </td>
                     <td valign="top">:</td>
                     <td colspan="2" valign="top">
                         <?php if ($_GET['typekk'] == "SCHEDULE") : ?>
                             <?php $catatan =  $row_kkmasuk['catatan']; ?>
                         <?php endif; ?>
-                        <textarea name="catatan" cols="35" id="catatan"><?= $catatan; ?></textarea>
+                        <textarea name="catatan" cols="35"><?= $catatan; ?></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -1308,286 +1320,288 @@
             </table>
         </fieldset>
         <br>
-        <!-- <fieldset>
-      <legend>Data Proses Actual</legend>
-      <table width="100%" border="0">
-        <tr>
-          <td width="17%" scope="row">
-            <h4>Suhu Proses</h4>
-          </td>
-          <td width="1%">:</td>
-          <td width="20%"><input name="suhu" type="text" required id="suhu" value="<?php echo $rw['suhu']; ?>" size="10" /></td>
-          <td width="17%">&nbsp;</td>
-          <td width="1%">&nbsp;</td>
-          <td width="44%">&nbsp;</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Speed Proses</h4>
-          </td>
-          <td>:</td>
-          <td><input name="speed" type="text" required id="speed" value="<?php echo $rw['speed']; ?>" size="10" /></td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>OMT </h4>
-          </td>
-          <td>:</td>
-          <td><input name="omt" type="text" id="omt" value="<?php echo $rw['omt']; ?>" size="5" />
-            <strong>&deg;</strong>
-          </td>
-          <td scope="row">
-            <h4>VMT</h4>
-          </td>
-          <td>:</td>
-          <td><input name="vmt" type="text" required id="vmt" value="<?php echo $rw['vmt']; ?>" size="5" />
-            <strong>&deg;
-              X</strong>
-            <input name="vmt_time" type="text" required id="vmt_time" value="<?php echo $rw['t_vmt']; ?>" size="5" />
-            <strong>second</strong>
-          </td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Buka Rantai</h4>
-          </td>
-          <td>:</td>
-          <td><input name="buka_rantai" type="text" required id="buka_rantai" value="<?php echo $rw['buka_rantai']; ?>" size="10" /></td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Overfeed</h4>
-          </td>
-          <td>:</td>
-          <td><input name="overfeed" type="text" required id="overfeed" value="<?php echo $rw['overfeed']; ?>" size="10" /></td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Lebar X Gramasi</h4>
-          </td>
-          <td>:</td>
-          <td><input name="h_lebar" type="text" required id="h_lebar" value="<?php echo $rw['lebar_h']; ?>" size="5" />
-            &quot;X
-            <input name="h_gramasi" type="text" required id="h_gramasi" value="<?php echo $rw['gramasi_h']; ?>" size="5" />
-          </td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td scope="row"><strong>Panjang (Yard)</strong></td>
-          <td>:</td>
-          <td><input name="qty3" type="text" id="qty3" size="8" value="<?php echo $rw['panjang_h']; ?>" placeholder="0.00" onfocus="jumlah1();" /></td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>pH Larutan Chemical</h4>
-          </td>
-          <td>:</td>
-          <td><input name="pH_larutan" type="text" required id="pH_larutan" value="<?php echo $rw['ph_larut']; ?>" size="5" /></td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Pemakaian Chemical</h4>
-          </td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Chemical I</h4>
-          </td>
-          <td>:</td>
-          <td><select name="chemical_1" id="chemical_1" required>
-              <option value="">Pilih</option>
-              <?php $qryche1 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
-                while ($rch1 = mysqli_fetch_array($qryche1)) {
-                ?>
-                <option value="<?php echo $rch1['kode']; ?>" <?php if ($rch1['kode'] == $rw['chemical_1']) {
-                                                                    echo "SELECTED";
-                                                                } ?>><?php echo $rch1['kode']; ?></option>
-              <?php } ?>
-            </select>
-            <?php if ($_SESSION['lvl'] == "SPV") { ?>
-              <input type="button" name="btnChemical" id="btnChemical" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
-            <?php } ?>
-          </td>
-          <td>
-            <h4>Jumlah Konsentrasi I</h4>
-          </td>
-          <td>:</td>
-          <td><input name="jmlKonsen1" type="text" required id="jmlKonsen1" value="<?php echo $rw['konsen_1']; ?>" size="5" /></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Chemical II</h4>
-          </td>
-          <td>:</td>
-          <td><select name="chemical_2" id="chemical_2" required>
-              <option value="">Pilih</option>
-              <?php $qryche2 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
-                while ($rch2 = mysqli_fetch_array($qryche2)) {
-                ?>
-                <option value="<?php echo $rch2['kode']; ?>" <?php if ($rch2['kode'] == $rw['chemical_2']) {
-                                                                    echo "SELECTED";
-                                                                } ?>><?php echo $rch2['kode']; ?></option>
-              <?php } ?>
-            </select>
-            <?php if ($_SESSION['lvl'] == "SPV") { ?>
-              <input type="button" name="btnChemical2" id="btnChemical2" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
-            <?php } ?>
-          </td>
-          <td>
-            <h4>Jumlah Konsentrasi II</h4>
-          </td>
-          <td>:</td>
-          <td><input name="jmlKonsen2" type="text" required id="jmlKonsen2" value="<?php echo $rw['konsen_2']; ?>" size="5" /></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Chemical III</h4>
-          </td>
-          <td>:</td>
-          <td><select name="chemical_3" id="chemical_3" required>
-              <option value="">Pilih</option>
-              <?php $qryche3 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
-                while ($rch3 = mysqli_fetch_array($qryche3)) {
-                ?>
-                <option value="<?php echo $rch3['kode']; ?>" <?php if ($rch3['kode'] == $rw['chemical_3']) {
-                                                                    echo "SELECTED";
-                                                                } ?>><?php echo $rch3['kode']; ?></option>
-              <?php } ?>
-            </select>
-            <?php if ($_SESSION['lvl'] == "SPV") { ?>
-              <input type="button" name="btnChemical3" id="btnChemical3" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
-            <?php } ?>
-          </td>
-          <td>
-            <h4>Jumlah Konsentrasi III</h4>
-          </td>
-          <td>:</td>
-          <td><input name="jmlKonsen3" type="text" required id="jmlKonsen3" value="<?php echo $rw['konsen_3']; ?>" size="5" /></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Chemical IV</h4>
-          </td>
-          <td>:</td>
-          <td><select name="chemical_4" id="chemical_4" required>
-              <option value="">Pilih</option>
-              <?php $qryche4 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
-                while ($rch4 = mysqli_fetch_array($qryche4)) {
-                ?>
-                <option value="<?php echo $rch4['kode']; ?>" <?php if ($rch4['kode'] == $rw['chemical_4']) {
-                                                                    echo "SELECTED";
-                                                                } ?>><?php echo $rch4['kode']; ?></option>
-              <?php } ?>
-            </select>
-            <?php if ($_SESSION['lvl'] == "SPV") { ?>
-              <input type="button" name="btnChemical4" id="btnChemical4" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
-            <?php } ?>
-          </td>
-          <td>
-            <h4>Jumlah Konsentrasi IV</h4>
-          </td>
-          <td>:</td>
-          <td><input name="jmlKonsen4" type="text" required id="jmlKonsen4" value="<?php echo $rw['konsen_4']; ?>" size="5" /></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Chemical V</h4>
-          </td>
-          <td>&nbsp;</td>
-          <td><select name="chemical_5" id="chemical_5" required>
-              <option value="">Pilih</option>
-              <?php $qryche5 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
-                while ($rch5 = mysqli_fetch_array($qryche5)) {
-                ?>
-                <option value="<?php echo $rch5['kode']; ?>" <?php if ($rch5['kode'] == $rw['chemical_5']) {
-                                                                    echo "SELECTED";
-                                                                } ?>><?php echo $rch5['kode']; ?></option>
-              <?php } ?>
-            </select>
-            <?php if ($_SESSION['lvl'] == "SPV") { ?>
-              <input type="button" name="btnChemical5" id="btnChemical5" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
-            <?php } ?>
-          </td>
-          <td>
-            <h4>Jumlah Konsentrasi V</h4>
-          </td>
-          <td>:</td>
-          <td><input name="jmlKonsen5" type="text" required id="jmlKonsen5" value="<?php echo $rw['konsen_5']; ?>" size="5" /></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Chemical VI</h4>
-          </td>
-          <td>&nbsp;</td>
-          <td><select name="chemical_6" id="chemical_6" required>
-              <option value="">Pilih</option>
-              <?php $qryche6 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
-                while ($rch6 = mysqli_fetch_array($qryche6)) {
-                ?>
-                <option value="<?php echo $rch6['kode']; ?>" <?php if ($rch6['kode'] == $rw['chemical_6']) {
-                                                                    echo "SELECTED";
-                                                                } ?>><?php echo $rch6['kode']; ?></option>
-              <?php } ?>
-            </select>
-            <?php if ($_SESSION['lvl'] == "SPV") { ?>
-              <input type="button" name="btnChemical6" id="btnChemical6" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
-            <?php } ?>
-          </td>
-          <td>
-            <h4>Jumlah Konsentrasi VI</h4>
-          </td>
-          <td>:</td>
-          <td><input name="jmlKonsen5" type="text" required id="jmlKonsen6" value="<?php echo $rw['konsen_6']; ?>" size="5" /></td>
-        </tr>
-        <tr>
-          <td scope="row">
-            <h4>Chemical VII</h4>
-          </td>
-          <td>&nbsp;</td>
-          <td><select name="chemical_7" id="chemical_7" required>
-              <option value="">Pilih</option>
-              <?php $qryche7 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
-                while ($rch7 = mysqli_fetch_array($qryche7)) {
-                ?>
-                <option value="<?php echo $rch7['kode']; ?>" <?php if ($rch7['kode'] == $rw['chemical_7']) {
-                                                                    echo "SELECTED";
-                                                                } ?>><?php echo $rch7['kode']; ?></option>
-              <?php } ?>
-            </select>
-            <?php if ($_SESSION['lvl'] == "SPV") { ?>
-              <input type="button" name="btnChemical7" id="btnChemical7" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
-            <?php } ?>
-          </td>
-          <td>
-            <h4>Jumlah Konsentrasi VII</h4>
-          </td>
-          <td>:</td>
-          <td><input name="jmlKonsen7" type="text" required id="jmlKonsen7" value="<?php echo $rw['konsen_7']; ?>" size="5" /></td>
-        </tr>
-      </table>
-    </fieldset><br> -->
+        <!-- 
+            <fieldset>
+                <legend>Data Proses Actual</legend>
+                <table width="100%" border="0">
+                    <tr>
+                    <td width="17%" scope="row">
+                        <h4>Suhu Proses</h4>
+                    </td>
+                    <td width="1%">:</td>
+                    <td width="20%"><input name="suhu" type="text" required id="suhu" value="<?php echo $rw['suhu']; ?>" size="10" /></td>
+                    <td width="17%">&nbsp;</td>
+                    <td width="1%">&nbsp;</td>
+                    <td width="44%">&nbsp;</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Speed Proses</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="speed" type="text" required id="speed" value="<?php echo $rw['speed']; ?>" size="10" /></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>OMT </h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="omt" type="text" id="omt" value="<?php echo $rw['omt']; ?>" size="5" />
+                        <strong>&deg;</strong>
+                    </td>
+                    <td scope="row">
+                        <h4>VMT</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="vmt" type="text" required id="vmt" value="<?php echo $rw['vmt']; ?>" size="5" />
+                        <strong>&deg;
+                        X</strong>
+                        <input name="vmt_time" type="text" required id="vmt_time" value="<?php echo $rw['t_vmt']; ?>" size="5" />
+                        <strong>second</strong>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Buka Rantai</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="buka_rantai" type="text" required id="buka_rantai" value="<?php echo $rw['buka_rantai']; ?>" size="10" /></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Overfeed</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="overfeed" type="text" required id="overfeed" value="<?php echo $rw['overfeed']; ?>" size="10" /></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Lebar X Gramasi</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="h_lebar" type="text" required id="h_lebar" value="<?php echo $rw['lebar_h']; ?>" size="5" />
+                        &quot;X
+                        <input name="h_gramasi" type="text" required id="h_gramasi" value="<?php echo $rw['gramasi_h']; ?>" size="5" />
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    <td scope="row"><strong>Panjang (Yard)</strong></td>
+                    <td>:</td>
+                    <td><input name="qty3" type="text" id="qty3" size="8" value="<?php echo $rw['panjang_h']; ?>" placeholder="0.00" onfocus="jumlah1();" /></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>pH Larutan Chemical</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="pH_larutan" type="text" required id="pH_larutan" value="<?php echo $rw['ph_larut']; ?>" size="5" /></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Pemakaian Chemical</h4>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Chemical I</h4>
+                    </td>
+                    <td>:</td>
+                    <td><select name="chemical_1" id="chemical_1" required>
+                        <option value="">Pilih</option>
+                        <?php $qryche1 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
+                            while ($rch1 = mysqli_fetch_array($qryche1)) {
+                            ?>
+                            <option value="<?php echo $rch1['kode']; ?>" <?php if ($rch1['kode'] == $rw['chemical_1']) {
+                                                                                echo "SELECTED";
+                                                                            } ?>><?php echo $rch1['kode']; ?></option>
+                        <?php } ?>
+                        </select>
+                        <?php if ($_SESSION['lvl'] == "SPV") { ?>
+                        <input type="button" name="btnChemical" id="btnChemical" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <h4>Jumlah Konsentrasi I</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="jmlKonsen1" type="text" required id="jmlKonsen1" value="<?php echo $rw['konsen_1']; ?>" size="5" /></td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Chemical II</h4>
+                    </td>
+                    <td>:</td>
+                    <td><select name="chemical_2" id="chemical_2" required>
+                        <option value="">Pilih</option>
+                        <?php $qryche2 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
+                            while ($rch2 = mysqli_fetch_array($qryche2)) {
+                            ?>
+                            <option value="<?php echo $rch2['kode']; ?>" <?php if ($rch2['kode'] == $rw['chemical_2']) {
+                                                                                echo "SELECTED";
+                                                                            } ?>><?php echo $rch2['kode']; ?></option>
+                        <?php } ?>
+                        </select>
+                        <?php if ($_SESSION['lvl'] == "SPV") { ?>
+                        <input type="button" name="btnChemical2" id="btnChemical2" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <h4>Jumlah Konsentrasi II</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="jmlKonsen2" type="text" required id="jmlKonsen2" value="<?php echo $rw['konsen_2']; ?>" size="5" /></td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Chemical III</h4>
+                    </td>
+                    <td>:</td>
+                    <td><select name="chemical_3" id="chemical_3" required>
+                        <option value="">Pilih</option>
+                        <?php $qryche3 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
+                            while ($rch3 = mysqli_fetch_array($qryche3)) {
+                            ?>
+                            <option value="<?php echo $rch3['kode']; ?>" <?php if ($rch3['kode'] == $rw['chemical_3']) {
+                                                                                echo "SELECTED";
+                                                                            } ?>><?php echo $rch3['kode']; ?></option>
+                        <?php } ?>
+                        </select>
+                        <?php if ($_SESSION['lvl'] == "SPV") { ?>
+                        <input type="button" name="btnChemical3" id="btnChemical3" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <h4>Jumlah Konsentrasi III</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="jmlKonsen3" type="text" required id="jmlKonsen3" value="<?php echo $rw['konsen_3']; ?>" size="5" /></td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Chemical IV</h4>
+                    </td>
+                    <td>:</td>
+                    <td><select name="chemical_4" id="chemical_4" required>
+                        <option value="">Pilih</option>
+                        <?php $qryche4 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
+                            while ($rch4 = mysqli_fetch_array($qryche4)) {
+                            ?>
+                            <option value="<?php echo $rch4['kode']; ?>" <?php if ($rch4['kode'] == $rw['chemical_4']) {
+                                                                                echo "SELECTED";
+                                                                            } ?>><?php echo $rch4['kode']; ?></option>
+                        <?php } ?>
+                        </select>
+                        <?php if ($_SESSION['lvl'] == "SPV") { ?>
+                        <input type="button" name="btnChemical4" id="btnChemical4" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <h4>Jumlah Konsentrasi IV</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="jmlKonsen4" type="text" required id="jmlKonsen4" value="<?php echo $rw['konsen_4']; ?>" size="5" /></td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Chemical V</h4>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td><select name="chemical_5" id="chemical_5" required>
+                        <option value="">Pilih</option>
+                        <?php $qryche5 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
+                            while ($rch5 = mysqli_fetch_array($qryche5)) {
+                            ?>
+                            <option value="<?php echo $rch5['kode']; ?>" <?php if ($rch5['kode'] == $rw['chemical_5']) {
+                                                                                echo "SELECTED";
+                                                                            } ?>><?php echo $rch5['kode']; ?></option>
+                        <?php } ?>
+                        </select>
+                        <?php if ($_SESSION['lvl'] == "SPV") { ?>
+                        <input type="button" name="btnChemical5" id="btnChemical5" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <h4>Jumlah Konsentrasi V</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="jmlKonsen5" type="text" required id="jmlKonsen5" value="<?php echo $rw['konsen_5']; ?>" size="5" /></td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Chemical VI</h4>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td><select name="chemical_6" id="chemical_6" required>
+                        <option value="">Pilih</option>
+                        <?php $qryche6 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
+                            while ($rch6 = mysqli_fetch_array($qryche6)) {
+                            ?>
+                            <option value="<?php echo $rch6['kode']; ?>" <?php if ($rch6['kode'] == $rw['chemical_6']) {
+                                                                                echo "SELECTED";
+                                                                            } ?>><?php echo $rch6['kode']; ?></option>
+                        <?php } ?>
+                        </select>
+                        <?php if ($_SESSION['lvl'] == "SPV") { ?>
+                        <input type="button" name="btnChemical6" id="btnChemical6" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <h4>Jumlah Konsentrasi VI</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="jmlKonsen5" type="text" required id="jmlKonsen6" value="<?php echo $rw['konsen_6']; ?>" size="5" /></td>
+                    </tr>
+                    <tr>
+                    <td scope="row">
+                        <h4>Chemical VII</h4>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td><select name="chemical_7" id="chemical_7" required>
+                        <option value="">Pilih</option>
+                        <?php $qryche7 = mysqli_query($con, "SELECT kode FROM tbl_chemical ORDER BY kode ASC");
+                            while ($rch7 = mysqli_fetch_array($qryche7)) {
+                            ?>
+                            <option value="<?php echo $rch7['kode']; ?>" <?php if ($rch7['kode'] == $rw['chemical_7']) {
+                                                                                echo "SELECTED";
+                                                                            } ?>><?php echo $rch7['kode']; ?></option>
+                        <?php } ?>
+                        </select>
+                        <?php if ($_SESSION['lvl'] == "SPV") { ?>
+                        <input type="button" name="btnChemical7" id="btnChemical7" value="..." onclick="window.open('pages/data-chemical.php','MyWindow','height=400,width=650');" />
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <h4>Jumlah Konsentrasi VII</h4>
+                    </td>
+                    <td>:</td>
+                    <td><input name="jmlKonsen7" type="text" required id="jmlKonsen7" value="<?php echo $rw['konsen_7']; ?>" size="5" /></td>
+                    </tr>
+                </table>
+            </fieldset><br> 
+        -->
         <input type="submit" name="btnSimpan" id="btnSimpan" value="Simpan" class="art-button" />
         <input type="button" name="batal" id="batal" value="Batal" onclick="window.location.href='index.php'" class="art-button" />
         <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../index.php'" class="art-button" />

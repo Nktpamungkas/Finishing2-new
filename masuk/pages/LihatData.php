@@ -156,6 +156,15 @@
                                                                                     AND b.nodemand = a.nodemand 
                                                                                     AND b.operation = a.operation
                                                                         )
+                                                                        AND NOT EXISTS (
+                                                                                SELECT 1
+                                                                                FROM
+                                                                                    `tbl_produksi` c
+                                                                                WHERE
+                                                                                    c.nokk = a.nokk 
+                                                                                    AND c.demandno = a.nodemand 
+                                                                                    AND c.nama_mesin = a.operation
+                                                                        )
                                                                     GROUP BY
                                                                         a.nama_mesin
                                                                     ORDER BY
@@ -210,58 +219,74 @@
         <tbody>
             <?php
                 if($_POST['nama_mesin']){
-                    $where_nama_mesin  = "AND nama_mesin = '$_POST[nama_mesin]'";
+                    $where_nama_mesin  = "AND a.nama_mesin = '$_POST[nama_mesin]'";
                 }else{
                     $where_nama_mesin  = "";
                 }
                 
                 if($_POST['awal']){
-                    $where_tgl  = "AND creationdatetime BETWEEN '$_POST[awal]' AND '$_POST[akhir]'";
+                    $where_tgl  = "AND substr(a.creationdatetime, 1, 10) BETWEEN '$_POST[awal]' AND '$_POST[akhir]'";
                 }else{
                     $where_tgl  = "";
                 }
 
-                $q_tblmasuk     = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE `status` = 'KK MASUK' $where_tgl $where_nama_mesin ORDER BY id ASC");
+                $q_tblmasuk     = mysqli_query($con, "SELECT 
+                                                            * 
+                                                        FROM 
+                                                            tbl_masuk a 
+                                                        WHERE
+                                                            NOT EXISTS (
+                                                                    SELECT 1
+                                                                    FROM
+                                                                        `tbl_schedule_new` b
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.nodemand = a.nodemand 
+                                                                        AND b.operation = a.operation
+                                                            )
+                                                            AND NOT EXISTS (
+                                                                    SELECT 1
+                                                                    FROM
+                                                                        `tbl_produksi` c
+                                                                    WHERE
+                                                                        c.nokk = a.nokk 
+                                                                        AND c.demandno = a.nodemand 
+                                                                        AND c.nama_mesin = a.operation
+                                                            ) AND a.status = 'KK MASUK' 
+                                                            $where_tgl $where_nama_mesin 
+                                                    ORDER BY a.id DESC");
                 $totalQty = 0;
                 $totalRoll = 0;
             ?>
             <?php while ($row_tblmasuk  = mysqli_fetch_array($q_tblmasuk)) : ?>
-                <?php
-                    // CEK, JIKA KARTU KERJA SUDAH DIBIKIN SCHEDULE MAKA TIDAK AKAN MUNCUL DI KK MASUK. 
-                    $cek_schedule   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_schedule_new WHERE nokk = '$row_tblmasuk[nokk]' AND nodemand = '$row_tblmasuk[nodemand]' AND operation = '$row_tblmasuk[operation]'");
-                    $data_schedule  = mysqli_fetch_assoc($cek_schedule);
-                ?>
-                <?php if(empty($data_schedule['jml'])) : ?>
-                    <tr>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['operation'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= TRIM($row_tblmasuk['nodemand']); ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nokk'] ?></a></td>
-                        <td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_tblmasuk['nodemand']; ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nodemand'] ?></a></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['langganan'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['buyer'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_order'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['jenis_kain'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['lebar'] ?> x <?= $row_tblmasuk['gramasi'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['warna'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['lot'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['roll'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order_yd'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_tblmasuk['catatan'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['creationdatetime'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;">
-		                    <?php if($_SESSION['usr'] != 'husni') : ?>
-                                <button class="button" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
-		                    <?php endif; ?>
-                        </td>
-                        <?php $totalQty += $row_tblmasuk['qty_order']; ?>
-                        <?php $totalRoll += $row_tblmasuk['roll']; ?>
-                    </tr>
-                <?php endif; ?>
+                <tr>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['operation'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= TRIM($row_tblmasuk['nodemand']); ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nokk'] ?></a></td>
+                    <td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_tblmasuk['nodemand']; ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nodemand'] ?></a></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['langganan'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['buyer'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_order'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['jenis_kain'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['lebar'] ?> x <?= $row_tblmasuk['gramasi'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['warna'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['lot'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['roll'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order_yd'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_tblmasuk['catatan'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['personil'] ?><br><?= $row_tblmasuk['creationdatetime'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;">
+                        <?php if($_SESSION['usr'] != 'husni') : ?>
+                            <button class="button" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
+                        <?php endif; ?>
+                    </td>
+                    <?php $totalQty += $row_tblmasuk['qty_order']; ?>
+                    <?php $totalRoll += $row_tblmasuk['roll']; ?>
+                </tr>
             <?php endwhile; ?>
-                
         </tbody>
         <tfoot>
             <tr>

@@ -101,9 +101,20 @@
 						});
 					</script>";
 		}elseif ($_GET['typekk'] == "NOW") {
-			if ($idkk != "") {
-				include_once("../now.php");
-			}
+			// if ($idkk != "") {
+			// 	include_once("../now.php");
+			// }
+			echo 	"<script>
+						swal({
+							title: 'SYSTEM OFFLINE',   
+							text: 'Klik Ok untuk input data kembali',
+							type: 'warning',
+						}).then((result) => {
+							if (result.value) {
+								window.location.href = 'http://online.indotaichen.com/finishing2-new/compact/?typekk=SCHEDULE'; 
+							}
+						});
+					</script>";
 		} elseif ($_GET['typekk'] == "SCHEDULE") {
 			if ($idkk != "") {
 				if ($_GET['demand'] != "") {
@@ -140,27 +151,42 @@
 								});
 							</script>";
 				}else{
-					$q_kkmasuk		= mysqli_query($con, "SELECT
-																*
-															FROM
-																`tbl_schedule_new` a
-															WHERE
-																NOT EXISTS (
-																		SELECT 1
-																		FROM
-																				`tbl_produksi` b
-																		WHERE
-																				b.nokk = a.nokk 
-																				AND b.demandno = a.nodemand 
-																				AND b.nama_mesin = a.operation
-																				AND b.no_mesin = a.no_mesin
-																) 
-																AND NOT a.nourut = 0 AND NOT group_shift IS NULL
-																AND nokk = '$idkk' $anddemand 
-															ORDER BY
-																CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
-					$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
-					include_once("../now.php");
+					if($_GET['operation']){
+                        $andoperation   = "AND operation = '$_GET[operation]'";
+                    }else{
+                        $andoperation   = "";
+                    }
+                    if($_GET['kklanjutan']){
+                        $q_kkmasuk      = mysqli_query($con, "SELECT
+                                                                    *
+                                                                FROM
+                                                                    `tbl_schedule_new` a
+                                                                WHERE nokk = '$idkk' $anddemand $andoperation");
+                        $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
+                        include_once("../now.php");
+                    }else{
+						$q_kkmasuk		= mysqli_query($con, "SELECT
+																	*
+																FROM
+																	`tbl_schedule_new` a
+																WHERE
+																	NOT EXISTS (
+																			SELECT 1
+																			FROM
+																					`tbl_produksi` b
+																			WHERE
+																					b.nokk = a.nokk 
+																					AND b.demandno = a.nodemand 
+																					AND b.nama_mesin = a.operation
+																					AND b.no_mesin = a.no_mesin
+																	) 
+																	AND NOT a.nourut = 0 AND NOT group_shift IS NULL
+																	AND nokk = '$idkk' $anddemand 
+																ORDER BY
+																	CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
+						$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+						include_once("../now.php");
+					}
 				}
 			}
 		}
@@ -382,10 +408,12 @@
 			$jmlKonsen3 = $_POST['jmlKonsen3'];
 			$jmlKonsen4 = $_POST['jmlKonsen4'];
 			$jmlKonsen5 = $_POST['jmlKonsen5'];
+            $kklanjutan = $_POST['kklanjutan'];
 
 			$simpanSql = "INSERT INTO tbl_produksi SET 
 							`nokk`='$nokk',
 							`demandno`='$demand',
+							`kklanjutan` = '$kklanjutan',
 							`shift`='$shift',
 							`shift2`='$shift2',
 							`buyer`='$buyer',
@@ -519,6 +547,8 @@
 													echo "SELECTED";
 												} ?>>SCHEDULE</option>
 						</select>
+
+                        <input type="checkbox" name="kklanjutan" id="kklanjutan" value="<?php if($_GET['kklanjutan']){ echo "1"; } ?>" <?php if($_GET['kklanjutan']){ echo "checked"; } ?> onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&kklanjutan=1'"> KK LANJUTAN
 					</td>
 				</tr>
 				<tr>
@@ -527,10 +557,10 @@
 					</td>
 					<td width="1%">:</td>
 					<td width="26%">
-						<input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
+						<input name="nokk" type="text" id="nokk" size="17" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&idkk='+this.value" value="<?php echo $_GET['idkk']; ?>" /><input type="hidden" value="<?php echo $rw['id']; ?>" name="id" />
 
 						<?php if ($_GET['typekk'] == 'NOW') { ?>
-							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
+							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
 								<?php 
 								$sql_ITXVIEWKK_demand  = db2_exec($conn_db2, "SELECT DEAMAND AS DEMAND FROM ITXVIEWKK WHERE PRODUCTIONORDERCODE = '$idkk'");
@@ -540,20 +570,24 @@
 								<?php endwhile; ?>
 							</select>
 						<?php }elseif($_GET['typekk'] == 'SCHEDULE'){ ?>
-                            <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value" required>
+                            <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
 								<?php
                                     $sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE nokk = '$idkk'");
 									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
                                 ?>
-                                    <?php
-                                        // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TIDAK AKAN MUNCUL. 
-                                        $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$r_demand[nokk]' AND demandno = '$r_demand[nodemand]' AND nama_mesin = '$r_demand[operation]'");
-                                        $data_proses  = mysqli_fetch_assoc($cek_proses);
-                                    ?>
-                                    <?php if(empty($data_proses['jml'])) : ?>
+									<?php if($_GET['kklanjutan']) : ?>
 										<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) { echo 'SELECTED'; } ?>><?= $r_demand['nodemand']; ?></option>
-                                    <?php endif; ?>
+									<?php else : ?>
+										<?php
+											// CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TIDAK AKAN MUNCUL. 
+											$cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$r_demand[nokk]' AND demandno = '$r_demand[nodemand]' AND nama_mesin = '$r_demand[operation]'");
+											$data_proses  = mysqli_fetch_assoc($cek_proses);
+										?>
+										<?php if(empty($data_proses['jml'])) : ?>
+											<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) { echo 'SELECTED'; } ?>><?= $r_demand['nodemand']; ?></option>
+										<?php endif; ?>
+									<?php endif; ?>
                                 <?php endwhile; ?>
 							</select>
 						<?php } else { ?>
@@ -579,7 +613,7 @@
 					</td>
 					<td>:</td>
 					<td>
-						<select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
+						<select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
 							<option value="">Pilih</option>
 							<?php
 								$qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
@@ -630,38 +664,38 @@
 						<select name="no_mesin" id="no_mesin" onchange="myFunction();" required="required">
 							<option value="">Pilih</option>
 							<?php
-								$q_mesin = db2_exec($conn_db2, "SELECT
-																p.WORKCENTERCODE,
-																CASE
-																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
-																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
-																	ELSE p.PRODRESERVATIONLINKGROUPCODE
-																END	AS OPERATIONCODE,
-																TRIM(o.OPERATIONGROUPCODE) AS OPERATIONGROUPCODE,
-																o.LONGDESCRIPTION,
-																iptip.MULAI,
-																iptop.SELESAI,
-																p.PRODUCTIONORDERCODE,
-																p.PRODUCTIONDEMANDCODE,
-																p.GROUPSTEPNUMBER AS STEPNUMBER,
-																CASE
-																	WHEN iptip.MACHINECODE = iptop.MACHINECODE THEN iptip.MACHINECODE
-																	ELSE iptip.MACHINECODE || '-' ||iptop.MACHINECODE
-																END AS MESIN   
-															FROM 
-																PRODUCTIONDEMANDSTEP p 
-															LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
-															LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-															LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-															WHERE
-																p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' 
-																AND 
-																CASE
-																	WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
-																	WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
-																	ELSE p.PRODRESERVATIONLINKGROUPCODE
-																END = '$_GET[operation]'
-															ORDER BY iptip.MULAI ASC");
+								$q_mesin = db2_exec($conn_db2, "SELECT DISTINCT
+																	p.WORKCENTERCODE,
+																	CASE
+																		WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+																		WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+																		ELSE p.PRODRESERVATIONLINKGROUPCODE
+																	END	AS OPERATIONCODE,
+																	TRIM(o.OPERATIONGROUPCODE) AS OPERATIONGROUPCODE,
+																	o.LONGDESCRIPTION,
+																	iptip.MULAI,
+																	iptop.SELESAI,
+																	p.PRODUCTIONORDERCODE,
+																	p.PRODUCTIONDEMANDCODE,
+																	p.GROUPSTEPNUMBER AS STEPNUMBER,
+																	CASE
+																		WHEN iptip.MACHINECODE = iptop.MACHINECODE THEN iptip.MACHINECODE
+																		ELSE iptip.MACHINECODE || '-' ||iptop.MACHINECODE
+																	END AS MESIN   
+																FROM 
+																	PRODUCTIONDEMANDSTEP p 
+																LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+																LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+																LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+																WHERE
+																	p.PRODUCTIONORDERCODE  = '$_GET[idkk]' AND p.PRODUCTIONDEMANDCODE = '$_GET[demand]' 
+																	AND 
+																	CASE
+																		WHEN p.PRODRESERVATIONLINKGROUPCODE IS NULL THEN TRIM(p.OPERATIONCODE) 
+																		WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE) 
+																		ELSE p.PRODRESERVATIONLINKGROUPCODE
+																	END = '$_GET[operation]'
+																ORDER BY iptip.MULAI ASC");
 								$row_mesin = db2_fetch_assoc($q_mesin);
 
 								if($_GET['typekk'] == 'SCHEDULE'){
@@ -673,7 +707,7 @@
 								}
 
 								$qry1 = db2_exec($conn_db2, "SELECT
-																	*
+																*
 																FROM
 																	RESOURCES r
 																WHERE
@@ -683,7 +717,7 @@
 																ASC");
 								while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) { echo "SELECTED"; } ?> <?= $selected ?>><?php echo $r['CODE']; ?></option>
+								<option value="<?= $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) { echo "SELECTED"; } ?> <?= $selected ?>><?= $r['CODE']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>

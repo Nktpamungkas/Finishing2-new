@@ -315,7 +315,7 @@
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order_yd'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
                         <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['creationdatetime'] ?></td>
+                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['personil'] ?><br><?= $row_schedule['creationdatetime'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;">
                             <?php if($_SESSION['usr'] != 'husni') : ?>
                                 <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
