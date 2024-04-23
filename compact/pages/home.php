@@ -760,7 +760,7 @@
 					<td>:</td>
 					<td colspan="2"><select name="proses" id="proses" required>
 							<option value="">Pilih</option>
-							<?php $qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='compact' ORDER BY id ASC");
+							<?php $qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='compact' ORDER BY proses ASC");
 							while ($r = mysqli_fetch_array($qry1)) {
 							?>
 								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($row_kkmasuk['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {

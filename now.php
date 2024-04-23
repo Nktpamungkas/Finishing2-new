@@ -84,18 +84,15 @@
     $dt_warna		= db2_fetch_assoc($sql_warna);
 
     $sql_qtyorder   = db2_exec($conn_db2, "SELECT DISTINCT
-                                                USEDUSERPRIMARYQUANTITY AS QTY_ORDER,
-                                                USEDUSERSECONDARYQUANTITY AS QTY_ORDER_YARD,
-                                                CASE
-                                                    WHEN TRIM(USERSECONDARYUOMCODE) = 'kg' THEN 'Kg'
-                                                    WHEN TRIM(USERSECONDARYUOMCODE) = 'yd' THEN 'Yard'
-                                                    WHEN TRIM(USERSECONDARYUOMCODE) = 'm' THEN 'Meter'
-                                                    ELSE 'PCS'
-                                                END AS SATUAN_QTY
+												GROUPSTEPNUMBER,
+                                                INITIALUSERPRIMARYQUANTITY AS QTY_ORDER,
+                                                INITIALUSERSECONDARYQUANTITY AS QTY_ORDER_YARD
                                             FROM 
-                                                ITXVIEW_RESERVATION_KK 
+                                                VIEWPRODUCTIONDEMANDSTEP 
                                             WHERE 
-                                                ORDERCODE = '$dt_ITXVIEWKK[DEMAND]'");
+                                                PRODUCTIONORDERCODE = '$idkk'
+											ORDER BY
+												GROUPSTEPNUMBER ASC LIMIT 1");
     $dt_qtyorder    = db2_fetch_assoc($sql_qtyorder);
 
     $sql_roll		= db2_exec($conn_db2, "SELECT count(*) AS ROLL, s2.PRODUCTIONORDERCODE
