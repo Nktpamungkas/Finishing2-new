@@ -134,7 +134,7 @@
 
 		/* CSS untuk konten modal */
 		.modal-content {
-			background-color: #FFE4E4;
+			background-color: #fefefe;
 			margin: 15% auto;
 			padding: 20px;
 			border: 1px solid #888;
