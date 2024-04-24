@@ -315,55 +315,21 @@
                             </tr>
                         <?php endif; ?>
                     <?php endwhile; ?>
-                        <?php if(empty($data_proses['jml']) AND $_GET['kksudahproses'] == '3') : ?>
-                            <tr>
-                                <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="right" valign="top"><strong>TOTAL</strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
-                                <td valign="top">&nbsp;</td>
-                            </tr>
-                        <?php elseif (!empty($data_proses['jml']) AND $_GET['kksudahproses'] == '2') : ?>
-                            <tr>
-                                <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="right" valign="top"><strong>TOTAL</strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
-                                <td valign="top">&nbsp;</td>
-                            </tr>
-                        <?php elseif ((!empty($data_proses['jml']) OR empty($data_proses['jml'])) AND $_GET['kksudahproses'] == '1') : ?>
-                            <tr>
-                                <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="right" valign="top"><strong>TOTAL</strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
-                                <td valign="top">&nbsp;</td>
-                            </tr>
-                        <?php endif; ?>
+                        <tr>
+                            <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="right" valign="top"><strong>TOTAL</strong></td>
+                            <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= number_format($count_roll['roll'], 2); ?></span></strong></td>
+                            <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= number_format($count_qty_order['qty_order'], 2); ?></span></strong></td>
+                            <td valign="top">&nbsp;</td>
+                        </tr>
                 </table>
             </td>
         </tr>

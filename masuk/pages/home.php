@@ -134,7 +134,7 @@ if (empty($_SESSION['usr'])) {
 
 		/* CSS untuk konten modal */
 		.modal-content {
-			background-color: #fefefe;
+			background-color: #FFE4E4;
 			margin: 15% auto;
 			padding: 20px;
 			border: 1px solid #888;
