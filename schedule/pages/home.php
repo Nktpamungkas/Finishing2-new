@@ -116,6 +116,48 @@
 			padding: 0.5em 1em;
 		}
 	</style>
+		<style>
+		/* CSS untuk modal */
+		.modal {
+			display: none;
+			/* Sembunyikan modal secara default */
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+			/* Latar belakang semi-transparan */
+		}
+
+		/* CSS untuk konten modal */
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%; /* Lebar konten modal sebelum menyesuaikan */
+			max-width: 100%; /* Maksimum lebar konten modal */
+			overflow-x: auto; /* Scroll horizontal jika konten melebihi lebar modal */
+		}
+
+		/* CSS untuk tombol close */
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
 </head>
 <body>
 	<?php
@@ -312,6 +354,122 @@
 			}
 		}
 	?>
+<!-- <button onclick="openModal()">Buka Modal</button> -->
+	<!-- Modal -->
+	<div id="myModal" class="modal">
+
+		<!-- Konten modal -->
+		<div class="modal-content">
+			<span class="close" onclick="closeModal()">&times;</span>
+			<center><h2>SCHEDULE</h2></center>
+			<div class="row">
+			<table width="100%" border="1" id="datatables" class="display">
+				<thead>
+				<tr>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO URUT</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO MESIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">GROUP SHIFT</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO KK</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO DEMAND</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LANGGANAN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">BUYER</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO ORDER</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LOT</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
+            </tr>
+				</thead>
+				<tbody>
+            <?php
+              $dateTwoDaysAgo = date('Y-m-d', strtotime('-3 days'));
+			  $dateTwoDaysNow = date('Y-m-d');
+                if(isset($_POST['kkbelumsusun'])){
+                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+                    $q_schedule     = mysqli_query($con, $query_schedule);
+                }elseif(isset($_POST['button'])){
+                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+                    $q_schedule     = mysqli_query($con, $query_schedule);
+                }else{
+                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' AND SUBSTR(creationdatetime, 1, 10) BETWEEN '2024-04-10' AND '$dateTwoDaysAgo' AND NOT nourut = 0 ORDER BY creationdatetime DESC";
+                    $q_schedule     = mysqli_query($con, $query_schedule);
+                }
+                $totalQty = 0;
+                $totalRoll = 0;
+            ?>
+            <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                <?php
+                    // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
+                    $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
+                    $data_proses  = mysqli_fetch_assoc($cek_proses);
+                ?>
+                <?php if(empty($data_proses['jml'])) : ?>
+                    <tr>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']).'<br>'.substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nokk'] ?></a></td>
+                        <td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand'] ?></a></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['buyer'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_order'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['warna'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lot'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['roll'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
+                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['personil'] ?><br><?= $row_schedule['creationdatetime'] ?></td>
+                       
+                        <?php $totalQty += $row_schedule['qty_order']; ?>
+                        <?php $totalRoll += $row_schedule['roll']; ?>
+                    </tr>
+                <?php endif; ?>
+            <?php endwhile; ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="14">TOTAL</td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $totalRoll; ?></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($totalQty, 2); ?></td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td>
+            </tr>
+        </tfoot>
+    </table>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Fungsi untuk membuka modal
+		function openModal() {
+			document.getElementById("myModal").style.display = "block";
+		}
+
+		// Fungsi untuk menutup modal
+		function closeModal() {
+			document.getElementById("myModal").style.display = "none";
+		}
+	</script>
+
+	<!-- Script untuk memanggil fungsi openModal() -->
+	<script>
+		// Fungsi untuk membuka modal
+		function openModal() {
+			document.getElementById("myModal").style.display = "block";
+		}
+
+		// Memanggil fungsi openModal() saat halaman selesai dimuat
+		window.onload = openModal;
+	</script>
+
 	<form id="form1" name="form1" method="post" action="">
 		<?php if($_SESSION['usr'] == 'husni') : ?>
 			<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
