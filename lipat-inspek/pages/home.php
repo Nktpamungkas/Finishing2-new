@@ -585,7 +585,7 @@
 															FROM 
 																WORKCENTERANDOPERATTRIBUTES
 															WHERE
-																SUBSTR(WORKCENTERCODE, 1,4) = 'P3BC'
+																SUBSTR(WORKCENTERCODE, 1,4) = 'P3IN'
 															ORDER BY
 																OPERATIONCODE ASC)
 															WHERE 
@@ -686,7 +686,7 @@
 																FROM
 																	RESOURCES r
 																WHERE
-																	SUBSTR(CODE, 1,4) = 'P3BC' $where_schedule
+																	CODE = 'P3IN350' $where_schedule
 																ORDER BY 
 																	SUBSTR(CODE, 6,2) 
 																ASC");
@@ -736,7 +736,7 @@
 					<td>:</td>
 					<td colspan="2"><select name="proses" id="proses" required>
 							<option value="">Pilih</option>
-							<?php $qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='belah' ORDER BY proses ASC");
+							<?php $qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='lipat' ORDER BY proses ASC");
 							while ($r = mysqli_fetch_array($qry1)) {
 							?>
 								<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($row_kkmasuk['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {

@@ -1,7 +1,7 @@
 <?php
-    if(empty($_SESSION['usr'])){
-        echo "<script>alert('Silahkan login terlebih dahulu!'); window.location = '../login.php'</script>";
-    }
+if (empty($_SESSION['usr'])) {
+	echo "<script>alert('Silahkan login terlebih dahulu!'); window.location = '../login.php'</script>";
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -116,44 +116,87 @@
 			padding: 0.5em 1em;
 		}
 	</style>
+	<style>
+		/* CSS untuk modal */
+		.modal {
+			display: none;
+			/* Sembunyikan modal secara default */
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+			/* Latar belakang semi-transparan */
+		}
+
+		/* CSS untuk konten modal */
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%; /* Lebar konten modal sebelum menyesuaikan */
+			max-width: 100%; /* Maksimum lebar konten modal */
+			overflow-x: auto; /* Scroll horizontal jika konten melebihi lebar modal */
+		}
+
+		/* CSS untuk tombol close */
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
 </head>
+
 <body>
 	<?php
-		ini_set("error_reporting", 1);
-		session_start();
+	ini_set("error_reporting", 1);
+	session_start();
+	include('../koneksi.php');
+	function nourut()
+	{
 		include('../koneksi.php');
-		function nourut()
-		{
-			include('../koneksi.php');
-			$format = date("ymd");
-			$sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
-			$d = mysqli_num_rows($sql);
+		$format = date("ymd");
+		$sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
+		$d = mysqli_num_rows($sql);
 
-			if ($d > 0) {
-				$r = mysqli_fetch_array($sql);
-				$d = $r['nokk'];
-				$str = substr($d, 6, 2);
-				$Urut = (int)$str;
-			} else {
-				$Urut = 0;
-			}
-			$Urut = $Urut + 1;
-			$Nol = "";
-			$nilai = 2 - strlen($Urut);
-			for ($i = 1; $i <= $nilai; $i++) {
-				$Nol = $Nol . "0";
-			}
-			$nipbr = $format . $Nol . $Urut;
-			return $nipbr;
-		}
-		$nou = nourut();
-		if ($_REQUEST['kk'] != '') {
-			$idkk = "";
+		if ($d > 0) {
+			$r = mysqli_fetch_array($sql);
+			$d = $r['nokk'];
+			$str = substr($d, 6, 2);
+			$Urut = (int)$str;
 		} else {
-			$idkk = $_GET['idkk'];
+			$Urut = 0;
 		}
-		if ($_GET['typekk'] == "KKLama") {
-			echo 	"<script>
+		$Urut = $Urut + 1;
+		$Nol = "";
+		$nilai = 2 - strlen($Urut);
+		for ($i = 1; $i <= $nilai; $i++) {
+			$Nol = $Nol . "0";
+		}
+		$nipbr = $format . $Nol . $Urut;
+		return $nipbr;
+	}
+	$nou = nourut();
+	if ($_REQUEST['kk'] != '') {
+		$idkk = "";
+	} else {
+		$idkk = $_GET['idkk'];
+	}
+	if ($_GET['typekk'] == "KKLama") {
+		echo 	"<script>
 						swal({
 							title: 'SYSTEM OFFLINE',   
 							text: 'Klik Ok untuk input data kembali',
@@ -164,73 +207,33 @@
 							}
 						});
 					</script>";
-		} elseif ($_GET['typekk'] == "NOW" OR $_GET['operation']) {
-			if ($idkk != "") {
-				$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
-				$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
-
-				$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
-				$row_schedule	= mysqli_fetch_assoc($q_schedule);
-
-				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
-				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
-				
-				if($row_kkproses){ // JIKA DATANYA SUDAH DI PROSES
-					echo 	"<script>
-								swal({
-									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah di proses.',   
-									text: 'Klik Ok untuk input data kembali',
-									type: 'warning',
-								}).then((result) => {
-									if (result.value) {
-										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
-									}
-								});
-							</script>";
-				}elseif($row_schedule){ // JIKA DATANYA SUDAH ADA DI SCHEDULE
-					echo "<script>
-							swal({
-								title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah sampai SHCEDULE.',   
-								text: 'Klik Ok untuk input data kembali',
-								type: 'warning',
-							}).then((result) => {
-								if (result.value) {
-									window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
-								}
-							});
-						</script>";
-				}elseif($row_kkmasuk){ // JIKA DATANYA SUDAH ADA DI KK MASUK
-					echo 	"<script>
-								swal({
-									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah pernah di input di KK MASUK.',   
-									text: 'Klik Ok untuk input data kembali',
-									type: 'warning',
-								}).then((result) => {
-									if (result.value) {
-										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
-									}
-								});
-							</script>";
-				}
-				include_once("../now.php");
-			}
-		}
-	?>
-	<?php
-		 if (isset($_POST['btnSimpan'])) {
-			$creationdatetime	= date('Y-m-d H:i:s');
-			$jenis_kain		= addslashes($_POST['jenis_kain']);
-
+	} elseif ($_GET['typekk'] == "NOW" or $_GET['operation']) {
+		if ($idkk != "") {
 			$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
 			$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
+
+			$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
+			$row_schedule	= mysqli_fetch_assoc($q_schedule);
 
 			$q_kkmasuk		= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
 			$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
 
-			if($row_kkproses){
+			if ($row_kkproses) { // JIKA DATANYA SUDAH DI PROSES
 				echo 	"<script>
+								swal({
+									title: 'Kartu kerja untuk operasi " . $_GET['operation'] . " sudah di proses.',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+									}
+								});
+							</script>";
+			} elseif ($row_schedule) { // JIKA DATANYA SUDAH ADA DI SCHEDULE
+				echo "<script>
 							swal({
-								title: 'Data tidak Tersimpan, karena Kartu kerja untuk operasi ".$_GET['operation']." sudah selesai diproses.<br> Tgl Proses : ".$row_kkproses['tgl_pro']."',   
+								title: 'Kartu kerja untuk operasi " . $_GET['operation'] . " sudah sampai SHCEDULE.',   
 								text: 'Klik Ok untuk input data kembali',
 								type: 'warning',
 							}).then((result) => {
@@ -239,11 +242,51 @@
 								}
 							});
 						</script>";
-			}elseif($row_kkmasuk){
-				$nokk	= $_POST['nokk'];
-				$demand	= $_POST['demand'];
-				mysqli_query($con, "INSERT INTO tbl_log	(akun, ipaddress, creationdatetime, catatan, `status`) VALUES('$_SESSION[usr]', '$_SERVER[REMOTE_ADDR]', '$creationdatetime', 'Aktivitas Illegal, Schedule input double. $nokk, $demand', 'kkmasuk')");
+			} elseif ($row_kkmasuk) { // JIKA DATANYA SUDAH ADA DI KK MASUK
 				echo 	"<script>
+								swal({
+									title: 'Kartu kerja untuk operasi " . $_GET['operation'] . " sudah pernah di input di KK MASUK.',   
+									text: 'Klik Ok untuk input data kembali',
+									type: 'warning',
+								}).then((result) => {
+									if (result.value) {
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+									}
+								});
+							</script>";
+			}
+			include_once("../now.php");
+		}
+	}
+	?>
+	<?php
+	if (isset($_POST['btnSimpan'])) {
+		$creationdatetime	= date('Y-m-d H:i:s');
+		$jenis_kain		= addslashes($_POST['jenis_kain']);
+
+		$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
+		$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
+
+		$q_kkmasuk		= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
+		$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+
+		if ($row_kkproses) {
+			echo 	"<script>
+							swal({
+								title: 'Data tidak Tersimpan, karena Kartu kerja untuk operasi " . $_GET['operation'] . " sudah selesai diproses.<br> Tgl Proses : " . $row_kkproses['tgl_pro'] . "',   
+								text: 'Klik Ok untuk input data kembali',
+								type: 'warning',
+							}).then((result) => {
+								if (result.value) {
+									window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/?typekk=NOW'; 
+								}
+							});
+						</script>";
+		} elseif ($row_kkmasuk) {
+			$nokk	= $_POST['nokk'];
+			$demand	= $_POST['demand'];
+			mysqli_query($con, "INSERT INTO tbl_log	(akun, ipaddress, creationdatetime, catatan, `status`) VALUES('$_SESSION[usr]', '$_SERVER[REMOTE_ADDR]', '$creationdatetime', 'Aktivitas Illegal, Schedule input double. $nokk, $demand', 'kkmasuk')");
+			echo 	"<script>
 								swal({
 									title: 'Anda telah dicatat melakukan aktivias ilegal memasukan kk masuk lebih dari 1x dengan operation yang sama. <br> Data tidak tersimpan',   
 									text: 'Klik Ok untuk input data kembali',
@@ -254,8 +297,8 @@
 									}
 								});
 							</script>";
-			}else{
-				$simpanSql = "INSERT INTO tbl_masuk (nokk,
+		} else {
+			$simpanSql = "INSERT INTO tbl_masuk (nokk,
 													nodemand,
 													operation,
 													nama_mesin,
@@ -301,11 +344,11 @@
 												'KK MASUK',
 												'$creationdatetime',
 												'$_SERVER[REMOTE_ADDR]')";
-				mysqli_query($con, $simpanSql);
+			mysqli_query($con, $simpanSql);
 
-				// Refresh form
-				// echo "<meta http-equiv='refresh' content='0; url=?typekk=NOW&idkk=$idkk&status=Data Sudah DiSimpan'>";
-				echo 	"<script>
+			// Refresh form
+			// echo "<meta http-equiv='refresh' content='0; url=?typekk=NOW&idkk=$idkk&status=Data Sudah DiSimpan'>";
+			echo 	"<script>
 							swal({
 								title: 'Data Tersimpan',   
 								text: 'Klik Ok untuk input data kembali',
@@ -316,11 +359,133 @@
 								}
 							});
 						</script>";
-			}
 		}
+	}
 	?>
+	<!-- <button onclick="openModal()">Buka Modal</button> -->
+	<!-- Modal -->
+	<div id="myModal" class="modal">
+
+		<!-- Konten modal -->
+		<div class="modal-content">
+			<span class="close" onclick="closeModal()">&times;</span>
+			<center><h2>Data 2 hari tidak bergerak</h2></center>
+			<div class="row">
+			<table width="100%" border="1" id="datatables" class="display">
+				<thead>
+					<tr>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO KK</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO DEMAND</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">LANGGANAN</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">BUYER</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO ORDER</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">LEBAR x GRAMASI</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO WARNA</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">LOT</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
+						<th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						// Hitung tanggal dua hari kebelakang dari hari ini
+						$dateTwoDaysAgo = date('Y-m-d', strtotime('-3 days'));
+						$dateTwoDaysNow = date('Y-m-d');
+
+						$q_tblmasuk     = mysqli_query($con, "SELECT 
+																	* 
+																FROM 
+																	tbl_masuk a 
+																WHERE
+																	NOT EXISTS (
+																			SELECT 1
+																			FROM
+																				tbl_schedule_new b
+																			WHERE
+																				b.nokk = a.nokk 
+																				AND b.nodemand = a.nodemand 
+																				AND b.operation = a.operation
+																	)
+																	AND NOT EXISTS (
+																			SELECT 1
+																			FROM
+																				tbl_produksi c
+																			WHERE
+																				c.nokk = a.nokk 
+																				AND c.demandno = a.nodemand 
+																				AND c.nama_mesin = a.operation
+																	) AND a.status = 'KK MASUK' 
+																	AND SUBSTR(a.creationdatetime, 1, 10) BETWEEN '2024-04-10' AND '$dateTwoDaysAgo'
+																ORDER BY a.id ASC");
+						$totalQty = 0;
+						$totalRoll = 0;
+					?>
+					<?php while ($row_tblmasuk  = mysqli_fetch_array($q_tblmasuk)) : ?>
+						<tr>
+							<td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
+							<td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['operation'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= TRIM($row_tblmasuk['nodemand']); ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nokk'] ?></a></td>
+							<td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_tblmasuk['nodemand']; ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nodemand'] ?></a></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['langganan'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['buyer'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_order'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['lebar'] ?> x <?= $row_tblmasuk['gramasi'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['no_warna'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['warna'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['lot'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['roll'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
+							<td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_tblmasuk['catatan'] ?></td>
+							<td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['personil'] ?><br><?= $row_tblmasuk['creationdatetime'] ?></td>
+							<?php $totalQty += $row_tblmasuk['qty_order']; ?>
+							<?php $totalRoll += $row_tblmasuk['roll']; ?>
+						</tr>
+					<?php endwhile; ?>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="11">TOTAL</td>
+						<td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $totalRoll; ?></td>
+						<td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($totalQty, 2); ?></td>
+						<td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td>
+					</tr>
+				</tfoot>
+			</table>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Fungsi untuk membuka modal
+		function openModal() {
+			document.getElementById("myModal").style.display = "block";
+		}
+
+		// Fungsi untuk menutup modal
+		function closeModal() {
+			document.getElementById("myModal").style.display = "none";
+		}
+	</script>
+
+	<!-- Script untuk memanggil fungsi openModal() -->
+	<script>
+		// Fungsi untuk membuka modal
+		function openModal() {
+			document.getElementById("myModal").style.display = "block";
+		}
+
+		// Memanggil fungsi openModal() saat halaman selesai dimuat
+		window.onload = openModal;
+	</script>
 	<form id="form1" name="form1" method="post" action="">
-		<?php if($_SESSION['usr'] == 'husni') : ?>
+		<?php if ($_SESSION['usr'] == 'husni') : ?>
 			<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button green">
 		<?php else : ?>
 			<fieldset>
@@ -355,7 +520,7 @@
 							<select name="operation" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
 								<option value="">Pilih</option>
 								<?php
-									$qry1 = db2_exec($conn_db2, "SELECT
+								$qry1 = db2_exec($conn_db2, "SELECT
 																	p.PRODUCTIONORDERCODE,
 																	p.STEPNUMBER AS STEPNUMBER,
 																	CASE
@@ -424,9 +589,11 @@
 																	iptop.LONGDESCRIPTION,
 																	a.VALUEBOOLEAN
 																ORDER BY p.STEPNUMBER ASC");
-									while ($r = db2_fetch_assoc($qry1)) {
+								while ($r = db2_fetch_assoc($qry1)) {
 								?>
-									<option value="<?= $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>>
+									<option value="<?= $r['OPERATIONCODE']; ?>" <?php if ($_GET['operation'] == $r['OPERATIONCODE']) {
+																					echo "SELECTED";
+																				} ?>>
 										<?= $r['OPERATIONCODE']; ?> - <?= $r['LONGDESCRIPTION']; ?> (STATUS NOW : <?= $r['STATUS_OPERATION']; ?>)
 									</option>
 								<?php } ?>
@@ -465,8 +632,8 @@
 							<select name="proses" id="proses" required>
 								<option value="">Pilih</option>
 								<?php
-									$qry1 = mysqli_query($con, "SELECT proses,jns,ket FROM tbl_proses ORDER BY ket, id ASC");
-									while ($r = mysqli_fetch_array($qry1)) {
+								$qry1 = mysqli_query($con, "SELECT proses,jns,ket FROM tbl_proses ORDER BY ket, id ASC");
+								while ($r = mysqli_fetch_array($qry1)) {
 								?>
 									<option value="<?php echo $r['proses'] . " (" . $r['jns'] . ")"; ?>" <?php if ($rw['proses'] == $r['proses'] . " (" . $r['jns'] . ")") {
 																												echo "SELECTED";
@@ -572,7 +739,7 @@
 							<?php endif; ?>
 							<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
 						</td>
-						
+
 						<td scope="row">
 							<h4>Personil</h4>
 						</td>

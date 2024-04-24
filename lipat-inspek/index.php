@@ -24,7 +24,7 @@ $page    = strtolower($page);
 
 <head><!-- Created by Artisteer v4.3.0.60745 -->
     <meta charset="utf-8">
-    <title>OVEN</title>
+    <title>Lipat Inspek</title>
     <meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
     <link rel="icon" type="image/png" href="../images/icon.png">
     <!--[if lt IE 9]><script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -96,15 +96,15 @@ $page    = strtolower($page);
                     <?php } ?>
                     <!-- <li><a href="../stenter/?typekk=NOW">Stenter</a></li>
                     <li><a href="../compact/?typekk=NOW">Compact</a></li>
-                    <li><a href="../belah-lipat/?typekk=NOW">Belah &amp; Lipat</a></li>
-                    <li><a href="index.php?typekk=NOW" class="active">Oven</a></li>
+                    <li><a href="index.php?typekk=NOW" class="active">Belah &amp; Lipat</a></li>
+                    <li><a href="../oven/?typekk=NOW">Oven</a></li>
                     <li><a href="../steamer/?typekk=NOW">Steamer</a></li> -->
                     
                     <li><a href="../stenter/?typekk=SCHEDULE">Stenter</a></li>
                     <li><a href="../compact/?typekk=SCHEDULE">Compact</a></li>
                     <li><a href="../belah-lipat/?typekk=NOW">Belah Cuci</a></li>
-                    <li><a href="../lipat-inspek/?typekk=SCHEDULE">Lipat/Inspek</a></li>
-                    <li><a href="index.php?typekk=SCHEDULE" class="active">Oven</a></li>
+                    <li><a href="index.php?typekk=NOW" class="active">Lipat/Inspek</a></li>
+                    <li><a href="../oven/?typekk=SCHEDULE">Oven</a></li>
                     <li><a href="../steamer/?typekk=SCHEDULE">Steamer</a></li>
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
                         <li><a href="../keluar/">Keluar</a></li>

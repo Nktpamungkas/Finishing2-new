@@ -68,7 +68,8 @@ include_once ('koneksi.php');
     
     <li><a href="stenter/?typekk=SCHEDULE">Stenter</a></li>
     <li><a href="compact/?typekk=SCHEDULE">Compact</a></li>
-    <li><a href="belah-lipat/?typekk=NOW">Belah &amp; Lipat</a></li>
+    <li><a href="belah-lipat/?typekk=NOW">Belah Cuci</a></li>
+    <li><a href="lipat-inspek/?typekk=SCHEDULE">Lipat/Inspek</a></li>
     <li><a href="oven/?typekk=SCHEDULE">Oven</a></li>
 	<li><a href="steamer/?typekk=SCHEDULE">Steamer</a></li>	
     <?php if($_SESSION['lvl']!="Operator"){ ?>

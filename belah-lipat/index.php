@@ -102,7 +102,8 @@ $page    = strtolower($page);
                     
                     <li><a href="../stenter/?typekk=SCHEDULE">Stenter</a></li>
                     <li><a href="../compact/?typekk=SCHEDULE">Compact</a></li>
-                    <li><a href="index.php?typekk=NOW" class="active">Belah &amp; Lipat</a></li>
+                    <li><a href="index.php?typekk=NOW" class="active">Belah Cuci</a></li>
+                    <li><a href="../lipat-inspek/?typekk=NOW">Lipat/Inspek</a></li>
                     <li><a href="../oven/?typekk=SCHEDULE">Oven</a></li>
                     <li><a href="../steamer/?typekk=SCHEDULE">Steamer</a></li>
                     <?php if ($_SESSION['lvl'] != "Operator") { ?>
