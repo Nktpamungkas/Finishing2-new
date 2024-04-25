@@ -280,7 +280,7 @@
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['personil'] ?><br><?= $row_tblmasuk['creationdatetime'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;">
                         <?php if($_SESSION['usr'] != 'husni') : ?>
-                            <?php if($_SESSION['usr'] == 'suharna' OR $_SESSION['usr'] == 'wilson' OR $_SESSION['usr'] == 'widodo' OR $_SESSION['usr'] == 'dit' OR $_SESSION['usr'] == 'husni.kamani') : ?>
+                            <?php if($_SESSION['usr'] == 'suharna' OR $_SESSION['usr'] == 'wilson' OR $_SESSION['usr'] == 'widodo' OR $_SESSION['usr'] == 'dit' OR $_SESSION['usr'] == 'husni.kamani' OR $_SESSION['usr'] == 'dyo') : ?>
                                 <a href="?p=edit-data&id=<?= $row_tblmasuk['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
                             <?php endif; ?>
                             <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
