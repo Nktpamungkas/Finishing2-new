@@ -1,5 +1,5 @@
 <?php 
-	if($_SESSION['usr'] != 'suharna' OR $_SESSION['usr'] != 'wilson' OR $_SESSION['usr'] != 'widodo' OR $_SESSION['usr'] != 'dit') {
+	if($_SESSION['usr'] != 'suharna' OR $_SESSION['usr'] != 'wilson' OR $_SESSION['usr'] != 'widodo' OR $_SESSION['usr'] != 'dit' OR $_SESSION['usr'] != 'husni.kamani') {
 		echo "<script>alert('Anda tidak dapat masuk ke halama ini!'); window.location = '../login.php'</script>";
 	}
 ?>
