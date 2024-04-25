@@ -182,13 +182,13 @@ if (empty($_SESSION['usr'])) {
 			$proses 			= mysqli_real_escape_string($con, $_POST['proses']);
 			$catatan 			= mysqli_real_escape_string($con, $_POST['catatan']);
 			$lastupdatedatetime = date('Y-m-d H:i:s');
-			$ipaddress 			= $_SERVER['REMOTE_ADDR'];
+			$akun 				= $_SESSION['usr'];
 			$simpanSql 	= "UPDATE tbl_masuk
 								SET operation = '$operation',
 									proses = '$proses',
 									catatan = '$catatan',
-									creationdatetime = '$lastupdatedatetime',
-									ipaddress = '$ipaddress'
+									lastupdatedatetime = '$lastupdatedatetime',
+									akun = '$akun'
 								WHERE id = " . $_GET['id']; 
 			$simpan 	= mysqli_query($con, $simpanSql);
 
