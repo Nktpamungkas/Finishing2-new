@@ -37,11 +37,11 @@
 <style>
     .button {
         display: inline-block;
-        padding: 3px 8px;
-        background-color: #ff004c;
-        color: #ffffff;
-        text-decoration: none;
-        border-radius: 5px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
     }
 </style>
 
@@ -280,7 +280,8 @@
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['personil'] ?><br><?= $row_tblmasuk['creationdatetime'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;">
                         <?php if($_SESSION['usr'] != 'husni') : ?>
-                            <button class="button" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
+                            <a href="?p=edit-data&id=<?= $row_tblmasuk['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
+                            <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
                         <?php endif; ?>
                     </td>
                     <?php $totalQty += $row_tblmasuk['qty_order']; ?>
