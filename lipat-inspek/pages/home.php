@@ -106,13 +106,13 @@
 			}
 		} elseif ($_GET['typekk'] == "SCHEDULE") {
 			if ($idkk != "") {
-				if ($_GET['demand'] != "") {
-					$nomordemand = $_GET['demand'];
-					$anddemand = "AND nodemand = '$nomordemand'";
-				}else{
-					$anddemand = "";
-				}
-				// CEK JIKA blm ada nomor urut dan group shift kasih peringatan tidak bisa input saat operator mau proses
+                if ($_GET['demand'] != "") {
+                    $nomordemand = $_GET['demand'];
+                    $anddemand = "AND nodemand = '$nomordemand'";
+                } else {
+                    $anddemand = "";
+                }
+                // CEK JIKA blm ada nomor urut dan group shift kasih peringatan tidak bisa input saat operator mau proses
 				$q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
 				$row_cekschedule = mysqli_fetch_assoc($q_cekshedule);
 				if(empty($row_cekschedule['nourut']) AND $_GET['demand']){
@@ -123,7 +123,7 @@
 									type: 'warning',
 								}).then((result) => {
 									if (result.value) {
-										window.location.href = 'http://online.indotaichen.com/finishing2-new/belah-lipat/?typekk=SCHEDULE'; 
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/oven/?typekk=SCHEDULE'; 
 									}
 								});
 							</script>";
@@ -135,16 +135,49 @@
 									type: 'warning',
 								}).then((result) => {
 									if (result.value) {
-										window.location.href = 'http://online.indotaichen.com/finishing2-new/belah-lipat/?typekk=SCHEDULE'; 
+										window.location.href = 'http://online.indotaichen.com/finishing2-new/oven/?typekk=SCHEDULE'; 
 									}
 								});
 							</script>";
 				}else{
-					$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand ORDER BY id DESC LIMIT 1");
-					$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
-					include_once("../now.php");
+					if($_GET['operation']){
+                        $andoperation   = "AND operation = '$_GET[operation]'";
+                    }else{
+                        $andoperation   = "";
+                    }
+                    if($_GET['kklanjutan']){
+                        $q_kkmasuk      = mysqli_query($con, "SELECT
+                                                                    *
+                                                                FROM
+                                                                    `tbl_schedule_new` a
+                                                                WHERE nokk = '$idkk' $anddemand $andoperation");
+                        $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
+                        include_once("../now.php");
+                    }else{
+						$q_kkmasuk		= mysqli_query($con, "SELECT
+																	*
+																FROM
+																	`tbl_schedule_new` a
+																WHERE
+																	NOT EXISTS (
+																			SELECT 1
+																			FROM
+																					`tbl_produksi` b
+																			WHERE
+																					b.nokk = a.nokk 
+																					AND b.demandno = a.nodemand 
+																					AND b.nama_mesin = a.operation
+																					AND b.no_mesin = a.no_mesin
+																	) 
+																	AND NOT a.nourut = 0 AND NOT group_shift IS NULL
+																	AND nokk = '$idkk' $anddemand 
+																ORDER BY
+																	CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
+						$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+						include_once("../now.php");
+					}
 				}
-			}
+            }
 		}
 	?>
 	<?php
@@ -505,9 +538,9 @@
 							<option value="KKLama" <?php if ($_GET['typekk'] == "KKLama") {
 														echo "SELECTED";
 													} ?>>KK Lama</option>
-							<option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
+							<!-- <option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
 													echo "SELECTED";
-												} ?>>KK NOW</option>
+												} ?>>KK NOW</option> -->
 							<option value="SCHEDULE" <?php if ($_GET['typekk'] == "SCHEDULE") {
 													echo "SELECTED";
 												} ?>>SCHEDULE</option>
