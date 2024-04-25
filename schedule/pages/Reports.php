@@ -241,8 +241,10 @@ include('../koneksi.php');
                     ini_set("error_reporting", 0);
                     if($_POST['nourut'] == 'without0'){
                         $where_nourut  = "AND NOT nourut = '0'";
-                    }else{
+                    }elseif($_POST['nourut'] == 'with0'){
                         $where_nourut  = "";
+                    }else{
+                        $where_nourut  = "AND nourut = '$_POST[nourut]'";
                     }
                     
                     if ($_POST['no_mesin']) {
@@ -269,7 +271,7 @@ include('../koneksi.php');
                         $where_tgl  = "";
                     }
                     $no = 1;
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin";
+                    echo $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin";
                     $q_schedule     = mysqli_query($con, $query_schedule);
                 ?>
                 <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>

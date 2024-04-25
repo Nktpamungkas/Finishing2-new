@@ -55,8 +55,10 @@
             ini_set("error_reporting", 0);
             if($_GET['nourut'] == 'without0'){
                 $where_nourut  = "AND NOT nourut = '0'";
-            }else{
+            }elseif($_GET['nourut'] == 'with0'){
                 $where_nourut  = "";
+            }else{
+                $where_nourut  = "AND nourut = '$_GET[nourut]'";
             }
             
             if ($_GET['no_mesin']) {

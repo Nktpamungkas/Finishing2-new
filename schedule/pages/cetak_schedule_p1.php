@@ -185,8 +185,10 @@
                         ini_set("error_reporting", 0);
                         if($_GET['nourut'] == 'without0'){
                             $where_nourut  = "AND NOT nourut = '0'";
-                        }else{
+                        }elseif($_GET['nourut'] == 'with0'){
                             $where_nourut  = "";
+                        }else{
+                            $where_nourut  = "AND nourut = '$_GET[nourut]'";
                         }
                         
                         if ($_GET['no_mesin']) {
@@ -213,14 +215,11 @@
                             $where_tgl  = "";
                         }
                         $no = 1;
-                        $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+                        echo $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
                         $q_schedule     = mysqli_query($con, $query_schedule);
 
-                        $q_roll         = mysqli_query($con, "SELECT SUM(roll) as roll FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC");
-                        $count_roll     = mysqli_fetch_assoc($q_roll);
-
-                        $q_qty_order         = mysqli_query($con, "SELECT SUM(qty_order) as qty_order FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_nourut $where_tgl $where_nama_mesin $where_proses $where_no_mesin ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC");
-                        $count_qty_order     = mysqli_fetch_assoc($q_qty_order);
+                        $totalQty = 0;
+                        $totalRoll = 0;
                     ?>
                     <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                         <?php
@@ -256,6 +255,8 @@
                                     <?= $data_hasilproses['proses']; ?><br>
                                 </td>
                             </tr>
+                            <?php $totalQty += $row_schedule['qty_order']; ?>
+                            <?php $totalRoll += $row_schedule['roll']; ?>
                         <?php elseif (!empty($data_proses['jml']) AND $_GET['kksudahproses'] == '2') : ?>
                             <tr>
                                 <td align="center" valign="top" style="height: 0.35in;"><?= $row_schedule['nourut']; ?></td>
@@ -285,6 +286,8 @@
                                     <?= $data_hasilproses['proses']; ?><br>
                                 </td>
                             </tr>
+                            <?php $totalQty += $row_schedule['qty_order']; ?>
+                            <?php $totalRoll += $row_schedule['roll']; ?>
                         <?php elseif ((!empty($data_proses['jml']) OR empty($data_proses['jml'])) AND $_GET['kksudahproses'] == '1') : ?>
                             <tr>
                                 <td align="center" valign="top" style="height: 0.35in;"><?= $row_schedule['nourut']; ?></td>
@@ -313,57 +316,25 @@
                                     <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?><br>
                                 </td>
                             </tr>
+                            <?php $totalQty += $row_schedule['qty_order']; ?>
+                            <?php $totalRoll += $row_schedule['roll']; ?>
                         <?php endif; ?>
                     <?php endwhile; ?>
-                        <?php if(empty($data_proses['jml']) AND $_GET['kksudahproses'] == '3') : ?>
-                            <tr>
-                                <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="right" valign="top"><strong>TOTAL</strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
-                                <td valign="top">&nbsp;</td>
-                            </tr>
-                        <?php elseif (!empty($data_proses['jml']) AND $_GET['kksudahproses'] == '2') : ?>
-                            <tr>
-                                <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="right" valign="top"><strong>TOTAL</strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
-                                <td valign="top">&nbsp;</td>
-                            </tr>
-                        <?php elseif ((!empty($data_proses['jml']) OR empty($data_proses['jml'])) AND $_GET['kksudahproses'] == '1') : ?>
-                            <tr>
-                                <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="center" valign="top">&nbsp;</td>
-                                <td align="right" valign="top"><strong>TOTAL</strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_roll['roll']; ?></span></strong></td>
-                                <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $count_qty_order['qty_order']; ?></span></strong></td>
-                                <td valign="top">&nbsp;</td>
-                            </tr>
-                        <?php endif; ?>
+                        <tr>
+                            <td align="center" valign="top" style="height: 0.35in;">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="center" valign="top">&nbsp;</td>
+                            <td align="right" valign="top"><strong>TOTAL</strong></td>
+                            <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= $totalRoll; ?></span></strong></td>
+                            <td align="right" valign="top"><strong><span style="height: 0.35in;"><?= number_format($totalQty, 2); ?></span></strong></td>
+                            <td valign="top">&nbsp;</td>
+                        </tr>
                 </table>
             </td>
         </tr>
