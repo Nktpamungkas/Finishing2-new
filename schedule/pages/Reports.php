@@ -85,8 +85,8 @@ include('../koneksi.php');
                 <td><strong>Nomor Urut</strong></td>
                 <td>:</td>
                 <td>
-                    <select name="nourut" class="form-control select2">
-                        <option value="-" disabled selected>Pilih</option>
+                    <select name="nourut" class="form-control select2" required>
+                        <option value="" disabled selected>Pilih</option>
                         <option value="with0" <?php if($_POST['nourut'] == 'with0'){ echo "SELECTED"; } ?>>Semua nomor urut dengan 0</option>
                         <option value="without0" <?php if($_POST['nourut'] == 'without0'){ echo "SELECTED"; } ?>>Semua nomor urut tidak dengan 0</option>
                         <?php
