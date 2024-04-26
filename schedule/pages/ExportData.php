@@ -22,6 +22,7 @@
         </tr>
         <tr>
             <th>NO</th>
+            <th>KETERANGAN</th>
             <th>NO URUT</th>
             <th>NO MESIN</th>
             <th>MESIN</th>
@@ -90,12 +91,93 @@
         ?>
         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
             <?php
+                $q_cekposisikk      = db2_exec($conn_db2, "SELECT
+                                                        p.PRODUCTIONORDERCODE,
+                                                        p.STEPNUMBER AS STEPNUMBER,
+                                                        CASE
+                                                            WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+                                                            ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+                                                        END AS OPERATIONCODE,
+                                                        TRIM(o.OPERATIONGROUPCODE) AS DEPT,
+                                                        o.LONGDESCRIPTION,
+                                                        CASE
+                                                            WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
+                                                            WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
+                                                            WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
+                                                            WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
+                                                        END AS STATUS_OPERATION,
+                                                        iptip.MULAI,
+                                                        CASE
+                                                            WHEN p.PROGRESSSTATUS = 3 THEN COALESCE(iptop.SELESAI, SUBSTRING(p.LASTUPDATEDATETIME, 1, 19) || '(Run Manual Closures)')
+                                                            ELSE iptop.SELESAI
+                                                        END AS SELESAI,
+                                                        p.PRODUCTIONORDERCODE,
+                                                        p.PRODUCTIONDEMANDCODE,
+                                                        iptip.LONGDESCRIPTION AS OP1,
+                                                        iptop.LONGDESCRIPTION AS OP2,
+                                                        CASE
+                                                            WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
+                                                            ELSE LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ')
+                                                        END AS GEROBAK 
+                                                    FROM 
+                                                        PRODUCTIONDEMANDSTEP p 
+                                                    LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+                                                    LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
+                                                    LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+                                                    LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+                                                    LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
+                                                                                        -- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
+                                                                                        AND idqd.OPERATIONCODE = CASE
+                                                                                                                    WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+                                                                                                                    ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+                                                                                                                END
+                                                                                        AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
+                                                                                        AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
+                                                                                            idqd.CHARACTERISTICCODE = 'GRB2' OR
+                                                                                            idqd.CHARACTERISTICCODE = 'GRB3' OR
+                                                                                            idqd.CHARACTERISTICCODE = 'GRB4' OR
+                                                                                            idqd.CHARACTERISTICCODE = 'GRB5' OR
+                                                                                            idqd.CHARACTERISTICCODE = 'GRB6' OR
+                                                                                            idqd.CHARACTERISTICCODE = 'GRB7' OR
+                                                                                            idqd.CHARACTERISTICCODE = 'GRB8')
+                                                                                        AND NOT (idqd.VALUEQUANTITY = 9 OR idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 1 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
+                                                    WHERE
+                                                        p.PRODUCTIONORDERCODE  = '$row_schedule[nokk]' AND p.PRODUCTIONDEMANDCODE = '$row_schedule[nodemand]' AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
+                                                        AND CASE
+                                                            WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+                                                            ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+                                                        END = '$row_schedule[operation]'
+                                                    GROUP BY
+                                                        p.PRODUCTIONORDERCODE,
+                                                        p.STEPNUMBER,
+                                                        p.OPERATIONCODE,
+                                                        p.PRODRESERVATIONLINKGROUPCODE,
+                                                        o.OPERATIONGROUPCODE,
+                                                        o.LONGDESCRIPTION,
+                                                        p.PROGRESSSTATUS,
+                                                        iptip.MULAI,
+                                                        iptop.SELESAI,
+                                                        p.LASTUPDATEDATETIME,
+                                                        p.PRODUCTIONORDERCODE,
+                                                        p.PRODUCTIONDEMANDCODE,
+                                                        iptip.LONGDESCRIPTION,
+                                                        iptop.LONGDESCRIPTION,
+                                                        a.VALUEBOOLEAN
+                                                    ORDER BY p.STEPNUMBER ASC");
+                $row_cekposisikk    = db2_fetch_assoc($q_cekposisikk);
+            ?>
+            <?php
                 $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
                 $data_proses  = mysqli_fetch_assoc($cek_proses);
             ?>
             <?php if(empty($data_proses['jml']) AND $_GET['kksudahproses'] == '3') : ?>
                 <tr>
                     <td style="white-space: nowrap;"><?= $no++; ?></td>
+                    <td style="white-space: nowrap;">
+                        <?= $row_cekposisikk['STATUS_OPERATION']; ?><br>
+                        <?= $row_cekposisikk['OP1']; ?> - <?= $row_cekposisikk['OP2']; ?><br>
+                        <?= $row_cekposisikk['MULAI']; ?> - <?= $row_cekposisikk['SELESAI']; ?>
+                    </td>
                     <td style="white-space: nowrap;"><?= $row_schedule['nourut'] ?></td>
                     <td style="white-space: nowrap;"><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['nama_mesin'] ?></td>
@@ -111,7 +193,7 @@
                     <td style="white-space: nowrap;"><?= $row_schedule['gramasi'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['warna'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['no_warna'] ?></td>
-                    <td style="white-space: nowrap;"><?= $row_schedule['lot'] ?></td>
+                    <td style="white-space: nowrap;">`<?= $row_schedule['lot'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['roll'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['qty_order'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['qty_order_yd'] ?></td>
@@ -135,6 +217,11 @@
             <?php elseif (!empty($data_proses['jml']) AND $_GET['kksudahproses'] == '2') : ?>
                 <tr>
                     <td style="white-space: nowrap;"><?= $no++; ?></td>
+                    <td style="white-space: nowrap;">
+                        <?= $row_cekposisikk['STATUS_OPERATION']; ?><br>
+                        <?= $row_cekposisikk['OP1']; ?> - <?= $row_cekposisikk['OP2']; ?><br>
+                        <?= $row_cekposisikk['MULAI']; ?> - <?= $row_cekposisikk['SELESAI']; ?>
+                    </td>
                     <td style="white-space: nowrap;"><?= $row_schedule['nourut'] ?></td>
                     <td style="white-space: nowrap;"><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['nama_mesin'] ?></td>
@@ -150,7 +237,7 @@
                     <td style="white-space: nowrap;"><?= $row_schedule['gramasi'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['warna'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['no_warna'] ?></td>
-                    <td style="white-space: nowrap;"><?= $row_schedule['lot'] ?></td>
+                    <td style="white-space: nowrap;">`<?= $row_schedule['lot'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['roll'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['qty_order'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['qty_order_yd'] ?></td>
@@ -174,6 +261,11 @@
             <?php elseif ((!empty($data_proses['jml']) OR empty($data_proses['jml'])) AND $_GET['kksudahproses'] == '1') : ?>
                 <tr>
                     <td style="white-space: nowrap;"><?= $no++; ?></td>
+                    <td style="white-space: nowrap;">
+                        <?= $row_cekposisikk['STATUS_OPERATION']; ?><br>
+                        <?= $row_cekposisikk['OP1']; ?> - <?= $row_cekposisikk['OP2']; ?><br>
+                        <?= $row_cekposisikk['MULAI']; ?> - <?= $row_cekposisikk['SELESAI']; ?>
+                    </td>
                     <td style="white-space: nowrap;"><?= $row_schedule['nourut'] ?></td>
                     <td style="white-space: nowrap;"><?= substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['nama_mesin'] ?></td>
@@ -189,7 +281,7 @@
                     <td style="white-space: nowrap;"><?= $row_schedule['gramasi'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['warna'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['no_warna'] ?></td>
-                    <td style="white-space: nowrap;"><?= $row_schedule['lot'] ?></td>
+                    <td style="white-space: nowrap;">`<?= $row_schedule['lot'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['roll'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['qty_order'] ?></td>
                     <td style="white-space: nowrap;"><?= $row_schedule['qty_order_yd'] ?></td>

@@ -112,7 +112,7 @@
                     $anddemand = "";
                 }
                 // CEK JIKA blm ada nomor urut dan group shift kasih peringatan tidak bisa input saat operator mau proses
-				$q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand");
+				$q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand AND NOT nourut = 0");
 				$row_cekschedule = mysqli_fetch_assoc($q_cekshedule);
 				if(empty($row_cekschedule['nourut']) AND $_GET['demand']){
 					echo     "<script>
@@ -629,30 +629,25 @@
                         <select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
                             <option value="">Pilih</option>
                             <?php
-                            $qry1 = db2_exec($conn_db2, "SELECT DISTINCT 
-                                                    TRIM(OPERATIONCODE) AS OPERATIONCODE,
-                                                    LONGDESCRIPTION 
-                                                  FROM 
-                                                    WORKCENTERANDOPERATTRIBUTES
-                                                  WHERE
-                                                    (SUBSTR(WORKCENTERCODE, 1,4) = 'P3ST' OR SUBSTR(WORKCENTERCODE, 1,4) = 'P3DR')
-                                                    AND NOT LONGDESCRIPTION = 'JANGAN DIPAKE'
-                                                  ORDER BY
-                                                    OPERATIONCODE ASC");
-                            if($_GET['typekk'] == 'NOW'){
-                                $if_operation   = "$_GET[operation]";
-                            }elseif($_GET['typekk'] == 'SCHEDULE'){
-                                if($_GET['operation']){
-                                	$if_operation   = "$_GET[operation]";
-								}else{
-                                	$if_operation   = "$row_kkmasuk[operation]";
+								$qry1 = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE nokk = '$idkk' AND NOT nourut = 0");
+								
+								if($_GET['typekk'] == 'NOW'){
+									$if_operation   = "$_GET[operation]";
+								}elseif($_GET['typekk'] == 'SCHEDULE'){
+									if($_GET['operation']){
+										$if_operation   = "$_GET[operation]";
+									}else{
+										$if_operation   = "$row_kkmasuk[operation]";
+									}
 								}
-                            }
-                            while ($r = db2_fetch_assoc($qry1)) {
-                            ?>
-								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($if_operation == $r['OPERATIONCODE']) { echo "SELECTED"; } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
-
-                            <?php } ?>
+								while ($r = mysqli_fetch_array($qry1)) {
+							?>
+								<?php 
+									$q_desc_op 	= db2_exec($conn_db2, "SELECT * FROM OPERATION WHERE OPERATIONGROUPCODE = 'FIN' AND CODE = '$r[operation]'");
+									$desc_op	= db2_fetch_assoc($q_desc_op);
+								?>
+								<option value="<?= $r['operation']; ?>" <?php if ($if_operation == $r['operation']) { echo "SELECTED"; } ?>><?= $r['operation']; ?> <?= $desc_op['LONGDESCRIPTION']; ?></option>
+							<?php } ?>
                         </select>
                         <?php if ($_SESSION['lvl'] == "SPV") { ?>
                             <input type="button" name="btnmesin2" id="btnmesin2" value="..." onclick="window.open('pages/mesin.php','MyWindow','height=400,width=650');" />
