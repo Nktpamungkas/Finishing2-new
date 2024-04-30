@@ -315,7 +315,8 @@ include('../koneksi.php');
                                 <?php if($data_hasilproses){ echo "<span style='color: red;'><b>Sudah Jalan</b></span>"; } ?><br>
                                 <?= $data_hasilproses['tgl_buat']; ?><br>
                                 <?= $data_hasilproses['no_mesin']; ?><br>
-                                <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?>
+                                <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?><br>
+                                <?= $data_hasilproses['acc_staff']; ?>
                             </td>
                         </tr>
                     <?php elseif (!empty($data_proses['jml']) AND $_POST['kksudahproses'] == '2') : ?>
@@ -354,7 +355,8 @@ include('../koneksi.php');
                                 <?php if($data_hasilproses){ echo "<span style='color: red;'><b>Sudah Jalan</b></span>"; } ?><br>
                                 <?= $data_hasilproses['tgl_buat']; ?><br>
                                 <?= $data_hasilproses['no_mesin']; ?><br>
-                                <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?>
+                                <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?><br>
+                                <?= $data_hasilproses['acc_staff']; ?>
                             </td>
                         </tr>
                     <?php elseif ((!empty($data_proses['jml']) OR empty($data_proses['jml'])) AND $_POST['kksudahproses'] == '1') : ?>
@@ -393,7 +395,8 @@ include('../koneksi.php');
                                 <?php if($data_hasilproses){ echo "<span style='color: red;'><b>Sudah Jalan</b></span>"; } ?><br>
                                 <?= $data_hasilproses['tgl_buat']; ?><br>
                                 <?= $data_hasilproses['no_mesin']; ?><br>
-                                <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?>
+                                <?= $data_hasilproses['nama_mesin']; ?>-<?= $data_hasilproses['proses']; ?><br>
+                                <?= $data_hasilproses['acc_staff']; ?>
                             </td>
                         </tr>
                     <?php endif; ?>

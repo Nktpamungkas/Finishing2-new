@@ -692,21 +692,27 @@
                         <select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
                             <option value="">Pilih</option>
                             <?php
+                                if($_GET['kklanjutan'] == '1'){
+                                    $wherecekproses = "";
+                                }else{
+                                    $wherecekproses = "NOT EXISTS (
+                                        SELECT 1
+                                        FROM
+                                            tbl_produksi c
+                                        WHERE
+                                            c.nokk = a.nokk 
+                                            AND c.demandno = a.nodemand 
+                                            AND c.nama_mesin = a.operation
+                                        )
+                                AND";
+                                }
 								$qry1 = mysqli_query($con, "SELECT 
                                                                 * 
                                                             FROM 
                                                                 `tbl_schedule_new` a
                                                             WHERE
-                                                            NOT EXISTS (
-                                                                        SELECT 1
-                                                                        FROM
-                                                                            tbl_produksi c
-                                                                        WHERE
-                                                                            c.nokk = a.nokk 
-                                                                            AND c.demandno = a.nodemand 
-                                                                            AND c.nama_mesin = a.operation
-                                                                        )
-                                                                AND nokk = '$idkk' 
+                                                            $wherecekproses
+                                                                nokk = '$idkk' 
                                                                 AND NOT nourut = 0");
 								
 								if($_GET['typekk'] == 'NOW'){

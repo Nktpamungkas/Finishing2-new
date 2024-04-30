@@ -144,7 +144,6 @@ echo "<script>window.location='../login.php';</script>";
                                     `panjang_h`='$qty3',
                                     `no_gerobak`='$gerobak',
                                     `no_mesin`='$mesin',
-                                    `nama_mesin`='$nmmesin',
                                     `lot`='$lot',
                                     `rol`='$rol',
                                     `qty`='$qty',
@@ -414,7 +413,7 @@ echo "<script>window.location='../login.php';</script>";
                     </td>
                     <td>:</td>
                     <td colspan="2">
-                        <select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
+                        <select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required" style="background-color: #B7BDBA;" disabled>
                             <option value="">Pilih</option>
                             <?php
                                 $qry1 = db2_exec($conn_db2, "SELECT 
