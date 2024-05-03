@@ -326,13 +326,19 @@
 								$q_namamesin 		= db2_exec($conn_db2, $query_namamesin);
 								$workcenter			= db2_exec($conn_db2, $query_namamesin);
 								$data_workcenter	= db2_fetch_assoc($workcenter);
+
+								if ($data_workcenter['WORKCENTERCODE_CODE'] == 'P3ST') {
+									$where_st_oven	= "(SUBSTR(CODE, 1,4) = 'P3ST' OR SUBSTR(CODE, 1,4) = 'P3DR')";
+								} else {
+									$where_st_oven	= "SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]'";
+								}
 								
 								$q_nomormesin 		= db2_exec($conn_db2, "SELECT
 																				*
 																			FROM
 																				RESOURCES r
 																			WHERE
-																				SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]' 
+																				$where_st_oven
 																			ORDER BY 
 																				SUBSTR(CODE, 6,2) 
 																			ASC");
@@ -342,7 +348,7 @@
                             <?php } ?>
                         </select>
 
-                        <strong>Nama Mesin :</strong>
+                        <strong>Nama Mesin : </strong>
                         <select name="nama_mesin" required="required" disabled style="background-color: #BBBBBB;">
                             <option value="">Pilih</option>
                             <?php
