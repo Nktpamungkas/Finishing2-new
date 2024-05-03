@@ -1,7 +1,7 @@
 <?php
-    if(empty($_SESSION['usr'])){
-        echo "<script>alert('Silahkan login terlebih dahulu!'); window.location = '../login.php'</script>";
-    }
+if (empty($_SESSION['usr'])) {
+	echo "<script>alert('Silahkan login terlebih dahulu!'); window.location = '../login.php'</script>";
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -116,7 +116,7 @@
 			padding: 0.5em 1em;
 		}
 	</style>
-		<style>
+	<style>
 		/* CSS untuk modal */
 		.modal {
 			display: none;
@@ -138,9 +138,12 @@
 			margin: 15% auto;
 			padding: 20px;
 			border: 1px solid #888;
-			width: 80%; /* Lebar konten modal sebelum menyesuaikan */
-			max-width: 100%; /* Maksimum lebar konten modal */
-			overflow-x: auto; /* Scroll horizontal jika konten melebihi lebar modal */
+			width: 80%;
+			/* Lebar konten modal sebelum menyesuaikan */
+			max-width: 100%;
+			/* Maksimum lebar konten modal */
+			overflow-x: auto;
+			/* Scroll horizontal jika konten melebihi lebar modal */
 		}
 
 		/* CSS untuk tombol close */
@@ -159,43 +162,44 @@
 		}
 	</style>
 </head>
+
 <body>
 	<?php
-		ini_set("error_reporting", 1);
-		session_start();
+	ini_set("error_reporting", 1);
+	session_start();
+	include('../koneksi.php');
+	function nourut()
+	{
 		include('../koneksi.php');
-		function nourut()
-		{
-			include('../koneksi.php');
-			$format = date("ymd");
-			$sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
-			$d = mysqli_num_rows($sql);
+		$format = date("ymd");
+		$sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
+		$d = mysqli_num_rows($sql);
 
-			if ($d > 0) {
-				$r = mysqli_fetch_array($sql);
-				$d = $r['nokk'];
-				$str = substr($d, 6, 2);
-				$Urut = (int)$str;
-			} else {
-				$Urut = 0;
-			}
-			$Urut = $Urut + 1;
-			$Nol = "";
-			$nilai = 2 - strlen($Urut);
-			for ($i = 1; $i <= $nilai; $i++) {
-				$Nol = $Nol . "0";
-			}
-			$nipbr = $format . $Nol . $Urut;
-			return $nipbr;
-		}
-		$nou = nourut();
-		if ($_REQUEST['kk'] != '') {
-			$idkk = "";
+		if ($d > 0) {
+			$r = mysqli_fetch_array($sql);
+			$d = $r['nokk'];
+			$str = substr($d, 6, 2);
+			$Urut = (int)$str;
 		} else {
-			$idkk = $_GET['idkk'];
+			$Urut = 0;
 		}
-		if ($_GET['typekk'] == "KKLama") {
-			echo 	"<script>
+		$Urut = $Urut + 1;
+		$Nol = "";
+		$nilai = 2 - strlen($Urut);
+		for ($i = 1; $i <= $nilai; $i++) {
+			$Nol = $Nol . "0";
+		}
+		$nipbr = $format . $Nol . $Urut;
+		return $nipbr;
+	}
+	$nou = nourut();
+	if ($_REQUEST['kk'] != '') {
+		$idkk = "";
+	} else {
+		$idkk = $_GET['idkk'];
+	}
+	if ($_GET['typekk'] == "KKLama") {
+		echo 	"<script>
 						swal({
 							title: 'SYSTEM OFFLINE',   
 							text: 'Klik Ok untuk input data kembali',
@@ -206,27 +210,27 @@
 							}
 						});
 					</script>";
-		} elseif ($_GET['typekk'] == "NOW") {
-			if ($idkk != "") {
-				if ($_GET['demand'] != "") {
-					$nomordemand = $_GET['demand'];
-					$anddemand = "AND nodemand = '$nomordemand'";
-				}else{
-					$anddemand = "";
-				}
-				$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
-				$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
+	} elseif ($_GET['typekk'] == "NOW") {
+		if ($idkk != "") {
+			if ($_GET['demand'] != "") {
+				$nomordemand = $_GET['demand'];
+				$anddemand = "AND nodemand = '$nomordemand'";
+			} else {
+				$anddemand = "";
+			}
+			$q_kkproses		= mysqli_query($con, "SELECT * FROM `tbl_produksi` WHERE nokk = '$idkk' AND demandno = '$_GET[demand]' AND nama_mesin = '$_GET[operation]'");
+			$row_kkproses	= mysqli_fetch_assoc($q_kkproses);
 
-				$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
-				$row_schedule	= mysqli_fetch_assoc($q_schedule);
+			$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$_GET[demand]' AND operation = '$_GET[operation]'");
+			$row_schedule	= mysqli_fetch_assoc($q_schedule);
 
-				$q_kkmasuk		= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' $anddemand ORDER BY id DESC LIMIT 1");
-				$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
-				
-				if($row_kkproses){ // JIKA DATANYA SUDAH DI PROSES
-					echo 	"<script>
+			$q_kkmasuk		= mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk' $anddemand ORDER BY id DESC LIMIT 1");
+			$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+
+			if ($row_kkproses) { // JIKA DATANYA SUDAH DI PROSES
+				echo 	"<script>
 								swal({
-									title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah di proses.',   
+									title: 'Kartu kerja untuk operasi " . $_GET['operation'] . " sudah di proses.',   
 									text: 'Klik Ok untuk input data kembali',
 									type: 'warning',
 								}).then((result) => {
@@ -235,10 +239,10 @@
 									}
 								});
 							</script>";
-				}elseif($row_schedule){ // JIKA DATANYA SUDAH ADA DI SCHEDULE
-					echo "<script>
+			} elseif ($row_schedule) { // JIKA DATANYA SUDAH ADA DI SCHEDULE
+				echo "<script>
 							swal({
-								title: 'Kartu kerja untuk operasi ".$_GET['operation']." sudah sampai SHCEDULE.',   
+								title: 'Kartu kerja untuk operasi " . $_GET['operation'] . " sudah sampai SHCEDULE.',   
 								text: 'Klik Ok untuk input data kembali',
 								type: 'warning',
 							}).then((result) => {
@@ -247,8 +251,8 @@
 								}
 							});
 						</script>";
-				}elseif(empty($row_kkmasuk)){ // JIKA DATANYA BELUM ADA DI KK MASUK
-					echo 	"<script>
+			} elseif (empty($row_kkmasuk)) { // JIKA DATANYA BELUM ADA DI KK MASUK
+				echo 	"<script>
 								swal({
 									title: 'Kartu kerja belum pernah di input di KK MASUK.',   
 									text: 'Klik Ok untuk input data kembali',
@@ -259,21 +263,21 @@
 									}
 								});
 							</script>";
-				}
 			}
 		}
+	}
 	?>
 	<?php
-		 if (isset($_POST['btnSimpan'])) {
-			$creationdatetime	= date('Y-m-d H:i:s');
-			$jenis_kain		= addslashes($_POST['jenis_kain']);
-			$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$nomordemand' AND operation = '$_GET[operation]'");
-			$row_schedule	= mysqli_fetch_assoc($q_schedule);
-			if (!empty($row_schedule)) { // JIKA DATANYA SUDAH ADA DI SHCEDULE
-				$nokk	= $_POST['nokk'];
-				$demand	= $_POST['demand'];
-				mysqli_query($con, "INSERT INTO tbl_log	(akun, ipaddress, creationdatetime, catatan) VALUES('$_SESSION[usr]', '$_SERVER[REMOTE_ADDR]', '$creationdatetime', 'Aktivitas Illegal, Schedule input double. $nokk, $demand')");
-				echo 	"<script>
+	if (isset($_POST['btnSimpan'])) {
+		$creationdatetime	= date('Y-m-d H:i:s');
+		$jenis_kain		= addslashes($_POST['jenis_kain']);
+		$q_schedule		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' AND nodemand = '$nomordemand' AND operation = '$_GET[operation]'");
+		$row_schedule	= mysqli_fetch_assoc($q_schedule);
+		if (!empty($row_schedule)) { // JIKA DATANYA SUDAH ADA DI SHCEDULE
+			$nokk	= $_POST['nokk'];
+			$demand	= $_POST['demand'];
+			mysqli_query($con, "INSERT INTO tbl_log	(akun, ipaddress, creationdatetime, catatan) VALUES('$_SESSION[usr]', '$_SERVER[REMOTE_ADDR]', '$creationdatetime', 'Aktivitas Illegal, Schedule input double. $nokk, $demand')");
+			echo 	"<script>
 							swal({
 								title: 'Anda telah dicatat melakukan aktivias ilegal memasukan schedule lebih dari 1x. Data tidak tersimpan',   
 								text: 'Klik Ok untuk input data kembali',
@@ -284,8 +288,8 @@
 								}
 							});
 						</script>";
-			}else{
-				$simpanSql = "INSERT INTO tbl_schedule_new (nokk,
+		} else {
+			$simpanSql = "INSERT INTO tbl_schedule_new (nokk,
 														nodemand,
 														nourut,
 														langganan,
@@ -337,9 +341,9 @@
 													'SCHEDULE',
 													'$creationdatetime',
 													'$_SERVER[REMOTE_ADDR]')";
-				$simpan = mysqli_query($con, $simpanSql);
-				if($simpan){
-					echo 	"<script>
+			$simpan = mysqli_query($con, $simpanSql);
+			if ($simpan) {
+				echo 	"<script>
 								swal({
 									title: 'Data Tersimpan',   
 									text: 'Klik Ok untuk input data kembali',
@@ -350,99 +354,101 @@
 									}
 								});
 							</script>";
-				}
 			}
 		}
+	}
 	?>
-<!-- <button onclick="openModal()">Buka Modal</button> -->
+	<!-- <button onclick="openModal()">Buka Modal</button> -->
 	<!-- Modal -->
 	<div id="myModal" class="modal">
 
 		<!-- Konten modal -->
 		<div class="modal-content">
 			<span class="close" onclick="closeModal()">&times;</span>
-			<center><h2>SCHEDULE</h2></center>
+			<center>
+				<h2>Data 2 hari tidak bergerak</h2>
+			</center>
 			<div class="row">
-			<table width="100%" border="1" id="datatables" class="display">
-				<thead>
-				<tr>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO URUT</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO MESIN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">GROUP SHIFT</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO KK</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO DEMAND</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LANGGANAN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">BUYER</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO ORDER</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LOT</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
-            </tr>
-				</thead>
-				<tbody>
-            <?php
-              $dateTwoDaysAgo = date('Y-m-d', strtotime('-3 days'));
-			  $dateTwoDaysNow = date('Y-m-d');
-                if(isset($_POST['kkbelumsusun'])){
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
-                    $q_schedule     = mysqli_query($con, $query_schedule);
-                }elseif(isset($_POST['button'])){
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
-                    $q_schedule     = mysqli_query($con, $query_schedule);
-                }else{
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' AND SUBSTR(creationdatetime, 1, 10) BETWEEN '2024-04-10' AND '$dateTwoDaysAgo' AND NOT nourut = 0 ORDER BY creationdatetime DESC";
-                    $q_schedule     = mysqli_query($con, $query_schedule);
-                }
-                $totalQty = 0;
-                $totalRoll = 0;
-            ?>
-            <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
-                <?php
-                    // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
-                    $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
-                    $data_proses  = mysqli_fetch_assoc($cek_proses);
-                ?>
-                <?php if(empty($data_proses['jml'])) : ?>
-                    <tr>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']).'<br>'.substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nokk'] ?></a></td>
-                        <td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand'] ?></a></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['buyer'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_order'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['warna'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lot'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['roll'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
-                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['personil'] ?><br><?= $row_schedule['creationdatetime'] ?></td>
-                       
-                        <?php $totalQty += $row_schedule['qty_order']; ?>
-                        <?php $totalRoll += $row_schedule['roll']; ?>
-                    </tr>
-                <?php endif; ?>
-            <?php endwhile; ?>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="14">TOTAL</td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $totalRoll; ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($totalQty, 2); ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td>
-            </tr>
-        </tfoot>
-    </table>
+				<table width="100%" border="1" id="datatables" class="display">
+					<thead>
+						<tr>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO URUT</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO MESIN</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">GROUP SHIFT</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO KK</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO DEMAND</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">LANGGANAN</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">BUYER</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO ORDER</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">WARNA</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">LOT</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
+							<th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$dateTwoDaysAgo = date('Y-m-d', strtotime('-3 days'));
+						$dateTwoDaysNow = date('Y-m-d');
+						if (isset($_POST['kkbelumsusun'])) {
+							$query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+							$q_schedule     = mysqli_query($con, $query_schedule);
+						} elseif (isset($_POST['button'])) {
+							$query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+							$q_schedule     = mysqli_query($con, $query_schedule);
+						} else {
+							$query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' AND SUBSTR(creationdatetime, 1, 10) BETWEEN '2024-04-10' AND '$dateTwoDaysAgo' AND NOT nourut = 0 ORDER BY creationdatetime DESC";
+							$q_schedule     = mysqli_query($con, $query_schedule);
+						}
+						$totalQty = 0;
+						$totalRoll = 0;
+						?>
+						<?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+							<?php
+							// CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
+							$cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
+							$data_proses  = mysqli_fetch_assoc($cek_proses);
+							?>
+							<?php if (empty($data_proses['jml'])) : ?>
+								<tr>
+									<td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
+									<td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']) . '<br>' . substr(TRIM($row_schedule['no_mesin']), -5, 2) . substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+									<td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
+									<td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
+									<td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
+									<td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nokk'] ?></a></td>
+									<td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand'] ?></a></td>
+									<td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
+									<td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['buyer'] ?></td>
+									<td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_order'] ?></td>
+									<td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['warna'] ?></td>
+									<td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lot'] ?></td>
+									<td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['roll'] ?></td>
+									<td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
+									<td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
+									<td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
+									<td style="border:1px solid;vertical-align:center;"><?= $row_schedule['personil'] ?><br><?= $row_schedule['creationdatetime'] ?></td>
+
+									<?php $totalQty += $row_schedule['qty_order']; ?>
+									<?php $totalRoll += $row_schedule['roll']; ?>
+								</tr>
+							<?php endif; ?>
+						<?php endwhile; ?>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="12">TOTAL</td>
+							<td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $totalRoll; ?></td>
+							<td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($totalQty, 2); ?></td>
+							<td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -471,7 +477,7 @@
 	</script>
 
 	<form id="form1" name="form1" method="post" action="">
-		<?php if($_SESSION['usr'] == 'husni') : ?>
+		<?php if ($_SESSION['usr'] == 'husni') : ?>
 			<input type="button" name="LihatData" value="Lihat Data" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
 		<?php else : ?>
 			<fieldset>
@@ -514,19 +520,19 @@
 								<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+this.value+'&operation=<?= $row_kkmasuk['operation']; ?>'" required>
 									<option value="" disabled selected>Pilih Nomor Demand</option>
 									<?php
-										$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk'");
-										while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
+									$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_masuk` WHERE nokk = '$idkk'");
+									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
 									?>
-									<?php
+										<?php
 										// CEK, JIKA KARTU KERJA SUDAH DIBIKIN SCHEDULE MAKA TIDAK AKAN MUNCUL DI KK MASUK. 
 										$cek_schedule   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_schedule_new WHERE nokk = '$r_demand[nokk]' AND nodemand = '$r_demand[nodemand]' AND operation = '$r_demand[operation]'");
 										$data_schedule  = mysqli_fetch_assoc($cek_schedule);
-									?>
-									<?php if(empty($data_schedule['jml'])) : ?>
-										<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
-																						echo 'SELECTED';
-																					} ?>><?= $r_demand['nodemand']; ?></option>
-									<?php endif; ?>
+										?>
+										<?php if (empty($data_schedule['jml'])) : ?>
+											<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
+																								echo 'SELECTED';
+																							} ?>><?= $r_demand['nodemand']; ?></option>
+										<?php endif; ?>
 									<?php endwhile; ?>
 								</select>
 							<?php } else { ?>
@@ -567,7 +573,7 @@
 						<td>
 							<input type="text" name="no_order" id="no_order" value="<?= $row_kkmasuk['no_order']; ?>" />
 						</td>
-						
+
 						<td scope="row">
 							<h4>Roll</h4>
 						</td>
@@ -589,7 +595,7 @@
 							<select name="no_mesin" required>
 								<option value="">Pilih</option>
 								<?php
-									$query_namamesin	= "SELECT
+								$query_namamesin	= "SELECT
 																DISTINCT 
 																SUBSTR(TRIM(p.WORKCENTERCODE), 1, 4) AS WORKCENTERCODE,
 																SUBSTR(TRIM(p.WORKCENTERCODE), 1,4) AS WORKCENTERCODE_CODE,
@@ -605,17 +611,17 @@
 																AND p.PRODUCTIONORDERCODE  = '$row_kkmasuk[nokk]' 
 																AND p.PRODUCTIONDEMANDCODE = '$row_kkmasuk[nodemand]'
 																AND w.OPERATIONCODE = '$_GET[operation]'";
-									$q_namamesin 		= db2_exec($conn_db2, $query_namamesin);
-									$workcenter			= db2_exec($conn_db2, $query_namamesin);
-									$data_workcenter	= db2_fetch_assoc($workcenter);
+								$q_namamesin 		= db2_exec($conn_db2, $query_namamesin);
+								$workcenter			= db2_exec($conn_db2, $query_namamesin);
+								$data_workcenter	= db2_fetch_assoc($workcenter);
 
-									if($data_workcenter['WORKCENTERCODE_CODE'] == 'P3ST'){
-										$where_st_oven	= "(SUBSTR(CODE, 1,4) = 'P3ST' OR SUBSTR(CODE, 1,4) = 'P3DR')";
-									}else{
-										$where_st_oven	= "SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]'";
-									}
-									
-									$q_nomormesin 		= db2_exec($conn_db2, "SELECT
+								if ($data_workcenter['WORKCENTERCODE_CODE'] == 'P3ST') {
+									$where_st_oven	= "(SUBSTR(CODE, 1,4) = 'P3ST' OR SUBSTR(CODE, 1,4) = 'P3DR')";
+								} else {
+									$where_st_oven	= "SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]'";
+								}
+
+								$q_nomormesin 		= db2_exec($conn_db2, "SELECT
 																					*
 																				FROM
 																					RESOURCES r
@@ -624,7 +630,7 @@
 																				ORDER BY 
 																					SUBSTR(CODE, 6,2) 
 																				ASC");
-									while ($row_nomormesin = db2_fetch_assoc($q_nomormesin)) {
+								while ($row_nomormesin = db2_fetch_assoc($q_nomormesin)) {
 								?>
 									<option value="<?php echo $row_nomormesin['CODE']; ?>"><?php echo $row_nomormesin['CODE']; ?> - <?php echo $row_nomormesin['LONGDESCRIPTION']; ?></option>
 								<?php } ?>
@@ -634,7 +640,7 @@
 							<select name="nama_mesin" required="required">
 								<option value="">Pilih</option>
 								<?php
-									while ($row_namamesin = db2_fetch_assoc($q_namamesin)) {
+								while ($row_namamesin = db2_fetch_assoc($q_namamesin)) {
 								?>
 									<option value="<?php echo $row_namamesin['WORKCENTERCODE']; ?>" SELECTED><?php echo $row_namamesin['WORKCENTERCODE']; ?> - <?php echo $row_namamesin['LONGDESCRIPTION']; ?></option>
 								<?php } ?>
@@ -686,33 +692,35 @@
 							<select name="operation" id="operation" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
 								<option value="">Pilih</option>
 								<?php
-									$qry1 = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$_GET[idkk]' AND nodemand = '$_GET[demand]' ORDER BY id ASC");
-									while ($r = mysqli_fetch_array($qry1)) {
+								$qry1 = mysqli_query($con, "SELECT * FROM tbl_masuk WHERE nokk = '$_GET[idkk]' AND nodemand = '$_GET[demand]' ORDER BY id ASC");
+								while ($r = mysqli_fetch_array($qry1)) {
 								?>
-									<option value="<?= $r['operation']; ?>" <?php if ($_GET['operation'] == $r['operation']) { echo "SELECTED"; } ?>>
-										<?= $r['operation']; ?> 
+									<option value="<?= $r['operation']; ?>" <?php if ($_GET['operation'] == $r['operation']) {
+																				echo "SELECTED";
+																			} ?>>
+										<?= $r['operation']; ?>
 									</option>
 								<?php } ?>
 							</select>
 
-							<strong  style="color: red;">No Urut :</strong>
+							<strong style="color: red;">No Urut :</strong>
 							<select name="no_urut" class="form-control select2" id="no_urut">
 								<option value="">Pilih</option>
 								<?php
-									$q_nourut		= mysqli_query($con, "SELECT
+								$q_nourut		= mysqli_query($con, "SELECT
 																			CONCAT('\'', GROUP_CONCAT(nourut ORDER BY nourut SEPARATOR '\', \''), '\'' ) AS nourut
 																		FROM
 																			`tbl_schedule_new` 
 																		WHERE
 																			nokk = '$row_kkmasuk[nokk]' 
 																			AND nodemand = '$row_kkmasuk[nodemand]'");
-									$data_nourut	= mysqli_fetch_assoc($q_nourut);
-									if($data_nourut['nourut']){
-										$sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut WHERE NOT no_urut IN ($data_nourut[nourut]) ORDER BY no_urut ASC");
-									}else{
-										$sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut ORDER BY no_urut ASC");
-									}
-									while ($rK = mysqli_fetch_array($sqlKap)) {
+								$data_nourut	= mysqli_fetch_assoc($q_nourut);
+								if ($data_nourut['nourut']) {
+									$sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut WHERE NOT no_urut IN ($data_nourut[nourut]) ORDER BY no_urut ASC");
+								} else {
+									$sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut ORDER BY no_urut ASC");
+								}
+								while ($rK = mysqli_fetch_array($sqlKap)) {
 								?>
 									<option value="<?php echo $rK['no_urut']; ?>"><?php echo $rK['no_urut']; ?></option>
 								<?php } ?>
@@ -727,8 +735,8 @@
 						<td>
 							<input name="warna" type="text" id="warna" size="35" value="<?= $row_kkmasuk['warna']; ?>" />
 						</td>
-						
-						<td scope="row"  style="color: red;">
+
+						<td scope="row" style="color: red;">
 							<h4>Group Shift</h4>
 						</td>
 						<td>:</td>
@@ -740,7 +748,7 @@
 								<option value="C">C</option>
 							</select>
 						</td>
-					</tr>			
+					</tr>
 					<tr>
 						<td scope="row">
 							<h4>Personil</h4>
@@ -773,4 +781,5 @@
 		<?php endif; ?>
 	</form>
 </body>
+
 </html>

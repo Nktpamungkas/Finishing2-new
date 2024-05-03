@@ -138,9 +138,12 @@ if (empty($_SESSION['usr'])) {
 			margin: 15% auto;
 			padding: 20px;
 			border: 1px solid #888;
-			width: 80%; /* Lebar konten modal sebelum menyesuaikan */
-			max-width: 100%; /* Maksimum lebar konten modal */
-			overflow-x: auto; /* Scroll horizontal jika konten melebihi lebar modal */
+			width: 80%;
+			/* Lebar konten modal sebelum menyesuaikan */
+			max-width: 100%;
+			/* Maksimum lebar konten modal */
+			overflow-x: auto;
+			/* Scroll horizontal jika konten melebihi lebar modal */
 		}
 
 		/* CSS untuk tombol close */
@@ -364,9 +367,9 @@ if (empty($_SESSION['usr'])) {
 	?>
 	<!-- <button onclick="openModal()">Buka Modal</button> -->
 	<!-- Modal -->
-	<div id="myModal" class="modal">
+	<!-- <div id="myModal" class="modal">
 
-		<!-- Konten modal -->
+		Konten modal
 		<div class="modal-content">
 			<span class="close" onclick="closeModal()">&times;</span>
 			<center><h2>Data 2 hari tidak bergerak</h2></center>
@@ -394,11 +397,11 @@ if (empty($_SESSION['usr'])) {
 				</thead>
 				<tbody>
 					<?php
-						// Hitung tanggal dua hari kebelakang dari hari ini
-						$dateTwoDaysAgo = date('Y-m-d', strtotime('-3 days'));
-						$dateTwoDaysNow = date('Y-m-d');
+					// Hitung tanggal dua hari kebelakang dari hari ini
+					$dateTwoDaysAgo = date('Y-m-d', strtotime('-3 days'));
+					$dateTwoDaysNow = date('Y-m-d');
 
-						$q_tblmasuk     = mysqli_query($con, "SELECT 
+					$q_tblmasuk     = mysqli_query($con, "SELECT 
 																	* 
 																FROM 
 																	tbl_masuk a 
@@ -423,8 +426,8 @@ if (empty($_SESSION['usr'])) {
 																	) AND a.status = 'KK MASUK' 
 																	AND SUBSTR(a.creationdatetime, 1, 10) BETWEEN '2024-04-10' AND '$dateTwoDaysAgo'
 																ORDER BY a.id ASC");
-						$totalQty = 0;
-						$totalRoll = 0;
+					$totalQty = 0;
+					$totalRoll = 0;
 					?>
 					<?php while ($row_tblmasuk  = mysqli_fetch_array($q_tblmasuk)) : ?>
 						<tr>
@@ -460,7 +463,7 @@ if (empty($_SESSION['usr'])) {
 			</table>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<script>
 		// Fungsi untuk membuka modal
@@ -887,4 +890,5 @@ if (empty($_SESSION['usr'])) {
 		<?php endif; ?>
 	</form>
 </body>
+
 </html>
