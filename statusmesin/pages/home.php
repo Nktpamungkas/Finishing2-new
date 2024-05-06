@@ -65,9 +65,9 @@
             border: 1px solid #ddd;
             box-sizing: border-box;
             margin: 2px;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
         }
 
@@ -89,7 +89,7 @@
 
         }
 
-        @keyframes blink {
+        /* @keyframes blink {
             0% {
                 opacity: 1;
             }
@@ -101,7 +101,7 @@
             100% {
                 opacity: 1;
             }
-        }
+        } */
 
         .card {
             background-color: white;
@@ -570,19 +570,19 @@
 
 </body>
 <script>
-    function randomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
+    // function randomColor() {
+    //     var letters = '0123456789ABCDEF';
+    //     var color = '#';
+    //     for (var i = 0; i < 6; i++) {
+    //         color += letters[Math.floor(Math.random() * 16)];
+    //     }
+    //     return color;
+    // }
 
-    var koloms = document.querySelectorAll('.kolom');
-    koloms.forEach(function(kolom) {
-        kolom.style.backgroundColor = randomColor();
-    });
+    // var koloms = document.querySelectorAll('.kolom');
+    // koloms.forEach(function(kolom) {
+    //     kolom.style.backgroundColor = randomColor();
+    // });
 </script>
 
 </html>
