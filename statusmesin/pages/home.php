@@ -65,8 +65,9 @@
             border: 1px solid #ddd;
             box-sizing: border-box;
             margin: 2px;
-            /* text-align: center; */
-            /* font-size: medium; */
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
 
         }
 
@@ -79,7 +80,9 @@
             box-sizing: border-box;
             margin: 2px;
             border-radius: 7px;
-            /* text-align: center; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
 
             /* animation: blink 2s infinite; */
