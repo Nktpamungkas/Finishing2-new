@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<?php
+    include('../koneksi.php');
+?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +19,7 @@
             background-color: #ccc;
             color: black;
             text-align: center;
-            padding: 10px 0;
+            padding: 5px 0;
             font-size: large;
         }
 
@@ -28,18 +30,16 @@
             /* Pusatkan item di dalam container */
             align-items: center;
             /* Pusatkan item secara vertikal */
-            gap: 2px;
+            gap: 1px;
             /* Jarak antar item */
             border-radius: 8px;
 
 
         }
 
-
-
         /* Mengatur ukuran semua item menjadi sama */
         .container>div {
-            flex: 1 1 300px;
+            flex: 1 1 3000px;
             /* flex-grow, flex-shrink, flex-basis */
             max-width: 100px;
             /* Lebar maksimum item */
@@ -53,7 +53,7 @@
 
             box-sizing: border-box;
             text-align: center;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             /* Jarak bawah antar item */
         }
 
@@ -75,7 +75,7 @@
             flex: 1 1 300px;
             /* Ubah ukuran relatif menjadi 5% dari lebar container */
             background-color: #f2f2f2;
-            padding: 10px;
+            padding: 0px;
             border: 1px solid #ddd;
             box-sizing: border-box;
             margin: 2px;
@@ -108,8 +108,8 @@
             border-radius: 5px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             transition: 0.3s;
-            margin: 20px;
-            padding: 20px;
+            margin: 0px;
+            padding: 0px;
         }
 
         td {
@@ -122,7 +122,7 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            background-color: red;
+            background-color: #E59866;
             margin-left: 10px;
             vertical-align: middle;
         }
@@ -161,428 +161,90 @@
         <h1>STATUS MESIN DEPART FINISHING SUDAH ATUR</h1>
     </nav>
     <div class="card">
-
-        <div class="container" style="text-align: center;">
-            <div class="kolom1">ST 01 </div>
-            <div class="kolom1">ST 02</div>
-            <div class="kolom1">ST 03</div>
-            <div class="kolom1">ST 04</div>
-            <div class="kolom1">ST 05</div>
-            <div class="kolom1">ST 06</div>
-            <div class="kolom1">ST 07</div>
-            <div class="kolom1">ST 08</div>
-            <div class="kolom1">ST 09</div>
-            <div class="kolom1">COMPAC 01</div>
-            <div class="kolom1">COMPAC 02</div>
-            <div class="kolom1">OVEN FONG</div>
-            <div class="kolom1">STEAM</div>
-            <div class="kolom1">LIPAT/INSPEK</div>
-            <div class="kolom1">BC 01/02</div>
-            <div class="kolom1">BC 03 </div>
-            <div class="kolom1">BC 04</div>
-        </div>
-        <div class="container">
-            <div class="kolom">ST 01 </div>
-            <div class="kolom">ST 02</div>
-            <div class="kolom">ST 03</div>
-            <div class="kolom">ST 04</div>
-            <div class="kolom">ST 05</div>
-            <div class="kolom">ST 06</div>
-            <div class="kolom">ST 07</div>
-            <div class="kolom">ST 08</div>
-            <div class="kolom">ST 09</div>
-            <div class="kolom">COMPAC 01</div>
-            <div class="kolom">COMPAC 02</div>
-            <div class="kolom">OVEN FONG</div>
-            <div class="kolom">STEAM</div>
-            <div class="kolom">LIPAT/inspek</div>
-            <div class="kolom">BC 01/02</div>
-            <div class="kolom">BC 03 </div>
-            <div class="kolom">BC 04</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
+        <table border="0" width="100%">
+            <thead>
+                <tr>
+                    <th><div class="kolom1">ST 01</div></th>
+                    <th><div class="kolom1">ST 02</div></th>
+                    <th><div class="kolom1">ST 03</div></th>
+                    <th><div class="kolom1">ST 04</div></th>
+                    <th><div class="kolom1">ST 05</div></th>
+                    <th><div class="kolom1">ST 06</div></th>
+                    <th><div class="kolom1">ST 07</div></th>
+                    <th><div class="kolom1">ST 08</div></th>
+                    <th><div class="kolom1">CP 01</div></th>
+                    <th><div class="kolom1">CP 02</div></th>
+                    <th><div class="kolom1">OVEN FONG</div></th>
+                    <th><div class="kolom1">STEAM</div></th>
+                    <th><div class="kolom1">LIPAT/INSPEK</div></th>
+                    <th><div class="kolom1">BC 01</div></th>
+                    <th><div class="kolom1">BC 02</div></th>
+                    <th><div class="kolom1">BC 03</div></th>
+                    <th><div class="kolom1">BC 04</div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    $q_schedule = mysqli_query($con, "SELECT
+                                                            * 
+                                                        FROM
+                                                            `tbl_schedule_new` a 
+                                                        WHERE
+                                                            NOT EXISTS (
+                                                            SELECT
+                                                                1 
+                                                            FROM
+                                                                `tbl_produksi` b 
+                                                            WHERE
+                                                                b.nokk = a.nokk 
+                                                                AND b.demandno = a.nodemand 
+                                                                AND b.nama_mesin = a.operation 
+                                                                AND b.no_mesin = a.no_mesin 
+                                                            ) 
+                                                            AND a.`status` = 'SCHEDULE' 
+                                                            AND a.no_mesin = 'P3ST301' 
+                                                            AND NOT a.nourut = 0 
+                                                        ORDER BY
+                                                            CONCAT(
+                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                            nourut ASC
+                                                        LIMIT 10");
+                ?>
+                <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                    <?php
+                        $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                        $row_proses = mysqli_fetch_assoc($q_proses);
+                        if($row_proses['ket_proses'] == 'kk/kain belum final proses'){
+                            $warna  = "background-color: #E59866;";
+                        }elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                            $warna  = "background-color: palegreen;";
+                        }elseif ($row_proses['ket_proses'] == 'pedder') {
+                            $warna  = "background-color: palegoldenrod;";
+                        }elseif ($row_proses['ket_proses'] == 'preset') {
+                            $warna  = "background-color: palevioletred;";
+                        }else{
+                            $warna = "";
+                        }
+                    ?>
+                    <tr>
+                        <td><div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
         <br>
-        <td colspan="2">Keterangan warna <span class="small-box1"></span></td>
-        <td colspan="2">Keterangan warna <span class="small-box2"></span></td>
-        <td colspan="2">Keterangan warna <span class="small-box3"></span></td>
-        <td colspan="2">Keterangan warna <span class="small-box4"></span></td>
-        <marquee class="teks-berjalan" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();" style="font-size: larger;">
+        <td colspan="4">kk/kain belum final proses <span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="4">kk/kain finishing final proses <span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="4">Pedder <span class="small-box3"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="4">Preset <span class="small-box4"></span></td>
+        <br>
+        <br>
+        <marquee class="teks-berjalan" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();" style="font-size: 20px; background-color: #CD6155; color: #F8F9F9;">
             UTAMAKAN KESELAMATAN KERJA, TINGKATKAN PRODUKTIFITAS, KURANGI MASALAH, KURANGI LOSS WAKTU DAN JAGA 5R DI LINGKUNGAN KERJA :: UTAMAKAN KESEHATAN DAN KESELAMATAN KERJA, SELALU MENGGUNAKAN ALAT PELINDUNG DIRI, JAGA 5R, DAN SELALU WASPADA TERHADAP PENYEBARAN COVID-19
         </marquee>
     </div>
-    <nav>
-        <h1>STATUS MESIN DEPART FINISHING BELUM ATUR</h1>
-    </nav>
-    <div class="card">
-        <div class="container">
-            <div class="kolom1">ST 01</div>
-            <div class="kolom1">ST 02</div>
-            <div class="kolom1">ST 03</div>
-            <div class="kolom1">ST 4</div>
-            <div class="kolom1">ST 5</div>
-            <div class="kolom1">ST 6</div>
-            <div class="kolom1">ST 7</div>
-            <div class="kolom1">ST 8</div>
-            <div class="kolom1">ST 9</div>
-            <div class="kolom1">COMPAC 01</div>
-            <div class="kolom1">COMPAC 02</div>
-            <div class="kolom1">OVEN FONG</div>
-            <div class="kolom1">STEAM</div>
-            <div class="kolom1">LIPAT/inspek</div>
-            <div class="kolom1">BC 01/02</div>
-            <div class="kolom1">BC 03 </div>
-            <div class="kolom1">BC 04</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <div class="container">
-            <div class="kolom">kolom 1</div>
-            <div class="kolom">Kolom 2</div>
-            <div class="kolom">Kolom 3</div>
-            <div class="kolom">Kolom 4</div>
-            <div class="kolom">Kolom 5</div>
-            <div class="kolom">Kolom 6</div>
-            <div class="kolom">Kolom 7</div>
-            <div class="kolom">Kolom 8</div>
-            <div class="kolom">Kolom 9</div>
-            <div class="kolom">Kolom 10</div>
-            <div class="kolom">Kolom 11</div>
-            <div class="kolom">Kolom 12</div>
-            <div class="kolom">Kolom 13</div>
-            <div class="kolom">Kolom 14</div>
-            <div class="kolom">Kolom 15</div>
-            <div class="kolom">Kolom 16</div>
-            <div class="kolom">Kolom 17</div>
-        </div>
-        <br>
-        <td colspan="2">Keterangan warna <span class="small-box1"></span></td>
-        <td colspan="2">Keterangan warna <span class="small-box2"></span></td>
-        <td colspan="2">Keterangan warna <span class="small-box3"></span></td>
-        <td colspan="2">Keterangan warna <span class="small-box4"></span></td>
-        <br>
-        <marquee class="teks-berjalan" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();" style="font-size: larger;">
-            UTAMAKAN KESELAMATAN KERJA, TINGKATKAN PRODUKTIFITAS, KURANGI MASALAH, KURANGI LOSS WAKTU DAN JAGA 5R DI LINGKUNGAN KERJA :: UTAMAKAN KESEHATAN DAN KESELAMATAN KERJA, SELALU MENGGUNAKAN ALAT PELINDUNG DIRI, JAGA 5R, DAN SELALU WASPADA TERHADAP PENYEBARAN COVID-19
-        </marquee>
-    </div>
-
-
+    <br>
+    
 </body>
-<script>
-    // function randomColor() {
-    //     var letters = '0123456789ABCDEF';
-    //     var color = '#';
-    //     for (var i = 0; i < 6; i++) {
-    //         color += letters[Math.floor(Math.random() * 16)];
-    //     }
-    //     return color;
-    // }
-
-    // var koloms = document.querySelectorAll('.kolom');
-    // koloms.forEach(function(kolom) {
-    //     kolom.style.backgroundColor = randomColor();
-    // });
-</script>
-
 </html>
