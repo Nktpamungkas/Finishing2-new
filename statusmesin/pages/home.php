@@ -84,29 +84,13 @@ include('../koneksi.php');
             display: flex;
             justify-content: center;
             align-items: center;
-
-
             /* animation: blink 2s infinite; */
 
         }
 
-        /* @keyframes blink {
-            0% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        } */
-
         .card {
             position: absolute;
-            top: 5;
+            top: 3;
             right: 0;
             width: 100%;
             /* Menempati seluruh lebar container */
@@ -168,6 +152,7 @@ include('../koneksi.php');
     <nav>
         <h1>STATUS MESIN DEPART FINISHING SUDAH ATUR</h1>
     </nav>
+    <hr>
     <div class="card">
         <div style="display: flex;">
             <div style="flex: 1; margin-right: 10px;">
@@ -880,7 +865,7 @@ include('../koneksi.php');
                                                                         AND b.no_mesin = a.no_mesin 
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'P3IN350' 
+                                                                    AND a.no_mesin = 'P3SM101' 
                                                                     AND NOT a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
@@ -942,7 +927,7 @@ include('../koneksi.php');
                                                                         AND b.no_mesin = a.no_mesin 
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'P3SM101' 
+                                                                    AND a.no_mesin = 'P3IN350' 
                                                                     AND NOT a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
