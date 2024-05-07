@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-    include('../koneksi.php');
+include('../koneksi.php');
 ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,10 +65,10 @@
             padding: 20px;
             border: 1px solid #ddd;
             box-sizing: border-box;
-            margin: 2px;
+            margin: 1px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            /* align-items: center; */
 
         }
 
@@ -104,12 +105,19 @@
         } */
 
         .card {
+            position: absolute;
+            top: 5;
+            right: 0;
+            width: 100%;
+            /* Menempati seluruh lebar container */
             background-color: white;
             border-radius: 5px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            transition: 0.3s;
-            margin: 0px;
-            padding: 0px;
+            padding: 20px;
+            /* Atur padding sesuai kebutuhan */
+            box-sizing: border-box;
+            /* Padding dihitung dalam lebar total */
+
         }
 
         td {
@@ -122,7 +130,7 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            background-color: #E59866;
+            background-color: #FFFF00;
             margin-left: 10px;
             vertical-align: middle;
         }
@@ -140,7 +148,7 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            background-color: palegoldenrod;
+            background-color: #FA8072;
             margin-left: 10px;
             vertical-align: middle;
         }
@@ -149,7 +157,7 @@
             display: inline-block;
             width: 20px;
             height: 20px;
-            background-color: palevioletred;
+            background-color: #2471A3;
             margin-left: 10px;
             vertical-align: middle;
         }
@@ -162,25 +170,18 @@
     </nav>
     <div class="card">
         <div style="display: flex;">
-            <!-- <th><div class="kolom1">CP 01</div></th>
-            <th><div class="kolom1">CP 02</div></th>
-            <th><div class="kolom1">OVEN FONG</div></th>
-            <th><div class="kolom1">STEAM</div></th>
-            <th><div class="kolom1">LIPAT/INSPEK</div></th>
-            <th><div class="kolom1">BC 01</div></th>
-            <th><div class="kolom1">BC 02</div></th>
-            <th><div class="kolom1">BC 03</div></th>
-            <th><div class="kolom1">BC 04</div></th> -->
             <div style="flex: 1; margin-right: 10px;">
                 <table border="0" width="5%">
                     <thead>
                         <tr>
-                            <th><div class="kolom1">ST 01</div></th>
+                            <th>
+                                <div class="kolom1">ST 01</div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -208,37 +209,41 @@
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if($row_proses['ket_proses'] == 'kk/kain belum final proses'){
-                                    $warna  = "background-color: #E59866;";
-                                }elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                }elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: palegoldenrod;";
-                                }elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: palevioletred;";
-                                }else{
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
-                                <td><div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div></td>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>
             <div style="flex: 1; margin-right: 10px;">
-                <table border="0" width="5%">
+                <table border="0" width="10%">
                     <thead>
                         <tr>
-                            <th><div class="kolom1">ST 02</div></th>
+                            <th>
+                                <div class="kolom1">ST 02</div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -266,22 +271,24 @@
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if($row_proses['ket_proses'] == 'kk/kain belum final proses'){
-                                    $warna  = "background-color: #E59866;";
-                                }elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                }elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: palegoldenrod;";
-                                }elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: palevioletred;";
-                                }else{
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
-                                <td><div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div></td>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -291,12 +298,14 @@
                 <table border="0" width="5%">
                     <thead>
                         <tr>
-                            <th><div class="kolom1">ST 03</div></th>
+                            <th>
+                                <div class="kolom1">ST 03</div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -324,22 +333,24 @@
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if($row_proses['ket_proses'] == 'kk/kain belum final proses'){
-                                    $warna  = "background-color: #E59866;";
-                                }elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                }elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: palegoldenrod;";
-                                }elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: palevioletred;";
-                                }else{
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
-                                <td><div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div></td>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -349,12 +360,14 @@
                 <table border="0" width="5%">
                     <thead>
                         <tr>
-                            <th><div class="kolom1">ST 04</div></th>
+                            <th>
+                                <div class="kolom1">ST 04</div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -382,22 +395,24 @@
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if($row_proses['ket_proses'] == 'kk/kain belum final proses'){
-                                    $warna  = "background-color: #E59866;";
-                                }elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                }elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: palegoldenrod;";
-                                }elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: palevioletred;";
-                                }else{
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
-                                <td><div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div></td>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -407,12 +422,14 @@
                 <table border="0" width="5%">
                     <thead>
                         <tr>
-                            <th><div class="kolom1">ST 05</div></th>
+                            <th>
+                                <div class="kolom1">ST 05</div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -440,22 +457,24 @@
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if($row_proses['ket_proses'] == 'kk/kain belum final proses'){
-                                    $warna  = "background-color: #E59866;";
-                                }elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                }elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: palegoldenrod;";
-                                }elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: palevioletred;";
-                                }else{
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
-                                <td><div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div></td>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -465,12 +484,14 @@
                 <table border="0" width="5%">
                     <thead>
                         <tr>
-                            <th><div class="kolom1">ST 06</div></th>
+                            <th>
+                                <div class="kolom1">ST 06</div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -498,22 +519,24 @@
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if($row_proses['ket_proses'] == 'kk/kain belum final proses'){
-                                    $warna  = "background-color: #E59866;";
-                                }elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                }elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: palegoldenrod;";
-                                }elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: palevioletred;";
-                                }else{
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
-                                <td><div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div></td>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -523,12 +546,14 @@
                 <table border="0" width="5%">
                     <thead>
                         <tr>
-                            <th><div class="kolom1">ST 07</div></th>
+                            <th>
+                                <div class="kolom1">ST 07</div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -556,22 +581,24 @@
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if($row_proses['ket_proses'] == 'kk/kain belum final proses'){
-                                    $warna  = "background-color: #E59866;";
-                                }elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                }elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: palegoldenrod;";
-                                }elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: palevioletred;";
-                                }else{
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
-                                <td><div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div></td>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -581,12 +608,14 @@
                 <table border="0" width="5%">
                     <thead>
                         <tr>
-                            <th><div class="kolom1">ST 08</div></th>
+                            <th>
+                                <div class="kolom1">ST 08</div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -614,30 +643,590 @@
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if($row_proses['ket_proses'] == 'kk/kain belum final proses'){
-                                    $warna  = "background-color: #E59866;";
-                                }elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                }elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: palegoldenrod;";
-                                }elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: palevioletred;";
-                                }else{
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
-                                <td><div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div></td>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 10px;">
+                <table border="0" width="5%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="kolom1">CP 01</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = 'P3CP101' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10");
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 10px;">
+                <table border="0" width="5%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="kolom1">CP 02</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = 'P3CP102' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10");
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 10px;">
+                <table border="0" width="5%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="kolom1">OVEN FONG</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = '#' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10");
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 10px;">
+                <table border="0" width="5%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="kolom1">STEAM<br>&nbsp;</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = 'P3IN350' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10");
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 10px;">
+                <table border="0" width="5%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="kolom1">LIPAT<br>INSPEK</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = 'P3SM101' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10");
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 10px;">
+                <table border="0" width="5%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="kolom1">BC 01</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = '#' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10");
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 10px;">
+                <table border="0" width="5%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="kolom1">BC 02</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = '#' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10");
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 10px;">
+                <table border="0" width="5%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="kolom1">BC 03</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = 'P3CP101' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10");
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 10px;">
+                <table border="0" width="5%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="kolom1">BC 04</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = '#' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10");
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
-        <!-- <td colspan="4">kk/kain belum final proses <span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+
+        <td colspan="4">kk/kain belum final proses <span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="4">kk/kain finishing final proses <span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="4">Pedder <span class="small-box3"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="4">Preset <span class="small-box4"></span></td>
@@ -645,9 +1234,10 @@
         <br>
         <marquee class="teks-berjalan" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();" style="font-size: 20px; background-color: #CD6155; color: #F8F9F9;">
             UTAMAKAN KESELAMATAN KERJA, TINGKATKAN PRODUKTIFITAS, KURANGI MASALAH, KURANGI LOSS WAKTU DAN JAGA 5R DI LINGKUNGAN KERJA :: UTAMAKAN KESEHATAN DAN KESELAMATAN KERJA, SELALU MENGGUNAKAN ALAT PELINDUNG DIRI, JAGA 5R, DAN SELALU WASPADA TERHADAP PENYEBARAN COVID-19
-        </marquee> -->
+        </marquee>
     </div>
     <br>
-    
+
 </body>
+
 </html>
