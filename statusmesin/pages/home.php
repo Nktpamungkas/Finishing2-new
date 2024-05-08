@@ -233,8 +233,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -244,7 +243,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -269,8 +268,8 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                            
-                            $q_schedule_10 = mysqli_query($con, "SELECT
+
+                        $q_schedule_10 = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -295,23 +294,23 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                    $warna  = "background-color: #FFFF00;";
-                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: #FA8072; color: white;";
-                                } elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: #2471A3; color: white;";
-                                } else {
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
                                 <td>
@@ -323,7 +322,7 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
-                        <?php if($row_schedule_10) : ?>
+                        <?php if ($row_schedule_10) : ?>
                             <tr>
                                 <td>
                                     <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
@@ -398,6 +397,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3ST302' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -425,6 +450,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -434,7 +466,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                    $q_schedule_sum = mysqli_query($con, "SELECT
+                                $q_schedule_sum = mysqli_query($con, "SELECT
                                                                                 SUM(qty_order) AS sum_qty
                                                                             FROM
                                                                                 `tbl_schedule_new` a 
@@ -459,7 +491,7 @@ include('../koneksi.php');
                                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                                 nourut ASC
                                                                             LIMIT 10");
-                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 03</div>
@@ -468,7 +500,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -493,7 +525,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                            $q_schedule_10 = mysqli_query($con, "SELECT
+                        $q_schedule_10 = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -518,24 +550,24 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
 
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                                $row_proses = mysqli_fetch_assoc($q_proses);
-                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                    $warna  = "background-color: #FFFF00;";
-                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                    $warna  = "background-color: palegreen;";
-                                } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                    $warna  = "background-color: #FA8072; color: white;";
-                                } elseif ($row_proses['ket_proses'] == 'preset') {
-                                    $warna  = "background-color: #2471A3; color: white;";
-                                } else {
-                                    $warna = "";
-                                }
+                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                            $row_proses = mysqli_fetch_assoc($q_proses);
+                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                $warna  = "background-color: #FFFF00;";
+                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                $warna  = "background-color: palegreen;";
+                            } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                $warna  = "background-color: #FA8072; color: white;";
+                            } elseif ($row_proses['ket_proses'] == 'preset') {
+                                $warna  = "background-color: #2471A3; color: white;";
+                            } else {
+                                $warna = "";
+                            }
                             ?>
                             <tr>
                                 <td>
@@ -547,7 +579,7 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
-                        <?php if($row_schedule_10) : ?>
+                        <?php if ($row_schedule_10) : ?>
                             <tr>
                                 <td>
                                     <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
@@ -622,6 +654,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3ST304' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -649,6 +707,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -717,6 +782,33 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3ST205' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -744,6 +836,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -812,6 +911,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3ST206' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -839,6 +964,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -907,6 +1039,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3ST307' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -934,6 +1092,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1002,6 +1167,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3ST208' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1029,6 +1220,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1097,6 +1295,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3CP101' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1124,6 +1348,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1158,6 +1389,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
+
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -1192,6 +1424,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3CP102' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1219,6 +1477,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1287,6 +1552,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = '#' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1314,6 +1605,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1382,6 +1680,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3SM101' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1409,6 +1733,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1477,6 +1808,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3IN350' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1504,6 +1861,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1572,6 +1936,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = '#' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1599,6 +1989,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1633,6 +2030,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
+
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -1667,6 +2065,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = '#' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1694,6 +2118,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1762,6 +2193,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3CP101' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1789,6 +2246,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1857,6 +2321,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = '#' 
+                                                                AND NOT a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1884,6 +2374,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -1977,6 +2474,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3ST301' 
+                                                                AND a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2004,6 +2527,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2038,6 +2568,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
+
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -2072,6 +2603,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3ST302' 
+                                                                AND a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2099,6 +2656,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2167,6 +2731,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = 'P3ST103' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2194,6 +2784,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2262,6 +2859,32 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = 'P3ST304' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2289,6 +2912,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2357,6 +2987,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = 'P3ST205' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2384,6 +3039,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2452,6 +3114,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = 'P3ST206' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2479,6 +3166,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2547,6 +3241,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = 'P3ST307' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2574,6 +3293,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2642,6 +3368,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = 'P3ST208' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2669,6 +3420,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2737,6 +3495,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3CP101' 
+                                                                AND a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2764,6 +3547,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2832,6 +3622,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3CP102' 
+                                                                AND a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2859,6 +3674,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -2927,6 +3749,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = '#' 
+                                                                AND a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2954,6 +3801,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -3022,6 +3876,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3SM101' 
+                                                                AND a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3049,6 +3928,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -3117,6 +4003,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                * 
+                                                            FROM
+                                                                `tbl_schedule_new` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                SELECT
+                                                                    1 
+                                                                FROM
+                                                                    `tbl_produksi` b 
+                                                                WHERE
+                                                                    b.nokk = a.nokk 
+                                                                    AND b.demandno = a.nodemand 
+                                                                    AND b.nama_mesin = a.operation 
+                                                                    AND b.no_mesin = a.no_mesin 
+                                                                ) 
+                                                                AND a.`status` = 'SCHEDULE' 
+                                                                AND a.no_mesin = 'P3IN350' 
+                                                                AND a.nourut = 0 
+                                                            ORDER BY
+                                                                CONCAT(
+                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                nourut ASC
+                                                            LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3144,6 +4055,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -3212,6 +4130,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = '#' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3239,6 +4182,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -3307,6 +4257,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = '#' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3334,6 +4309,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -3402,6 +4384,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = '#' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3429,6 +4436,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -3497,6 +4511,31 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                 * 
+                                                             FROM
+                                                                 `tbl_schedule_new` a 
+                                                             WHERE
+                                                                 NOT EXISTS (
+                                                                 SELECT
+                                                                     1 
+                                                                 FROM
+                                                                     `tbl_produksi` b 
+                                                                 WHERE
+                                                                     b.nokk = a.nokk 
+                                                                     AND b.demandno = a.nodemand 
+                                                                     AND b.nama_mesin = a.operation 
+                                                                     AND b.no_mesin = a.no_mesin 
+                                                                 ) 
+                                                                 AND a.`status` = 'SCHEDULE' 
+                                                                 AND a.no_mesin = '#' 
+                                                                 AND a.nourut = 0 
+                                                             ORDER BY
+                                                                 CONCAT(
+                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                 nourut ASC
+                                                             LIMIT 10,100");
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3524,6 +4563,13 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
