@@ -61,8 +61,8 @@ include('../koneksi.php');
 
         .kolom1 {
             flex: 1 1 300px;
-            /* background-color: red;
-            color: white; */
+            /* background-color: red */
+            /* color: white; */
             padding: 15px;
             border: 1px solid #ddd;
             box-sizing: border-box;
@@ -361,8 +361,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -489,8 +488,7 @@ include('../koneksi.php');
                                                                                 CONCAT(
                                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                                nourut ASC
-                                                                            LIMIT 10");
+                                                                                nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -618,8 +616,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -746,8 +743,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -875,8 +871,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -1003,8 +998,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -1131,8 +1125,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -1259,8 +1252,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -1387,8 +1379,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
 
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
@@ -1516,8 +1507,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -1644,8 +1634,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -1772,8 +1761,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -1900,8 +1888,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -2028,9 +2015,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
-
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -2157,8 +2142,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -2285,8 +2269,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -2385,10 +2368,131 @@ include('../koneksi.php');
                 </table>
             </div>
         </div>
-        <td colspan="4">kk/kain belum final proses <span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td colspan="4">kk/kain finishing final proses <span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td colspan="4">Pedder <span class="small-box3"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td colspan="4">Preset <span class="small-box4"></span></td>
+        <?php
+            $q_data1  = mysqli_query($con, "SELECT
+                                                    SUM(qty_order) AS sum_qty,
+                                                    p.ket_proses AS ket_proses
+                                            FROM
+                                                    `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                    NOT EXISTS (
+                                                    SELECT
+                                                            1 
+                                                    FROM
+                                                            `tbl_produksi` b 
+                                                    WHERE
+                                                            b.nokk = a.nokk 
+                                                            AND b.demandno = a.nodemand 
+                                                            AND b.nama_mesin = a.operation 
+                                                            AND b.no_mesin = a.no_mesin 
+                                                    ) 
+                                                    AND a.`status` = 'SCHEDULE' 
+                                                    AND NOT a.nourut = 0 
+                                                    AND p.ket_proses = 'kk/kain belum final proses'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                    CONCAT(
+                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                    nourut ASC");
+            $data1    = mysqli_fetch_array($q_data1);
+
+            $q_data2  = mysqli_query($con, "SELECT
+                                                    SUM(qty_order) AS sum_qty,
+                                                    p.ket_proses AS ket_proses
+                                            FROM
+                                                    `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                    NOT EXISTS (
+                                                    SELECT
+                                                            1 
+                                                    FROM
+                                                            `tbl_produksi` b 
+                                                    WHERE
+                                                            b.nokk = a.nokk 
+                                                            AND b.demandno = a.nodemand 
+                                                            AND b.nama_mesin = a.operation 
+                                                            AND b.no_mesin = a.no_mesin 
+                                                    ) 
+                                                    AND a.`status` = 'SCHEDULE' 
+                                                    AND NOT a.nourut = 0 
+                                                    AND p.ket_proses = 'kk/kain finishing final proses'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                    CONCAT(
+                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                    nourut ASC");
+            $data2    = mysqli_fetch_array($q_data2);
+            
+            $q_data3  = mysqli_query($con, "SELECT
+                                                    SUM(qty_order) AS sum_qty,
+                                                    p.ket_proses AS ket_proses
+                                            FROM
+                                                    `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                    NOT EXISTS (
+                                                    SELECT
+                                                            1 
+                                                    FROM
+                                                            `tbl_produksi` b 
+                                                    WHERE
+                                                            b.nokk = a.nokk 
+                                                            AND b.demandno = a.nodemand 
+                                                            AND b.nama_mesin = a.operation 
+                                                            AND b.no_mesin = a.no_mesin 
+                                                    ) 
+                                                    AND a.`status` = 'SCHEDULE' 
+                                                    AND NOT a.nourut = 0 
+                                                    AND p.ket_proses = 'pedder'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                    CONCAT(
+                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                    nourut ASC");
+            $data3    = mysqli_fetch_array($q_data3);
+            
+            $q_data4  = mysqli_query($con, "SELECT
+                                                    SUM(qty_order) AS sum_qty,
+                                                    p.ket_proses AS ket_proses
+                                            FROM
+                                                    `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                    NOT EXISTS (
+                                                    SELECT
+                                                            1 
+                                                    FROM
+                                                            `tbl_produksi` b 
+                                                    WHERE
+                                                            b.nokk = a.nokk 
+                                                            AND b.demandno = a.nodemand 
+                                                            AND b.nama_mesin = a.operation 
+                                                            AND b.no_mesin = a.no_mesin 
+                                                    ) 
+                                                    AND a.`status` = 'SCHEDULE' 
+                                                    AND NOT a.nourut = 0 
+                                                    AND p.ket_proses = 'preset'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                    CONCAT(
+                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                    nourut ASC");
+            $data4    = mysqli_fetch_array($q_data4);
+        ?>
+        <td colspan="4">kk/kain belum final proses (<?= $data1['sum_qty']; ?> Kg)<span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="4">kk/kain finishing final proses (<?= $data2['sum_qty']; ?> Kg)<span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="4">Pedder (<?= $data3['sum_qty']; ?> Kg)<span class="small-box3"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="4">Preset (<?= $data4['sum_qty']; ?> Kg)<span class="small-box4"></span></td>
         <br>
         <br>
         <marquee class="teks-berjalan" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();" style="font-size: 20px; background-color: #CD6155; color: #F8F9F9;">
@@ -2438,8 +2542,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -2566,9 +2669,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
-
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -2695,8 +2796,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -2823,8 +2923,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -2951,8 +3050,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -3012,6 +3110,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3078,8 +3177,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -3139,6 +3237,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3205,8 +3304,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -3266,6 +3364,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3332,8 +3431,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -3393,6 +3491,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3459,8 +3558,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -3520,6 +3618,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3586,8 +3685,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -3647,6 +3745,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3713,8 +3812,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -3774,6 +3872,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3840,8 +3939,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -3901,6 +3999,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3967,8 +4066,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -4028,6 +4126,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4094,8 +4193,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -4155,6 +4253,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4221,8 +4320,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -4282,6 +4380,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4348,8 +4447,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -4409,6 +4507,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4475,8 +4574,7 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
+                                                                            nourut ASC");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
@@ -4536,6 +4634,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4574,10 +4673,131 @@ include('../koneksi.php');
                 </table>
             </div>
         </div>
-        <td colspan="4">kk/kain belum final proses <span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td colspan="4">kk/kain finishing final proses <span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td colspan="4">Pedder <span class="small-box3"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td colspan="4">Preset <span class="small-box4"></span></td>
+        <?php
+            $q_data1  = mysqli_query($con, "SELECT
+                                                    SUM(qty_order) AS sum_qty,
+                                                    p.ket_proses AS ket_proses
+                                            FROM
+                                                    `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                    NOT EXISTS (
+                                                    SELECT
+                                                            1 
+                                                    FROM
+                                                            `tbl_produksi` b 
+                                                    WHERE
+                                                            b.nokk = a.nokk 
+                                                            AND b.demandno = a.nodemand 
+                                                            AND b.nama_mesin = a.operation 
+                                                            AND b.no_mesin = a.no_mesin 
+                                                    ) 
+                                                    AND a.`status` = 'SCHEDULE' 
+                                                    AND a.nourut = 0 
+                                                    AND p.ket_proses = 'kk/kain belum final proses'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                    CONCAT(
+                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                    nourut ASC");
+            $data1    = mysqli_fetch_array($q_data1);
+
+            $q_data2  = mysqli_query($con, "SELECT
+                                                    SUM(qty_order) AS sum_qty,
+                                                    p.ket_proses AS ket_proses
+                                            FROM
+                                                    `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                    NOT EXISTS (
+                                                    SELECT
+                                                            1 
+                                                    FROM
+                                                            `tbl_produksi` b 
+                                                    WHERE
+                                                            b.nokk = a.nokk 
+                                                            AND b.demandno = a.nodemand 
+                                                            AND b.nama_mesin = a.operation 
+                                                            AND b.no_mesin = a.no_mesin 
+                                                    ) 
+                                                    AND a.`status` = 'SCHEDULE' 
+                                                    AND a.nourut = 0 
+                                                    AND p.ket_proses = 'kk/kain finishing final proses'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                    CONCAT(
+                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                    nourut ASC");
+            $data2    = mysqli_fetch_array($q_data2);
+            
+            $q_data3  = mysqli_query($con, "SELECT
+                                                    SUM(qty_order) AS sum_qty,
+                                                    p.ket_proses AS ket_proses
+                                            FROM
+                                                    `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                    NOT EXISTS (
+                                                    SELECT
+                                                            1 
+                                                    FROM
+                                                            `tbl_produksi` b 
+                                                    WHERE
+                                                            b.nokk = a.nokk 
+                                                            AND b.demandno = a.nodemand 
+                                                            AND b.nama_mesin = a.operation 
+                                                            AND b.no_mesin = a.no_mesin 
+                                                    ) 
+                                                    AND a.`status` = 'SCHEDULE' 
+                                                    AND a.nourut = 0 
+                                                    AND p.ket_proses = 'pedder'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                    CONCAT(
+                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                    nourut ASC");
+            $data3    = mysqli_fetch_array($q_data3);
+            
+            $q_data4  = mysqli_query($con, "SELECT
+                                                    SUM(qty_order) AS sum_qty,
+                                                    p.ket_proses AS ket_proses
+                                            FROM
+                                                    `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                    NOT EXISTS (
+                                                    SELECT
+                                                            1 
+                                                    FROM
+                                                            `tbl_produksi` b 
+                                                    WHERE
+                                                            b.nokk = a.nokk 
+                                                            AND b.demandno = a.nodemand 
+                                                            AND b.nama_mesin = a.operation 
+                                                            AND b.no_mesin = a.no_mesin 
+                                                    ) 
+                                                    AND a.`status` = 'SCHEDULE' 
+                                                    AND a.nourut = 0 
+                                                    AND p.ket_proses = 'preset'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                    CONCAT(
+                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                    nourut ASC");
+            $data4    = mysqli_fetch_array($q_data4);
+        ?>
+        <td colspan="4">kk/kain belum final proses (<?= $data1['sum_qty']; ?> Kg)<span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="4">kk/kain finishing final proses (<?= $data2['sum_qty']; ?> Kg)<span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="4">Pedder (<?= $data3['sum_qty']; ?> Kg)<span class="small-box3"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="4">Preset (<?= $data4['sum_qty']; ?> Kg)<span class="small-box4"></span></td>
         <br>
         <br>
         <marquee class="teks-berjalan" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();" style="font-size: 20px; background-color: #CD6155; color: #F8F9F9;">
