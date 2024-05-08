@@ -61,9 +61,9 @@ include('../koneksi.php');
 
         .kolom1 {
             flex: 1 1 300px;
-            background-color: red;
-            color: white;
-            padding: 20px;
+            /* background-color: red;
+            color: white; */
+            padding: 15px;
             border: 1px solid #ddd;
             box-sizing: border-box;
             margin: 0;
@@ -76,6 +76,7 @@ include('../koneksi.php');
             /* Tinggi elemen */
             text-align: center;
             /* Memusatkan teks secara horizontal */
+            white-space: nowrap;
         }
 
         .kolom {
@@ -204,7 +205,7 @@ include('../koneksi.php');
     <div class="card">
         <div style="display: flex; width: 100%">
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -243,7 +244,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                            $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -268,22 +269,49 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                            
+                            $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = 'P3ST301' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
@@ -293,13 +321,18 @@ include('../koneksi.php');
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
+                                <?php if($row_schedule_10) : ?>
+                                    <td>
+                                        <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                    </td>
+                                <?php endif; ?>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="10%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -394,37 +427,37 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
-                                                                            SUM(qty_order) AS sum_qty
-                                                                        FROM
-                                                                            `tbl_schedule_new` a 
-                                                                        WHERE
-                                                                            NOT EXISTS (
-                                                                            SELECT
-                                                                                1 
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                                SUM(qty_order) AS sum_qty
                                                                             FROM
-                                                                                `tbl_produksi` b 
+                                                                                `tbl_schedule_new` a 
                                                                             WHERE
-                                                                                b.nokk = a.nokk 
-                                                                                AND b.demandno = a.nodemand 
-                                                                                AND b.nama_mesin = a.operation 
-                                                                                AND b.no_mesin = a.no_mesin 
-                                                                            ) 
-                                                                            AND a.`status` = 'SCHEDULE' 
-                                                                            AND a.no_mesin = 'P3ST103' 
-                                                                            AND NOT a.nourut = 0 
-                                                                        ORDER BY
-                                                                            CONCAT(
-                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                                                                NOT EXISTS (
+                                                                                SELECT
+                                                                                    1 
+                                                                                FROM
+                                                                                    `tbl_produksi` b 
+                                                                                WHERE
+                                                                                    b.nokk = a.nokk 
+                                                                                    AND b.demandno = a.nodemand 
+                                                                                    AND b.nama_mesin = a.operation 
+                                                                                    AND b.no_mesin = a.no_mesin 
+                                                                                ) 
+                                                                                AND a.`status` = 'SCHEDULE' 
+                                                                                AND a.no_mesin = 'P3ST103' 
+                                                                                AND NOT a.nourut = 0 
+                                                                            ORDER BY
+                                                                                CONCAT(
+                                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                                nourut ASC
+                                                                            LIMIT 10");
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 03</div>
@@ -433,7 +466,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                            $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -458,22 +491,49 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
+                            $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_schedule_new` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_produksi` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.demandno = a.nodemand 
+                                                                        AND b.nama_mesin = a.operation 
+                                                                        AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.no_mesin = 'P3ST103' 
+                                                                    AND NOT a.nourut = 0 
+                                                                ORDER BY
+                                                                    CONCAT(
+                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC
+                                                                LIMIT 10,100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
@@ -485,11 +545,18 @@ include('../koneksi.php');
                                 </td>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -584,7 +651,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -679,7 +746,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -774,7 +841,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -869,7 +936,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -964,7 +1031,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -1059,7 +1126,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -1154,7 +1221,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -1249,7 +1316,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -1282,7 +1349,7 @@ include('../koneksi.php');
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">STEAM<br>&nbsp;</div>
+                                <div class="kolom1">STEAM</div>
                             </th>
                         </tr>
                     </thead>
@@ -1344,7 +1411,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -1439,7 +1506,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -1534,7 +1601,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -1629,7 +1696,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -1724,7 +1791,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -1844,7 +1911,7 @@ include('../koneksi.php');
     <div class="card">
         <div style="display: flex; width: 100%">
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2034,7 +2101,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2129,7 +2196,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2224,7 +2291,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2319,7 +2386,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2414,7 +2481,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2509,7 +2576,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2604,7 +2671,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2699,7 +2766,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2794,7 +2861,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2889,7 +2956,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -2922,7 +2989,7 @@ include('../koneksi.php');
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">STEAM<br>&nbsp;</div>
+                                <div class="kolom1">STEAM</div>
                             </th>
                         </tr>
                     </thead>
@@ -2984,7 +3051,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -3079,7 +3146,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -3174,7 +3241,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -3269,7 +3336,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
@@ -3364,7 +3431,7 @@ include('../koneksi.php');
                 </table>
             </div>
             <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="5%">
+                <table border="0" width="100%">
                     <thead>
                         <tr>
                             <th>
