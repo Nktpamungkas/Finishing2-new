@@ -321,13 +321,15 @@ include('../koneksi.php');
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
-                                <?php if($row_schedule_10) : ?>
-                                    <td>
-                                        <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
-                                    </td>
-                                <?php endif; ?>
                             </tr>
                         <?php endwhile; ?>
+                        <?php if($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
