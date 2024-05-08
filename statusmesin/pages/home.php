@@ -1830,8 +1830,6 @@ include('../koneksi.php');
     </div>
 
 
-
-
     <br>
     <br>
 
@@ -1997,7 +1995,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3ST302' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2092,7 +2090,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3ST103' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2187,7 +2185,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3ST304' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2282,7 +2280,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3ST205' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2377,7 +2375,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3ST206' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2472,7 +2470,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3ST307' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2567,7 +2565,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3ST208' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2662,7 +2660,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3CP101' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2757,7 +2755,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3CP102' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2852,7 +2850,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = '#' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -2947,7 +2945,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3SM101' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -3042,7 +3040,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = 'P3IN350' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -3137,7 +3135,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = '#' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -3232,7 +3230,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = '#' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -3327,7 +3325,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = '#' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
@@ -3422,7 +3420,7 @@ include('../koneksi.php');
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
                                                                     AND a.no_mesin = '#' 
-                                                                    AND NOT a.nourut = 0 
+                                                                    AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
                                                                         SUBSTR(TRIM(a.no_mesin), - 5, 2),
