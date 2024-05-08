@@ -47,7 +47,7 @@ include('../koneksi.php');
             /* Lebar maksimum item */
             min-width: 90px;
             /* Lebar minimum item */
-            height: 2px;
+            height: 1px;
             /* Tinggi item */
             background-color: #f2f2f2;
             border: 2px solid #ccc;
@@ -61,16 +61,20 @@ include('../koneksi.php');
 
         .kolom1 {
             flex: 1 1 300px;
-            /* Ubah ukuran relatif menjadi 5% dari lebar container */
             background-color: #f2f2f2;
             padding: 20px;
             border: 1px solid #ddd;
             box-sizing: border-box;
-            margin: 1px;
+            margin: 0;
             display: flex;
             justify-content: center;
-            /* align-items: center; */
-
+            /* Memusatkan secara horizontal */
+            align-items: center;
+            /* Memusatkan secara vertikal */
+            height: 0px;
+            /* Tinggi elemen */
+            text-align: center;
+            /* Memusatkan teks secara horizontal */
         }
 
         .kolom {
@@ -85,20 +89,47 @@ include('../koneksi.php');
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
+            /* position: relative; */
+            /* text-align: center; */
+
             /* animation: blink 2s infinite; */
 
         }
 
-        .card {
+        .kolom:hover::before {
+            content: attr(title);
             position: absolute;
-            top: 3;
+            top: -50px;
+            /* Sesuaikan posisi popup */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 20px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            white-space: nowrap;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            white-space: pre-line;
+        }
+
+        .kolom:hover::before {
+            opacity: 1;
+        }
+
+        .card {
+            position: relative;
+            top: 1;
             right: 0;
             width: 100%;
             /* Menempati seluruh lebar container */
             background-color: white;
             border-radius: 5px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            padding: 20px;
+            padding: 10px;
             /* Atur padding sesuai kebutuhan */
             box-sizing: border-box;
             /* Padding dihitung dalam lebar total */
@@ -146,7 +177,23 @@ include('../koneksi.php');
             margin-left: 10px;
             vertical-align: middle;
         }
+
+        .notification {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: #ffc107;
+            /* Warna latar belakang kuning */
+            color: #212529;
+            /* Warna teks */
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
     </style>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+
 </head>
 
 <body>
@@ -161,6 +208,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">ST 01</div>
                             </th>
                         </tr>
@@ -211,7 +259,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -223,6 +275,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">ST 02</div>
                             </th>
                         </tr>
@@ -273,7 +326,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -285,6 +342,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">ST 03</div>
                             </th>
                         </tr>
@@ -335,7 +393,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -347,6 +409,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">ST 04</div>
                             </th>
                         </tr>
@@ -397,7 +460,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -409,6 +476,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">ST 05</div>
                             </th>
                         </tr>
@@ -459,7 +527,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -471,6 +543,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">ST 06</div>
                             </th>
                         </tr>
@@ -521,7 +594,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -533,6 +610,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">ST 07</div>
                             </th>
                         </tr>
@@ -583,7 +661,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -595,6 +677,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">ST 08</div>
                             </th>
                         </tr>
@@ -645,7 +728,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -657,6 +744,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">CP 01</div>
                             </th>
                         </tr>
@@ -707,7 +795,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -719,6 +811,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">CP 02</div>
                             </th>
                         </tr>
@@ -769,7 +862,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -781,6 +878,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">OVEN FONG</div>
                             </th>
                         </tr>
@@ -831,7 +929,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -843,6 +945,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">STEAM<br>&nbsp;</div>
                             </th>
                         </tr>
@@ -893,7 +996,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -905,6 +1012,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">LIPAT<br>INSPEK</div>
                             </th>
                         </tr>
@@ -955,7 +1063,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -967,6 +1079,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">BC 01</div>
                             </th>
                         </tr>
@@ -1017,7 +1130,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1029,6 +1146,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">BC 02</div>
                             </th>
                         </tr>
@@ -1079,7 +1197,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1091,6 +1213,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">BC 03</div>
                             </th>
                         </tr>
@@ -1141,7 +1264,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1153,6 +1280,7 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
+                                <span class="badge text-bg-secondary">1000 Kg</span></h2>
                                 <div class="kolom1">BC 04</div>
                             </th>
                         </tr>
@@ -1203,7 +1331,11 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <div class="kolom" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <?php
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
