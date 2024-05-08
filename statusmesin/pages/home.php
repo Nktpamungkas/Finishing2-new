@@ -7,7 +7,7 @@ include('../koneksi.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="20">
+    <meta http-equiv="refresh" content="23">
     <title>Navbar di Tengah dengan Kolom dan Kotak Box</title>
     <style>
         /* Ini hanya contoh styling untuk tampilan */
@@ -207,8 +207,8 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <?php 
-                                    $q_schedule_sum = mysqli_query($con, "SELECT
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -233,7 +233,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 01</div>
@@ -302,7 +302,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST302' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 02</div>
                             </th>
                         </tr>
@@ -369,7 +397,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST103' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 03</div>
                             </th>
                         </tr>
@@ -436,7 +492,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST304' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 04</div>
                             </th>
                         </tr>
@@ -503,7 +587,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST205' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 05</div>
                             </th>
                         </tr>
@@ -570,7 +682,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST206' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 06</div>
                             </th>
                         </tr>
@@ -637,7 +777,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST307' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 07</div>
                             </th>
                         </tr>
@@ -704,7 +872,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST208' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 08</div>
                             </th>
                         </tr>
@@ -771,7 +967,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3CP101' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">CP 01</div>
                             </th>
                         </tr>
@@ -838,7 +1062,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3CP102' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">CP 02</div>
                             </th>
                         </tr>
@@ -905,7 +1157,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">OVEN FONG</div>
                             </th>
                         </tr>
@@ -972,7 +1252,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3SM101' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">STEAM<br>&nbsp;</div>
                             </th>
                         </tr>
@@ -1039,7 +1347,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3IN350' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">LIPAT<br>INSPEK</div>
                             </th>
                         </tr>
@@ -1106,7 +1442,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">BC 01</div>
                             </th>
                         </tr>
@@ -1173,7 +1537,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">BC 02</div>
                             </th>
                         </tr>
@@ -1240,7 +1632,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">BC 03</div>
                             </th>
                         </tr>
@@ -1307,7 +1727,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">BC 04</div>
                             </th>
                         </tr>
@@ -1401,8 +1849,8 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <?php 
-                                    $q_schedule_sum = mysqli_query($con, "SELECT
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -1427,7 +1875,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 01</div>
@@ -1436,7 +1884,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                            $q_schedule = mysqli_query($con, "SELECT
+                        $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -1496,7 +1944,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST302' 
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 02</div>
                             </th>
                         </tr>
@@ -1563,7 +2039,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST103'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 03</div>
                             </th>
                         </tr>
@@ -1630,7 +2134,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST304'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 04</div>
                             </th>
                         </tr>
@@ -1697,7 +2229,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST205'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 05</div>
                             </th>
                         </tr>
@@ -1764,7 +2324,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST206'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 06</div>
                             </th>
                         </tr>
@@ -1831,7 +2419,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST307'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 07</div>
                             </th>
                         </tr>
@@ -1898,7 +2514,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3ST208'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">ST 08</div>
                             </th>
                         </tr>
@@ -1965,7 +2609,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3CP101'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">CP 01</div>
                             </th>
                         </tr>
@@ -2032,7 +2704,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3CP102'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">CP 02</div>
                             </th>
                         </tr>
@@ -2099,7 +2799,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">OVEN FONG</div>
                             </th>
                         </tr>
@@ -2166,7 +2894,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3SM101'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">STEAM<br>&nbsp;</div>
                             </th>
                         </tr>
@@ -2233,7 +2989,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3IN350'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">LIPAT<br>INSPEK</div>
                             </th>
                         </tr>
@@ -2300,7 +3084,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">BC 01</div>
                             </th>
                         </tr>
@@ -2367,7 +3179,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">BC 02</div>
                             </th>
                         </tr>
@@ -2434,7 +3274,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">BC 03</div>
                             </th>
                         </tr>
@@ -2458,7 +3326,7 @@ include('../koneksi.php');
                                                                         AND b.no_mesin = a.no_mesin 
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'P3CP101' 
+                                                                    AND a.no_mesin = '#' 
                                                                     AND NOT a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
@@ -2501,7 +3369,35 @@ include('../koneksi.php');
                     <thead>
                         <tr>
                             <th>
-                                <span>1000 Kg</span></h2>
+                                <?php
+                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                            SUM(qty_order) AS sum_qty
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = '#'
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1">BC 04</div>
                             </th>
                         </tr>
