@@ -287,7 +287,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -477,7 +477,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -572,7 +572,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -667,7 +667,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -762,7 +762,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -857,7 +857,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -952,7 +952,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1047,7 +1047,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1142,7 +1142,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1237,7 +1237,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1332,7 +1332,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1427,7 +1427,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1522,7 +1522,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1617,7 +1617,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1712,7 +1712,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1807,7 +1807,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -1927,7 +1927,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2022,7 +2022,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2117,7 +2117,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2212,7 +2212,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2307,7 +2307,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2402,7 +2402,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2497,7 +2497,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2592,7 +2592,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2687,7 +2687,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2782,7 +2782,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2877,7 +2877,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -2972,7 +2972,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -3067,7 +3067,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -3162,7 +3162,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -3257,7 +3257,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
@@ -3352,7 +3352,7 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
