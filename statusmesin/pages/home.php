@@ -61,7 +61,8 @@ include('../koneksi.php');
 
         .kolom1 {
             flex: 1 1 300px;
-            background-color: #f2f2f2;
+            background-color: red;
+            color: white;
             padding: 20px;
             border: 1px solid #ddd;
             box-sizing: border-box;
