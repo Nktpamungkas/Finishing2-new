@@ -64,7 +64,7 @@ include('../koneksi.php');
             /* background-color: red */
             color: white;
             padding: 15px;
-            border: 1px solid #ddd;
+            border: 0px solid #ddd;
             box-sizing: border-box;
             margin: 0;
             display: flex;
@@ -77,13 +77,14 @@ include('../koneksi.php');
             text-align: center;
             /* Memusatkan teks secara horizontal */
             white-space: nowrap;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.7);
         }
 
         .kolom {
             flex: 1 1 300px;
             /* Ubah ukuran relatif menjadi 5% dari lebar container */
-            background-color: #f2f2f2;
+            /* background-color: #f2f2f2; */
             padding: 0px;
             border: 1px solid #ddd;
             box-sizing: border-box;
