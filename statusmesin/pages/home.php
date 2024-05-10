@@ -62,7 +62,7 @@ include('../koneksi.php');
         .kolom1 {
             flex: 1 1 300px;
             /* background-color: red */
-            /* color: white; */
+            color: white;
             padding: 15px;
             border: 1px solid #ddd;
             box-sizing: border-box;
@@ -77,6 +77,7 @@ include('../koneksi.php');
             text-align: center;
             /* Memusatkan teks secara horizontal */
             white-space: nowrap;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .kolom {
@@ -237,7 +238,7 @@ include('../koneksi.php');
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 01</div>
+                                <div class="kolom1" style="background-color: tomato;">ST 01</div>
                             </th>
                         </tr>
                     </thead>
@@ -315,10 +316,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -361,11 +362,13 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 02</div>
+                                <div class="kolom1" style="background-color: Gold;">ST 02</div>
                             </th>
                         </tr>
                     </thead>
@@ -442,10 +445,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -488,11 +491,12 @@ include('../koneksi.php');
                                                                                 CONCAT(
                                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                                nourut ASC");
+                                                                                nourut ASC
+                                                                            LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 03</div>
+                                <div class="kolom1" style="background-color:LimeGreen;">ST 03</div>
                             </th>
                         </tr>
                     </thead>
@@ -570,10 +574,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -616,11 +620,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 04</div>
+                                <div class="kolom1" style="background-color:HotPink;">ST 04</div>
                             </th>
                         </tr>
                     </thead>
@@ -697,10 +702,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -743,11 +748,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 05</div>
+                                <div class="kolom1" style="background-color:DeepSkyBlue;">ST 05</div>
                             </th>
                         </tr>
                     </thead>
@@ -825,10 +831,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -871,11 +877,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 06</div>
+                                <div class="kolom1" style="background-color:OrangeRed;">ST 06</div>
                             </th>
                         </tr>
                     </thead>
@@ -952,10 +959,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -998,11 +1005,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 07</div>
+                                <div class="kolom1" style="background-color:MediumPurple;">ST 07</div>
                             </th>
                         </tr>
                     </thead>
@@ -1079,10 +1087,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1125,11 +1133,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 08</div>
+                                <div class="kolom1" style="background-color:Lime;">ST 08</div>
                             </th>
                         </tr>
                     </thead>
@@ -1206,10 +1215,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1252,11 +1261,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">CP 01</div>
+                                <div class="kolom1" style="background-color:Orange;">CP 01</div>
                             </th>
                         </tr>
                     </thead>
@@ -1333,10 +1343,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1379,12 +1389,13 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
 
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">CP 02</div>
+                                <div class="kolom1" style="background-color:DeepPink;">CP 02</div>
                             </th>
                         </tr>
                     </thead>
@@ -1461,10 +1472,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1507,11 +1518,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">OVEN FONG</div>
+                                <div class="kolom1" style="background-color:Aqua;">OVEN FONG</div>
                             </th>
                         </tr>
                     </thead>
@@ -1588,10 +1600,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1634,11 +1646,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">STEAM</div>
+                                <div class="kolom1" style="background-color:DarkOrange;">STEAM</div>
                             </th>
                         </tr>
                     </thead>
@@ -1715,10 +1728,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1761,11 +1774,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">LIPAT<br>INSPEK</div>
+                                <div class="kolom1" style="background-color:BlueViolet;">LIPAT<br>INSPEK</div>
                             </th>
                         </tr>
                     </thead>
@@ -1842,10 +1856,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1888,11 +1902,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">BC 01</div>
+                                <div class="kolom1" style="background-color:SpringGreen;">BC 01</div>
                             </th>
                         </tr>
                     </thead>
@@ -1969,10 +1984,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2015,11 +2030,13 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">BC 02</div>
+                                <div class="kolom1" style="background-color:Pink;">BC 02</div>
                             </th>
                         </tr>
                     </thead>
@@ -2096,10 +2113,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2142,11 +2159,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">BC 03</div>
+                                <div class="kolom1" style="background-color:SaddleBrown;">BC 03</div>
                             </th>
                         </tr>
                     </thead>
@@ -2223,10 +2241,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2269,11 +2287,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">BC 04</div>
+                                <div class="kolom1" style="background-color:LightSeaGreen;">BC 04</div>
                             </th>
                         </tr>
                     </thead>
@@ -2350,10 +2369,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2369,7 +2388,7 @@ include('../koneksi.php');
             </div>
         </div>
         <?php
-            $q_data1  = mysqli_query($con, "SELECT
+        $q_data1  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -2397,9 +2416,9 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-            $data1    = mysqli_fetch_array($q_data1);
+        $data1    = mysqli_fetch_array($q_data1);
 
-            $q_data2  = mysqli_query($con, "SELECT
+        $q_data2  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -2427,9 +2446,9 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-            $data2    = mysqli_fetch_array($q_data2);
-            
-            $q_data3  = mysqli_query($con, "SELECT
+        $data2    = mysqli_fetch_array($q_data2);
+
+        $q_data3  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -2457,9 +2476,9 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-            $data3    = mysqli_fetch_array($q_data3);
-            
-            $q_data4  = mysqli_query($con, "SELECT
+        $data3    = mysqli_fetch_array($q_data3);
+
+        $q_data4  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -2487,7 +2506,7 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-            $data4    = mysqli_fetch_array($q_data4);
+        $data4    = mysqli_fetch_array($q_data4);
         ?>
         <td colspan="4">kk/kain belum final proses (<?= $data1['sum_qty']; ?> Kg)<span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="4">kk/kain finishing final proses (<?= $data2['sum_qty']; ?> Kg)<span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -2542,11 +2561,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 01</div>
+                                <div class="kolom1" style="background-color: Magenta;">ST 01</div>
                             </th>
                         </tr>
                     </thead>
@@ -2623,10 +2643,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2669,11 +2689,13 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 02</div>
+                                <div class="kolom1" style="background-color:blue;">ST 02</div>
                             </th>
                         </tr>
                     </thead>
@@ -2750,10 +2772,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2796,11 +2818,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 03</div>
+                                <div class="kolom1" style="background-color: SkyBlue;">ST 03</div>
                             </th>
                         </tr>
                     </thead>
@@ -2877,10 +2900,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2923,11 +2946,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 04</div>
+                                <div class="kolom1" style="background-color:#212529;">ST 04</div>
                             </th>
                         </tr>
                     </thead>
@@ -3004,10 +3028,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3050,11 +3074,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 05</div>
+                                <div class="kolom1" style="background-color: MediumOrchid;">ST 05</div>
                             </th>
                         </tr>
                     </thead>
@@ -3110,7 +3135,6 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3131,10 +3155,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3177,11 +3201,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 06</div>
+                                <div class="kolom1" style="background-color: Cyan;">ST 06</div>
                             </th>
                         </tr>
                     </thead>
@@ -3237,7 +3262,6 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3258,10 +3282,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3304,11 +3328,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 07</div>
+                                <div class="kolom1" style="background-color: DodgerBlue;">ST 07</div>
                             </th>
                         </tr>
                     </thead>
@@ -3364,7 +3389,6 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3385,10 +3409,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3431,11 +3455,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">ST 08</div>
+                                <div class="kolom1" style="background-color: DarkMagenta;">ST 08</div>
                             </th>
                         </tr>
                     </thead>
@@ -3491,7 +3516,6 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3512,10 +3536,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3558,11 +3582,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">CP 01</div>
+                                <div class="kolom1" style="background-color:coral;">CP 01</div>
                             </th>
                         </tr>
                     </thead>
@@ -3618,7 +3643,6 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3639,10 +3663,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3685,11 +3709,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">CP 02</div>
+                                <div class="kolom1" style="background-color:thistle;">CP 02</div>
                             </th>
                         </tr>
                     </thead>
@@ -3745,7 +3770,6 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3766,10 +3790,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3812,11 +3836,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">OVEN FONG</div>
+                                <div class="kolom1" style="background-color:teal;">OVEN FONG</div>
                             </th>
                         </tr>
                     </thead>
@@ -3872,7 +3897,6 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3893,10 +3917,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3939,11 +3963,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">STEAM</div>
+                                <div class="kolom1" style="background-color:tan;">STEAM</div>
                             </th>
                         </tr>
                     </thead>
@@ -3999,7 +4024,6 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4020,10 +4044,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4066,11 +4090,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">LIPAT<br>INSPEK</div>
+                                <div class="kolom1" style="background-color:wheat;">LIPAT<br>INSPEK</div>
                             </th>
                         </tr>
                     </thead>
@@ -4126,7 +4151,6 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4147,10 +4171,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4193,11 +4217,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">BC 01</div>
+                                <div class="kolom1" style="background-color:steelblue;">BC 01</div>
                             </th>
                         </tr>
                     </thead>
@@ -4253,7 +4278,6 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4274,10 +4298,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4320,11 +4344,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">BC 02</div>
+                                <div class="kolom1" style="background-color:slategrey;">BC 02</div>
                             </th>
                         </tr>
                     </thead>
@@ -4380,7 +4405,6 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4401,10 +4425,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4447,11 +4471,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">BC 03</div>
+                                <div class="kolom1" style="background-color:sienna;">BC 03</div>
                             </th>
                         </tr>
                     </thead>
@@ -4507,7 +4532,6 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4528,10 +4552,10 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4574,11 +4598,12 @@ include('../koneksi.php');
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC");
+                                                                            nourut ASC
+                                                                        LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1">BC 04</div>
+                                <div class="kolom1" style="background-color:sandybrown;">BC 04</div>
                             </th>
                         </tr>
                     </thead>
@@ -4634,7 +4659,6 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
-                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);                               
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4674,7 +4698,7 @@ include('../koneksi.php');
             </div>
         </div>
         <?php
-            $q_data1  = mysqli_query($con, "SELECT
+        $q_data1  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -4702,9 +4726,9 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-            $data1    = mysqli_fetch_array($q_data1);
+        $data1    = mysqli_fetch_array($q_data1);
 
-            $q_data2  = mysqli_query($con, "SELECT
+        $q_data2  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -4732,9 +4756,9 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-            $data2    = mysqli_fetch_array($q_data2);
-            
-            $q_data3  = mysqli_query($con, "SELECT
+        $data2    = mysqli_fetch_array($q_data2);
+
+        $q_data3  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -4762,9 +4786,9 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-            $data3    = mysqli_fetch_array($q_data3);
-            
-            $q_data4  = mysqli_query($con, "SELECT
+        $data3    = mysqli_fetch_array($q_data3);
+
+        $q_data4  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -4792,7 +4816,7 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-            $data4    = mysqli_fetch_array($q_data4);
+        $data4    = mysqli_fetch_array($q_data4);
         ?>
         <td colspan="4">kk/kain belum final proses (<?= $data1['sum_qty']; ?> Kg)<span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="4">kk/kain finishing final proses (<?= $data2['sum_qty']; ?> Kg)<span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
