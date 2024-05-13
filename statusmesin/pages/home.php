@@ -2188,7 +2188,7 @@ include('../koneksi.php');
                                                                         AND b.no_mesin = a.no_mesin 
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'P3CP101' 
+                                                                    AND a.no_mesin = '#' 
                                                                     AND NOT a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
@@ -2213,7 +2213,7 @@ include('../koneksi.php');
                                                                     AND b.no_mesin = a.no_mesin 
                                                                 ) 
                                                                 AND a.`status` = 'SCHEDULE' 
-                                                                AND a.no_mesin = 'P3CP101' 
+                                                                AND a.no_mesin = '#' 
                                                                 AND NOT a.nourut = 0 
                                                             ORDER BY
                                                                 CONCAT(
