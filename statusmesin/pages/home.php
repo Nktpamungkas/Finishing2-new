@@ -195,6 +195,15 @@ include('../koneksi.php');
             font-weight: bold;
             margin-bottom: 10px;
         }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover {
+            color: red;
+        }
     </style>
 </head>
 
@@ -320,7 +329,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -334,6 +345,7 @@ include('../koneksi.php');
                     </tbody>
                 </table>
             </div>
+
             <div style="flex: 1; margin-right: 5px;">
                 <table border="0" width="100%">
                     <thead>
@@ -449,7 +461,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -578,7 +592,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -706,7 +722,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -835,7 +853,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -963,7 +983,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1091,7 +1113,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1219,7 +1243,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1347,7 +1373,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1476,7 +1504,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1604,7 +1634,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1732,7 +1764,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1860,7 +1894,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -1988,7 +2024,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2117,7 +2155,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2245,7 +2285,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2373,7 +2415,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2647,7 +2691,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2776,7 +2822,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -2904,7 +2952,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3032,7 +3082,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3159,7 +3211,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3286,7 +3340,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3413,7 +3469,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3540,7 +3598,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3667,7 +3727,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3794,7 +3856,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -3921,7 +3985,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4048,7 +4114,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4175,7 +4243,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4302,7 +4372,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4429,7 +4501,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4556,7 +4630,9 @@ include('../koneksi.php');
                                     $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nodemand']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
