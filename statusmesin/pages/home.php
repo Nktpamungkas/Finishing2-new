@@ -36,7 +36,6 @@ include('../koneksi.php');
             /* Jarak antar item */
             border-radius: 8px;
 
-
         }
 
         /* Mengatur ukuran semua item menjadi sama */
@@ -198,7 +197,7 @@ include('../koneksi.php');
 
         a {
             text-decoration: none;
-            color: black;
+            color: inherit;
         }
 
         a:hover {
@@ -330,7 +329,7 @@ include('../koneksi.php');
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
-                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand']; ?></a>
                                     </div>
                                 </td>
                             </tr>
@@ -2953,7 +2952,7 @@ include('../koneksi.php');
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
-                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>" style="text-decoration: none;"><?= $row_schedule['nodemand']; ?></a>
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>" style="text-decoration: none;color:white;"><?= $row_schedule['nodemand']; ?></a>
                                     </div>
                                 </td>
                             </tr>
