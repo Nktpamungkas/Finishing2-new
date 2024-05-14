@@ -3187,6 +3187,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3316,6 +3317,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3445,6 +3447,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3574,6 +3577,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3703,6 +3707,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3832,6 +3837,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -3961,6 +3967,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4090,6 +4097,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4219,6 +4227,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4348,6 +4357,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4477,6 +4487,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4606,6 +4617,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -4735,6 +4747,7 @@ include('../koneksi.php');
                                                                  SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                  nourut ASC
                                                              LIMIT 10,100");
+                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
