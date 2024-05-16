@@ -402,7 +402,7 @@ if (empty($_SESSION['usr'])) {
 							$query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
 							$q_schedule     = mysqli_query($con, $query_schedule);
 						} else {
-							$query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' AND SUBSTR(creationdatetime, 1, 10) BETWEEN '2024-04-10' AND '$dateTwoDaysAgo' AND NOT nourut = 0 ORDER BY creationdatetime DESC";
+							$query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' AND SUBSTR(creationdatetime, 1, 10) BETWEEN '2024-04-10' AND '$dateTwoDaysAgo' ORDER BY creationdatetime DESC";
 							$q_schedule     = mysqli_query($con, $query_schedule);
 						}
 						$totalQty = 0;
