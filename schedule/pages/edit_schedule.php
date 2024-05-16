@@ -1,7 +1,7 @@
 <?php
-    if(empty($_SESSION['usr'])){
-        echo "<script>alert('Silahkan login terlebih dahulu!'); window.location = '../login.php'</script>";
-    }
+if (empty($_SESSION['usr'])) {
+	echo "<script>alert('Silahkan login terlebih dahulu!'); window.location = '../login.php'</script>";
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -117,43 +117,44 @@
 		}
 	</style>
 </head>
+
 <body>
 	<?php
-		ini_set("error_reporting", 1);
-		session_start();
+	ini_set("error_reporting", 1);
+	session_start();
+	include('../koneksi.php');
+	function nourut()
+	{
 		include('../koneksi.php');
-		function nourut()
-		{
-			include('../koneksi.php');
-			$format = date("ymd");
-			$sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
-			$d = mysqli_num_rows($sql);
+		$format = date("ymd");
+		$sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
+		$d = mysqli_num_rows($sql);
 
-			if ($d > 0) {
-				$r = mysqli_fetch_array($sql);
-				$d = $r['nokk'];
-				$str = substr($d, 6, 2);
-				$Urut = (int)$str;
-			} else {
-				$Urut = 0;
-			}
-			$Urut = $Urut + 1;
-			$Nol = "";
-			$nilai = 2 - strlen($Urut);
-			for ($i = 1; $i <= $nilai; $i++) {
-				$Nol = $Nol . "0";
-			}
-			$nipbr = $format . $Nol . $Urut;
-			return $nipbr;
-		}
-		$nou = nourut();
-		if ($_REQUEST['kk'] != '') {
-			$idkk = "";
+		if ($d > 0) {
+			$r = mysqli_fetch_array($sql);
+			$d = $r['nokk'];
+			$str = substr($d, 6, 2);
+			$Urut = (int)$str;
 		} else {
-			$idkk = $_GET['idkk'];
+			$Urut = 0;
 		}
-		if ($_GET['typekk'] == "KKLama") {
-			echo 	"<script>
+		$Urut = $Urut + 1;
+		$Nol = "";
+		$nilai = 2 - strlen($Urut);
+		for ($i = 1; $i <= $nilai; $i++) {
+			$Nol = $Nol . "0";
+		}
+		$nipbr = $format . $Nol . $Urut;
+		return $nipbr;
+	}
+	$nou = nourut();
+	if ($_REQUEST['kk'] != '') {
+		$idkk = "";
+	} else {
+		$idkk = $_GET['idkk'];
+	}
+	if ($_GET['typekk'] == "KKLama") {
+		echo 	"<script>
 						swal({
 							title: 'SYSTEM OFFLINE',   
 							text: 'Klik Ok untuk input data kembali',
@@ -164,13 +165,13 @@
 							}
 						});
 					</script>";
-		} elseif ($_GET['typekk'] == "NOW") {
-            $q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE id = '$_GET[id]'");
-            $row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+	} elseif ($_GET['typekk'] == "NOW") {
+		$q_kkmasuk		= mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE id = '$_GET[id]'");
+		$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
 
-            $operation		= $row_kkmasuk['operation'];
-            if(empty($row_kkmasuk)){
-                echo 	"<script>
+		$operation		= $row_kkmasuk['operation'];
+		if (empty($row_kkmasuk)) {
+			echo 	"<script>
                             swal({
                                 title: 'Kartu Kerja belum di input di KK MASUK',   
                                 text: 'Klik Ok untuk input data kembali',
@@ -181,24 +182,25 @@
                                 }
                             });
                         </script>";
-            }
 		}
+	}
 	?>
 	<?php
-		 if (isset($_POST['btnSimpan'])) {
-			$lastupdatedatetime	= date('Y-m-d H:i:s');
-			$simpanSql          = "UPDATE tbl_schedule_new 
+	if (isset($_POST['btnSimpan'])) {
+		$lastupdatedatetime	= date('Y-m-d H:i:s');
+		$simpanSql          = "UPDATE tbl_schedule_new 
                                     SET no_mesin = '$_POST[no_mesin]',
 										nourut 	= '$_POST[no_urut]',
 										group_shift = '$_POST[g_shift]',
 										catatan = '$_POST[catatan]',
-										lastupdatedatetime = '$lastupdatedatetime' 
+										lastupdatedatetime = '$lastupdatedatetime',
+										lastupdatedateuser = '$_SESSION[usr]'
                                     WHERE
-                                        id = '$_GET[id]'"; 
-			$simpan = mysqli_query($con, $simpanSql);
+                                        id = '$_GET[id]'";
+		$simpan = mysqli_query($con, $simpanSql);
 
-			if($simpan){
-				echo 	"<script>
+		if ($simpan) {
+			echo 	"<script>
 							swal({
 								title: 'Data Terupdate',   
 								text: 'Klik Ok untuk input data kembali',
@@ -209,8 +211,8 @@
 								}
 							});
 						</script>";
-			}
 		}
+	}
 	?>
 	<form id="form1" name="form1" method="post" action="">
 		<fieldset>
@@ -233,7 +235,7 @@
 							</select=>
 					</td>
 
-                    <td scope="row">
+					<td scope="row">
 						<h4>No. Warna</h4>
 					</td>
 					<td>:</td>
@@ -249,18 +251,18 @@
 					<td width="26%">
 						<input name="nokk" type="text" size="17" value="<?= $row_kkmasuk['nokk']; ?>" disabled style="background-color: #BBBBBB;">
 
-                        <input name="demand" value="<?= $row_kkmasuk['nodemand']; ?>" type="text" disabled style="background-color: #BBBBBB;">
+						<input name="demand" value="<?= $row_kkmasuk['nodemand']; ?>" type="text" disabled style="background-color: #BBBBBB;">
 					</td>
 
 
-                    <td width="14%"><strong>Quantity (Kg)</strong></td>
+					<td width="14%"><strong>Quantity (Kg)</strong></td>
 					<td width="1%">:</td>
 					<td colspan="">
 						<input name="qty" type="text" id="qty" size="5" value="<?= $row_kkmasuk['qty_order']; ?>" placeholder="0.00" disabled style="background-color: #BBBBBB;">
 
-                        <strong>Panjang (Yard)</strong>
+						<strong>Panjang (Yard)</strong>
 
-                        <input name="qty2" type="text" id="qty2" size="8" value="<?= $row_kkmasuk['qty_order_yd']; ?>" placeholder="0.00" onfocus="jumlah();" disabled style="background-color: #BBBBBB;">
+						<input name="qty2" type="text" id="qty2" size="8" value="<?= $row_kkmasuk['qty_order_yd']; ?>" placeholder="0.00" onfocus="jumlah();" disabled style="background-color: #BBBBBB;">
 					</td>
 				</tr>
 				<tr>
@@ -271,7 +273,7 @@
 					<td>
 						<input name="buyer" type="text" id="buyer" size="45" value="<?= $row_kkmasuk['langganan']; ?>/<?= $row_kkmasuk['buyer']; ?>" disabled style="background-color: #BBBBBB;">
 					</td>
-                    <td scope="row">
+					<td scope="row">
 						<h4>Lot</h4>
 					</td>
 					<td>:</td>
@@ -285,8 +287,8 @@
 					<td>
 						<input type="text" name="no_order" id="no_order" value="<?= $row_kkmasuk['no_order']; ?>" disabled style="background-color: #BBBBBB;">
 					</td>
-					
-                    <td scope="row">
+
+					<td scope="row">
 						<h4>Roll</h4>
 					</td>
 					<td>:</td>
@@ -301,13 +303,13 @@
 						<textarea name="jenis_kain" cols="35" id="jenis_kain" disabled style="background-color: #BBBBBB;"><?= $row_kkmasuk['jenis_kain']; ?></textarea>
 					</td>
 
-                    <td style="color: red;"><strong>Nomor Mesin</strong></td>
-                    <td>:</td>
-                    <td>
-                        <select name="no_mesin" >
-                            <option value="">Pilih</option>
-                            <?php
-								$query_namamesin	= "SELECT
+					<td style="color: red;"><strong>Nomor Mesin</strong></td>
+					<td>:</td>
+					<td>
+						<select name="no_mesin">
+							<option value="">Pilih</option>
+							<?php
+							$query_namamesin	= "SELECT
 															DISTINCT 
 															TRIM(p.WORKCENTERCODE) AS WORKCENTERCODE,
 															SUBSTR(TRIM(p.WORKCENTERCODE), 1,4) AS WORKCENTERCODE_CODE,
@@ -323,17 +325,17 @@
 															AND p.PRODUCTIONORDERCODE  = '$row_kkmasuk[nokk]' 
 															AND p.PRODUCTIONDEMANDCODE = '$row_kkmasuk[nodemand]'
 															AND w.OPERATIONCODE = '$row_kkmasuk[operation]'";
-								$q_namamesin 		= db2_exec($conn_db2, $query_namamesin);
-								$workcenter			= db2_exec($conn_db2, $query_namamesin);
-								$data_workcenter	= db2_fetch_assoc($workcenter);
+							$q_namamesin 		= db2_exec($conn_db2, $query_namamesin);
+							$workcenter			= db2_exec($conn_db2, $query_namamesin);
+							$data_workcenter	= db2_fetch_assoc($workcenter);
 
-								if ($data_workcenter['WORKCENTERCODE_CODE'] == 'P3ST') {
-									$where_st_oven	= "(SUBSTR(CODE, 1,4) = 'P3ST' OR SUBSTR(CODE, 1,4) = 'P3DR')";
-								} else {
-									$where_st_oven	= "SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]'";
-								}
-								
-								$q_nomormesin 		= db2_exec($conn_db2, "SELECT
+							if ($data_workcenter['WORKCENTERCODE_CODE'] == 'P3ST') {
+								$where_st_oven	= "(SUBSTR(CODE, 1,4) = 'P3ST' OR SUBSTR(CODE, 1,4) = 'P3DR')";
+							} else {
+								$where_st_oven	= "SUBSTR(CODE, 1,4) = '$data_workcenter[WORKCENTERCODE_CODE]'";
+							}
+
+							$q_nomormesin 		= db2_exec($conn_db2, "SELECT
 																				*
 																			FROM
 																				RESOURCES r
@@ -342,22 +344,24 @@
 																			ORDER BY 
 																				SUBSTR(CODE, 6,2) 
 																			ASC");
-								while ($row_nomormesin = db2_fetch_assoc($q_nomormesin)) {
-                            ?>
-                                <option value="<?= $row_nomormesin['CODE']; ?>" <?php if($row_nomormesin['CODE'] == $row_kkmasuk['no_mesin']){ echo "SELECTED"; } ?>><?= $row_nomormesin['CODE']; ?> - <?= $row_nomormesin['LONGDESCRIPTION']; ?></option>
-                            <?php } ?>
-                        </select>
+							while ($row_nomormesin = db2_fetch_assoc($q_nomormesin)) {
+							?>
+								<option value="<?= $row_nomormesin['CODE']; ?>" <?php if ($row_nomormesin['CODE'] == $row_kkmasuk['no_mesin']) {
+																					echo "SELECTED";
+																				} ?>><?= $row_nomormesin['CODE']; ?> - <?= $row_nomormesin['LONGDESCRIPTION']; ?></option>
+							<?php } ?>
+						</select>
 
-                        <strong>Nama Mesin : </strong>
-                        <select name="nama_mesin" required="required" disabled style="background-color: #BBBBBB;">
-                            <option value="">Pilih</option>
-                            <?php
-								while ($row_namamesin = db2_fetch_assoc($q_namamesin)) {
-                            ?>
-                                <option value="<?php echo $row_namamesin['WORKCENTERCODE']; ?>" SELECTED><?php echo $row_namamesin['WORKCENTERCODE']; ?> - <?php echo $row_namamesin['LONGDESCRIPTION']; ?></option>
-                            <?php } ?>
-                        </select>
-                    </td>
+						<strong>Nama Mesin : </strong>
+						<select name="nama_mesin" required="required" disabled style="background-color: #BBBBBB;">
+							<option value="">Pilih</option>
+							<?php
+							while ($row_namamesin = db2_fetch_assoc($q_namamesin)) {
+							?>
+								<option value="<?php echo $row_namamesin['WORKCENTERCODE']; ?>" SELECTED><?php echo $row_namamesin['WORKCENTERCODE']; ?> - <?php echo $row_namamesin['LONGDESCRIPTION']; ?></option>
+							<?php } ?>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<td scope="row">
@@ -368,7 +372,7 @@
 						<input name="tgl_delivery" type="date" size="35" value="<?= $row_kkmasuk['tgl_delivery']; ?>" disabled style="background-color: #BBBBBB;">
 					</td>
 
-                    <td>
+					<td>
 						<h4>Proses</h4>
 					</td>
 					<td>:</td>
@@ -396,15 +400,15 @@
 						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= $row_kkmasuk['gramasi']; ?>" placeholder="0" disabled style="background-color: #BBBBBB;">
 					</td>
 
-                    <td>
-                        <h4>Operation</h4>
-                    </td>
-                    <td>:</td>
-                    <td>
-                        <select name="operation" id="operation" required disabled style="background-color: #BBBBBB;">
-                            <option value="">Pilih</option>
-                            <?php
-                                $qry1 = db2_exec($conn_db2, "SELECT
+					<td>
+						<h4>Operation</h4>
+					</td>
+					<td>:</td>
+					<td>
+						<select name="operation" id="operation" required disabled style="background-color: #BBBBBB;">
+							<option value="">Pilih</option>
+							<?php
+							$qry1 = db2_exec($conn_db2, "SELECT
                                                                 DISTINCT 
                                                                 p.STEPNUMBER,
                                                             --	p.GROUPSTEPNUMBER,
@@ -425,27 +429,29 @@
                                                                 AND p.PRODUCTIONDEMANDCODE = '$row_kkmasuk[nodemand]'
                                                             ORDER BY 
                                                                 p.STEPNUMBER ASC");
-                                while ($r = db2_fetch_assoc($qry1)) {
-                            ?>
-                                <option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($row_kkmasuk['operation'] == $r['OPERATIONCODE']) {
-                                                                                        echo "SELECTED";
-                                                                                    } ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
-                            <?php } ?>
-                        </select>
-
-                        <strong  style="color: red;">No Urut :</strong>
-                        <select name="no_urut" class="form-control select2" id="no_urut" >
-							<option value="">Pilih</option>
-							<?php
-                                $sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut ORDER BY no_urut ASC");
-								while ($rK = mysqli_fetch_array($sqlKap)) {
+							while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $rK['no_urut']; ?>" <?php if($rK['no_urut'] == $row_kkmasuk['nourut']){ echo "SELECTED"; } ?>><?php echo $rK['no_urut']; ?></option>
+								<option value="<?php echo $r['OPERATIONCODE']; ?>" <?php if ($row_kkmasuk['operation'] == $r['OPERATIONCODE']) {
+																						echo "SELECTED";
+																					} ?>><?php echo $r['OPERATIONCODE']; ?> <?php echo $r['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
-                    </td>
+
+						<strong style="color: red;">No Urut :</strong>
+						<select name="no_urut" class="form-control select2" id="no_urut">
+							<option value="">Pilih</option>
+							<?php
+							$sqlKap 		= mysqli_query($con, "SELECT no_urut FROM tbl_urut ORDER BY no_urut ASC");
+							while ($rK = mysqli_fetch_array($sqlKap)) {
+							?>
+								<option value="<?php echo $rK['no_urut']; ?>" <?php if ($rK['no_urut'] == $row_kkmasuk['nourut']) {
+																					echo "SELECTED";
+																				} ?>><?php echo $rK['no_urut']; ?></option>
+							<?php } ?>
+						</select>
+					</td>
 				</tr>
-                <tr>
+				<tr>
 					<td scope="row">
 						<h4>Warna</h4>
 					</td>
@@ -453,37 +459,43 @@
 					<td>
 						<input name="warna" type="text" id="warna" size="35" value="<?= $row_kkmasuk['warna']; ?>" disabled style="background-color: #BBBBBB;">
 					</td>
-					
-                    <td scope="row"  style="color: red;">
-                        <h4>Group Shift</h4>
-                    </td>
-                    <td>:</td>
-                    <td>
-                        <select name="g_shift" class="form-control select2">
-							<option value="">Pilih</option>
-							<option value="A"<?php if("A" == $row_kkmasuk['group_shift']){ echo "SELECTED"; } ?>>A</option>
-							<option value="B"<?php if("B" == $row_kkmasuk['group_shift']){ echo "SELECTED"; } ?>>B</option>
-							<option value="C"<?php if("C" == $row_kkmasuk['group_shift']){ echo "SELECTED"; } ?>>C</option>
-						</select>
-                    </td>
-				</tr>			
-                <tr>
-                    <td scope="row">
-                        <h4>Personil</h4>
-                    </td>
-                    <td>:</td>
-                    <td>
-						<input type="text" name="personil" value="<?= $_SESSION['usr']; ?>" required disabled style="background-color: #BBBBBB;">
-                    </td>
 
-                    <td valign="top">
-                        <h4>Catatan</h4>
-                    </td>
-                    <td valign="top">:</td>
-                    <td colspan="2" valign="top">
-                        <textarea name="catatan" cols="35" id="catatan"><?= $row_kkmasuk['catatan']; ?></textarea>
-                    </td>
-                </tr>
+					<td scope="row" style="color: red;">
+						<h4>Group Shift</h4>
+					</td>
+					<td>:</td>
+					<td>
+						<select name="g_shift" class="form-control select2">
+							<option value="">Pilih</option>
+							<option value="A" <?php if ("A" == $row_kkmasuk['group_shift']) {
+													echo "SELECTED";
+												} ?>>A</option>
+							<option value="B" <?php if ("B" == $row_kkmasuk['group_shift']) {
+													echo "SELECTED";
+												} ?>>B</option>
+							<option value="C" <?php if ("C" == $row_kkmasuk['group_shift']) {
+													echo "SELECTED";
+												} ?>>C</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td scope="row">
+						<h4>Personil</h4>
+					</td>
+					<td>:</td>
+					<td>
+						<input type="text" name="personil" value="<?= $_SESSION['usr']; ?>" required disabled style="background-color: #BBBBBB;">
+					</td>
+
+					<td valign="top">
+						<h4>Catatan</h4>
+					</td>
+					<td valign="top">:</td>
+					<td colspan="2" valign="top">
+						<textarea name="catatan" cols="35" id="catatan"><?= $row_kkmasuk['catatan']; ?></textarea>
+					</td>
+				</tr>
 			</table>
 		</fieldset>
 		<br>
@@ -491,4 +503,5 @@
 		<input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='index.php?p=LihatData'" class="art-button" />
 	</form>
 </body>
+
 </html>

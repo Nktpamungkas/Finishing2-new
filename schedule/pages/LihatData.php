@@ -1,8 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <?php
-    include('../koneksi.php');
+include('../koneksi.php');
 ?>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>SCHEDULE FINISHING</title>
@@ -21,7 +22,7 @@
                 "bSort": false
             });
         })
-        
+
         $(document).ready(function() {
             $('#datatables_rangkuman').dataTable({
                 "sScrollY": "100px",
@@ -33,7 +34,7 @@
             });
         })
     </script>
-    
+
     <style>
         .button {
             display: inline-block;
@@ -79,7 +80,7 @@
                 <table width="650" border="0">
                     <tr>
                         <td colspan="3">
-                            <?php if(isset($_POST['kkbelumsusun'])) : ?>
+                            <?php if (isset($_POST['kkbelumsusun'])) : ?>
                                 <div align="center"><strong>SCHEDULE FINISHING BELUM TERSUSUN</strong></div>
                             <?php else : ?>
                                 <div align="center"><strong>SCHEDULE FINISHING</strong></div>
@@ -156,10 +157,10 @@
                             <input type="submit" name="button" id="button" value="Cari data" class="art-button" />
                             <input type="button" name="batal" value="Reset" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
                             <input type="button" name="batal" value="View Report" onclick="window.location.href='index.php?p=Reports'" class="art-button">
-                            <?php if(!isset($_POST['kkbelumsusun'])) : ?>
+                            <?php if (!isset($_POST['kkbelumsusun'])) : ?>
                                 <input type="submit" name="kkbelumsusun" value="KK belum tersusun" class="art-button" />
                             <?php endif; ?>
-                            <?php if(isset($_POST['kkbelumsusun'])) : ?>
+                            <?php if (isset($_POST['kkbelumsusun'])) : ?>
                                 <input type="button" name="button2" id="button2" value="Kembali" onclick="window.location.href='../schedule/index.php?p=LihatData'" class="art-button" />
                             <?php endif; ?>
                         </td>
@@ -177,13 +178,13 @@
                     </thead>
                     <tbody>
                         <?php
-                            if(isset($_POST['kkbelumsusun'])){
-                                $nourut = "AND a.nourut = 0";
-                            }else{
-                                $nourut = "AND NOT a.nourut = 0";
-                            }
+                        if (isset($_POST['kkbelumsusun'])) {
+                            $nourut = "AND a.nourut = 0";
+                        } else {
+                            $nourut = "AND NOT a.nourut = 0";
+                        }
 
-                            $q_rangkuman    = mysqli_query($con, "SELECT
+                        $q_rangkuman    = mysqli_query($con, "SELECT
                                                                         CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) AS nomesin,
                                                                         COUNT(a.nokk) AS jml_kk,
                                                                         SUM(a.qty_order) AS bruto
@@ -205,23 +206,23 @@
                                                                         a.no_mesin
                                                                     ORDER BY
                                                                         CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
-                            $sum_totalkk = 0;
-                            $sum_totalQty = 0;
+                        $sum_totalkk = 0;
+                        $sum_totalQty = 0;
                         ?>
-                        <?php while($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
+                        <?php while ($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
                             <?php $sum_totalkk += $row_rangkuman['jml_kk']; ?>
                             <?php $sum_totalQty += $row_rangkuman['bruto']; ?>
-                        <tr>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['nomesin']; ?></td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['jml_kk']; ?></td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= number_format($row_rangkuman['bruto'], 2); ?></td>
-                        </tr>
+                            <tr>
+                                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['nomesin']; ?></td>
+                                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['jml_kk']; ?></td>
+                                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= number_format($row_rangkuman['bruto'], 2); ?></td>
+                            </tr>
                         <?php endwhile; ?>
-                        <tfoot>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;">TOTAL</td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $sum_totalkk; ?></td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($sum_totalQty, 2); ?></td>
-                        </tfoot>
+                    <tfoot>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;">TOTAL</td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $sum_totalkk; ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($sum_totalQty, 2); ?></td>
+                    </tfoot>
                     </tbody>
                 </table>
             </div>
@@ -252,51 +253,52 @@
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LASTUPDATEDATETIME</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;" width="10%">OPSI</th>
             </tr>
         </thead>
         <tbody>
             <?php
-                if ($_POST['no_mesin']) {
-                    $where_no_mesin  = "AND no_mesin = '$_POST[no_mesin]'";
-                } else {
-                    $where_no_mesin  = "";
-                }
+            if ($_POST['no_mesin']) {
+                $where_no_mesin  = "AND no_mesin = '$_POST[no_mesin]'";
+            } else {
+                $where_no_mesin  = "";
+            }
 
-                if ($_POST['nama_mesin']) {
-                    $where_nama_mesin  = "AND nama_mesin = '$_POST[nama_mesin]'";
-                } else {
-                    $where_nama_mesin  = "";
-                }
+            if ($_POST['nama_mesin']) {
+                $where_nama_mesin  = "AND nama_mesin = '$_POST[nama_mesin]'";
+            } else {
+                $where_nama_mesin  = "";
+            }
 
-                if ($_POST['awal']) {
-                    $where_tgl  = "AND SUBSTR(creationdatetime, 1, 10) BETWEEN '$_POST[awal]' AND '$_POST[akhir]'";
-                } else {
-                    $where_tgl  = "";
-                }
+            if ($_POST['awal']) {
+                $where_tgl  = "AND SUBSTR(creationdatetime, 1, 10) BETWEEN '$_POST[awal]' AND '$_POST[akhir]'";
+            } else {
+                $where_tgl  = "";
+            }
 
-                if(isset($_POST['kkbelumsusun'])){
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
-                    $q_schedule     = mysqli_query($con, $query_schedule);
-                }elseif(isset($_POST['button'])){
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
-                    $q_schedule     = mysqli_query($con, $query_schedule);
-                }else{
-                    $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
-                    $q_schedule     = mysqli_query($con, $query_schedule);
-                }
-                $totalQty = 0;
-                $totalRoll = 0;
+            if (isset($_POST['kkbelumsusun'])) {
+                $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+                $q_schedule     = mysqli_query($con, $query_schedule);
+            } elseif (isset($_POST['button'])) {
+                $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+                $q_schedule     = mysqli_query($con, $query_schedule);
+            } else {
+                $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+                $q_schedule     = mysqli_query($con, $query_schedule);
+            }
+            $totalQty = 0;
+            $totalRoll = 0;
             ?>
             <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                 <?php
-                    // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
-                    $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
-                    $data_proses  = mysqli_fetch_assoc($cek_proses);
+                // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
+                $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
+                $data_proses  = mysqli_fetch_assoc($cek_proses);
                 ?>
-                <?php if(empty($data_proses['jml'])) : ?>
+                <?php if (empty($data_proses['jml'])) : ?>
                     <?php
-                        $q_cekposisikk      = db2_exec($conn_db2, "SELECT
+                    $q_cekposisikk      = db2_exec($conn_db2, "SELECT
                                                                 p.PRODUCTIONORDERCODE,
                                                                 p.STEPNUMBER AS STEPNUMBER,
                                                                 CASE
@@ -369,7 +371,7 @@
                                                                 iptop.LONGDESCRIPTION,
                                                                 a.VALUEBOOLEAN
                                                             ORDER BY p.STEPNUMBER ASC");
-                        $row_cekposisikk    = db2_fetch_assoc($q_cekposisikk);
+                    $row_cekposisikk    = db2_fetch_assoc($q_cekposisikk);
                     ?>
                     <tr>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;">
@@ -378,7 +380,7 @@
                             <?= $row_cekposisikk['MULAI']; ?> - <?= $row_cekposisikk['SELESAI']; ?>
                         </td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']).'<br>'.substr(TRIM($row_schedule['no_mesin']), -5, 2).substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']) . '<br>' . substr(TRIM($row_schedule['no_mesin']), -5, 2) . substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
@@ -398,11 +400,12 @@
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
                         <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
                         <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['personil'] ?><br><?= $row_schedule['creationdatetime'] ?></td>
+                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['lastupdatedateuser'] ?><br><?= $row_schedule['lastupdatedatetime'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;">
-                            <?php if($_SESSION['usr'] != 'husni') : ?>
+                            <?php if ($_SESSION['usr'] != 'husni') : ?>
                                 <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
                                 <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
-		                    <?php endif; ?>
+                            <?php endif; ?>
                         </td>
                         <?php $totalQty += $row_schedule['qty_order']; ?>
                         <?php $totalRoll += $row_schedule['roll']; ?>
@@ -445,16 +448,18 @@
             $.ajax({
                 url: '?p=delete_schedule',
                 type: 'POST',
-                data: { id: id },
+                data: {
+                    id: id
+                },
                 success: function(response) {
                     // Tampilkan pesan sukses atau gagal
                     swal({
-                        title: 'Data deleted successfully.',   
+                        title: 'Data deleted successfully.',
                         text: 'Klik Ok untuk input data kembali',
                         type: 'warning',
                     }).then((result) => {
                         if (result.value) {
-                            window.location.href = 'http://online.indotaichen.com/finishing2-new/schedule/index.php?p=LihatData'; 
+                            window.location.href = 'http://online.indotaichen.com/finishing2-new/schedule/index.php?p=LihatData';
                         }
                     });
                     closeModal();
@@ -467,4 +472,5 @@
         }
     </script>
 </body>
+
 </html>
