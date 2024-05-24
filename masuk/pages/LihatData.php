@@ -333,7 +333,8 @@
                                                             iptip.LONGDESCRIPTION,
                                                             iptop.LONGDESCRIPTION,
                                                             a.VALUEBOOLEAN
-                                                        ORDER BY p.STEPNUMBER ASC");
+                                                        ORDER BY p.STEPNUMBER ASC
+                                                        FETCH FIRST 1 ROWS ONLY");
                     $row_cekposisikk    = db2_fetch_assoc($q_cekposisikk);
                 ?>
                 <tr>
