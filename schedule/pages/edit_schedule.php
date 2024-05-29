@@ -193,6 +193,8 @@ if (empty($_SESSION['usr'])) {
 										nourut 	= '$_POST[no_urut]',
 										group_shift = '$_POST[g_shift]',
 										catatan = '$_POST[catatan]',
+										proses = '$_POST[proses]',
+										operation = '$_POST[operation]',
 										lastupdatedatetime = '$lastupdatedatetime',
 										lastupdatedateuser = '$_SESSION[usr]'
                                     WHERE
@@ -373,11 +375,11 @@ if (empty($_SESSION['usr'])) {
 					</td>
 
 					<td>
-						<h4>Proses</h4>
+						<h4 style="color: red;">Proses</h4>
 					</td>
 					<td>:</td>
 					<td colspan="2">
-						<select name="proses" id="proses" required disabled style="background-color: #BBBBBB;">
+						<select name="proses" id="proses" required  >
 							<option value="">Pilih</option>
 							<?php
 							$qry1 = mysqli_query($con, "SELECT proses,jns FROM tbl_proses WHERE ket='stenter' ORDER BY id ASC");
@@ -401,11 +403,11 @@ if (empty($_SESSION['usr'])) {
 					</td>
 
 					<td>
-						<h4>Operation</h4>
+						<h4 style="color: red;">Operation</h4>
 					</td>
 					<td>:</td>
 					<td>
-						<select name="operation" id="operation" required disabled style="background-color: #BBBBBB;">
+						<select name="operation" id="operation" required  >
 							<option value="">Pilih</option>
 							<?php
 							$qry1 = db2_exec($conn_db2, "SELECT
