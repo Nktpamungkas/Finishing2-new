@@ -55,41 +55,41 @@
 
 <body>
 	<?php
-		ini_set("error_reporting", 1);
-		session_start();
+	ini_set("error_reporting", 1);
+	session_start();
+	include('../koneksi.php');
+	function nourut()
+	{
 		include('../koneksi.php');
-		function nourut()
-		{
-			include('../koneksi.php');
-			$format = date("ymd");
-			$sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
-			$d = mysqli_num_rows($sql);
-			if ($d > 0) {
-				$r = mysqli_fetch_array($sql);
-				$d = $r['nokk'];
-				$str = substr($d, 6, 2);
-				$Urut = (int)$str;
-			} else {
-				$Urut = 0;
-			}
-			$Urut = $Urut + 1;
-			$Nol = "";
-			$nilai = 2 - strlen($Urut);
-			for ($i = 1; $i <= $nilai; $i++) {
-				$Nol = $Nol . "0";
-			}
-			$nipbr = $format . $Nol . $Urut;
-			return $nipbr;
-		}
-		$nou = nourut();
-		if ($_REQUEST['kk'] != '') {
-			$idkk = "";
+		$format = date("ymd");
+		$sql = mysqli_query($con, "SELECT nokk FROM tbl_produksi WHERE substr(nokk,1,6) like '%" . $format . "%' ORDER BY nokk DESC LIMIT 1 ") or die(mysqli_error());
+		$d = mysqli_num_rows($sql);
+		if ($d > 0) {
+			$r = mysqli_fetch_array($sql);
+			$d = $r['nokk'];
+			$str = substr($d, 6, 2);
+			$Urut = (int)$str;
 		} else {
-			$idkk = $_GET['idkk'];
+			$Urut = 0;
 		}
+		$Urut = $Urut + 1;
+		$Nol = "";
+		$nilai = 2 - strlen($Urut);
+		for ($i = 1; $i <= $nilai; $i++) {
+			$Nol = $Nol . "0";
+		}
+		$nipbr = $format . $Nol . $Urut;
+		return $nipbr;
+	}
+	$nou = nourut();
+	if ($_REQUEST['kk'] != '') {
+		$idkk = "";
+	} else {
+		$idkk = $_GET['idkk'];
+	}
 
-		if ($_GET['typekk'] == "KKLama") {
-			echo 	"<script>
+	if ($_GET['typekk'] == "KKLama") {
+		echo 	"<script>
 						swal({
 							title: 'SYSTEM OFFLINE',   
 							text: 'Klik Ok untuk input data kembali',
@@ -100,23 +100,23 @@
 							}
 						});
 					</script>";
-		} elseif ($_GET['typekk'] == "NOW") {
-			if ($idkk != "") {
-				include_once("../now.php");
+	} elseif ($_GET['typekk'] == "NOW") {
+		if ($idkk != "") {
+			include_once("../now.php");
+		}
+	} elseif ($_GET['typekk'] == "SCHEDULE") {
+		if ($idkk != "") {
+			if ($_GET['demand'] != "") {
+				$nomordemand = $_GET['demand'];
+				$anddemand = "AND nodemand = '$nomordemand'";
+			} else {
+				$anddemand = "";
 			}
-		} elseif ($_GET['typekk'] == "SCHEDULE") {
-			if ($idkk != "") {
-				if ($_GET['demand'] != "") {
-					$nomordemand = $_GET['demand'];
-					$anddemand = "AND nodemand = '$nomordemand'";
-				}else{
-					$anddemand = "";
-				}
-				// CEK JIKA blm ada nomor urut dan group shift kasih peringatan tidak bisa input saat operator mau proses
-				$q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand AND NOT nourut = 0");
-				$row_cekschedule = mysqli_fetch_assoc($q_cekshedule);
-				if(empty($row_cekschedule['nourut']) AND $_GET['demand']){
-					echo     "<script>
+			// CEK JIKA blm ada nomor urut dan group shift kasih peringatan tidak bisa input saat operator mau proses
+			$q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand AND NOT nourut = 0");
+			$row_cekschedule = mysqli_fetch_assoc($q_cekshedule);
+			if (empty($row_cekschedule['nourut']) and $_GET['demand']) {
+				echo     "<script>
 								swal({
 									title: 'Silakan hubungi pemimpin (leader) Anda untuk pengaturan NOMOR URUT yang tepat.',   
 									text: 'Klik Ok untuk input data kembali',
@@ -127,8 +127,8 @@
 									}
 								});
 							</script>";
-				}elseif (empty($row_cekschedule['group_shift']) AND $_GET['demand']) {
-					echo     "<script>
+			} elseif (empty($row_cekschedule['group_shift']) and $_GET['demand']) {
+				echo     "<script>
 								swal({
 									title: 'Silakan hubungi pemimpin (leader) Anda untuk pengaturan GROUP SHIFT yang tepat.',   
 									text: 'Klik Ok untuk input data kembali',
@@ -139,22 +139,22 @@
 									}
 								});
 							</script>";
-				}else{
-					if($_GET['operation']){
-                        $andoperation   = "AND operation = '$_GET[operation]'";
-                    }else{
-                        $andoperation   = "";
-                    }
-                    if($_GET['kklanjutan']){
-                        $q_kkmasuk      = mysqli_query($con, "SELECT
+			} else {
+				if ($_GET['operation']) {
+					$andoperation   = "AND operation = '$_GET[operation]'";
+				} else {
+					$andoperation   = "";
+				}
+				if ($_GET['kklanjutan']) {
+					$q_kkmasuk      = mysqli_query($con, "SELECT
                                                                     *
                                                                 FROM
                                                                     `tbl_schedule_new` a
                                                                 WHERE nokk = '$idkk' $anddemand $andoperation");
-                        $row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
-                        include_once("../now.php");
-                    }else{
-						$q_kkmasuk		= mysqli_query($con, "SELECT
+					$row_kkmasuk    = mysqli_fetch_assoc($q_kkmasuk);
+					include_once("../now.php");
+				} else {
+					$q_kkmasuk		= mysqli_query($con, "SELECT
 																	*
 																FROM
 																	`tbl_schedule_new` a
@@ -173,90 +173,90 @@
 																	AND nokk = '$idkk' $anddemand 
 																ORDER BY
 																	CONCAT(SUBSTR(TRIM(a.no_mesin), -5,2), SUBSTR(TRIM(a.no_mesin), -2)) ASC, a.nourut ASC");
-						$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
-						include_once("../now.php");
-					}
+					$row_kkmasuk	= mysqli_fetch_assoc($q_kkmasuk);
+					include_once("../now.php");
 				}
 			}
 		}
+	}
 	?>
 
 	<?php
-		if (isset($_POST['btnSimpan']) and $_POST['shift'] == $rw['shift'] and $_POST['shift2'] == $rw['shift2'] and $_POST['proses'] == $rw['proses']) {
-			$shift = $_POST['shift'];
-			$shift2 = $_POST['shift2'];
-			$langganan = $_POST['buyer'];
-			$buyer = $_POST['kd_buyer'];
-			$order = $_POST['no_order'];
-			$item = $_POST['no_item'];
-			$jenis_kain = str_replace("'", "''", $_POST['jenis_kain']);
-			$kain = $_POST['kondisi_kain'];
-			$bahan = $_POST['jenis_bahan'];
-			$warna = str_replace("'", "''", $_POST['warna']);
-			$nowarna = $_POST['no_warna'];
-			$lot = $_POST['lot'];
-			$qty = $_POST['qty'];
-			$qty2 = $_POST['qty2'];
-			$qty3 = $_POST['qty3'];
-			$rol = $_POST['rol'];
-			$mesin = $_POST['no_mesin'];
-			$nmmesin = str_replace("'", "''", $_POST['nama_mesin']);
-			$jnsmesin = strtolower(str_replace("'", "''", $_POST['nama_mesin']));
-			$proses = $_POST['proses'];
-			$gerobak = $_POST['no_gerobak'];
-			$jam_in = $_POST['proses_in'];
-			$jam_out = $_POST['proses_out'];
-			$proses_jam = $_POST['proses_jam'];
-			$proses_menit = $_POST['proses_menit'];
-			$tgl_proses_in = $_POST['tgl_proses_m'];
-			$tgl_proses_out = $_POST['tgl_proses_k'];
-			$mulai = $_POST['stop_mulai'];
-			$mulai2 = $_POST['stop_mulai2'];
-			$mulai3 = $_POST['stop_mulai3'];
-			$selesai = $_POST['stop_selesai'];
-			$selesai2 = $_POST['stop_selesai2'];
-			$selesai3 = $_POST['stop_selesai3'];
-			$stop_jam = $_POST['stop_jam'];
-			$stop_menit = $_POST['stop_menit'];
-			$tgl_stop_m = $_POST['tgl_stop_m'];
-			$tgl_stop_m2 = $_POST['tgl_stop_m2'];
-			$tgl_stop_m3 = $_POST['tgl_stop_m3'];
-			$tgl_stop_s = $_POST['tgl_stop_s'];
-			$tgl_stop_s2 = $_POST['tgl_stop_s2'];
-			$tgl_stop_s3 = $_POST['tgl_stop_s3'];
-			$kd = $_POST['kd_stop'];
-			$kd2 = $_POST['kd_stop2'];
-			$kd3 = $_POST['kd_stop3'];
-			$tgl = $_POST['tgl'];
-			$acc_kain = str_replace("'", "''", $_POST['acc_kain']);
-			$catatan = str_replace("'", "''", $_POST['catatan']);
-			$suhu = $_POST['suhu'];
-			$speed = $_POST['speed'];
-			$omt = $_POST['omt'];
-			$vmt = $_POST['vmt'];
-			$vmt_time = $_POST['vmt_time'];
-			$buka = $_POST['buka_rantai'];
-			$overfeed = $_POST['overfeed'];
-			$hlebar = $_POST['h_lebar'];
-			$hgramasi = $_POST['h_gramasi'];
-			$lebar = $_POST['lebar'];
-			$gramasi = $_POST['gramasi'];
-			$phlarutan = $_POST['pH_larutan'];
-			$chemical1 = $_POST['chemical_1'];
-			$chemical2 = $_POST['chemical_2'];
-			$chemical3 = $_POST['chemical_3'];
-			$chemical4 = $_POST['chemical_4'];
-			$chemical5 = $_POST['chemical_5'];
-			$jmlKonsen1 = $_POST['jmlKonsen1'];
-			$jmlKonsen2 = $_POST['jmlKonsen2'];
-			$jmlKonsen3 = $_POST['jmlKonsen3'];
-			$jmlKonsen4 = $_POST['jmlKonsen4'];
-			$jmlKonsen5 = $_POST['jmlKonsen5'];
-			$demandno = $_POST['demandno'];
-			$prodOrder = $_POST['prod_order'];
+	if (isset($_POST['btnSimpan']) and $_POST['shift'] == $rw['shift'] and $_POST['shift2'] == $rw['shift2'] and $_POST['proses'] == $rw['proses']) {
+		$shift = $_POST['shift'];
+		$shift2 = $_POST['shift2'];
+		$langganan = $_POST['buyer'];
+		$buyer = $_POST['kd_buyer'];
+		$order = $_POST['no_order'];
+		$item = $_POST['no_item'];
+		$jenis_kain = str_replace("'", "''", $_POST['jenis_kain']);
+		$kain = $_POST['kondisi_kain'];
+		$bahan = $_POST['jenis_bahan'];
+		$warna = str_replace("'", "''", $_POST['warna']);
+		$nowarna = $_POST['no_warna'];
+		$lot = $_POST['lot'];
+		$qty = $_POST['qty'];
+		$qty2 = $_POST['qty2'];
+		$qty3 = $_POST['qty3'];
+		$rol = $_POST['rol'];
+		$mesin = $_POST['no_mesin'];
+		$nmmesin = str_replace("'", "''", $_POST['nama_mesin']);
+		$jnsmesin = strtolower(str_replace("'", "''", $_POST['nama_mesin']));
+		$proses = $_POST['proses'];
+		$gerobak = $_POST['no_gerobak'];
+		$jam_in = $_POST['proses_in'];
+		$jam_out = $_POST['proses_out'];
+		$proses_jam = $_POST['proses_jam'];
+		$proses_menit = $_POST['proses_menit'];
+		$tgl_proses_in = $_POST['tgl_proses_m'];
+		$tgl_proses_out = $_POST['tgl_proses_k'];
+		$mulai = $_POST['stop_mulai'];
+		$mulai2 = $_POST['stop_mulai2'];
+		$mulai3 = $_POST['stop_mulai3'];
+		$selesai = $_POST['stop_selesai'];
+		$selesai2 = $_POST['stop_selesai2'];
+		$selesai3 = $_POST['stop_selesai3'];
+		$stop_jam = $_POST['stop_jam'];
+		$stop_menit = $_POST['stop_menit'];
+		$tgl_stop_m = $_POST['tgl_stop_m'];
+		$tgl_stop_m2 = $_POST['tgl_stop_m2'];
+		$tgl_stop_m3 = $_POST['tgl_stop_m3'];
+		$tgl_stop_s = $_POST['tgl_stop_s'];
+		$tgl_stop_s2 = $_POST['tgl_stop_s2'];
+		$tgl_stop_s3 = $_POST['tgl_stop_s3'];
+		$kd = $_POST['kd_stop'];
+		$kd2 = $_POST['kd_stop2'];
+		$kd3 = $_POST['kd_stop3'];
+		$tgl = $_POST['tgl'];
+		$acc_kain = str_replace("'", "''", $_POST['acc_kain']);
+		$catatan = str_replace("'", "''", $_POST['catatan']);
+		$suhu = $_POST['suhu'];
+		$speed = $_POST['speed'];
+		$omt = $_POST['omt'];
+		$vmt = $_POST['vmt'];
+		$vmt_time = $_POST['vmt_time'];
+		$buka = $_POST['buka_rantai'];
+		$overfeed = $_POST['overfeed'];
+		$hlebar = $_POST['h_lebar'];
+		$hgramasi = $_POST['h_gramasi'];
+		$lebar = $_POST['lebar'];
+		$gramasi = $_POST['gramasi'];
+		$phlarutan = $_POST['pH_larutan'];
+		$chemical1 = $_POST['chemical_1'];
+		$chemical2 = $_POST['chemical_2'];
+		$chemical3 = $_POST['chemical_3'];
+		$chemical4 = $_POST['chemical_4'];
+		$chemical5 = $_POST['chemical_5'];
+		$jmlKonsen1 = $_POST['jmlKonsen1'];
+		$jmlKonsen2 = $_POST['jmlKonsen2'];
+		$jmlKonsen3 = $_POST['jmlKonsen3'];
+		$jmlKonsen4 = $_POST['jmlKonsen4'];
+		$jmlKonsen5 = $_POST['jmlKonsen5'];
+		$demandno = $_POST['demandno'];
+		$prodOrder = $_POST['prod_order'];
 
 
-			$simpanSql = "UPDATE tbl_produksi SET 
+		$simpanSql = "UPDATE tbl_produksi SET 
 					`shift`='$shift',
 					`shift2`='$shift2',
 					`buyer`='$buyer',
@@ -324,93 +324,93 @@
 					`prod_order`='$prodOrder',
 					`tgl_update`='$tgl'
 					WHERE `id`='$_POST[id]'";
-			mysqli_query($con, $simpanSql) or die("Gagal Ubah" . mysqli_error());
+		mysqli_query($con, $simpanSql) or die("Gagal Ubah" . mysqli_error());
 
-			// Refresh form
-			echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiUbah'>";
-		} else if (isset($_POST['btnSimpan'])) {
-			if ($_POST['nokk'] != "") {
-				$nokk = $_POST['nokk'];
-				$idkk = $_POST['nokk'];
-			} else {
-				$nokk = $nou;
-				$idkk = $nou;
-			}
-			$shift = $_POST['shift'];
-			$demand = $_POST['demand'];
-			$shift2 = $_POST['shift2'];
-			$langganan = $_POST['buyer'];
-			$buyer = $_POST['kd_buyer'];
-			$order = $_POST['no_order'];
-			$item = $_POST['no_item'];
-			$jenis_kain = str_replace("'", "''", $_POST['jenis_kain']);
-			$kain = $_POST['kondisi_kain'];
-			$bahan = $_POST['jenis_bahan'];
-			$warna = str_replace("'", "''", $_POST['warna']);
-			$nowarna = $_POST['no_warna'];
-			$lot = $_POST['lot'];
-			$qty = $_POST['qty'];
-			$qty2 = $_POST['qty2'];
-			$qty3 = $_POST['qty3'];
-			$rol = $_POST['rol'];
-			$mesin = $_POST['no_mesin'];
-			$nmmesin = str_replace("'", "''", $_POST['nama_mesin']);
-			$jnsmesin = strtolower(str_replace("'", "''", $_POST['nama_mesin']));
-			$proses = $_POST['proses'];
-			$gerobak = $_POST['no_gerobak'];
-			$jam_in = $_POST['proses_in'];
-			$jam_out = $_POST['proses_out'];
-			$proses_jam = $_POST['proses_jam'];
-			$proses_menit = $_POST['proses_menit'];
-			$tgl_proses_in = $_POST['tgl_proses_m'];
-			$tgl_proses_out = $_POST['tgl_proses_k'];
-			$mulai = $_POST['stop_mulai'];
-			$mulai2 = $_POST['stop_mulai2'];
-			$mulai3 = $_POST['stop_mulai3'];
-			$selesai = $_POST['stop_selesai'];
-			$selesai2 = $_POST['stop_selesai2'];
-			$selesai3 = $_POST['stop_selesai3'];
-			$stop_jam = $_POST['stop_jam'];
-			$stop_menit = $_POST['stop_menit'];
-			$tgl_stop_m = $_POST['tgl_stop_m'];
-			$tgl_stop_m2 = $_POST['tgl_stop_m2'];
-			$tgl_stop_m3 = $_POST['tgl_stop_m3'];
-			$tgl_stop_s = $_POST['tgl_stop_s'];
-			$tgl_stop_s2 = $_POST['tgl_stop_s2'];
-			$tgl_stop_s3 = $_POST['tgl_stop_s3'];
-			$kd = $_POST['kd_stop'];
-			$kd2 = $_POST['kd_stop2'];
-			$kd3 = $_POST['kd_stop3'];
-			$tgl = $_POST['tgl'];
-			$acc_kain = str_replace("'", "''", $_POST['acc_kain']);
-			$catatan = str_replace("'", "''", $_POST['catatan']);
-			$suhu = $_POST['suhu'];
-			$speed = $_POST['speed'];
-			$omt = $_POST['omt'];
-			$vmt = $_POST['vmt'];
-			$vmt_time = $_POST['vmt_time'];
-			$buka = $_POST['buka_rantai'];
-			$overfeed = $_POST['overfeed'];
-			$hlebar = $_POST['h_lebar'];
-			$hgramasi = $_POST['h_gramasi'];
-			$lebar = $_POST['lebar'];
-			$gramasi = $_POST['gramasi'];
-			$phlarutan = $_POST['pH_larutan'];
-			$chemical1 = $_POST['chemical_1'];
-			$chemical2 = $_POST['chemical_2'];
-			$chemical3 = $_POST['chemical_3'];
-			$chemical4 = $_POST['chemical_4'];
-			$chemical5 = $_POST['chemical_5'];
-			$jmlKonsen1 = $_POST['jmlKonsen1'];
-			$jmlKonsen2 = $_POST['jmlKonsen2'];
-			$jmlKonsen3 = $_POST['jmlKonsen3'];
-			$jmlKonsen4 = $_POST['jmlKonsen4'];
-			$jmlKonsen5 = $_POST['jmlKonsen5'];
-			$demandno = $_POST['demandno'];
-			$prodOrder = $_POST['prod_order'];
-            $kklanjutan = $_POST['kklanjutan'];
+		// Refresh form
+		echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiUbah'>";
+	} else if (isset($_POST['btnSimpan'])) {
+		if ($_POST['nokk'] != "") {
+			$nokk = $_POST['nokk'];
+			$idkk = $_POST['nokk'];
+		} else {
+			$nokk = $nou;
+			$idkk = $nou;
+		}
+		$shift = $_POST['shift'];
+		$demand = $_POST['demand'];
+		$shift2 = $_POST['shift2'];
+		$langganan = $_POST['buyer'];
+		$buyer = $_POST['kd_buyer'];
+		$order = $_POST['no_order'];
+		$item = $_POST['no_item'];
+		$jenis_kain = str_replace("'", "''", $_POST['jenis_kain']);
+		$kain = $_POST['kondisi_kain'];
+		$bahan = $_POST['jenis_bahan'];
+		$warna = str_replace("'", "''", $_POST['warna']);
+		$nowarna = $_POST['no_warna'];
+		$lot = $_POST['lot'];
+		$qty = $_POST['qty'];
+		$qty2 = $_POST['qty2'];
+		$qty3 = $_POST['qty3'];
+		$rol = $_POST['rol'];
+		$mesin = $_POST['no_mesin'];
+		$nmmesin = str_replace("'", "''", $_POST['nama_mesin']);
+		$jnsmesin = strtolower(str_replace("'", "''", $_POST['nama_mesin']));
+		$proses = $_POST['proses'];
+		$gerobak = $_POST['no_gerobak'];
+		$jam_in = $_POST['proses_in'];
+		$jam_out = $_POST['proses_out'];
+		$proses_jam = $_POST['proses_jam'];
+		$proses_menit = $_POST['proses_menit'];
+		$tgl_proses_in = $_POST['tgl_proses_m'];
+		$tgl_proses_out = $_POST['tgl_proses_k'];
+		$mulai = $_POST['stop_mulai'];
+		$mulai2 = $_POST['stop_mulai2'];
+		$mulai3 = $_POST['stop_mulai3'];
+		$selesai = $_POST['stop_selesai'];
+		$selesai2 = $_POST['stop_selesai2'];
+		$selesai3 = $_POST['stop_selesai3'];
+		$stop_jam = $_POST['stop_jam'];
+		$stop_menit = $_POST['stop_menit'];
+		$tgl_stop_m = $_POST['tgl_stop_m'];
+		$tgl_stop_m2 = $_POST['tgl_stop_m2'];
+		$tgl_stop_m3 = $_POST['tgl_stop_m3'];
+		$tgl_stop_s = $_POST['tgl_stop_s'];
+		$tgl_stop_s2 = $_POST['tgl_stop_s2'];
+		$tgl_stop_s3 = $_POST['tgl_stop_s3'];
+		$kd = $_POST['kd_stop'];
+		$kd2 = $_POST['kd_stop2'];
+		$kd3 = $_POST['kd_stop3'];
+		$tgl = $_POST['tgl'];
+		$acc_kain = str_replace("'", "''", $_POST['acc_kain']);
+		$catatan = str_replace("'", "''", $_POST['catatan']);
+		$suhu = $_POST['suhu'];
+		$speed = $_POST['speed'];
+		$omt = $_POST['omt'];
+		$vmt = $_POST['vmt'];
+		$vmt_time = $_POST['vmt_time'];
+		$buka = $_POST['buka_rantai'];
+		$overfeed = $_POST['overfeed'];
+		$hlebar = $_POST['h_lebar'];
+		$hgramasi = $_POST['h_gramasi'];
+		$lebar = $_POST['lebar'];
+		$gramasi = $_POST['gramasi'];
+		$phlarutan = $_POST['pH_larutan'];
+		$chemical1 = $_POST['chemical_1'];
+		$chemical2 = $_POST['chemical_2'];
+		$chemical3 = $_POST['chemical_3'];
+		$chemical4 = $_POST['chemical_4'];
+		$chemical5 = $_POST['chemical_5'];
+		$jmlKonsen1 = $_POST['jmlKonsen1'];
+		$jmlKonsen2 = $_POST['jmlKonsen2'];
+		$jmlKonsen3 = $_POST['jmlKonsen3'];
+		$jmlKonsen4 = $_POST['jmlKonsen4'];
+		$jmlKonsen5 = $_POST['jmlKonsen5'];
+		$demandno = $_POST['demandno'];
+		$prodOrder = $_POST['prod_order'];
+		$kklanjutan = $_POST['kklanjutan'];
 
-			$simpanSql = "INSERT INTO tbl_produksi SET 
+		$simpanSql = "INSERT INTO tbl_produksi SET 
 				`nokk`='$nokk',
 				`demandno`='$demand',
 				`kklanjutan` = '$kklanjutan',
@@ -482,12 +482,12 @@
 				`jns_mesin`='$jnsmesin',
 				`prod_order`='$prodOrder',
 				`tgl_update`='$tgl'";
-			mysqli_query($con, $simpanSql) or die("Gagal Simpan" . mysqli_error());
-			//Simpan ke schedule
-			$posisi = strpos($langganan, "/");
-			$cus = substr($langganan, 0, $posisi);
-			$byr = substr($langganan, ($posisi + 1), 100);
-			$sqlData = mysqli_query($con, "INSERT INTO tbl_schedule SET
+		mysqli_query($con, $simpanSql) or die("Gagal Simpan" . mysqli_error());
+		//Simpan ke schedule
+		$posisi = strpos($langganan, "/");
+		$cus = substr($langganan, 0, $posisi);
+		$byr = substr($langganan, ($posisi + 1), 100);
+		$sqlData = mysqli_query($con, "INSERT INTO tbl_schedule SET
 				nokk='$nokk',
 				nodemand='$demand',
 				langganan='$cus',
@@ -515,9 +515,9 @@
 				tgl_update=now(),
 				tampil='1'");
 
-			// Refresh form
-			echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiSimpan'>";
-		}
+		// Refresh form
+		echo "<meta http-equiv='refresh' content='0; url=?idkk=$idkk&status=Data Sudah DiSimpan'>";
+	}
 	?>
 	<form id="form1" name="form1" method="post" action="">
 		<fieldset>
@@ -540,14 +540,18 @@
 														echo "SELECTED";
 													} ?>>KK Lama</option>
 							<!-- <option value="NOW" <?php if ($_GET['typekk'] == "NOW") {
-													echo "SELECTED";
-												} ?>>KK NOW</option> -->
+															echo "SELECTED";
+														} ?>>KK NOW</option> -->
 							<option value="SCHEDULE" <?php if ($_GET['typekk'] == "SCHEDULE") {
-													echo "SELECTED";
-												} ?>>SCHEDULE</option>
+															echo "SELECTED";
+														} ?>>SCHEDULE</option>
 						</select>
 
-                        <input type="checkbox" name="kklanjutan" id="kklanjutan" value="<?php if($_GET['kklanjutan']){ echo "1"; } ?>" <?php if($_GET['kklanjutan']){ echo "checked"; } ?> onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&kklanjutan=1'"> KK LANJUTAN
+						<input type="checkbox" name="kklanjutan" id="kklanjutan" value="<?php if ($_GET['kklanjutan']) {
+																							echo "1";
+																						} ?>" <?php if ($_GET['kklanjutan']) {
+																																			echo "checked";
+																																		} ?> onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&kklanjutan=1'"> KK LANJUTAN
 					</td>
 				</tr>
 				<tr>
@@ -570,26 +574,30 @@
 																				} ?>><?= $r_demand['DEMAND']; ?></option>
 								<?php endwhile; ?>
 							</select>
-						<?php }elseif($_GET['typekk'] == 'SCHEDULE'){ ?>
-                            <select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+this.value" required>
+						<?php } elseif ($_GET['typekk'] == 'SCHEDULE') { ?>
+							<select style="width: 40%" name="demand" id="demand" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+this.value" required>
 								<option value="" disabled selected>Pilih Nomor Demand</option>
 								<?php
-                                    $sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE nokk = '$idkk'");
-									while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
-                                ?>
-									<?php if($_GET['kklanjutan']) : ?>
-										<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) { echo 'SELECTED'; } ?>><?= $r_demand['nodemand']; ?></option>
+								$sql_ITXVIEWKK_demand  = mysqli_query($con, "SELECT * FROM `tbl_schedule_new` WHERE nokk = '$idkk'");
+								while ($r_demand = mysqli_fetch_array($sql_ITXVIEWKK_demand)) :
+								?>
+									<?php if ($_GET['kklanjutan']) : ?>
+										<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
+																							echo 'SELECTED';
+																						} ?>><?= $r_demand['nodemand']; ?></option>
 									<?php else : ?>
 										<?php
-											// CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TIDAK AKAN MUNCUL. 
-											$cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$r_demand[nokk]' AND demandno = '$r_demand[nodemand]' AND nama_mesin = '$r_demand[operation]'");
-											$data_proses  = mysqli_fetch_assoc($cek_proses);
+										// CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TIDAK AKAN MUNCUL. 
+										$cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$r_demand[nokk]' AND demandno = '$r_demand[nodemand]' AND nama_mesin = '$r_demand[operation]'");
+										$data_proses  = mysqli_fetch_assoc($cek_proses);
 										?>
-										<?php if(empty($data_proses['jml'])) : ?>
-											<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) { echo 'SELECTED'; } ?>><?= $r_demand['nodemand']; ?></option>
+										<?php if (empty($data_proses['jml'])) : ?>
+											<option value="<?= $r_demand['nodemand']; ?>" <?php if ($r_demand['nodemand'] == $_GET['demand']) {
+																								echo 'SELECTED';
+																							} ?>><?= $r_demand['nodemand']; ?></option>
 										<?php endif; ?>
 									<?php endif; ?>
-                                <?php endwhile; ?>
+								<?php endwhile; ?>
 							</select>
 						<?php } else { ?>
 							<input name="demand" id="demand" type="text" placeholder="Nomor Demand">
@@ -601,9 +609,15 @@
 					<td width="1%">:</td>
 					<td><select name="shift" id="shift" required>
 							<option value="">Pilih</option>
-							<option value="A" <?php if ($row_kkmasuk['group_shift'] == "A") { echo "SELECTED";} ?>>A</option>
-							<option value="B" <?php if ($row_kkmasuk['group_shift'] == "B") { echo "SELECTED";} ?>>B</option>
-							<option value="C" <?php if ($row_kkmasuk['group_shift'] == "C") { echo "SELECTED";} ?>>C</option>
+							<option value="A" <?php if ($row_kkmasuk['group_shift'] == "A") {
+													echo "SELECTED";
+												} ?>>A</option>
+							<option value="B" <?php if ($row_kkmasuk['group_shift'] == "B") {
+													echo "SELECTED";
+												} ?>>B</option>
+							<option value="C" <?php if ($row_kkmasuk['group_shift'] == "C") {
+													echo "SELECTED";
+												} ?>>C</option>
 						</select></td>
 				</tr>
 				<tr>
@@ -615,39 +629,47 @@
 						<select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
 							<option value="">Pilih</option>
 							<?php
-								$qry1 = mysqli_query($con, "SELECT 
-															* 
-															FROM 
-																`tbl_schedule_new` a
-																	WHERE
-																	NOT EXISTS (
-																				SELECT 1
-																				FROM
-																					tbl_produksi c
-																				WHERE
-																					c.nokk = a.nokk 
-																					AND c.demandno = a.nodemand 
-																					AND c.nama_mesin = a.operation
-																				)
-																	AND nokk = '$idkk' 
-																	AND NOT nourut = 0");
-								
-								if($_GET['typekk'] == 'NOW'){
+							if ($_GET['kklanjutan'] == '1') {
+								$wherecekproses = "";
+							} else {
+								$wherecekproses = "NOT EXISTS (
+                                        SELECT 1
+                                        FROM
+                                            tbl_produksi c
+                                        WHERE
+                                            c.nokk = a.nokk 
+                                            AND c.demandno = a.nodemand 
+                                            AND c.nama_mesin = a.operation
+                                        )
+                                AND";
+							}
+							$qry1 = mysqli_query($con, "SELECT 
+                                                                * 
+                                                            FROM 
+                                                                `tbl_schedule_new` a
+                                                            WHERE
+                                                            $wherecekproses
+                                                                nokk = '$idkk' 
+                                                                AND NOT nourut = 0");
+
+							if ($_GET['typekk'] == 'NOW') {
+								$if_operation   = "$_GET[operation]";
+							} elseif ($_GET['typekk'] == 'SCHEDULE') {
+								if ($_GET['operation']) {
 									$if_operation   = "$_GET[operation]";
-								}elseif($_GET['typekk'] == 'SCHEDULE'){
-									if($_GET['operation']){
-										$if_operation   = "$_GET[operation]";
-									}else{
-										$if_operation   = "$row_kkmasuk[operation]";
-									}
+								} else {
+									$if_operation   = "$row_kkmasuk[operation]";
 								}
-								while ($r = mysqli_fetch_array($qry1)) {
+							}
+							while ($r = mysqli_fetch_array($qry1)) {
 							?>
-								<?php 
-									$q_desc_op 	= db2_exec($conn_db2, "SELECT * FROM OPERATION WHERE OPERATIONGROUPCODE = 'FIN' AND CODE = '$r[operation]'");
-									$desc_op	= db2_fetch_assoc($q_desc_op);
+								<?php
+								$q_desc_op 	= db2_exec($conn_db2, "SELECT * FROM OPERATION WHERE OPERATIONGROUPCODE = 'FIN' AND CODE = '$r[operation]'");
+								$desc_op	= db2_fetch_assoc($q_desc_op);
 								?>
-								<option value="<?= $r['operation']; ?>" <?php if ($if_operation == $r['operation']) { echo "SELECTED"; } ?>><?= $r['operation']; ?> <?= $desc_op['LONGDESCRIPTION']; ?></option>
+								<option value="<?= $r['operation']; ?>" <?php if ($if_operation == $r['operation']) {
+																			echo "SELECTED";
+																		} ?>><?= $r['operation']; ?> <?= $desc_op['LONGDESCRIPTION']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -708,13 +730,13 @@
 															ORDER BY iptip.MULAI ASC");
 							$row_mesin = db2_fetch_assoc($q_mesin);
 
-							if($_GET['typekk'] == 'SCHEDULE'){
-                                $where_schedule     = "AND CODE = '$row_kkmasuk[no_mesin]'";
-                                $selected           = "SELECTED";
-                            }else{
-                                $where_schedule     = "";
-                                $selected           = "";
-                            }
+							if ($_GET['typekk'] == 'SCHEDULE') {
+								$where_schedule     = "AND CODE = '$row_kkmasuk[no_mesin]'";
+								$selected           = "SELECTED";
+							} else {
+								$where_schedule     = "";
+								$selected           = "";
+							}
 
 							$qry1 = db2_exec($conn_db2, "SELECT
 																*
@@ -727,7 +749,9 @@
 															ASC");
 							while ($r = db2_fetch_assoc($qry1)) {
 							?>
-								<option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) { echo "SELECTED"; } ?> <?= $selected ?>><?php echo $r['CODE']; ?></option>
+								<option value="<?php echo $r['CODE']; ?>" <?php if ($row_mesin['MESIN'] == $r['CODE']) {
+																				echo "SELECTED";
+																			} ?> <?= $selected ?>><?php echo $r['CODE']; ?></option>
 							<?php } ?>
 						</select>
 						<?php if ($_SESSION['lvl'] == "SPV") { ?>
@@ -759,8 +783,8 @@
 						<?php endif; ?>
 
 						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
-                            <?php $langganan_buyer  = $row_kkmasuk['langganan'].'/'.$row_kkmasuk['buyer']; ?>
-                        <?php endif; ?>
+							<?php $langganan_buyer  = $row_kkmasuk['langganan'] . '/' . $row_kkmasuk['buyer']; ?>
+						<?php endif; ?>
 
 						<input name="buyer" type="text" id="buyer" size="30" value="<?= $langganan_buyer; ?>">
 					</td>
@@ -835,12 +859,12 @@
 						<?php endif; ?>
 
 						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
-                            <?php $no_order =  $row_kkmasuk['no_order']; ?>
-                        <?php endif; ?>
+							<?php $no_order =  $row_kkmasuk['no_order']; ?>
+						<?php endif; ?>
 
 						<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
 					</td>
-					
+
 				</tr>
 				<tr>
 					<td valign="top" scope="row">
@@ -860,8 +884,8 @@
 							} ?>
 						<?php endif; ?>
 						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
-                            <?php $jk =  $row_kkmasuk['jenis_kain']; ?>
-                        <?php endif; ?>
+							<?php $jk =  $row_kkmasuk['jenis_kain']; ?>
+						<?php endif; ?>
 
 						<textarea name="jenis_kain" cols="35" id="jenis_kain"><?= $jk; ?></textarea>
 					</td>
@@ -871,9 +895,9 @@
 					<td valign="top">:</td>
 					<td valign="top">
 						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
-                            <?php $catatan =  $row_kkmasuk['catatan']; ?>
-                        <?php endif; ?>
-                        <textarea name="catatan" cols="35" id="catatan"><?= $catatan; ?></textarea>
+							<?php $catatan =  $row_kkmasuk['catatan']; ?>
+						<?php endif; ?>
+						<textarea name="catatan" cols="35" id="catatan"><?= $catatan; ?></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -882,7 +906,7 @@
 					</td>
 					<td>:</td>
 					<td>
-						<?php if ($_GET['typekk'] == "NOW" OR $_GET['typekk'] == "SCHEDULE") : ?>
+						<?php if ($_GET['typekk'] == "NOW" or $_GET['typekk'] == "SCHEDULE") : ?>
 							<?php $hanger = $dt_ITXVIEWKK['NO_HANGER']; ?>
 						<?php else : ?>
 							<?php if ($cek > 0) {
@@ -906,13 +930,13 @@
 					<td><input name="qty" type="text" id="qty" size="5" value="<?= $berat; ?>" placeholder="0.00" />
 						&nbsp;&nbsp;&nbsp;&nbsp;<strong>L X G </strong>:
 						<?php if ($_GET['typekk'] == "NOW") : ?>
-                            <?php $nlebar = floor($dt_lg['LEBAR']); ?>
-                        <?php endif; ?>
+							<?php $nlebar = floor($dt_lg['LEBAR']); ?>
+						<?php endif; ?>
 
-                        <?php if ($_GET['typekk'] == "SCHEDULE") : ?>
-                            <?php $nlebar =  $row_kkmasuk['lebar']; ?>
-                            <?php $ngramasi =  $row_kkmasuk['gramasi']; ?>
-                        <?php endif; ?>
+						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
+							<?php $nlebar =  $row_kkmasuk['lebar']; ?>
+							<?php $ngramasi =  $row_kkmasuk['gramasi']; ?>
+						<?php endif; ?>
 						<input name="lebar" type="text" id="lebar" size="6" value="<?= $nlebar; ?>" placeholder="0" />
 						&quot;X
 						<input name="gramasi" type="text" id="gramasi" size="6" value="<?= $ngramasi; ?>" placeholder="0" />
@@ -937,8 +961,8 @@
 						<?php endif; ?>
 
 						<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
-                            <?php $nomor_warna =  $row_kkmasuk['no_warna']; ?>
-                        <?php endif; ?>
+							<?php $nomor_warna =  $row_kkmasuk['no_warna']; ?>
+						<?php endif; ?>
 
 						<input name="no_warna" type="text" id="no_warna" size="30" value="<?= $nomor_warna; ?>" />
 					</td>
@@ -964,7 +988,7 @@
 						<?php $nama_warna =  $row_kkmasuk['warna']; ?>
 					<?php endif; ?>
 					<td><input name="warna" type="text" id="warna" size="30" value="<?= $nama_warna; ?>"></td>
-					
+
 				</tr>
 				<tr>
 					<td scope="row">
@@ -972,8 +996,8 @@
 					</td>
 					<td>:</td>
 					<?php if ($_GET['typekk'] == "NOW") : ?>
-                            <?php $lot =  $dt_ITXVIEWKK['LOT']; ?>
-                        <?php endif; ?>
+						<?php $lot =  $dt_ITXVIEWKK['LOT']; ?>
+					<?php endif; ?>
 
 					<?php if ($_GET['typekk'] == "SCHEDULE") : ?>
 						<?php $lot =  $row_kkmasuk['lot']; ?>
