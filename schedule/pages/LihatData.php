@@ -234,6 +234,11 @@ include('../koneksi.php');
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">KETERANGAN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO URUT</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO MESIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LASTUPDATEDATETIME</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;" width="10%">OPSI</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">GROUP SHIFT</th>
@@ -250,11 +255,6 @@ include('../koneksi.php');
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY YD</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">LASTUPDATEDATETIME</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;" width="10%">OPSI</th>
             </tr>
         </thead>
         <tbody>
@@ -381,6 +381,16 @@ include('../koneksi.php');
                         </td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']) . '<br>' . substr(TRIM($row_schedule['no_mesin']), -5, 2) . substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
+                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['personil'] ?><br><?= $row_schedule['creationdatetime'] ?></td>
+                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['lastupdatedateuser'] ?><br><?= $row_schedule['lastupdatedatetime'] ?></td>
+                        <td style="border:1px solid;vertical-align:middle;">
+                            <?php if ($_SESSION['usr'] != 'husni') : ?>
+                                <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
+                                <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
+                            <?php endif; ?>
+                        </td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
                         <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
@@ -397,16 +407,6 @@ include('../koneksi.php');
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['roll'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
                         <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order_yd'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
-                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['personil'] ?><br><?= $row_schedule['creationdatetime'] ?></td>
-                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['lastupdatedateuser'] ?><br><?= $row_schedule['lastupdatedatetime'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;">
-                            <?php if ($_SESSION['usr'] != 'husni') : ?>
-                                <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
-                                <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
-                            <?php endif; ?>
-                        </td>
                         <?php $totalQty += $row_schedule['qty_order']; ?>
                         <?php $totalRoll += $row_schedule['roll']; ?>
                     </tr>
@@ -415,10 +415,10 @@ include('../koneksi.php');
         </tbody>
         <tfoot>
             <tr>
-                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="14">TOTAL</td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="22">TOTAL</td>
                 <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $totalRoll; ?></td>
                 <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($totalQty, 2); ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td>
+                <!-- <td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="4"></td> -->
             </tr>
         </tfoot>
     </table>

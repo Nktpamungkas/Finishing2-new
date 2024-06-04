@@ -1,47 +1,48 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <?php
-    include('../koneksi.php');
+include('../koneksi.php');
 ?>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>KK Masuk</title>
-  <link rel="stylesheet" type="text/css" href="../css/datatable.css" />
-  <link rel="stylesheet" type="text/css" href="../css/jquery-ui.css" />
-  <script src="../js/jquery.js" type="text/javascript"></script>
-  <script src="../js/jquery.dataTables.js" type="text/javascript"></script>
-  <script>
-    $(document).ready(function() {
-      $('#datatables').dataTable({
-        "sScrollY": "500px",
-        "sScrollX": "100%",
-        "bScrollCollapse": false,
-        "bPaginate": false,
-        "bJQueryUI": true,
-        "bSort": false // Menonaktifkan sort
-      });
-    })
 
-    $(document).ready(function() {
-        $('#datatables_rangkuman').dataTable({
-            "sScrollY": "100px",
-            "sScrollX": "100%",
-            "bScrollCollapse": false,
-            "bPaginate": false,
-            "bJQueryUI": true,
-            "bSort": false
-        });
-    })
-  </script>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>KK Masuk</title>
+    <link rel="stylesheet" type="text/css" href="../css/datatable.css" />
+    <link rel="stylesheet" type="text/css" href="../css/jquery-ui.css" />
+    <script src="../js/jquery.js" type="text/javascript"></script>
+    <script src="../js/jquery.dataTables.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            $('#datatables').dataTable({
+                "sScrollY": "500px",
+                "sScrollX": "100%",
+                "bScrollCollapse": false,
+                "bPaginate": false,
+                "bJQueryUI": true,
+                "bSort": false // Menonaktifkan sort
+            });
+        })
+
+        $(document).ready(function() {
+            $('#datatables_rangkuman').dataTable({
+                "sScrollY": "100px",
+                "sScrollX": "100%",
+                "bScrollCollapse": false,
+                "bPaginate": false,
+                "bJQueryUI": true,
+                "bSort": false
+            });
+        })
+    </script>
 </head>
 <style>
     .button {
         display: inline-block;
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
     }
 </style>
 
@@ -80,10 +81,10 @@
                         <td colspan="3">
                             <div align="center"><strong>KK MASUK FINISHING</strong></div>
                             <?php
-                                $user_name = $_SESSION['username'];
-                                date_default_timezone_set('Asia/Jakarta');
-                                $tgl = date("Y-M-d h:i:s A");
-                                echo $tgl; 
+                            $user_name = $_SESSION['username'];
+                            date_default_timezone_set('Asia/Jakarta');
+                            $tgl = date("Y-M-d h:i:s A");
+                            echo $tgl;
                             ?>
                             <br>
                         </td>
@@ -95,14 +96,16 @@
                             <select name="nama_mesin" class="form-control select2">
                                 <option value="-" disabled selected>-nama mesin-</option>
                                 <?php
-                                    $q_mesin    = mysqli_query($con, "SELECT
+                                $q_mesin    = mysqli_query($con, "SELECT
                                                                             DISTINCT
                                                                             nama_mesin
                                                                         FROM
                                                                             `tbl_masuk`");
                                 ?>
                                 <?php while ($row_mesin = mysqli_fetch_array($q_mesin)) : ?>
-                                    <option value="<?= $row_mesin['nama_mesin']; ?>" <?php if($row_mesin['nama_mesin'] == $_POST['nama_mesin']){ echo 'SELECTED'; } ?>><?= $row_mesin['nama_mesin']; ?></option>
+                                    <option value="<?= $row_mesin['nama_mesin']; ?>" <?php if ($row_mesin['nama_mesin'] == $_POST['nama_mesin']) {
+                                                                                            echo 'SELECTED';
+                                                                                        } ?>><?= $row_mesin['nama_mesin']; ?></option>
                                 <?php endwhile; ?>
                             </select>
                         </td>
@@ -119,11 +122,11 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input type="submit" name="button" id="button" value="Cari data" class="art-button"> 
-                            <?php if(isset($_POST['button'])) : ?>
+                            <input type="submit" name="button" id="button" value="Cari data" class="art-button">
+                            <?php if (isset($_POST['button'])) : ?>
                                 <input type="button" name="batal" value="Reset" onclick="window.location.href='index.php?p=LihatData'" class="art-button">
                                 <a href="pages/ExportData.php?nama_mesin=<?= $_POST['nama_mesin'] ?>&awal=<?= $_POST['awal'] ?>&akhir=<?= $_POST['akhir']; ?>" class="art-button">Cetak Ke Excel</a>
-                                
+
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -140,7 +143,7 @@
                     </thead>
                     <tbody>
                         <?php
-                            $q_rangkuman    = mysqli_query($con, "SELECT
+                        $q_rangkuman    = mysqli_query($con, "SELECT
                                                                         a.nama_mesin,
                                                                         COUNT(a.nokk) AS jml_kk,
                                                                         SUM(a.qty_order) AS bruto
@@ -169,34 +172,38 @@
                                                                         a.nama_mesin
                                                                     ORDER BY
                                                                         a.nama_mesin ASC");
-                                $sum_totalkk = 0;
-                                $sum_totalQty = 0;
+                        $sum_totalkk = 0;
+                        $sum_totalQty = 0;
                         ?>
-                        <?php while($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
+                        <?php while ($row_rangkuman  = mysqli_fetch_array($q_rangkuman)) : ?>
                             <?php $sum_totalkk += $row_rangkuman['jml_kk']; ?>
                             <?php $sum_totalQty += $row_rangkuman['bruto']; ?>
-                        <tr>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['nama_mesin']; ?></td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['jml_kk']; ?></td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= number_format($row_rangkuman['bruto'], 2); ?></td>
-                        </tr>
+                            <tr>
+                                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['nama_mesin']; ?></td>
+                                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_rangkuman['jml_kk']; ?></td>
+                                <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= number_format($row_rangkuman['bruto'], 2); ?></td>
+                            </tr>
                         <?php endwhile; ?>
-                        <tfoot>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;">TOTAL</td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $sum_totalkk; ?></td>
-                            <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($sum_totalQty, 2); ?></td>
-                        </tfoot>
+                    <tfoot>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;">TOTAL</td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $sum_totalkk; ?></td>
+                        <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($sum_totalQty, 2); ?></td>
+                    </tfoot>
                     </tbody>
                 </table>
             </div>
         </div>
-        
+
     </form>
     <table width="100%" border="1" id="datatables" class="display">
         <thead>
             <tr>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">KETERANGAN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;" width="10%">OPSI</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">OPERATION</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO KK</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NO DEMAND</th>
@@ -211,27 +218,23 @@
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">ROL</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">QTY YD</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
-                <th style="border:1px solid;vertical-align:middle; font-weight: bold;" width="10%">OPSI</th>
             </tr>
         </thead>
         <tbody>
             <?php
-                if($_POST['nama_mesin']){
-                    $where_nama_mesin  = "AND a.nama_mesin = '$_POST[nama_mesin]'";
-                }else{
-                    $where_nama_mesin  = "";
-                }
-                
-                if($_POST['awal']){
-                    $where_tgl  = "AND substr(a.creationdatetime, 1, 10) BETWEEN '$_POST[awal]' AND '$_POST[akhir]'";
-                }else{
-                    $where_tgl  = "";
-                }
+            if ($_POST['nama_mesin']) {
+                $where_nama_mesin  = "AND a.nama_mesin = '$_POST[nama_mesin]'";
+            } else {
+                $where_nama_mesin  = "";
+            }
 
-                $q_tblmasuk     = mysqli_query($con, "SELECT 
+            if ($_POST['awal']) {
+                $where_tgl  = "AND substr(a.creationdatetime, 1, 10) BETWEEN '$_POST[awal]' AND '$_POST[akhir]'";
+            } else {
+                $where_tgl  = "";
+            }
+
+            $q_tblmasuk     = mysqli_query($con, "SELECT 
                                                             * 
                                                         FROM 
                                                             tbl_masuk a 
@@ -256,12 +259,12 @@
                                                             ) AND a.status = 'KK MASUK' 
                                                             $where_tgl $where_nama_mesin 
                                                     ORDER BY a.id DESC");
-                $totalQty = 0;
-                $totalRoll = 0;
+            $totalQty = 0;
+            $totalRoll = 0;
             ?>
             <?php while ($row_tblmasuk  = mysqli_fetch_array($q_tblmasuk)) : ?>
                 <?php
-                    $q_cekposisikk      = db2_exec($conn_db2, "SELECT
+                $q_cekposisikk      = db2_exec($conn_db2, "SELECT
                                                             p.PRODUCTIONORDERCODE,
                                                             p.STEPNUMBER AS STEPNUMBER,
                                                             CASE
@@ -335,7 +338,7 @@
                                                             a.VALUEBOOLEAN
                                                         ORDER BY p.STEPNUMBER ASC
                                                         FETCH FIRST 1 ROWS ONLY");
-                    $row_cekposisikk    = db2_fetch_assoc($q_cekposisikk);
+                $row_cekposisikk    = db2_fetch_assoc($q_cekposisikk);
                 ?>
                 <tr>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;">
@@ -344,6 +347,17 @@
                         <?= $row_cekposisikk['MULAI']; ?> - <?= $row_cekposisikk['SELESAI']; ?>
                     </td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_tblmasuk['catatan'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['personil'] ?><br><?= $row_tblmasuk['creationdatetime'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;">
+                        <?php if ($_SESSION['usr'] != 'husni') : ?>
+                            <?php if ($_SESSION['usr'] == 'suharna' or $_SESSION['usr'] == 'wilson' or $_SESSION['usr'] == 'widodo' or $_SESSION['usr'] == 'dit' or $_SESSION['usr'] == 'husni.kamani' or $_SESSION['usr'] == 'dyo') : ?>
+                                <a href="?p=edit-data&id=<?= $row_tblmasuk['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
+                            <?php endif; ?>
+                            <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
+                        <?php endif; ?>
+                    </td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['operation'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= TRIM($row_tblmasuk['nodemand']); ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nokk'] ?></a></td>
                     <td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_tblmasuk['nodemand']; ?>&prod_order=<?= $row_tblmasuk['nokk']; ?>"><?= $row_tblmasuk['nodemand'] ?></a></td>
@@ -358,17 +372,6 @@
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['roll'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['qty_order_yd'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_tblmasuk['catatan'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['personil'] ?><br><?= $row_tblmasuk['creationdatetime'] ?></td>
-                    <td style="border:1px solid;vertical-align:middle;">
-                        <?php if($_SESSION['usr'] != 'husni') : ?>
-                            <?php if($_SESSION['usr'] == 'suharna' OR $_SESSION['usr'] == 'wilson' OR $_SESSION['usr'] == 'widodo' OR $_SESSION['usr'] == 'dit' OR $_SESSION['usr'] == 'husni.kamani' OR $_SESSION['usr'] == 'dyo') : ?>
-                                <a href="?p=edit-data&id=<?= $row_tblmasuk['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
-                            <?php endif; ?>
-                            <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_tblmasuk['id'] ?>);">Hapus</button>
-                        <?php endif; ?>
-                    </td>
                     <?php $totalQty += $row_tblmasuk['qty_order']; ?>
                     <?php $totalRoll += $row_tblmasuk['roll']; ?>
                 </tr>
@@ -376,10 +379,10 @@
         </tbody>
         <tfoot>
             <tr>
-                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="11">TOTAL</td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="18">TOTAL</td>
                 <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $totalRoll; ?></td>
                 <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($totalQty, 2); ?></td>
-                <td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td>
+                <!-- <td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td> -->
             </tr>
         </tfoot>
     </table>
@@ -409,16 +412,18 @@
             $.ajax({
                 url: '?p=delete_kkmasuk',
                 type: 'POST',
-                data: { id: id },
+                data: {
+                    id: id
+                },
                 success: function(response) {
                     // Tampilkan pesan sukses atau gagal
                     swal({
-                        title: 'Data deleted successfully.',   
+                        title: 'Data deleted successfully.',
                         text: 'Klik Ok untuk input data kembali',
                         type: 'warning',
                     }).then((result) => {
                         if (result.value) {
-                            window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/index.php?p=LihatData'; 
+                            window.location.href = 'http://online.indotaichen.com/finishing2-new/masuk/index.php?p=LihatData';
                         }
                     });
                     closeModal();
@@ -431,4 +436,5 @@
         }
     </script>
 </body>
+
 </html>
