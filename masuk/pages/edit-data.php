@@ -174,6 +174,7 @@ if (empty($_SESSION['usr'])) {
 			$operation 			= mysqli_real_escape_string($con, $_POST['operation']);
 			$proses 			= mysqli_real_escape_string($con, $_POST['proses']);
 			$catatan 			= mysqli_real_escape_string($con, $_POST['catatan']);
+			$prosesbc 			= mysqli_real_escape_string($con, $_POST['prosesbc']);
 			$lastupdatedatetime = date('Y-m-d H:i:s');
 			$akun 				= $_SESSION['usr'];
 			$simpanSql 	= "UPDATE tbl_masuk
@@ -181,7 +182,8 @@ if (empty($_SESSION['usr'])) {
 									proses = '$proses',
 									catatan = '$catatan',
 									lastupdatedatetime = '$lastupdatedatetime',
-									akun = '$akun'
+									akun = '$akun',
+									prosesbc = '$prosesbc'
 								WHERE id = " . $_GET['id']; 
 			$simpan 	= mysqli_query($con, $simpanSql);
 
@@ -500,6 +502,25 @@ if (empty($_SESSION['usr'])) {
 						</td>
 						<td>:</td>
 						<td><input name="lot" type="text" id="lot" size="5" value="<?php echo $row_kkmasuk['lot']; ?>"disabled style="background-color: #BBBBBB;"/></td>
+						<td>
+							<h4>Proses BC</h4>
+						</td>
+						<td>:</td>
+						<td >
+						<select name="prosesbc" id="prosesbc" required>
+						<option value="">Pilih</option>
+									<?php
+										// Mengambil data dari tabel tbl_no_mesin
+										$qry = mysqli_query($con, "SELECT no_mesin FROM tbl_mesinbc ORDER BY no_mesin ASC");
+										while ($row = mysqli_fetch_array($qry)) {
+									?>
+									<option value="<?php echo $row['no_mesin']; ?>" 
+									<?php if ($rw['no_mesin'] == $row['no_mesin']){echo "SELECTED";} ?>>
+									<?php echo $row['no_mesin']; ?></option>
+									<?php } ?>
+								
+							</select>
+						</td>
 					</tr>
 				</table>
 			</fieldset>
