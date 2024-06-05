@@ -7,7 +7,7 @@ include('../koneksi.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="23">
+    <!-- <meta http-equiv="refresh" content="23"> -->
     <title>Navbar di Tengah dengan Kolom dan Kotak Box</title>
     <style>
         /* Ini hanya contoh styling untuk tampilan */
@@ -4310,13 +4310,13 @@ include('../koneksi.php');
                         $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
-                                                                    `tbl_schedule_new` a 
+                                                                    `tbl_masuk` a 
                                                                 WHERE
                                                                     NOT EXISTS (
                                                                     SELECT
                                                                         1 
                                                                     FROM
-                                                                        `tbl_produksi` b 
+                                                                        `tbl_schedule_new` b 
                                                                     WHERE
                                                                         b.nokk = a.nokk 
                                                                         AND b.demandno = a.nodemand 
@@ -4324,7 +4324,7 @@ include('../koneksi.php');
                                                                         AND b.no_mesin = a.no_mesin 
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = '#' 
+                                                                    AND a.no_mesin = 'BC01' 
                                                                     AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
@@ -4335,13 +4335,13 @@ include('../koneksi.php');
                         $q_schedule_10 = mysqli_query($con, "SELECT
                                                                  * 
                                                              FROM
-                                                                 `tbl_schedule_new` a 
+                                                                 `tbl_masuk` a 
                                                              WHERE
                                                                  NOT EXISTS (
                                                                  SELECT
                                                                      1 
                                                                  FROM
-                                                                     `tbl_produksi` b 
+                                                                     `tbl_schedule_new` b 
                                                                  WHERE
                                                                      b.nokk = a.nokk 
                                                                      AND b.demandno = a.nodemand 
@@ -4349,7 +4349,7 @@ include('../koneksi.php');
                                                                      AND b.no_mesin = a.no_mesin 
                                                                  ) 
                                                                  AND a.`status` = 'SCHEDULE' 
-                                                                 AND a.no_mesin = '#' 
+                                                                 AND a.no_mesin = 'BC01' 
                                                                  AND a.nourut = 0 
                                                              ORDER BY
                                                                  CONCAT(
@@ -4440,13 +4440,13 @@ include('../koneksi.php');
                         $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
-                                                                    `tbl_schedule_new` a 
+                                                                    `tbl_masuk` a 
                                                                 WHERE
                                                                     NOT EXISTS (
                                                                     SELECT
                                                                         1 
                                                                     FROM
-                                                                        `tbl_produksi` b 
+                                                                        `tbl_schedule_new` b 
                                                                     WHERE
                                                                         b.nokk = a.nokk 
                                                                         AND b.demandno = a.nodemand 
@@ -4454,7 +4454,7 @@ include('../koneksi.php');
                                                                         AND b.no_mesin = a.no_mesin 
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = '#' 
+                                                                    AND a.no_mesin = 'BC02' 
                                                                     AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
@@ -4465,13 +4465,13 @@ include('../koneksi.php');
                         $q_schedule_10 = mysqli_query($con, "SELECT
                                                                  * 
                                                              FROM
-                                                                 `tbl_schedule_new` a 
+                                                                 `tbl_masuk` a 
                                                              WHERE
                                                                  NOT EXISTS (
                                                                  SELECT
                                                                      1 
                                                                  FROM
-                                                                     `tbl_produksi` b 
+                                                                     `tbl_schedule_new` b 
                                                                  WHERE
                                                                      b.nokk = a.nokk 
                                                                      AND b.demandno = a.nodemand 
@@ -4479,7 +4479,7 @@ include('../koneksi.php');
                                                                      AND b.no_mesin = a.no_mesin 
                                                                  ) 
                                                                  AND a.`status` = 'SCHEDULE' 
-                                                                 AND a.no_mesin = '#' 
+                                                                 AND a.no_mesin = 'BC02' 
                                                                  AND a.nourut = 0 
                                                              ORDER BY
                                                                  CONCAT(
@@ -4570,13 +4570,13 @@ include('../koneksi.php');
                         $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
-                                                                    `tbl_schedule_new` a 
+                                                                    `tbl_masuk` a 
                                                                 WHERE
                                                                     NOT EXISTS (
                                                                     SELECT
                                                                         1 
                                                                     FROM
-                                                                        `tbl_produksi` b 
+                                                                        `tbl_schedule_new` b 
                                                                     WHERE
                                                                         b.nokk = a.nokk 
                                                                         AND b.demandno = a.nodemand 
@@ -4584,7 +4584,7 @@ include('../koneksi.php');
                                                                         AND b.no_mesin = a.no_mesin 
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = '#' 
+                                                                    AND a.no_mesin = 'BC03' 
                                                                     AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
@@ -4595,13 +4595,13 @@ include('../koneksi.php');
                         $q_schedule_10 = mysqli_query($con, "SELECT
                                                                  * 
                                                              FROM
-                                                                 `tbl_schedule_new` a 
+                                                                 `tbl_masuk` a 
                                                              WHERE
                                                                  NOT EXISTS (
                                                                  SELECT
                                                                      1 
                                                                  FROM
-                                                                     `tbl_produksi` b 
+                                                                     `tbl_schedule_new` b 
                                                                  WHERE
                                                                      b.nokk = a.nokk 
                                                                      AND b.demandno = a.nodemand 
@@ -4609,7 +4609,7 @@ include('../koneksi.php');
                                                                      AND b.no_mesin = a.no_mesin 
                                                                  ) 
                                                                  AND a.`status` = 'SCHEDULE' 
-                                                                 AND a.no_mesin = '#' 
+                                                                 AND a.no_mesin = 'BC03' 
                                                                  AND a.nourut = 0 
                                                              ORDER BY
                                                                  CONCAT(
@@ -4700,13 +4700,13 @@ include('../koneksi.php');
                         $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
-                                                                    `tbl_schedule_new` a 
+                                                                    `tbl_masuk` a 
                                                                 WHERE
                                                                     NOT EXISTS (
                                                                     SELECT
                                                                         1 
                                                                     FROM
-                                                                        `tbl_produksi` b 
+                                                                        `tbl_schedule_new` b 
                                                                     WHERE
                                                                         b.nokk = a.nokk 
                                                                         AND b.demandno = a.nodemand 
@@ -4714,7 +4714,7 @@ include('../koneksi.php');
                                                                         AND b.no_mesin = a.no_mesin 
                                                                     ) 
                                                                     AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = '#' 
+                                                                    AND a.no_mesin = 'BC04' 
                                                                     AND a.nourut = 0 
                                                                 ORDER BY
                                                                     CONCAT(
@@ -4725,13 +4725,13 @@ include('../koneksi.php');
                         $q_schedule_10 = mysqli_query($con, "SELECT
                                                                  * 
                                                              FROM
-                                                                 `tbl_schedule_new` a 
+                                                                 `tbl_masuk` a 
                                                              WHERE
                                                                  NOT EXISTS (
                                                                  SELECT
                                                                      1 
                                                                  FROM
-                                                                     `tbl_produksi` b 
+                                                                     `tbl_schedule_new` b 
                                                                  WHERE
                                                                      b.nokk = a.nokk 
                                                                      AND b.demandno = a.nodemand 
@@ -4739,7 +4739,7 @@ include('../koneksi.php');
                                                                      AND b.no_mesin = a.no_mesin 
                                                                  ) 
                                                                  AND a.`status` = 'SCHEDULE' 
-                                                                 AND a.no_mesin = '#' 
+                                                                 AND a.no_mesin = 'BC04' 
                                                                  AND a.nourut = 0 
                                                              ORDER BY
                                                                  CONCAT(
