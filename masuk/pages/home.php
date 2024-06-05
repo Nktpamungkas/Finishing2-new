@@ -752,19 +752,19 @@ if (empty($_SESSION['usr'])) {
 							<input type="text" name="personil" value="<?= $_SESSION['usr']; ?>" required readonly style="background-color: #BBBBBB;">
 						</td>
 					</tr>
-						<td scope="row">
-							<h4>Tgl Delivery</h4>
-						</td>
-						<td>:</td>
-						<td>
-							<input type="date" name="tgl_delivery" value="<?= $dt_ITXVIEWKK['DELIVERYDATE']; ?>" />
-						</td>
+					<td scope="row">
+						<h4>Tgl Delivery</h4>
+					</td>
+					<td>:</td>
+					<td>
+						<input type="date" name="tgl_delivery" value="<?= $dt_ITXVIEWKK['DELIVERYDATE']; ?>" />
+					</td>
 
-						<td scope="row">
-							<h4>Roll</h4>
-						</td>
-						<td>:</td>
-						<td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $dt_roll['ROLL']; ?>" /></td>
+					<td scope="row">
+						<h4>Roll</h4>
+					</td>
+					<td>:</td>
+					<td><input name="rol" type="text" id="rol" size="3" placeholder="0" pattern="[0-9]{1,}" value="<?= $dt_roll['ROLL']; ?>" /></td>
 					</tr>
 					<tr>
 						<td valign="top" scope="row">
@@ -879,19 +879,19 @@ if (empty($_SESSION['usr'])) {
 							<h4>Proses BC</h4>
 						</td>
 						<td>:</td>
-						<td >
-						<select name="prosesbc" id="prosesbc" required>
-						<option value="">Pilih</option>
-									<?php
-										// Mengambil data dari tabel tbl_no_mesin
-										$qry = mysqli_query($con, "SELECT no_mesin FROM tbl_mesinbc ORDER BY no_mesin ASC");
-										while ($row = mysqli_fetch_array($qry)) {
-									?>
-									<option value="<?php echo $row['no_mesin']; ?>" 
-									<?php if ($rw['no_mesin'] == $row['no_mesin']){echo "SELECTED";} ?>>
-									<?php echo $row['no_mesin']; ?></option>
-									<?php } ?>
-								
+						<td>
+							<select name="prosesbc" id="prosesbc">
+								<option value="">Pilih</option>
+								<?php
+								// Mengambil data dari tabel tbl_no_mesin
+								$qry = mysqli_query($con, "SELECT no_mesin FROM tbl_mesinbc ORDER BY no_mesin ASC");
+								while ($row = mysqli_fetch_array($qry)) {
+								?>
+									<option value="<?php echo $row['no_mesin']; ?>" <?php if ($rw['no_mesin'] == $row['no_mesin']) {
+																						echo "SELECTED";
+																					} ?>>
+										<?php echo $row['no_mesin']; ?></option>
+								<?php } ?>
 							</select>
 						</td>
 					</tr>
