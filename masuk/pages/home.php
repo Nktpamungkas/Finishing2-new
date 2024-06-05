@@ -323,7 +323,8 @@ if (empty($_SESSION['usr'])) {
 													catatan,
 													`status`,
 													creationdatetime,
-													ipaddress) 
+													ipaddress,
+													prosesbc) 
 										VALUES('$_POST[nokk]',
 												'$_POST[demand]',
 												'$_POST[operation]',
@@ -346,7 +347,8 @@ if (empty($_SESSION['usr'])) {
 												'$_POST[catatan]',
 												'KK MASUK',
 												'$creationdatetime',
-												'$_SERVER[REMOTE_ADDR]')";
+												'$_SERVER[REMOTE_ADDR]',
+												'$_POST[prosesbc]')";
 			mysqli_query($con, $simpanSql);
 
 			// Refresh form
@@ -742,7 +744,6 @@ if (empty($_SESSION['usr'])) {
 							<?php endif; ?>
 							<input type="text" name="no_order" id="no_order" value="<?= $no_order; ?>" />
 						</td>
-
 						<td scope="row">
 							<h4>Personil</h4>
 						</td>
@@ -751,7 +752,6 @@ if (empty($_SESSION['usr'])) {
 							<input type="text" name="personil" value="<?= $_SESSION['usr']; ?>" required readonly style="background-color: #BBBBBB;">
 						</td>
 					</tr>
-					<tr>
 						<td scope="row">
 							<h4>Tgl Delivery</h4>
 						</td>
@@ -874,6 +874,26 @@ if (empty($_SESSION['usr'])) {
 						</td>
 						<td>:</td>
 						<td><input name="lot" type="text" id="lot" size="5" value="<?= $dt_ITXVIEWKK['LOT']; ?>" /></td>
+
+						<td>
+							<h4>Proses BC</h4>
+						</td>
+						<td>:</td>
+						<td >
+						<select name="prosesbc" id="prosesbc" required>
+						<option value="">Pilih</option>
+									<?php
+										// Mengambil data dari tabel tbl_no_mesin
+										$qry = mysqli_query($con, "SELECT no_mesin FROM tbl_mesinbc ORDER BY no_mesin ASC");
+										while ($row = mysqli_fetch_array($qry)) {
+									?>
+									<option value="<?php echo $row['no_mesin']; ?>" 
+									<?php if ($rw['no_mesin'] == $row['no_mesin']){echo "SELECTED";} ?>>
+									<?php echo $row['no_mesin']; ?></option>
+									<?php } ?>
+								
+							</select>
+						</td>
 					</tr>
 				</table>
 			</fieldset>

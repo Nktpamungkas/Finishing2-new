@@ -200,6 +200,7 @@ include('../koneksi.php');
             <tr>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">KETERANGAN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">NAMA MESIN</th>
+                <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSE BC</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">PROSES</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CATATAN</th>
                 <th style="border:1px solid;vertical-align:middle; font-weight: bold;">CREATION DATE TIME</th>
@@ -347,6 +348,7 @@ include('../koneksi.php');
                         <?= $row_cekposisikk['MULAI']; ?> - <?= $row_cekposisikk['SELESAI']; ?>
                     </td>
                     <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['nama_mesin'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_tblmasuk['prosesbc'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['proses'] ?></td>
                     <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_tblmasuk['catatan'] ?></td>
                     <td style="border:1px solid;vertical-align:middle;"><?= $row_tblmasuk['personil'] ?><br><?= $row_tblmasuk['creationdatetime'] ?></td>
@@ -379,7 +381,7 @@ include('../koneksi.php');
         </tbody>
         <tfoot>
             <tr>
-                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="18">TOTAL</td>
+                <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;" colspan="19">TOTAL</td>
                 <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= $totalRoll; ?></td>
                 <td style="border:1px solid;vertical-align:middle; text-align: center; font-weight: bold;"><?= number_format($totalQty, 2); ?></td>
                 <!-- <td style="border:1px solid;vertical-align:middle; text-align: center;" colspan="5"></td> -->

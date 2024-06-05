@@ -314,7 +314,8 @@ if (empty($_SESSION['usr'])) {
 														catatan,
 														`status`,
 														creationdatetime,
-														ipaddress) 
+														ipaddress,
+														prosesbc) 
 											VALUES('$_POST[nokk]',
 													'$_POST[demand]',
 													'$_POST[no_urut]',
@@ -340,7 +341,8 @@ if (empty($_SESSION['usr'])) {
 													'$_POST[catatan]',
 													'SCHEDULE',
 													'$creationdatetime',
-													'$_SERVER[REMOTE_ADDR]')";
+													'$_SERVER[REMOTE_ADDR]',
+													'$_POST[prosesbc]')";
 			$simpan = mysqli_query($con, $simpanSql);
 			if ($simpan) {
 				echo 	"<script>
@@ -766,6 +768,9 @@ if (empty($_SESSION['usr'])) {
 							<textarea name="catatan" cols="35" id="catatan"><?= $row_kkmasuk['catatan']; ?></textarea>
 						</td>
 					</tr>
+					<td>
+							<input name="prosesbc" type="hidden" id="warna" size="35" value="<?= $row_kkmasuk['prosesbc']; ?>" />
+						</td>
 				</table>
 			</fieldset>
 			<fieldset>
