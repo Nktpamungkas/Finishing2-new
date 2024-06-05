@@ -4276,27 +4276,20 @@ include('../koneksi.php');
                                 $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
-                                                                            `tbl_schedule_new` a 
+                                                                            `tbl_masuk` a 
                                                                         WHERE
                                                                             NOT EXISTS (
-                                                                            SELECT
-                                                                                1 
-                                                                            FROM
-                                                                                `tbl_produksi` b 
-                                                                            WHERE
-                                                                                b.nokk = a.nokk 
-                                                                                AND b.demandno = a.nodemand 
-                                                                                AND b.nama_mesin = a.operation 
-                                                                                AND b.no_mesin = a.no_mesin 
-                                                                            ) 
-                                                                            AND a.`status` = 'SCHEDULE' 
-                                                                            AND a.no_mesin = '#'
-                                                                            AND a.nourut = 0 
-                                                                        ORDER BY
-                                                                            CONCAT(
-                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
+                                                                                SELECT
+                                                                                    1 
+                                                                                FROM
+                                                                                    `tbl_schedule_new` b 
+                                                                                WHERE
+                                                                                    b.nokk = a.nokk 
+                                                                                    AND b.nodemand = a.nodemand 
+                                                                                    AND b.operation = a.operation
+                                                                                    AND b.prosesbc = a.prosesbc
+                                                                            )
+                                                                            AND a.prosesbc = 'BC01' 
                                                                         LIMIT 10");
                                 $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
@@ -4308,55 +4301,41 @@ include('../koneksi.php');
                     <tbody>
                         <?php
                         $q_schedule = mysqli_query($con, "SELECT
-                                                                    * 
-                                                                FROM
-                                                                    `tbl_masuk` a 
-                                                                WHERE
-                                                                    NOT EXISTS (
+                                                                * 
+                                                            FROM
+                                                                `tbl_masuk` a 
+                                                            WHERE
+                                                                NOT EXISTS (
                                                                     SELECT
                                                                         1 
                                                                     FROM
                                                                         `tbl_schedule_new` b 
                                                                     WHERE
                                                                         b.nokk = a.nokk 
-                                                                        AND b.demandno = a.nodemand 
-                                                                        AND b.nama_mesin = a.operation 
-                                                                        AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'BC01' 
-                                                                    AND a.nourut = 0 
-                                                                ORDER BY
-                                                                    CONCAT(
-                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC
-                                                                LIMIT 10");
+                                                                        AND b.nodemand = a.nodemand 
+                                                                        AND b.operation = a.operation
+                                                                        AND b.prosesbc = a.prosesbc
+                                                                )
+                                                                AND a.prosesbc = 'BC01' 
+                                                            LIMIT 10");
                         $q_schedule_10 = mysqli_query($con, "SELECT
-                                                                 * 
-                                                             FROM
-                                                                 `tbl_masuk` a 
-                                                             WHERE
-                                                                 NOT EXISTS (
-                                                                 SELECT
-                                                                     1 
-                                                                 FROM
-                                                                     `tbl_schedule_new` b 
-                                                                 WHERE
-                                                                     b.nokk = a.nokk 
-                                                                     AND b.demandno = a.nodemand 
-                                                                     AND b.nama_mesin = a.operation 
-                                                                     AND b.no_mesin = a.no_mesin 
-                                                                 ) 
-                                                                 AND a.`status` = 'SCHEDULE' 
-                                                                 AND a.no_mesin = 'BC01' 
-                                                                 AND a.nourut = 0 
-                                                             ORDER BY
-                                                                 CONCAT(
-                                                                     SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                 nourut ASC
-                                                             LIMIT 10,100");
+                                                                * 
+                                                            FROM
+                                                                `tbl_masuk` a 
+                                                            WHERE
+                                                                NOT EXISTS (
+                                                                    SELECT
+                                                                        1 
+                                                                    FROM
+                                                                        `tbl_schedule_new` b 
+                                                                    WHERE
+                                                                        b.nokk = a.nokk 
+                                                                        AND b.nodemand = a.nodemand 
+                                                                        AND b.operation = a.operation
+                                                                        AND b.prosesbc = a.prosesbc
+                                                                )
+                                                                AND a.prosesbc = 'BC01' 
+                                                            LIMIT 10, 100");
                         $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
