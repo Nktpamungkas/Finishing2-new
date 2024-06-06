@@ -503,7 +503,7 @@ if (empty($_SESSION['usr'])) {
 						<td>:</td>
 						<td><input name="lot" type="text" id="lot" size="5" value="<?php echo $row_kkmasuk['lot']; ?>"disabled style="background-color: #BBBBBB;"/></td>
 						<td>
-							<h4>Proses BC</h4>
+							<h4 style="color: red;">Proses BC</h4>
 						</td>
 						<td>:</td>
 						<td >
