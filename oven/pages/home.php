@@ -641,45 +641,51 @@
                     <td>:</td>
                     <td>
                         <select name="nama_mesin" id="nama_mesin" onchange="window.location='?typekk='+document.getElementById(`typekk`).value+'&idkk='+document.getElementById(`nokk`).value+'&kklanjutan='+document.getElementById(`kklanjutan`).value+'&demand='+document.getElementById(`demand`).value+'&shift=<?php echo $_GET['shift']; ?>&shift2=<?php echo $_GET['shift2']; ?>&operation='+this.value" required="required">
-                            <option value="">Pilih</option>
-                            <?php
-                            $qry1 = mysqli_query($con, "SELECT 
-                                                            * 
+							<option value="">Pilih</option>
+							<?php
+							if ($_GET['kklanjutan'] == '1') {
+								$wherecekproses = "";
+							} else {
+								$wherecekproses = "NOT EXISTS (
+                                        SELECT 1
+                                        FROM
+                                            tbl_produksi c
+                                        WHERE
+                                            c.nokk = a.nokk 
+                                            AND c.demandno = a.nodemand 
+                                            AND c.nama_mesin = a.operation
+                                        )
+                                AND";
+							}
+							$qry1 = mysqli_query($con, "SELECT 
+                                                                * 
                                                             FROM 
                                                                 `tbl_schedule_new` a
                                                             WHERE
-                                                            NOT EXISTS (
-                                                                        SELECT 1
-                                                                        FROM
-                                                                            tbl_produksi c
-                                                                        WHERE
-                                                                            c.nokk = a.nokk 
-                                                                            AND c.demandno = a.nodemand 
-                                                                            AND c.nama_mesin = a.operation
-                                                                        )
-                                                            AND nokk = '$idkk' 
-                                                             AND NOT nourut = 0");
+                                                            $wherecekproses
+                                                                nokk = '$idkk' 
+                                                                AND NOT nourut = 0");
 
-                            if ($_GET['typekk'] == 'NOW') {
-                                $if_operation   = "$_GET[operation]";
-                            } elseif ($_GET['typekk'] == 'SCHEDULE') {
-                                if ($_GET['operation']) {
-                                    $if_operation   = "$_GET[operation]";
-                                } else {
-                                    $if_operation   = "$row_kkmasuk[operation]";
-                                }
-                            }
-                            while ($r = mysqli_fetch_array($qry1)) {
-                            ?>
-                                <?php
-                                $q_desc_op     = db2_exec($conn_db2, "SELECT * FROM OPERATION WHERE OPERATIONGROUPCODE = 'FIN' AND CODE = '$r[operation]'");
-                                $desc_op    = db2_fetch_assoc($q_desc_op);
-                                ?>
-                                <option value="<?= $r['operation']; ?>" <?php if ($if_operation == $r['operation']) {
-                                                                            echo "SELECTED";
-                                                                        } ?>><?= $r['operation']; ?> <?= $desc_op['LONGDESCRIPTION']; ?></option>
-                            <?php } ?>
-                        </select>
+							if ($_GET['typekk'] == 'NOW') {
+								$if_operation   = "$_GET[operation]";
+							} elseif ($_GET['typekk'] == 'SCHEDULE') {
+								if ($_GET['operation']) {
+									$if_operation   = "$_GET[operation]";
+								} else {
+									$if_operation   = "$row_kkmasuk[operation]";
+								}
+							}
+							while ($r = mysqli_fetch_array($qry1)) {
+							?>
+								<?php
+								$q_desc_op 	= db2_exec($conn_db2, "SELECT * FROM OPERATION WHERE OPERATIONGROUPCODE = 'FIN' AND CODE = '$r[operation]'");
+								$desc_op	= db2_fetch_assoc($q_desc_op);
+								?>
+								<option value="<?= $r['operation']; ?>" <?php if ($if_operation == $r['operation']) {
+																			echo "SELECTED";
+																		} ?>><?= $r['operation']; ?> <?= $desc_op['LONGDESCRIPTION']; ?></option>
+							<?php } ?>
+						</select>
                         <?php if ($_SESSION['lvl'] == "SPV") { ?>
                             <input type="button" name="btnmesin2" id="btnmesin2" value="..." onclick="window.open('pages/mesin.php','MyWindow','height=400,width=650');" />
                         <?php } ?>
