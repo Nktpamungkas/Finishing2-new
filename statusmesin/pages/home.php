@@ -220,7 +220,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -244,7 +244,7 @@ include('../koneksi.php');
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color: tomato;">ST 01</div>
@@ -253,7 +253,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                            $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -279,7 +279,7 @@ include('../koneksi.php');
                                                                     nourut ASC
                                                                 LIMIT 10");
 
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                            $q_schedule_10 = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -304,33 +304,33 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
-                                    <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
-                                    ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
-                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
-                                    </div>
+                                        <?php
+                                            $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                            $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        ?>
+                                        <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                            <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
+                                        </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -351,7 +351,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -377,7 +377,7 @@ include('../koneksi.php');
                                                                             nourut ASC
                                                                         LIMIT 10");
 
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color: Gold;">ST 02</div>
@@ -386,7 +386,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                                $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -411,7 +411,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -436,33 +436,33 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
-                                    <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
-                                    ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
-                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
-                                    </div>
+                                        <?php
+                                            $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                            $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        ?>
+                                        <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                            <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
+                                        </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -482,7 +482,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                        $q_schedule_sum = mysqli_query($con, "SELECT
                                                                                 SUM(qty_order) AS sum_qty
                                                                             FROM
                                                                                 `tbl_schedule_new` a 
@@ -507,7 +507,7 @@ include('../koneksi.php');
                                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                                 nourut ASC
                                                                             LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                        $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:LimeGreen;">ST 03</div>
@@ -516,7 +516,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                                $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -541,7 +541,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                $q_schedule_10 = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -566,7 +566,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                    $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
 
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
@@ -587,13 +587,13 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
-                                    ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
-                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
-                                    </div>
+                                        <?php
+                                            $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                            $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        ?>
+                                        <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                            <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
+                                        </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -613,7 +613,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -638,7 +638,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:HotPink;">ST 04</div>
@@ -647,7 +647,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                            $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -672,7 +672,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                            $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -697,29 +697,29 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -743,7 +743,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -768,7 +768,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:DeepSkyBlue;">ST 05</div>
@@ -777,7 +777,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                            $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -802,7 +802,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                            $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -827,30 +827,30 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                             $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
 
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -874,7 +874,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -899,7 +899,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:OrangeRed;">ST 06</div>
@@ -908,7 +908,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                            $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -933,7 +933,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                            $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -958,29 +958,29 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                             $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                    $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                    $row_proses = mysqli_fetch_assoc($q_proses);
+                                    if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                        $warna  = "background-color: #FFFF00;";
+                                    } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                        $warna  = "background-color: palegreen;";
+                                    } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                        $warna  = "background-color: #FA8072; color: white;";
+                                    } elseif ($row_proses['ket_proses'] == 'preset') {
+                                        $warna  = "background-color: #2471A3; color: white;";
+                                    } else {
+                                        $warna = "";
+                                    }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -1004,7 +1004,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -1029,7 +1029,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:MediumPurple;">ST 07</div>
@@ -1038,7 +1038,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                            $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -1063,7 +1063,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                            $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -1088,29 +1088,29 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -1134,7 +1134,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -1159,7 +1159,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:Lime;">ST 08</div>
@@ -1168,7 +1168,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                            $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -1193,7 +1193,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                            $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -1218,30 +1218,30 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
-                                    <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
-                                    ?>
+                                        <?php
+                                            $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                            $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
                                     </div>
@@ -1264,7 +1264,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                     $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -1289,7 +1289,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:Orange;">CP 01</div>
@@ -1298,7 +1298,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                                $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -1323,7 +1323,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -1348,29 +1348,29 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }   
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -1394,7 +1394,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -1420,7 +1420,7 @@ include('../koneksi.php');
                                                                             nourut ASC
                                                                         LIMIT 10");
 
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:DeepPink;">CP 02</div>
@@ -1429,7 +1429,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                                $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -1454,7 +1454,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -1479,29 +1479,29 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -1525,7 +1525,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                         $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -1550,7 +1550,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                        $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:Aqua;">OVEN FONG</div>
@@ -1559,7 +1559,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                                 $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -1584,7 +1584,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -1609,7 +1609,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -1630,8 +1630,8 @@ include('../koneksi.php');
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -1655,7 +1655,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                        $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -1680,7 +1680,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                        $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:DarkOrange;">STEAM</div>
@@ -1689,79 +1689,79 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
-                                                                    * 
-                                                                FROM
-                                                                    `tbl_schedule_new` a 
-                                                                WHERE
-                                                                    NOT EXISTS (
-                                                                    SELECT
-                                                                        1 
+                                $q_schedule = mysqli_query($con, "SELECT
+                                                                            * 
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3SM101' 
+                                                                            AND NOT a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                        * 
                                                                     FROM
-                                                                        `tbl_produksi` b 
+                                                                        `tbl_schedule_new` a 
                                                                     WHERE
-                                                                        b.nokk = a.nokk 
-                                                                        AND b.demandno = a.nodemand 
-                                                                        AND b.nama_mesin = a.operation 
-                                                                        AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'P3SM101' 
-                                                                    AND NOT a.nourut = 0 
-                                                                ORDER BY
-                                                                    CONCAT(
-                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC
-                                                                LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
-                                                                * 
-                                                            FROM
-                                                                `tbl_schedule_new` a 
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                SELECT
-                                                                    1 
-                                                                FROM
-                                                                    `tbl_produksi` b 
-                                                                WHERE
-                                                                    b.nokk = a.nokk 
-                                                                    AND b.demandno = a.nodemand 
-                                                                    AND b.nama_mesin = a.operation 
-                                                                    AND b.no_mesin = a.no_mesin 
-                                                                ) 
-                                                                AND a.`status` = 'SCHEDULE' 
-                                                                AND a.no_mesin = 'P3SM101' 
-                                                                AND NOT a.nourut = 0 
-                                                            ORDER BY
-                                                                CONCAT(
-                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                nourut ASC
-                                                            LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
-                        ?>
+                                                                        NOT EXISTS (
+                                                                        SELECT
+                                                                            1 
+                                                                        FROM
+                                                                            `tbl_produksi` b 
+                                                                        WHERE
+                                                                            b.nokk = a.nokk 
+                                                                            AND b.demandno = a.nodemand 
+                                                                            AND b.nama_mesin = a.operation 
+                                                                            AND b.no_mesin = a.no_mesin 
+                                                                        ) 
+                                                                        AND a.`status` = 'SCHEDULE' 
+                                                                        AND a.no_mesin = 'P3SM101' 
+                                                                        AND NOT a.nourut = 0 
+                                                                    ORDER BY
+                                                                        CONCAT(
+                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                        SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                        nourut ASC
+                                                                    LIMIT 10,100");
+                                $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -1785,8 +1785,67 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
-                                                                            SUM(qty_order) AS sum_qty
+                                            $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                                        SUM(qty_order) AS sum_qty
+                                                                                    FROM
+                                                                                        `tbl_schedule_new` a 
+                                                                                    WHERE
+                                                                                        NOT EXISTS (
+                                                                                        SELECT
+                                                                                            1 
+                                                                                        FROM
+                                                                                            `tbl_produksi` b 
+                                                                                        WHERE
+                                                                                            b.nokk = a.nokk 
+                                                                                            AND b.demandno = a.nodemand 
+                                                                                            AND b.nama_mesin = a.operation 
+                                                                                            AND b.no_mesin = a.no_mesin 
+                                                                                        ) 
+                                                                                        AND a.`status` = 'SCHEDULE' 
+                                                                                        AND a.no_mesin = 'P3IN350' 
+                                                                                        AND NOT a.nourut = 0 
+                                                                                    ORDER BY
+                                                                                        CONCAT(
+                                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                                        SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                                        nourut ASC
+                                                                                    LIMIT 10");
+                                            $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                ?>
+                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
+                                <div class="kolom1" style="background-color:BlueViolet;">LIPAT<br>INSPEK</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                                    $q_schedule = mysqli_query($con, "SELECT
+                                                                                * 
+                                                                            FROM
+                                                                                `tbl_schedule_new` a 
+                                                                            WHERE
+                                                                                NOT EXISTS (
+                                                                                SELECT
+                                                                                    1 
+                                                                                FROM
+                                                                                    `tbl_produksi` b 
+                                                                                WHERE
+                                                                                    b.nokk = a.nokk 
+                                                                                    AND b.demandno = a.nodemand 
+                                                                                    AND b.nama_mesin = a.operation 
+                                                                                    AND b.no_mesin = a.no_mesin 
+                                                                                ) 
+                                                                                AND a.`status` = 'SCHEDULE' 
+                                                                                AND a.no_mesin = 'P3IN350' 
+                                                                                AND NOT a.nourut = 0 
+                                                                            ORDER BY
+                                                                                CONCAT(
+                                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                                nourut ASC
+                                                                            LIMIT 10");
+                                    $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                            * 
                                                                         FROM
                                                                             `tbl_schedule_new` a 
                                                                         WHERE
@@ -1809,89 +1868,30 @@ include('../koneksi.php');
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
-                                                                        LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
-                                ?>
-                                <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
-                                <div class="kolom1" style="background-color:BlueViolet;">LIPAT<br>INSPEK</div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $q_schedule = mysqli_query($con, "SELECT
-                                                                    * 
-                                                                FROM
-                                                                    `tbl_schedule_new` a 
-                                                                WHERE
-                                                                    NOT EXISTS (
-                                                                    SELECT
-                                                                        1 
-                                                                    FROM
-                                                                        `tbl_produksi` b 
-                                                                    WHERE
-                                                                        b.nokk = a.nokk 
-                                                                        AND b.demandno = a.nodemand 
-                                                                        AND b.nama_mesin = a.operation 
-                                                                        AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'P3IN350' 
-                                                                    AND NOT a.nourut = 0 
-                                                                ORDER BY
-                                                                    CONCAT(
-                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC
-                                                                LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
-                                                                * 
-                                                            FROM
-                                                                `tbl_schedule_new` a 
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                SELECT
-                                                                    1 
-                                                                FROM
-                                                                    `tbl_produksi` b 
-                                                                WHERE
-                                                                    b.nokk = a.nokk 
-                                                                    AND b.demandno = a.nodemand 
-                                                                    AND b.nama_mesin = a.operation 
-                                                                    AND b.no_mesin = a.no_mesin 
-                                                                ) 
-                                                                AND a.`status` = 'SCHEDULE' 
-                                                                AND a.no_mesin = 'P3IN350' 
-                                                                AND NOT a.nourut = 0 
-                                                            ORDER BY
-                                                                CONCAT(
-                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                nourut ASC
-                                                            LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                                                        LIMIT 10,100");
+                                    $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
-                            ?>
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
+                                ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -2081,7 +2081,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                                 $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -2106,7 +2106,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                                 $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -2131,7 +2131,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                    $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2177,7 +2177,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                        $q_schedule_sum = mysqli_query($con, "SELECT
                                                                             SUM(qty_order) AS sum_qty
                                                                         FROM
                                                                             `tbl_schedule_new` a 
@@ -2202,7 +2202,7 @@ include('../koneksi.php');
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
                                                                         LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                            $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:SaddleBrown;">BC 03</div>
@@ -2211,7 +2211,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                             $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -2236,7 +2236,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                            $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -2261,23 +2261,23 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
@@ -2341,7 +2341,7 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
+                            $q_schedule = mysqli_query($con, "SELECT
                                                                     * 
                                                                 FROM
                                                                     `tbl_schedule_new` a 
@@ -2366,7 +2366,7 @@ include('../koneksi.php');
                                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                     nourut ASC
                                                                 LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
+                            $q_schedule_10 = mysqli_query($con, "SELECT
                                                                 * 
                                                             FROM
                                                                 `tbl_schedule_new` a 
@@ -2391,7 +2391,7 @@ include('../koneksi.php');
                                                                 SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                 nourut ASC
                                                             LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
@@ -2434,7 +2434,7 @@ include('../koneksi.php');
             <!-- STATUS MESIN BC1 - BC4 TIDAK DI TAMPILKAN  -->
         </div>
         <?php
-        $q_data1  = mysqli_query($con, "SELECT
+                $q_data1  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -2462,9 +2462,9 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-        $data1    = mysqli_fetch_array($q_data1);
+                $data1    = mysqli_fetch_array($q_data1);
 
-        $q_data2  = mysqli_query($con, "SELECT
+                $q_data2  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -2492,9 +2492,9 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-        $data2    = mysqli_fetch_array($q_data2);
+                $data2    = mysqli_fetch_array($q_data2);
 
-        $q_data3  = mysqli_query($con, "SELECT
+                $q_data3  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -2522,9 +2522,9 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-        $data3    = mysqli_fetch_array($q_data3);
+                $data3    = mysqli_fetch_array($q_data3);
 
-        $q_data4  = mysqli_query($con, "SELECT
+                $q_data4  = mysqli_query($con, "SELECT
                                                     SUM(qty_order) AS sum_qty,
                                                     p.ket_proses AS ket_proses
                                             FROM
@@ -2552,7 +2552,7 @@ include('../koneksi.php');
                                                             SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                     SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                     nourut ASC");
-        $data4    = mysqli_fetch_array($q_data4);
+                $data4    = mysqli_fetch_array($q_data4);
         ?>
         <td colspan="4">kk/kain belum final proses (<?= $data1['sum_qty']; ?> Kg)<span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="4">kk/kain finishing final proses (<?= $data2['sum_qty']; ?> Kg)<span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -3859,10 +3859,10 @@ include('../koneksi.php');
                             ?>
                             <tr>
                                 <td>
-                                    <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
-                                    ?>
+                                        <?php
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
                                     </div>
@@ -3885,32 +3885,32 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
-                                                                            SUM(qty_order) AS sum_qty
-                                                                        FROM
-                                                                            `tbl_schedule_new` a 
-                                                                        WHERE
-                                                                            NOT EXISTS (
-                                                                            SELECT
-                                                                                1 
-                                                                            FROM
-                                                                                `tbl_produksi` b 
-                                                                            WHERE
-                                                                                b.nokk = a.nokk 
-                                                                                AND b.demandno = a.nodemand 
-                                                                                AND b.nama_mesin = a.operation 
-                                                                                AND b.no_mesin = a.no_mesin 
-                                                                            ) 
-                                                                            AND a.`status` = 'SCHEDULE' 
-                                                                            AND a.no_mesin = 'P3DR101'
-                                                                            AND a.nourut = 0 
-                                                                        ORDER BY
-                                                                            CONCAT(
-                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                            $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                                        SUM(qty_order) AS sum_qty
+                                                                                    FROM
+                                                                                        `tbl_schedule_new` a 
+                                                                                    WHERE
+                                                                                        NOT EXISTS (
+                                                                                        SELECT
+                                                                                            1 
+                                                                                        FROM
+                                                                                            `tbl_produksi` b 
+                                                                                        WHERE
+                                                                                            b.nokk = a.nokk 
+                                                                                            AND b.demandno = a.nodemand 
+                                                                                            AND b.nama_mesin = a.operation 
+                                                                                            AND b.no_mesin = a.no_mesin 
+                                                                                        ) 
+                                                                                        AND a.`status` = 'SCHEDULE' 
+                                                                                        AND a.no_mesin = 'P3DR101'
+                                                                                        AND a.nourut = 0 
+                                                                                    ORDER BY
+                                                                                        CONCAT(
+                                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                                        SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                                        nourut ASC
+                                                                                    LIMIT 10");
+                                            $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:teal;">OVEN FONG</div>
@@ -3919,79 +3919,79 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
-                                                                    * 
-                                                                FROM
-                                                                    `tbl_schedule_new` a 
-                                                                WHERE
-                                                                    NOT EXISTS (
-                                                                    SELECT
-                                                                        1 
-                                                                    FROM
-                                                                        `tbl_produksi` b 
-                                                                    WHERE
-                                                                        b.nokk = a.nokk 
-                                                                        AND b.demandno = a.nodemand 
-                                                                        AND b.nama_mesin = a.operation 
-                                                                        AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'P3DR101' 
-                                                                    AND a.nourut = 0 
-                                                                ORDER BY
-                                                                    CONCAT(
-                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC
-                                                                LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
-                                                                * 
-                                                            FROM
-                                                                `tbl_schedule_new` a 
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                SELECT
-                                                                    1 
-                                                                FROM
-                                                                    `tbl_produksi` b 
-                                                                WHERE
-                                                                    b.nokk = a.nokk 
-                                                                    AND b.demandno = a.nodemand 
-                                                                    AND b.nama_mesin = a.operation 
-                                                                    AND b.no_mesin = a.no_mesin 
-                                                                ) 
-                                                                AND a.`status` = 'SCHEDULE' 
-                                                                AND a.no_mesin = 'P3DR101' 
-                                                                AND a.nourut = 0 
-                                                            ORDER BY
-                                                                CONCAT(
-                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                nourut ASC
-                                                            LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                    $q_schedule = mysqli_query($con, "SELECT
+                                                                                * 
+                                                                            FROM
+                                                                                `tbl_schedule_new` a 
+                                                                            WHERE
+                                                                                NOT EXISTS (
+                                                                                SELECT
+                                                                                    1 
+                                                                                FROM
+                                                                                    `tbl_produksi` b 
+                                                                                WHERE
+                                                                                    b.nokk = a.nokk 
+                                                                                    AND b.demandno = a.nodemand 
+                                                                                    AND b.nama_mesin = a.operation 
+                                                                                    AND b.no_mesin = a.no_mesin 
+                                                                                ) 
+                                                                                AND a.`status` = 'SCHEDULE' 
+                                                                                AND a.no_mesin = 'P3DR101' 
+                                                                                AND a.nourut = 0 
+                                                                            ORDER BY
+                                                                                CONCAT(
+                                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                                nourut ASC
+                                                                            LIMIT 10");
+                                    $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                            * 
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3DR101' 
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10,100");
+                                    $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -4015,32 +4015,32 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
-                                                                            SUM(qty_order) AS sum_qty
-                                                                        FROM
-                                                                            `tbl_schedule_new` a 
-                                                                        WHERE
-                                                                            NOT EXISTS (
-                                                                            SELECT
-                                                                                1 
-                                                                            FROM
-                                                                                `tbl_produksi` b 
-                                                                            WHERE
-                                                                                b.nokk = a.nokk 
-                                                                                AND b.demandno = a.nodemand 
-                                                                                AND b.nama_mesin = a.operation 
-                                                                                AND b.no_mesin = a.no_mesin 
-                                                                            ) 
-                                                                            AND a.`status` = 'SCHEDULE' 
-                                                                            AND a.no_mesin = 'P3SM101'
-                                                                            AND a.nourut = 0 
-                                                                        ORDER BY
-                                                                            CONCAT(
-                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                            nourut ASC
-                                                                        LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                                            SUM(qty_order) AS sum_qty
+                                                                                        FROM
+                                                                                            `tbl_schedule_new` a 
+                                                                                        WHERE
+                                                                                            NOT EXISTS (
+                                                                                            SELECT
+                                                                                                1 
+                                                                                            FROM
+                                                                                                `tbl_produksi` b 
+                                                                                            WHERE
+                                                                                                b.nokk = a.nokk 
+                                                                                                AND b.demandno = a.nodemand 
+                                                                                                AND b.nama_mesin = a.operation 
+                                                                                                AND b.no_mesin = a.no_mesin 
+                                                                                            ) 
+                                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                                            AND a.no_mesin = 'P3SM101'
+                                                                                            AND a.nourut = 0 
+                                                                                        ORDER BY
+                                                                                            CONCAT(
+                                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                                            nourut ASC
+                                                                                        LIMIT 10");
+                                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:tan;">STEAM</div>
@@ -4049,104 +4049,33 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
-                                                                    * 
-                                                                FROM
-                                                                    `tbl_schedule_new` a 
-                                                                WHERE
-                                                                    NOT EXISTS (
-                                                                    SELECT
-                                                                        1 
-                                                                    FROM
-                                                                        `tbl_produksi` b 
-                                                                    WHERE
-                                                                        b.nokk = a.nokk 
-                                                                        AND b.demandno = a.nodemand 
-                                                                        AND b.nama_mesin = a.operation 
-                                                                        AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'P3SM101' 
-                                                                    AND a.nourut = 0 
-                                                                ORDER BY
-                                                                    CONCAT(
-                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC
-                                                                LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
-                                                                * 
-                                                            FROM
-                                                                `tbl_schedule_new` a 
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                SELECT
-                                                                    1 
-                                                                FROM
-                                                                    `tbl_produksi` b 
-                                                                WHERE
-                                                                    b.nokk = a.nokk 
-                                                                    AND b.demandno = a.nodemand 
-                                                                    AND b.nama_mesin = a.operation 
-                                                                    AND b.no_mesin = a.no_mesin 
-                                                                ) 
-                                                                AND a.`status` = 'SCHEDULE' 
-                                                                AND a.no_mesin = 'P3SM101' 
-                                                                AND a.nourut = 0 
-                                                            ORDER BY
-                                                                CONCAT(
-                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                nourut ASC
-                                                            LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
-                        ?>
-                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
-                            <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
-                            ?>
-                            <tr>
-                                <td>
-                                    <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
-                                    ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
-                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                        <?php if ($row_schedule_10) : ?>
-                            <tr>
-                                <td>
-                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-            <div style="flex: 1; margin-right: 5px;">
-                <table border="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>
-                                <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
-                                                                            SUM(qty_order) AS sum_qty
+                                    $q_schedule = mysqli_query($con, "SELECT
+                                                                                * 
+                                                                            FROM
+                                                                                `tbl_schedule_new` a 
+                                                                            WHERE
+                                                                                NOT EXISTS (
+                                                                                SELECT
+                                                                                    1 
+                                                                                FROM
+                                                                                    `tbl_produksi` b 
+                                                                                WHERE
+                                                                                    b.nokk = a.nokk 
+                                                                                    AND b.demandno = a.nodemand 
+                                                                                    AND b.nama_mesin = a.operation 
+                                                                                    AND b.no_mesin = a.no_mesin 
+                                                                                ) 
+                                                                                AND a.`status` = 'SCHEDULE' 
+                                                                                AND a.no_mesin = 'P3SM101' 
+                                                                                AND a.nourut = 0 
+                                                                            ORDER BY
+                                                                                CONCAT(
+                                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                                nourut ASC
+                                                                            LIMIT 10");
+                                    $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                            * 
                                                                         FROM
                                                                             `tbl_schedule_new` a 
                                                                         WHERE
@@ -4162,15 +4091,86 @@ include('../koneksi.php');
                                                                                 AND b.no_mesin = a.no_mesin 
                                                                             ) 
                                                                             AND a.`status` = 'SCHEDULE' 
-                                                                            AND a.no_mesin = 'P3IN350'
+                                                                            AND a.no_mesin = 'P3SM101' 
                                                                             AND a.nourut = 0 
                                                                         ORDER BY
                                                                             CONCAT(
                                                                                 SUBSTR(TRIM(a.no_mesin), - 5, 2),
                                                                             SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
                                                                             nourut ASC
-                                                                        LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                                                        LIMIT 10,100");
+                                    $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                        ?>
+                        <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
+                            <?php
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
+                            ?>
+                            <tr>
+                                <td>
+                                    <?php
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                    ?>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                        <?php if ($row_schedule_10) : ?>
+                            <tr>
+                                <td>
+                                    <div class="kolom" title="data selanjutnya bisa dilihat dischedule">...</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1; margin-right: 5px;">
+                <table border="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <?php
+                                        $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                                    SUM(qty_order) AS sum_qty
+                                                                                FROM
+                                                                                    `tbl_schedule_new` a 
+                                                                                WHERE
+                                                                                    NOT EXISTS (
+                                                                                    SELECT
+                                                                                        1 
+                                                                                    FROM
+                                                                                        `tbl_produksi` b 
+                                                                                    WHERE
+                                                                                        b.nokk = a.nokk 
+                                                                                        AND b.demandno = a.nodemand 
+                                                                                        AND b.nama_mesin = a.operation 
+                                                                                        AND b.no_mesin = a.no_mesin 
+                                                                                    ) 
+                                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                                    AND a.no_mesin = 'P3IN350'
+                                                                                    AND a.nourut = 0 
+                                                                                ORDER BY
+                                                                                    CONCAT(
+                                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                                    nourut ASC
+                                                                                LIMIT 10");
+                                        $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:wheat;">LIPAT<br>INSPEK</div>
@@ -4179,79 +4179,79 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
-                                                                    * 
-                                                                FROM
-                                                                    `tbl_schedule_new` a 
-                                                                WHERE
-                                                                    NOT EXISTS (
-                                                                    SELECT
-                                                                        1 
+                                $q_schedule = mysqli_query($con, "SELECT
+                                                                            * 
+                                                                        FROM
+                                                                            `tbl_schedule_new` a 
+                                                                        WHERE
+                                                                            NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_produksi` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.demandno = a.nodemand 
+                                                                                AND b.nama_mesin = a.operation 
+                                                                                AND b.no_mesin = a.no_mesin 
+                                                                            ) 
+                                                                            AND a.`status` = 'SCHEDULE' 
+                                                                            AND a.no_mesin = 'P3IN350' 
+                                                                            AND a.nourut = 0 
+                                                                        ORDER BY
+                                                                            CONCAT(
+                                                                                SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                            SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                            nourut ASC
+                                                                        LIMIT 10");
+                                $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                        * 
                                                                     FROM
-                                                                        `tbl_produksi` b 
+                                                                        `tbl_schedule_new` a 
                                                                     WHERE
-                                                                        b.nokk = a.nokk 
-                                                                        AND b.demandno = a.nodemand 
-                                                                        AND b.nama_mesin = a.operation 
-                                                                        AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.no_mesin = 'P3IN350' 
-                                                                    AND a.nourut = 0 
-                                                                ORDER BY
-                                                                    CONCAT(
-                                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC
-                                                                LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
-                                                                * 
-                                                            FROM
-                                                                `tbl_schedule_new` a 
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                SELECT
-                                                                    1 
-                                                                FROM
-                                                                    `tbl_produksi` b 
-                                                                WHERE
-                                                                    b.nokk = a.nokk 
-                                                                    AND b.demandno = a.nodemand 
-                                                                    AND b.nama_mesin = a.operation 
-                                                                    AND b.no_mesin = a.no_mesin 
-                                                                ) 
-                                                                AND a.`status` = 'SCHEDULE' 
-                                                                AND a.no_mesin = 'P3IN350' 
-                                                                AND a.nourut = 0 
-                                                            ORDER BY
-                                                                CONCAT(
-                                                                    SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                nourut ASC
-                                                            LIMIT 10,100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                                                        NOT EXISTS (
+                                                                        SELECT
+                                                                            1 
+                                                                        FROM
+                                                                            `tbl_produksi` b 
+                                                                        WHERE
+                                                                            b.nokk = a.nokk 
+                                                                            AND b.demandno = a.nodemand 
+                                                                            AND b.nama_mesin = a.operation 
+                                                                            AND b.no_mesin = a.no_mesin 
+                                                                        ) 
+                                                                        AND a.`status` = 'SCHEDULE' 
+                                                                        AND a.no_mesin = 'P3IN350' 
+                                                                        AND a.nourut = 0 
+                                                                    ORDER BY
+                                                                        CONCAT(
+                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                        SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                        nourut ASC
+                                                                    LIMIT 10,100");
+                                $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -4275,25 +4275,25 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
-                                                                            SUM(qty_order) AS sum_qty
-                                                                        FROM
-                                                                            `tbl_masuk` a 
-                                                                        WHERE
-                                                                            NOT EXISTS (
-                                                                                SELECT
-                                                                                    1 
+                                        $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                                    SUM(qty_order) AS sum_qty
                                                                                 FROM
-                                                                                    `tbl_schedule_new` b 
+                                                                                    `tbl_masuk` a 
                                                                                 WHERE
-                                                                                    b.nokk = a.nokk 
-                                                                                    AND b.nodemand = a.nodemand 
-                                                                                    AND b.operation = a.operation
-                                                                                    AND b.prosesbc = a.prosesbc
-                                                                            )
-                                                                            AND a.prosesbc = 'BC01' 
-                                                                        LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                                                                    NOT EXISTS (
+                                                                                        SELECT
+                                                                                            1 
+                                                                                        FROM
+                                                                                            `tbl_schedule_new` b 
+                                                                                        WHERE
+                                                                                            b.nokk = a.nokk 
+                                                                                            AND b.nodemand = a.nodemand 
+                                                                                            AND b.operation = a.operation
+                                                                                            AND b.prosesbc = a.prosesbc
+                                                                                    )
+                                                                                    AND a.prosesbc = 'BC01' 
+                                                                                LIMIT 10");
+                                        $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:steelblue;">BC 01</div>
@@ -4302,64 +4302,64 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
-                                                                * 
-                                                            FROM
-                                                                `tbl_masuk` a 
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                    SELECT
-                                                                        1 
+                                $q_schedule = mysqli_query($con, "SELECT
+                                                                        * 
                                                                     FROM
-                                                                        `tbl_schedule_new` b 
+                                                                        `tbl_masuk` a 
                                                                     WHERE
-                                                                        b.nokk = a.nokk 
-                                                                        AND b.nodemand = a.nodemand 
-                                                                        AND b.operation = a.operation
-                                                                        AND b.prosesbc = a.prosesbc
-                                                                )
-                                                                AND a.prosesbc = 'BC01' 
-                                                            LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
-                                                                * 
-                                                            FROM
-                                                                `tbl_masuk` a 
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                    SELECT
-                                                                        1 
+                                                                        NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_schedule_new` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.nodemand = a.nodemand 
+                                                                                AND b.operation = a.operation
+                                                                                AND b.prosesbc = a.prosesbc
+                                                                        )
+                                                                        AND a.prosesbc = 'BC01' 
+                                                                    LIMIT 10");
+                                $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                        * 
                                                                     FROM
-                                                                        `tbl_schedule_new` b 
+                                                                        `tbl_masuk` a 
                                                                     WHERE
-                                                                        b.nokk = a.nokk 
-                                                                        AND b.nodemand = a.nodemand 
-                                                                        AND b.operation = a.operation
-                                                                        AND b.prosesbc = a.prosesbc
-                                                                )
-                                                                AND a.prosesbc = 'BC01' 
-                                                            LIMIT 10, 100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                                                        NOT EXISTS (
+                                                                            SELECT
+                                                                                1 
+                                                                            FROM
+                                                                                `tbl_schedule_new` b 
+                                                                            WHERE
+                                                                                b.nokk = a.nokk 
+                                                                                AND b.nodemand = a.nodemand 
+                                                                                AND b.operation = a.operation
+                                                                                AND b.prosesbc = a.prosesbc
+                                                                        )
+                                                                        AND a.prosesbc = 'BC01' 
+                                                                    LIMIT 10, 100");
+                                $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_masuk WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
@@ -4384,25 +4384,25 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
-                                                                            SUM(qty_order) AS sum_qty
-                                                                        FROM
-                                                                            `tbl_masuk` a 
-                                                                        WHERE
-                                                                            NOT EXISTS (
-                                                                                SELECT
-                                                                                    1 
+                                        $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                                    SUM(qty_order) AS sum_qty
                                                                                 FROM
-                                                                                    `tbl_schedule_new` b 
+                                                                                    `tbl_masuk` a 
                                                                                 WHERE
-                                                                                    b.nokk = a.nokk 
-                                                                                    AND b.nodemand = a.nodemand 
-                                                                                    AND b.operation = a.operation
-                                                                                    AND b.prosesbc = a.prosesbc
-                                                                            )
-                                                                            AND a.prosesbc = 'BC02' 
-                                                                        LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                                                                    NOT EXISTS (
+                                                                                        SELECT
+                                                                                            1 
+                                                                                        FROM
+                                                                                            `tbl_schedule_new` b 
+                                                                                        WHERE
+                                                                                            b.nokk = a.nokk 
+                                                                                            AND b.nodemand = a.nodemand 
+                                                                                            AND b.operation = a.operation
+                                                                                            AND b.prosesbc = a.prosesbc
+                                                                                    )
+                                                                                    AND a.prosesbc = 'BC02' 
+                                                                                LIMIT 10");
+                                        $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:slategrey;">BC 02</div>
@@ -4411,64 +4411,64 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                        $q_schedule = mysqli_query($con, "SELECT
-                                                                * 
-                                                            FROM
-                                                                `tbl_masuk` a 
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                    SELECT
-                                                                        1 
-                                                                    FROM
-                                                                        `tbl_schedule_new` b 
-                                                                    WHERE
-                                                                        b.nokk = a.nokk 
-                                                                        AND b.nodemand = a.nodemand 
-                                                                        AND b.operation = a.operation
-                                                                        AND b.prosesbc = a.prosesbc
-                                                                )
-                                                                AND a.prosesbc = 'BC02' 
-                                                            LIMIT 10");
-                        $q_schedule_10 = mysqli_query($con, "SELECT
-                                                                * 
-                                                            FROM
-                                                                `tbl_masuk` a 
-                                                            WHERE
-                                                                NOT EXISTS (
-                                                                    SELECT
-                                                                        1 
-                                                                    FROM
-                                                                        `tbl_schedule_new` b 
-                                                                    WHERE
-                                                                        b.nokk = a.nokk 
-                                                                        AND b.nodemand = a.nodemand 
-                                                                        AND b.operation = a.operation
-                                                                        AND b.prosesbc = a.prosesbc
-                                                                )
-                                                                AND a.prosesbc = 'BC02' 
-                                                            LIMIT 10, 100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                                        $q_schedule = mysqli_query($con, "SELECT
+                                                                                * 
+                                                                            FROM
+                                                                                `tbl_masuk` a 
+                                                                            WHERE
+                                                                                NOT EXISTS (
+                                                                                    SELECT
+                                                                                        1 
+                                                                                    FROM
+                                                                                        `tbl_schedule_new` b 
+                                                                                    WHERE
+                                                                                        b.nokk = a.nokk 
+                                                                                        AND b.nodemand = a.nodemand 
+                                                                                        AND b.operation = a.operation
+                                                                                        AND b.prosesbc = a.prosesbc
+                                                                                )
+                                                                                AND a.prosesbc = 'BC02' 
+                                                                            LIMIT 10");
+                                    $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                                * 
+                                                                            FROM
+                                                                                `tbl_masuk` a 
+                                                                            WHERE
+                                                                                NOT EXISTS (
+                                                                                    SELECT
+                                                                                        1 
+                                                                                    FROM
+                                                                                        `tbl_schedule_new` b 
+                                                                                    WHERE
+                                                                                        b.nokk = a.nokk 
+                                                                                        AND b.nodemand = a.nodemand 
+                                                                                        AND b.operation = a.operation
+                                                                                        AND b.prosesbc = a.prosesbc
+                                                                                )
+                                                                                AND a.prosesbc = 'BC02' 
+                                                                            LIMIT 10, 100");
+                                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_masuk WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
                                     $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
@@ -4493,7 +4493,7 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                $q_schedule_sum = mysqli_query($con, "SELECT
+                                         $q_schedule_sum = mysqli_query($con, "SELECT
                                                                                 SUM(qty_order) AS sum_qty
                                                                             FROM
                                                                                 `tbl_masuk` a 
@@ -4511,7 +4511,7 @@ include('../koneksi.php');
                                                                                 )
                                                                                 AND a.prosesbc = 'BC03' 
                                                                             LIMIT 10");
-                                $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                         $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:sienna;">BC 03</div>
@@ -4556,29 +4556,29 @@ include('../koneksi.php');
                                                                             )
                                                                             AND a.prosesbc = 'BC03' 
                                                                         LIMIT 10, 100");
-                        $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
-                                <td>
+                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_masuk WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
                                     <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
                                         <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
@@ -4669,27 +4669,29 @@ include('../koneksi.php');
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
-                            $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
-                            $row_proses = mysqli_fetch_assoc($q_proses);
-                            if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
-                                $warna  = "background-color: #FFFF00;";
-                            } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
-                                $warna  = "background-color: palegreen;";
-                            } elseif ($row_proses['ket_proses'] == 'pedder') {
-                                $warna  = "background-color: #FA8072; color: white;";
-                            } elseif ($row_proses['ket_proses'] == 'preset') {
-                                $warna  = "background-color: #2471A3; color: white;";
-                            } else {
-                                $warna = "";
-                            }
+                                $q_proses   = mysqli_query($con, "SELECT * FROM tbl_proses WHERE CONCAT(proses, ' (', jns, ')') = '$row_schedule[proses]'");
+                                $row_proses = mysqli_fetch_assoc($q_proses);
+                                if ($row_proses['ket_proses'] == 'kk/kain belum final proses') {
+                                    $warna  = "background-color: #FFFF00;";
+                                } elseif ($row_proses['ket_proses'] == 'kk/kain finishing final proses') {
+                                    $warna  = "background-color: palegreen;";
+                                } elseif ($row_proses['ket_proses'] == 'pedder') {
+                                    $warna  = "background-color: #FA8072; color: white;";
+                                } elseif ($row_proses['ket_proses'] == 'preset') {
+                                    $warna  = "background-color: #2471A3; color: white;";
+                                } else {
+                                    $warna = "";
+                                }
                             ?>
                             <tr>
                                 <td>
                                     <?php
-                                    $status_mesin = mysqli_query($con, "SELECT proses, langganan, no_order, qty_order FROM tbl_schedule_new WHERE nodemand = '$row_schedule[nodemand]'");
-                                    $row_statusmesin = mysqli_fetch_assoc($status_mesin);
+                                        $status_mesin = mysqli_query($con, "SELECT proses, langganan, warna, lot, no_order, qty_order FROM tbl_masuk WHERE nodemand = '$row_schedule[nodemand]' AND operation = '$row_schedule[operation]'");
+                                        $row_statusmesin = mysqli_fetch_assoc($status_mesin);
                                     ?>
-                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>"><?= $row_schedule['nodemand']; ?></div>
+                                    <div class="kolom" title="<?= (htmlspecialchars($row_statusmesin['proses'] . "\n" . $row_statusmesin['langganan'] . "\n" . $row_statusmesin['warna'] . "\n" . $row_statusmesin['lot'] . "\n" . $row_statusmesin['no_order'] . "\n" . $row_statusmesin['qty_order'])); ?>" style="<?= $warna; ?>">
+                                        <a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= str_replace(' ', '', $row_schedule['nodemand']); ?>&prod_order=<?= str_replace(' ', '', $row_schedule['nokk']); ?>"><?= $row_schedule['nodemand']; ?></a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -4705,125 +4707,125 @@ include('../koneksi.php');
             </div>
         </div>
         <?php
-        $q_data1  = mysqli_query($con, "SELECT
-                                                    SUM(qty_order) AS sum_qty,
-                                                    p.ket_proses AS ket_proses
-                                            FROM
-                                                    `tbl_schedule_new` a 
-                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
-                                            WHERE
-                                                    NOT EXISTS (
-                                                    SELECT
-                                                            1 
-                                                    FROM
-                                                            `tbl_produksi` b 
-                                                    WHERE
-                                                            b.nokk = a.nokk 
-                                                            AND b.demandno = a.nodemand 
-                                                            AND b.nama_mesin = a.operation 
-                                                            AND b.no_mesin = a.no_mesin 
-                                                    ) 
-                                                    AND a.`status` = 'SCHEDULE' 
-                                                    AND a.nourut = 0 
-                                                    AND p.ket_proses = 'kk/kain belum final proses'
-                                            GROUP BY 
-                                                p.ket_proses
-                                            ORDER BY
-                                                    CONCAT(
-                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                    nourut ASC");
-        $data1    = mysqli_fetch_array($q_data1);
+                        $q_data1  = mysqli_query($con, "SELECT
+                                                                    SUM(qty_order) AS sum_qty,
+                                                                    p.ket_proses AS ket_proses
+                                                            FROM
+                                                                    `tbl_schedule_new` a 
+                                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                                            WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                            1 
+                                                                    FROM
+                                                                            `tbl_produksi` b 
+                                                                    WHERE
+                                                                            b.nokk = a.nokk 
+                                                                            AND b.demandno = a.nodemand 
+                                                                            AND b.nama_mesin = a.operation 
+                                                                            AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.nourut = 0 
+                                                                    AND p.ket_proses = 'kk/kain belum final proses'
+                                                            GROUP BY 
+                                                                p.ket_proses
+                                                            ORDER BY
+                                                                    CONCAT(
+                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC");
+                        $data1    = mysqli_fetch_array($q_data1);
 
-        $q_data2  = mysqli_query($con, "SELECT
-                                                    SUM(qty_order) AS sum_qty,
-                                                    p.ket_proses AS ket_proses
-                                            FROM
-                                                    `tbl_schedule_new` a 
-                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
-                                            WHERE
-                                                    NOT EXISTS (
-                                                    SELECT
-                                                            1 
-                                                    FROM
-                                                            `tbl_produksi` b 
-                                                    WHERE
-                                                            b.nokk = a.nokk 
-                                                            AND b.demandno = a.nodemand 
-                                                            AND b.nama_mesin = a.operation 
-                                                            AND b.no_mesin = a.no_mesin 
-                                                    ) 
-                                                    AND a.`status` = 'SCHEDULE' 
-                                                    AND a.nourut = 0 
-                                                    AND p.ket_proses = 'kk/kain finishing final proses'
-                                            GROUP BY 
-                                                p.ket_proses
-                                            ORDER BY
-                                                    CONCAT(
-                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                    nourut ASC");
-        $data2    = mysqli_fetch_array($q_data2);
+                        $q_data2  = mysqli_query($con, "SELECT
+                                                                    SUM(qty_order) AS sum_qty,
+                                                                    p.ket_proses AS ket_proses
+                                                            FROM
+                                                                    `tbl_schedule_new` a 
+                                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                                            WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                            1 
+                                                                    FROM
+                                                                            `tbl_produksi` b 
+                                                                    WHERE
+                                                                            b.nokk = a.nokk 
+                                                                            AND b.demandno = a.nodemand 
+                                                                            AND b.nama_mesin = a.operation 
+                                                                            AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.nourut = 0 
+                                                                    AND p.ket_proses = 'kk/kain finishing final proses'
+                                                            GROUP BY 
+                                                                p.ket_proses
+                                                            ORDER BY
+                                                                    CONCAT(
+                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC");
+                        $data2    = mysqli_fetch_array($q_data2);
 
-        $q_data3  = mysqli_query($con, "SELECT
-                                                    SUM(qty_order) AS sum_qty,
-                                                    p.ket_proses AS ket_proses
-                                            FROM
-                                                    `tbl_schedule_new` a 
-                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
-                                            WHERE
-                                                    NOT EXISTS (
-                                                    SELECT
-                                                            1 
-                                                    FROM
-                                                            `tbl_produksi` b 
-                                                    WHERE
-                                                            b.nokk = a.nokk 
-                                                            AND b.demandno = a.nodemand 
-                                                            AND b.nama_mesin = a.operation 
-                                                            AND b.no_mesin = a.no_mesin 
-                                                    ) 
-                                                    AND a.`status` = 'SCHEDULE' 
-                                                    AND a.nourut = 0 
-                                                    AND p.ket_proses = 'pedder'
-                                            GROUP BY 
-                                                p.ket_proses
-                                            ORDER BY
-                                                    CONCAT(
-                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                    nourut ASC");
-        $data3    = mysqli_fetch_array($q_data3);
+                        $q_data3  = mysqli_query($con, "SELECT
+                                                                    SUM(qty_order) AS sum_qty,
+                                                                    p.ket_proses AS ket_proses
+                                                            FROM
+                                                                    `tbl_schedule_new` a 
+                                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                                            WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                            1 
+                                                                    FROM
+                                                                            `tbl_produksi` b 
+                                                                    WHERE
+                                                                            b.nokk = a.nokk 
+                                                                            AND b.demandno = a.nodemand 
+                                                                            AND b.nama_mesin = a.operation 
+                                                                            AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.nourut = 0 
+                                                                    AND p.ket_proses = 'pedder'
+                                                            GROUP BY 
+                                                                p.ket_proses
+                                                            ORDER BY
+                                                                    CONCAT(
+                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC");
+                        $data3    = mysqli_fetch_array($q_data3);
 
-        $q_data4  = mysqli_query($con, "SELECT
-                                                    SUM(qty_order) AS sum_qty,
-                                                    p.ket_proses AS ket_proses
-                                            FROM
-                                                    `tbl_schedule_new` a 
-                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
-                                            WHERE
-                                                    NOT EXISTS (
-                                                    SELECT
-                                                            1 
-                                                    FROM
-                                                            `tbl_produksi` b 
-                                                    WHERE
-                                                            b.nokk = a.nokk 
-                                                            AND b.demandno = a.nodemand 
-                                                            AND b.nama_mesin = a.operation 
-                                                            AND b.no_mesin = a.no_mesin 
-                                                    ) 
-                                                    AND a.`status` = 'SCHEDULE' 
-                                                    AND a.nourut = 0 
-                                                    AND p.ket_proses = 'preset'
-                                            GROUP BY 
-                                                p.ket_proses
-                                            ORDER BY
-                                                    CONCAT(
-                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                    nourut ASC");
-        $data4    = mysqli_fetch_array($q_data4);
+                        $q_data4  = mysqli_query($con, "SELECT
+                                                                    SUM(qty_order) AS sum_qty,
+                                                                    p.ket_proses AS ket_proses
+                                                            FROM
+                                                                    `tbl_schedule_new` a 
+                                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                                            WHERE
+                                                                    NOT EXISTS (
+                                                                    SELECT
+                                                                            1 
+                                                                    FROM
+                                                                            `tbl_produksi` b 
+                                                                    WHERE
+                                                                            b.nokk = a.nokk 
+                                                                            AND b.demandno = a.nodemand 
+                                                                            AND b.nama_mesin = a.operation 
+                                                                            AND b.no_mesin = a.no_mesin 
+                                                                    ) 
+                                                                    AND a.`status` = 'SCHEDULE' 
+                                                                    AND a.nourut = 0 
+                                                                    AND p.ket_proses = 'preset'
+                                                            GROUP BY 
+                                                                p.ket_proses
+                                                            ORDER BY
+                                                                    CONCAT(
+                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                                    nourut ASC");
+                        $data4    = mysqli_fetch_array($q_data4);
         ?>
         <td colspan="4">kk/kain belum final proses (<?= $data1['sum_qty']; ?> Kg)<span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="4">kk/kain finishing final proses (<?= $data2['sum_qty']; ?> Kg)<span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
