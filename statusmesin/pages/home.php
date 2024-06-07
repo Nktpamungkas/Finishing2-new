@@ -4707,125 +4707,124 @@ include('../koneksi.php');
             </div>
         </div>
         <?php
-                        $q_data1  = mysqli_query($con, "SELECT
-                                                                    SUM(qty_order) AS sum_qty,
-                                                                    p.ket_proses AS ket_proses
-                                                            FROM
-                                                                    `tbl_schedule_new` a 
-                                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
-                                                            WHERE
-                                                                    NOT EXISTS (
-                                                                    SELECT
-                                                                            1 
-                                                                    FROM
-                                                                            `tbl_produksi` b 
-                                                                    WHERE
-                                                                            b.nokk = a.nokk 
-                                                                            AND b.demandno = a.nodemand 
-                                                                            AND b.nama_mesin = a.operation 
-                                                                            AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.nourut = 0 
-                                                                    AND p.ket_proses = 'kk/kain belum final proses'
-                                                            GROUP BY 
-                                                                p.ket_proses
-                                                            ORDER BY
-                                                                    CONCAT(
-                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC");
-                        $data1    = mysqli_fetch_array($q_data1);
+            $q_data1  = mysqli_query($con, "SELECT
+                                                SUM(qty_order) AS sum_qty,
+                                                p.ket_proses AS ket_proses
+                                            FROM
+                                                `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                NOT EXISTS (
+                                                SELECT
+                                                        1 
+                                                FROM
+                                                        `tbl_produksi` b 
+                                                WHERE
+                                                        b.nokk = a.nokk 
+                                                        AND b.demandno = a.nodemand 
+                                                        AND b.nama_mesin = a.operation 
+                                                        AND b.no_mesin = a.no_mesin 
+                                                ) 
+                                                AND a.`status` = 'SCHEDULE' 
+                                                AND a.nourut = 0 
+                                                AND p.ket_proses = 'kk/kain belum final proses'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                CONCAT(
+                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                nourut ASC");
+            $data1    = mysqli_fetch_array($q_data1);
 
-                        $q_data2  = mysqli_query($con, "SELECT
-                                                                    SUM(qty_order) AS sum_qty,
-                                                                    p.ket_proses AS ket_proses
-                                                            FROM
-                                                                    `tbl_schedule_new` a 
-                                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
-                                                            WHERE
-                                                                    NOT EXISTS (
-                                                                    SELECT
-                                                                            1 
-                                                                    FROM
-                                                                            `tbl_produksi` b 
-                                                                    WHERE
-                                                                            b.nokk = a.nokk 
-                                                                            AND b.demandno = a.nodemand 
-                                                                            AND b.nama_mesin = a.operation 
-                                                                            AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.nourut = 0 
-                                                                    AND p.ket_proses = 'kk/kain finishing final proses'
-                                                            GROUP BY 
-                                                                p.ket_proses
-                                                            ORDER BY
-                                                                    CONCAT(
-                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC");
-                        $data2    = mysqli_fetch_array($q_data2);
+            $q_data2  = mysqli_query($con, "SELECT
+                                                SUM(qty_order) AS sum_qty,
+                                                p.ket_proses AS ket_proses
+                                            FROM
+                                                `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                NOT EXISTS (
+                                                SELECT
+                                                        1 
+                                                FROM
+                                                        `tbl_produksi` b 
+                                                WHERE
+                                                        b.nokk = a.nokk 
+                                                        AND b.demandno = a.nodemand 
+                                                        AND b.nama_mesin = a.operation 
+                                                        AND b.no_mesin = a.no_mesin 
+                                                ) 
+                                                AND a.`status` = 'SCHEDULE' 
+                                                AND a.nourut = 0 
+                                                AND p.ket_proses = 'kk/kain finishing final proses'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                CONCAT(
+                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                nourut ASC");
+            $data2    = mysqli_fetch_array($q_data2);
 
-                        $q_data3  = mysqli_query($con, "SELECT
-                                                                    SUM(qty_order) AS sum_qty,
-                                                                    p.ket_proses AS ket_proses
-                                                            FROM
-                                                                    `tbl_schedule_new` a 
-                                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
-                                                            WHERE
-                                                                    NOT EXISTS (
-                                                                    SELECT
-                                                                            1 
-                                                                    FROM
-                                                                            `tbl_produksi` b 
-                                                                    WHERE
-                                                                            b.nokk = a.nokk 
-                                                                            AND b.demandno = a.nodemand 
-                                                                            AND b.nama_mesin = a.operation 
-                                                                            AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.nourut = 0 
-                                                                    AND p.ket_proses = 'pedder'
-                                                            GROUP BY 
-                                                                p.ket_proses
-                                                            ORDER BY
-                                                                    CONCAT(
-                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC");
-                        $data3    = mysqli_fetch_array($q_data3);
+            $q_data3  = mysqli_query($con, "SELECT
+                                                SUM(qty_order) AS sum_qty,
+                                                p.ket_proses AS ket_proses
+                                            FROM
+                                                `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                NOT EXISTS (
+                                                SELECT
+                                                        1 
+                                                FROM
+                                                        `tbl_produksi` b 
+                                                WHERE
+                                                        b.nokk = a.nokk 
+                                                        AND b.demandno = a.nodemand 
+                                                        AND b.nama_mesin = a.operation 
+                                                        AND b.no_mesin = a.no_mesin 
+                                                ) 
+                                                AND a.`status` = 'SCHEDULE' 
+                                                AND a.nourut = 0 
+                                                AND p.ket_proses = 'pedder'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                CONCAT(
+                                                        SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                nourut ASC");
+            $data3    = mysqli_fetch_array($q_data3);
 
-                        $q_data4  = mysqli_query($con, "SELECT
-                                                                    SUM(qty_order) AS sum_qty,
-                                                                    p.ket_proses AS ket_proses
-                                                            FROM
-                                                                    `tbl_schedule_new` a 
-                                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
-                                                            WHERE
-                                                                    NOT EXISTS (
-                                                                    SELECT
-                                                                            1 
-                                                                    FROM
-                                                                            `tbl_produksi` b 
-                                                                    WHERE
-                                                                            b.nokk = a.nokk 
-                                                                            AND b.demandno = a.nodemand 
-                                                                            AND b.nama_mesin = a.operation 
-                                                                            AND b.no_mesin = a.no_mesin 
-                                                                    ) 
-                                                                    AND a.`status` = 'SCHEDULE' 
-                                                                    AND a.nourut = 0 
-                                                                    AND p.ket_proses = 'preset'
-                                                            GROUP BY 
-                                                                p.ket_proses
-                                                            ORDER BY
-                                                                    CONCAT(
-                                                                            SUBSTR(TRIM(a.no_mesin), - 5, 2),
-                                                                    SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
-                                                                    nourut ASC");
-                        $data4    = mysqli_fetch_array($q_data4);
+            $q_data4  = mysqli_query($con, "SELECT
+                                                SUM(qty_order) AS sum_qty,
+                                                p.ket_proses AS ket_proses
+                                            FROM
+                                                `tbl_schedule_new` a 
+                                            LEFT JOIN tbl_proses p ON CONCAT(p.proses, ' (', p.jns, ')') = a.proses
+                                            WHERE
+                                                NOT EXISTS (
+                                                SELECT
+                                                        1 
+                                                FROM
+                                                        `tbl_produksi` b 
+                                                WHERE
+                                                        b.nokk = a.nokk 
+                                                        AND b.demandno = a.nodemand 
+                                                        AND b.nama_mesin = a.operation 
+                                                        AND b.no_mesin = a.no_mesin 
+                                                ) 
+                                                AND a.`status` = 'SCHEDULE' 
+                                                AND a.nourut = 0 
+                                                AND p.ket_proses = 'preset'
+                                            GROUP BY 
+                                                p.ket_proses
+                                            ORDER BY
+                                                CONCAT(SUBSTR(TRIM(a.no_mesin), - 5, 2),
+                                                SUBSTR(TRIM(a.no_mesin), - 2 )) ASC,
+                                                nourut ASC");
+            $data4    = mysqli_fetch_array($q_data4);
         ?>
         <td colspan="4">kk/kain belum final proses (<?= $data1['sum_qty']; ?> Kg)<span class="small-box1"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="4">kk/kain finishing final proses (<?= $data2['sum_qty']; ?> Kg)<span class="small-box2"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
