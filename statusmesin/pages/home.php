@@ -4275,25 +4275,25 @@ include('../koneksi.php');
                         <tr>
                             <th>
                                 <?php
-                                        $q_schedule_sum = mysqli_query($con, "SELECT
-                                                                                    SUM(qty_order) AS sum_qty
-                                                                                FROM
-                                                                                    `tbl_masuk` a 
-                                                                                WHERE
-                                                                                    NOT EXISTS (
-                                                                                        SELECT
-                                                                                            1 
-                                                                                        FROM
-                                                                                            `tbl_schedule_new` b 
-                                                                                        WHERE
-                                                                                            b.nokk = a.nokk 
-                                                                                            AND b.nodemand = a.nodemand 
-                                                                                            AND b.operation = a.operation
-                                                                                            AND b.prosesbc = a.prosesbc
-                                                                                    )
-                                                                                    AND a.prosesbc = 'BC01' 
-                                                                                LIMIT 10");
-                                        $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
+                                    $q_schedule_sum = mysqli_query($con, "SELECT
+                                                                                SUM(qty_order) AS sum_qty
+                                                                            FROM
+                                                                                `tbl_masuk` a 
+                                                                            WHERE
+                                                                                NOT EXISTS (
+                                                                                    SELECT
+                                                                                        1 
+                                                                                    FROM
+                                                                                        `tbl_schedule_new` b 
+                                                                                    WHERE
+                                                                                        b.nokk = a.nokk 
+                                                                                        AND b.nodemand = a.nodemand 
+                                                                                        AND b.operation = a.operation
+                                                                                        AND b.prosesbc = a.prosesbc
+                                                                                )
+                                                                                AND a.prosesbc = 'BC01' 
+                                                                            LIMIT 10");
+                                    $row_sum_qty    = mysqli_fetch_assoc($q_schedule_sum);
                                 ?>
                                 <span style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?> Kg</span></h2>
                                 <div class="kolom1" style="background-color:steelblue;">BC 01</div>
@@ -4302,43 +4302,43 @@ include('../koneksi.php');
                     </thead>
                     <tbody>
                         <?php
-                                $q_schedule = mysqli_query($con, "SELECT
-                                                                        * 
-                                                                    FROM
-                                                                        `tbl_masuk` a 
-                                                                    WHERE
-                                                                        NOT EXISTS (
-                                                                            SELECT
-                                                                                1 
-                                                                            FROM
-                                                                                `tbl_schedule_new` b 
-                                                                            WHERE
-                                                                                b.nokk = a.nokk 
-                                                                                AND b.nodemand = a.nodemand 
-                                                                                AND b.operation = a.operation
-                                                                                AND b.prosesbc = a.prosesbc
-                                                                        )
-                                                                        AND a.prosesbc = 'BC01' 
-                                                                    LIMIT 10");
-                                $q_schedule_10 = mysqli_query($con, "SELECT
-                                                                        * 
-                                                                    FROM
-                                                                        `tbl_masuk` a 
-                                                                    WHERE
-                                                                        NOT EXISTS (
-                                                                            SELECT
-                                                                                1 
-                                                                            FROM
-                                                                                `tbl_schedule_new` b 
-                                                                            WHERE
-                                                                                b.nokk = a.nokk 
-                                                                                AND b.nodemand = a.nodemand 
-                                                                                AND b.operation = a.operation
-                                                                                AND b.prosesbc = a.prosesbc
-                                                                        )
-                                                                        AND a.prosesbc = 'BC01' 
-                                                                    LIMIT 10, 100");
-                                $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
+                            $q_schedule = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_masuk` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                        SELECT
+                                                                            1 
+                                                                        FROM
+                                                                            `tbl_schedule_new` b 
+                                                                        WHERE
+                                                                            b.nokk = a.nokk 
+                                                                            AND b.nodemand = a.nodemand 
+                                                                            AND b.operation = a.operation
+                                                                            AND b.prosesbc = a.prosesbc
+                                                                    )
+                                                                    AND a.prosesbc = 'BC01' 
+                                                                LIMIT 10");
+                            $q_schedule_10 = mysqli_query($con, "SELECT
+                                                                    * 
+                                                                FROM
+                                                                    `tbl_masuk` a 
+                                                                WHERE
+                                                                    NOT EXISTS (
+                                                                        SELECT
+                                                                            1 
+                                                                        FROM
+                                                                            `tbl_schedule_new` b 
+                                                                        WHERE
+                                                                            b.nokk = a.nokk 
+                                                                            AND b.nodemand = a.nodemand 
+                                                                            AND b.operation = a.operation
+                                                                            AND b.prosesbc = a.prosesbc
+                                                                    )
+                                                                    AND a.prosesbc = 'BC01' 
+                                                                LIMIT 10, 100");
+                            $row_schedule_10  = mysqli_fetch_assoc($q_schedule_10);
                         ?>
                         <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                             <?php
