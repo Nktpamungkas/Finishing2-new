@@ -7,7 +7,7 @@ include ('../koneksi.php');
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!--<meta http-equiv="refresh" content="23">-->
+	<meta http-equiv="refresh" content="23">
 	<title>Navbar di Tengah dengan Kolom dan Kotak Box</title>
 	<style>
 	/* Ini hanya contoh styling untuk tampilan */
@@ -1334,7 +1334,7 @@ include ('../koneksi.php');
 								<span
 									style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?>
 									Kg</span></h2>
-								<div class="kolom1" style="background-color:Lime;">ST 09</div>
+								<div class="kolom1" style="background-color:#6495ED;">ST 09</div>
 							</th>
 						</tr>
 					</thead>
@@ -1741,7 +1741,7 @@ include ('../koneksi.php');
 								<span
 									style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?>
 									Kg</span></h2>
-								<div class="kolom1" style="background-color:DeepPink;">CP 03</div>
+								<div class="kolom1" style="background-color:#FFF0F5;">CP 03</div>
 							</th>
 						</tr>
 					</thead>
@@ -4040,7 +4040,7 @@ include ('../koneksi.php');
 								<span
 									style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?>
 									Kg</span></h2>
-								<div class="kolom1" style="background-color: DarkMagenta;">ST 09</div>
+								<div class="kolom1" style="background-color: #8FBC8F;">ST 09</div>
 							</th>
 						</tr>
 					</thead>
@@ -4445,7 +4445,7 @@ include ('../koneksi.php');
 								<span
 									style="font-size: 10px; color: red"><?= (number_format($row_sum_qty['sum_qty'])) ?>
 									Kg</span></h2>
-								<div class="kolom1" style="background-color:thistle;">CP 03</div>
+								<div class="kolom1" style="background-color:#F0E68C;">CP 03</div>
 							</th>
 						</tr>
 					</thead>
