@@ -61,14 +61,14 @@ include ('../../koneksi.php');
         <div align="center">
           <font size="-2">POTONG SAMPLE UNTUK QC</font>
         </div>
+      <td rowspan="3">
+        <div align="center">
+          <font size="-2">PROD<br>ORDER</font>
+        </div>
       </td>
       <td rowspan="3">
         <div align="center">
           <font size="-2">PROD<br>DEMAND</font>
-        </div>
-      <td rowspan="3">
-        <div align="center">
-          <font size="-2">PROD<br>ORDER</font>
         </div>
       <td rowspan="3">
         <div align="center">
@@ -308,10 +308,10 @@ include ('../../koneksi.php');
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>
-          <font size="-2"><?php echo $rowd['demandno']; ?></font>
+          <font size="-2"><?php echo $rowd['nokk']; ?></font>
         </td>
         <td>
-          <font size="-2"><?php echo $rowd['nokk']; ?></font>
+          <font size="-2"><?php echo $rowd['demandno']; ?></font>
         </td>
         <td>
           <div align="center">
