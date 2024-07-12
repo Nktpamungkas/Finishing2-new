@@ -1,51 +1,52 @@
 <?php
-  header("Content-type: application/octet-stream");
-  header("Content-Disposition: attachment; filename=report-produksi-" . date($_GET['tglawal']) . ".xls"); //ganti nama sesuai keperluan
-  header("Pragma: no-cache");
-  header("Expires: 0");
-  //disini script laporan anda
+header("Content-type: application/octet-stream");
+header("Content-Disposition: attachment; filename=report-produksi-" . date($_GET['tglawal']) . ".xls"); //ganti nama sesuai keperluan
+header("Pragma: no-cache");
+header("Expires: 0");
+//disini script laporan anda
 ?>
 <?php
-  //$con=mysqli_connect("10.0.1.91","dit","4dm1n","db_finishing");
-  ini_set("error_reporting", 1);
-  include('../../koneksi.php');
+//$con=mysqli_connect("10.0.1.91","dit","4dm1n","db_finishing");
+ini_set("error_reporting", 1);
+include ('../../koneksi.php');
 ?>
 
 <body>
   <?php
-    $tglawal = $_GET['tglawal'];
-    $tglakhir = $_GET['tglakhir'];
-	$jamawal = $_GET['jamawal'];
-    $jamakhir = $_GET['jamakhir'];
-    $shft = $_GET['shift'];
-   if ($tglakhir != "" and $tglawal != "") {
-     $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
-   } else {
-     $tgl = " ";
-   }
-	// if ($tglakhir != "" and $tglawal != "" or $jamakhir != "" and $jamawal != "") {
+  $tglawal = $_GET['tglawal'];
+  $tglakhir = $_GET['tglakhir'];
+  $jamawal = $_GET['jamawal'];
+  $jamakhir = $_GET['jamakhir'];
+  $shft = $_GET['shift'];
+  if ($tglakhir != "" and $tglawal != "") {
+    $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+  } else {
+    $tgl = " ";
+  }
+  // if ($tglakhir != "" and $tglawal != "" or $jamakhir != "" and $jamawal != "") {
   //   $tgl = " DATE_FORMAT(a.`tgl_buat`,'%Y-%m-%d %H:%i') BETWEEN '$tglawal $jamawal' AND '$tglakhir $jamakhir' ";
   // } else {
   //   $tgl = " ";
   // }	
-    if ($shft == "ALL") {
-      $shift = " ";
-    } else {
-      $shift = " AND a.`shift`='$shft' ";
-    }
-    if ($_GET['mesin'] == "") {
-      $mesin = " ";
-    } else {
-      $mesin = " AND a.`no_mesin`='$_GET[mesin]' ";
-    }
+  if ($shft == "ALL") {
+    $shift = " ";
+  } else {
+    $shift = " AND a.`shift`='$shft' ";
+  }
+  if ($_GET['mesin'] == "") {
+    $mesin = " ";
+  } else {
+    $mesin = " AND a.`no_mesin`='$_GET[mesin]' ";
+  }
   ?>
   <table width="100%" border="1">
     <tr valign="top">
       <td colspan="<?php if ($_GET['mesin'] == "") {
-                      echo "7";
-                    } else {
-                      echo "8";
-                    } ?>">TANGGAL:<strong> <?php echo $tglawal." ".$jamawal; ?> s/d <?php echo $tglakhir." ".$jamakhir; ?></strong></td>
+        echo "7";
+      } else {
+        echo "8";
+      } ?>">TANGGAL:<strong> <?php echo $tglawal . " " . $jamawal; ?> s/d
+          <?php echo $tglakhir . " " . $jamakhir; ?></strong></td>
       <td colspan="9">GROUP SHIFT:<strong><?php echo $shft; ?></strong></td>
       <td colspan="12">NO MESIN :<strong>
           <?php if ($_GET['mesin'] == "") {
@@ -61,6 +62,14 @@
           <font size="-2">POTONG SAMPLE UNTUK QC</font>
         </div>
       </td>
+      <td rowspan="3">
+        <div align="center">
+          <font size="-2">PROD<br>DEMAND</font>
+        </div>
+      <td rowspan="3">
+        <div align="center">
+          <font size="-2">PROD<br>ORDER</font>
+        </div>
       <td rowspan="3">
         <div align="center">
           <font size="-2">B / K</font>
@@ -269,35 +278,41 @@
       </td>
     </tr>
     <?php
-      $sql = mysqli_query($con, " SELECT 
+    $sql = mysqli_query($con, " SELECT 
                                         *
                                       FROM
                                         `tbl_produksi` a
                                       WHERE
                                         $tgl $shift $mesin ORDER BY a.`jam_in` ASC");
-      $no = 1;
-      $c = 0;
-      while ($rowd = mysqli_fetch_array($sql)) {
+    $no = 1;
+    $c = 0;
+    while ($rowd = mysqli_fetch_array($sql)) {
       // hitung hari dan jam	 
       // $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
       // $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
       // $diff  = ($akhir - $awal);
       // $tmenit = round($diff / (60), 2);
-      $awal         = date_create($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
-      $akhir        = date_create($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
+      $awal = date_create($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
+      $akhir = date_create($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
 
       $tmenit_stopmesin = date_diff($awal, $akhir);
 
-      $tmenit   = $tmenit_stopmesin->h . ' jam, ' . $tmenit_stopmesin->i . ' menit ';
+      $tmenit = $tmenit_stopmesin->h . ' jam, ' . $tmenit_stopmesin->i . ' menit ';
 
-      $tjam  = round($diff / (60 * 60), 2);
-      $hari  = round($tjam / 24, 2);
-    ?>
+      $tjam = round($diff / (60 * 60), 2);
+      $hari = round($tjam / 24, 2);
+      ?>
       <tr valign="top">
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
+        <td>
+          <font size="-2"><?php echo $rowd['demandno']; ?></font>
+        </td>
+        <td>
+          <font size="-2"><?php echo $rowd['nokk']; ?></font>
+        </td>
         <td>
           <div align="center">
             <font size="-2"><?php echo $rowd['kondisi_kain']; ?></font>
@@ -351,10 +366,10 @@
         <td>
           <font size="-2">
             <?php
-              if($rowd['suhu']){
-                echo $rowd['suhu'];
-              }else{
-                $q_QA_DATA = db2_exec($conn_db2, "SELECT
+            if ($rowd['suhu']) {
+              echo $rowd['suhu'];
+            } else {
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
                                                     PRODUCTIONORDERCODE,
                                                     PRODUCTIONDEMANDCODE,
                                                     OPERATIONCODE,
@@ -369,19 +384,19 @@
                                                     CHARACTERISTICCODE = 'TMP'
                                                   ORDER BY
                                                     LINE ASC");
-                $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
-                echo round($row_QA_DATA['VALUEQUANTITY'], 2);
-              }
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2);
+            }
             ?>
-            </font>
+          </font>
         </td>
         <td>
           <font size="-2">
             <?php
-              if($rowd['speed']){
-                echo $rowd['speed'];
-              }else{
-                $q_QA_DATA = db2_exec($conn_db2, "SELECT
+            if ($rowd['speed']) {
+              echo $rowd['speed'];
+            } else {
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
                                                     PRODUCTIONORDERCODE,
                                                     PRODUCTIONDEMANDCODE,
                                                     OPERATIONCODE,
@@ -396,19 +411,19 @@
                                                     CHARACTERISTICCODE = 'SPEEDFIN'
                                                   ORDER BY
                                                     LINE ASC");
-                $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
-                echo round($row_QA_DATA['VALUEQUANTITY'], 2);
-              }
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2);
+            }
             ?>
           </font>
         </td>
         <td>
           <font size="-2">
             <?php
-              if($rowd['vmt']){
-                echo $rowd['vmt'];
-              }else{
-                $q_QA_DATA = db2_exec($conn_db2, "SELECT
+            if ($rowd['vmt']) {
+              echo $rowd['vmt'];
+            } else {
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
                                                     PRODUCTIONORDERCODE,
                                                     PRODUCTIONDEMANDCODE,
                                                     OPERATIONCODE,
@@ -423,19 +438,19 @@
                                                     CHARACTERISTICCODE = 'VMT'
                                                   ORDER BY
                                                     LINE ASC");
-                $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
-                echo round($row_QA_DATA['VALUEQUANTITY'], 2);
-              }
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2);
+            }
             ?>
           </font>
         </td>
         <td>
           <font size="-2">
             <?php
-              if($rowd['overfeed']){
-                echo $rowd['overfeed'];
-              }else{
-                $q_QA_DATA = db2_exec($conn_db2, "SELECT
+            if ($rowd['overfeed']) {
+              echo $rowd['overfeed'];
+            } else {
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
                                                     PRODUCTIONORDERCODE,
                                                     PRODUCTIONDEMANDCODE,
                                                     OPERATIONCODE,
@@ -450,19 +465,19 @@
                                                     CHARACTERISTICCODE = 'OVR'
                                                   ORDER BY
                                                     LINE ASC");
-                $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
-                echo round($row_QA_DATA['VALUEQUANTITY'], 2);
-              }
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2);
+            }
             ?>
           </font>
         </td>
         <td>
           <font size="-2">
             <?php
-              if($rowd['buka_rantai']){
-                echo $rowd['buka_rantai'];
-              }else{
-                $q_QA_DATA = db2_exec($conn_db2, "SELECT
+            if ($rowd['buka_rantai']) {
+              echo $rowd['buka_rantai'];
+            } else {
+              $q_QA_DATA = db2_exec($conn_db2, "SELECT
                                                     PRODUCTIONORDERCODE,
                                                     PRODUCTIONDEMANDCODE,
                                                     OPERATIONCODE,
@@ -477,9 +492,9 @@
                                                     CHARACTERISTICCODE = 'BK'
                                                   ORDER BY
                                                     LINE ASC");
-                $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
-                echo round($row_QA_DATA['VALUEQUANTITY'], 2);
-              }
+              $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+              echo round($row_QA_DATA['VALUEQUANTITY'], 2);
+            }
             ?>
           </font>
         </td>
@@ -497,10 +512,10 @@
           <div align="center">
             <font size="-2">
               <?php
-                if($rowd['lebar_h']){
-                  echo $rowd['lebar_h'];
-                }else{
-                  $q_QA_DATA = db2_exec($conn_db2, "SELECT
+              if ($rowd['lebar_h']) {
+                echo $rowd['lebar_h'];
+              } else {
+                $q_QA_DATA = db2_exec($conn_db2, "SELECT
                                                       PRODUCTIONORDERCODE,
                                                       PRODUCTIONDEMANDCODE,
                                                       OPERATIONCODE,
@@ -515,9 +530,9 @@
                                                       CHARACTERISTICCODE = 'LEBAR'
                                                     ORDER BY
                                                       LINE ASC");
-                  $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
-                  echo round($row_QA_DATA['VALUEQUANTITY'], 2);
-                }
+                $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+                echo round($row_QA_DATA['VALUEQUANTITY'], 2);
+              }
               ?>
             </font>
           </div>
@@ -526,10 +541,10 @@
           <div align="center">
             <font size="-2">
               <?php
-                if($rowd['gramasi_h']){
-                  echo $rowd['gramasi_h'];
-                }else{
-                  $q_QA_DATA = db2_exec($conn_db2, "SELECT
+              if ($rowd['gramasi_h']) {
+                echo $rowd['gramasi_h'];
+              } else {
+                $q_QA_DATA = db2_exec($conn_db2, "SELECT
                                                       PRODUCTIONORDERCODE,
                                                       PRODUCTIONDEMANDCODE,
                                                       OPERATIONCODE,
@@ -544,10 +559,10 @@
                                                       CHARACTERISTICCODE = 'GRAMASI'
                                                     ORDER BY
                                                       LINE ASC");
-                  $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
-                  echo round($row_QA_DATA['VALUEQUANTITY'], 2);
-                }
-                ?>
+                $row_QA_DATA = db2_fetch_assoc($q_QA_DATA);
+                echo round($row_QA_DATA['VALUEQUANTITY'], 2);
+              }
+              ?>
             </font>
           </div>
         </td>
@@ -565,10 +580,10 @@
           <div align="center">
             <font size="-2">
               <?php
-              $total_waktu_awal         = date_create($rowd['jam_in']);
-              $total_waktu_akhir        = date_create($rowd['jam_out']);
+              $total_waktu_awal = date_create($rowd['jam_in']);
+              $total_waktu_akhir = date_create($rowd['jam_out']);
 
-              $diff_total_waktu              = date_diff($total_waktu_awal, $total_waktu_akhir);
+              $diff_total_waktu = date_diff($total_waktu_awal, $total_waktu_akhir);
 
               echo $diff_total_waktu->h . ' jam, ';
               echo $diff_total_waktu->i . ' menit ';
@@ -605,7 +620,7 @@
           <font size="-2"><?php echo $rowd['catatan']; ?></font>
         </td>
       </tr>
-    <?php
+      <?php
       $totrol += $rowd['rol'];
       $totberat += $rowd['qty'];
       $no++;
