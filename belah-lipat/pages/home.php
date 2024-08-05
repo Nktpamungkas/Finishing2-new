@@ -113,7 +113,7 @@
 					$anddemand = "";
 				}
 				// CEK JIKA blm ada nomor urut dan group shift kasih peringatan tidak bisa input saat operator mau proses
-				$q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand ");
+				$q_cekshedule    = mysqli_query($con, "SELECT * FROM tbl_schedule_new WHERE nokk = '$idkk' $anddemand AND NOT nourut = 0");
 				$row_cekschedule = mysqli_fetch_assoc($q_cekshedule);
 				if(empty($row_cekschedule['nourut']) AND $_GET['demand']){
 					echo     "<script>
