@@ -278,13 +278,70 @@ include('../koneksi.php');
             }
 
             if (isset($_POST['kkbelumsusun'])) {
-                $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+                $query_schedule = "SELECT
+                                        * 
+                                    FROM
+                                        `tbl_schedule_new` a 
+                                    WHERE
+                                        `status` = 'SCHEDULE' 
+                                    	$where_tgl $where_nama_mesin $where_no_mesin 
+                                        AND nourut = 0 
+                                        AND NOT EXISTS (
+                                                        SELECT 1
+                                                        FROM 
+                                                                tbl_produksi b
+                                                            WHERE
+                                                                b.nokk = a.nokk
+                                                                AND b.demandno = a.nodemand
+                                                                AND b.no_mesin = a.no_mesin
+                                                                AND b.nama_mesin = a.operation
+                                        )
+                                    ORDER BY
+                                        CONCAT(SUBSTR( TRIM( no_mesin ), - 5, 2 ),SUBSTR( TRIM( no_mesin ), - 2 )) ASC,nourut ASC";
                 $q_schedule     = mysqli_query($con, $query_schedule);
             } elseif (isset($_POST['button'])) {
-                $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+                $query_schedule = "SELECT
+                                        * 
+                                    FROM
+                                        `tbl_schedule_new` a 
+                                    WHERE
+                                        `status` = 'SCHEDULE' 
+                                    	$where_tgl $where_nama_mesin $where_no_mesin 
+                                        AND NOT nourut = 0 
+                                        AND NOT EXISTS (
+                                                        SELECT 1
+                                                        FROM 
+                                                                tbl_produksi b
+                                                            WHERE
+                                                                b.nokk = a.nokk
+                                                                AND b.demandno = a.nodemand
+                                                                AND b.no_mesin = a.no_mesin
+                                                                AND b.nama_mesin = a.operation
+                                        )
+                                    ORDER BY
+                                        CONCAT(SUBSTR( TRIM( no_mesin ), - 5, 2 ),SUBSTR( TRIM( no_mesin ), - 2 )) ASC,nourut ASC";
                 $q_schedule     = mysqli_query($con, $query_schedule);
             } else {
-                $query_schedule = "SELECT * FROM `tbl_schedule_new` WHERE `status` = 'SCHEDULE' $where_tgl $where_nama_mesin $where_no_mesin AND NOT nourut = 0 ORDER BY CONCAT(SUBSTR(TRIM(no_mesin), -5,2), SUBSTR(TRIM(no_mesin), -2)) ASC, nourut ASC";
+                $query_schedule = "SELECT
+                                        * 
+                                    FROM
+                                        `tbl_schedule_new` a 
+                                    WHERE
+                                        `status` = 'SCHEDULE' 
+                                    	$where_tgl $where_nama_mesin $where_no_mesin 
+                                        AND NOT nourut = 0 
+                                        AND NOT EXISTS (
+                                                        SELECT 1
+                                                        FROM 
+                                                                tbl_produksi b
+                                                            WHERE
+                                                                b.nokk = a.nokk
+                                                                AND b.demandno = a.nodemand
+                                                                AND b.no_mesin = a.no_mesin
+                                                                AND b.nama_mesin = a.operation
+                                        )
+                                    ORDER BY
+                                        CONCAT(SUBSTR( TRIM( no_mesin ), - 5, 2 ),SUBSTR( TRIM( no_mesin ), - 2 )) ASC,nourut ASC";
                 $q_schedule     = mysqli_query($con, $query_schedule);
             }
             $totalQty = 0;
@@ -292,125 +349,118 @@ include('../koneksi.php');
             ?>
             <?php while ($row_schedule  = mysqli_fetch_array($q_schedule)) : ?>
                 <?php
-                // CEK, JIKA KARTU KERJA SUDAH DIPROSES MAKA TAMPILAN PADA SCHEDULE HILANG. 
-                $cek_proses   = mysqli_query($con, "SELECT COUNT(*) AS jml FROM tbl_produksi WHERE nokk = '$row_schedule[nokk]' AND demandno = '$row_schedule[nodemand]' AND no_mesin = '$row_schedule[no_mesin]' AND nama_mesin = '$row_schedule[operation]'");
-                $data_proses  = mysqli_fetch_assoc($cek_proses);
+                $q_cekposisikk      = db2_exec($conn_db2, "SELECT
+                                                            p.PRODUCTIONORDERCODE,
+                                                            p.STEPNUMBER AS STEPNUMBER,
+                                                            CASE
+                                                                WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+                                                                ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+                                                            END AS OPERATIONCODE,
+                                                            TRIM(o.OPERATIONGROUPCODE) AS DEPT,
+                                                            o.LONGDESCRIPTION,
+                                                            CASE
+                                                                WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
+                                                                WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
+                                                                WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
+                                                                WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
+                                                            END AS STATUS_OPERATION,
+                                                            iptip.MULAI,
+                                                            CASE
+                                                                WHEN p.PROGRESSSTATUS = 3 THEN COALESCE(iptop.SELESAI, SUBSTRING(p.LASTUPDATEDATETIME, 1, 19) || '(Run Manual Closures)')
+                                                                ELSE iptop.SELESAI
+                                                            END AS SELESAI,
+                                                            p.PRODUCTIONORDERCODE,
+                                                            p.PRODUCTIONDEMANDCODE,
+                                                            iptip.LONGDESCRIPTION AS OP1,
+                                                            iptop.LONGDESCRIPTION AS OP2,
+                                                            CASE
+                                                                WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
+                                                                ELSE LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ')
+                                                            END AS GEROBAK 
+                                                        FROM 
+                                                            PRODUCTIONDEMANDSTEP p 
+                                                        LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+                                                        LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
+                                                        LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+                                                        LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+                                                        LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
+                                                                                            -- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
+                                                                                            AND idqd.OPERATIONCODE = CASE
+                                                                                                                        WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+                                                                                                                        ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+                                                                                                                    END
+                                                                                            AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
+                                                                                            AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
+                                                                                                idqd.CHARACTERISTICCODE = 'GRB2' OR
+                                                                                                idqd.CHARACTERISTICCODE = 'GRB3' OR
+                                                                                                idqd.CHARACTERISTICCODE = 'GRB4' OR
+                                                                                                idqd.CHARACTERISTICCODE = 'GRB5' OR
+                                                                                                idqd.CHARACTERISTICCODE = 'GRB6' OR
+                                                                                                idqd.CHARACTERISTICCODE = 'GRB7' OR
+                                                                                                idqd.CHARACTERISTICCODE = 'GRB8')
+                                                                                            AND NOT (idqd.VALUEQUANTITY = 9 OR idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 1 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
+                                                        WHERE
+                                                            p.PRODUCTIONORDERCODE  = '$row_schedule[nokk]' AND p.PRODUCTIONDEMANDCODE = '$row_schedule[nodemand]' AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
+                                                            AND CASE
+                                                                WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+                                                                ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+                                                            END = '$row_schedule[operation]'
+                                                        GROUP BY
+                                                            p.PRODUCTIONORDERCODE,
+                                                            p.STEPNUMBER,
+                                                            p.OPERATIONCODE,
+                                                            p.PRODRESERVATIONLINKGROUPCODE,
+                                                            o.OPERATIONGROUPCODE,
+                                                            o.LONGDESCRIPTION,
+                                                            p.PROGRESSSTATUS,
+                                                            iptip.MULAI,
+                                                            iptop.SELESAI,
+                                                            p.LASTUPDATEDATETIME,
+                                                            p.PRODUCTIONORDERCODE,
+                                                            p.PRODUCTIONDEMANDCODE,
+                                                            iptip.LONGDESCRIPTION,
+                                                            iptop.LONGDESCRIPTION,
+                                                            a.VALUEBOOLEAN
+                                                        ORDER BY p.STEPNUMBER ASC");
+                $row_cekposisikk    = db2_fetch_assoc($q_cekposisikk);
                 ?>
-                <?php if (empty($data_proses['jml'])) : ?>
-                    <?php
-                    $q_cekposisikk      = db2_exec($conn_db2, "SELECT
-                                                                p.PRODUCTIONORDERCODE,
-                                                                p.STEPNUMBER AS STEPNUMBER,
-                                                                CASE
-                                                                    WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
-                                                                    ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
-                                                                END AS OPERATIONCODE,
-                                                                TRIM(o.OPERATIONGROUPCODE) AS DEPT,
-                                                                o.LONGDESCRIPTION,
-                                                                CASE
-                                                                    WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
-                                                                    WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
-                                                                    WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
-                                                                    WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
-                                                                END AS STATUS_OPERATION,
-                                                                iptip.MULAI,
-                                                                CASE
-                                                                    WHEN p.PROGRESSSTATUS = 3 THEN COALESCE(iptop.SELESAI, SUBSTRING(p.LASTUPDATEDATETIME, 1, 19) || '(Run Manual Closures)')
-                                                                    ELSE iptop.SELESAI
-                                                                END AS SELESAI,
-                                                                p.PRODUCTIONORDERCODE,
-                                                                p.PRODUCTIONDEMANDCODE,
-                                                                iptip.LONGDESCRIPTION AS OP1,
-                                                                iptop.LONGDESCRIPTION AS OP2,
-                                                                CASE
-                                                                    WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
-                                                                    ELSE LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ')
-                                                                END AS GEROBAK 
-                                                            FROM 
-                                                                PRODUCTIONDEMANDSTEP p 
-                                                            LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
-                                                            LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
-                                                            LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-                                                            LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-                                                            LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
-                                                                                                -- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
-                                                                                                AND idqd.OPERATIONCODE = CASE
-                                                                                                                            WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
-                                                                                                                            ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
-                                                                                                                        END
-                                                                                                AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
-                                                                                                AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
-                                                                                                    idqd.CHARACTERISTICCODE = 'GRB2' OR
-                                                                                                    idqd.CHARACTERISTICCODE = 'GRB3' OR
-                                                                                                    idqd.CHARACTERISTICCODE = 'GRB4' OR
-                                                                                                    idqd.CHARACTERISTICCODE = 'GRB5' OR
-                                                                                                    idqd.CHARACTERISTICCODE = 'GRB6' OR
-                                                                                                    idqd.CHARACTERISTICCODE = 'GRB7' OR
-                                                                                                    idqd.CHARACTERISTICCODE = 'GRB8')
-                                                                                                AND NOT (idqd.VALUEQUANTITY = 9 OR idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 1 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
-                                                            WHERE
-                                                                p.PRODUCTIONORDERCODE  = '$row_schedule[nokk]' AND p.PRODUCTIONDEMANDCODE = '$row_schedule[nodemand]' AND TRIM(o.OPERATIONGROUPCODE) = 'FIN'
-                                                                AND CASE
-                                                                    WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
-                                                                    ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
-                                                                END = '$row_schedule[operation]'
-                                                            GROUP BY
-                                                                p.PRODUCTIONORDERCODE,
-                                                                p.STEPNUMBER,
-                                                                p.OPERATIONCODE,
-                                                                p.PRODRESERVATIONLINKGROUPCODE,
-                                                                o.OPERATIONGROUPCODE,
-                                                                o.LONGDESCRIPTION,
-                                                                p.PROGRESSSTATUS,
-                                                                iptip.MULAI,
-                                                                iptop.SELESAI,
-                                                                p.LASTUPDATEDATETIME,
-                                                                p.PRODUCTIONORDERCODE,
-                                                                p.PRODUCTIONDEMANDCODE,
-                                                                iptip.LONGDESCRIPTION,
-                                                                iptop.LONGDESCRIPTION,
-                                                                a.VALUEBOOLEAN
-                                                            ORDER BY p.STEPNUMBER ASC");
-                    $row_cekposisikk    = db2_fetch_assoc($q_cekposisikk);
-                    ?>
-                    <tr>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;">
-                            <?= $row_cekposisikk['STATUS_OPERATION']; ?><br>
-                            <?= $row_cekposisikk['OP1']; ?> - <?= $row_cekposisikk['OP2']; ?><br>
-                            <?= $row_cekposisikk['MULAI']; ?> - <?= $row_cekposisikk['SELESAI']; ?>
-                        </td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']) . '<br>' . substr(TRIM($row_schedule['no_mesin']), -5, 2) . substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
-                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['personil'] ?><br><?= $row_schedule['creationdatetime'] ?></td>
-                        <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['lastupdatedateuser'] ?><br><?= $row_schedule['lastupdatedatetime'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;">
-                            <?php if ($_SESSION['usr'] != 'husni') : ?>
-                                <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
-                                <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
-                            <?php endif; ?>
-                        </td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nokk'] ?></a></td>
-                        <td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand'] ?></a></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['buyer'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_order'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['jenis_kain'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lebar'] ?> x <?= $row_schedule['gramasi'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_warna'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['warna'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lot'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['roll'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
-                        <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order_yd'] ?></td>
-                        <?php $totalQty += $row_schedule['qty_order']; ?>
-                        <?php $totalRoll += $row_schedule['roll']; ?>
-                    </tr>
-                <?php endif; ?>
+                <tr>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;">
+                        <?= $row_cekposisikk['STATUS_OPERATION']; ?><br>
+                        <?= $row_cekposisikk['OP1']; ?> - <?= $row_cekposisikk['OP2']; ?><br>
+                        <?= $row_cekposisikk['MULAI']; ?> - <?= $row_cekposisikk['SELESAI']; ?>
+                    </td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nourut']; ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= TRIM($row_schedule['no_mesin']) . '<br>' . substr(TRIM($row_schedule['no_mesin']), -5, 2) . substr(TRIM($row_schedule['no_mesin']), -2); ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['proses'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; color:red;"><?= $row_schedule['catatan'] ?></td>
+                    <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['personil'] ?><br><?= $row_schedule['creationdatetime'] ?></td>
+                    <td style="border:1px solid;vertical-align:center;"><?= $row_schedule['lastupdatedateuser'] ?><br><?= $row_schedule['lastupdatedatetime'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;">
+                        <?php if ($_SESSION['usr'] != 'husni') : ?>
+                            <a href="?p=edit_schedule&id=<?= $row_schedule['id']; ?>&typekk=NOW" class="button" target="_blank">Edit</a>
+                            <button class="button" style="background-color: #ff004c; color: #ffffff;" onclick="showConfirmation(<?= $row_schedule['id'] ?>);">Hapus</button>
+                        <?php endif; ?>
+                    </td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['nama_mesin'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['operation'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle; text-align: center;"><?= $row_schedule['group_shift']; ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><a title="MEMO PENTING" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nokk'] ?></a></td>
+                    <td style="border:1px solid;vertical-align:middle;"><a title="POSISI KK" target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $row_schedule['nodemand']; ?>&prod_order=<?= $row_schedule['nokk']; ?>"><?= $row_schedule['nodemand'] ?></a></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['langganan'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['buyer'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_order'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['jenis_kain'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lebar'] ?> x <?= $row_schedule['gramasi'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['no_warna'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['warna'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['lot'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['roll'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order'] ?></td>
+                    <td style="border:1px solid;vertical-align:middle;"><?= $row_schedule['qty_order_yd'] ?></td>
+                    <?php $totalQty += $row_schedule['qty_order']; ?>
+                    <?php $totalRoll += $row_schedule['roll']; ?>
+                </tr>
             <?php endwhile; ?>
         </tbody>
         <tfoot>
