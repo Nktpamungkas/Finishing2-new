@@ -19,25 +19,31 @@ include ('../../koneksi.php');
   $jamakhir = $_GET['jamakhir'];
   $shft = $_GET['shift'];
   if ($tglakhir != "" and $tglawal != "") {
-    $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+//    $tgl = " CONVERT(DATE, a.tgl_update) BETWEEN '$tglawal' AND '$tglakhir' ";
+	  $tgl = " a.tgl_buat BETWEEN '$tglawal 23:01:00' AND '$tglakhir 23:00:00' ";
   } else {
     $tgl = " ";
   }
   // if ($tglakhir != "" and $tglawal != "" or $jamakhir != "" and $jamawal != "") {
-  //   $tgl = " DATE_FORMAT(a.`tgl_buat`,'%Y-%m-%d %H:%i') BETWEEN '$tglawal $jamawal' AND '$tglakhir $jamakhir' ";
+  //   $tgl = " DATE_FORMAT(a.tgl_buat,'%Y-%m-%d %H:%i') BETWEEN '$tglawal $jamawal' AND '$tglakhir $jamakhir' ";
   // } else {
   //   $tgl = " ";
   // }	
   if ($shft == "ALL") {
     $shift = " ";
   } else {
-    $shift = " AND a.`shift`='$shft' ";
+    $shift = " AND a.shift='$shft' ";
   }
   if ($_GET['mesin'] == "") {
     $mesin = " ";
   } else {
-    $mesin = " AND a.`no_mesin`='$_GET[mesin]' ";
+    $mesin = " AND a.no_mesin='$_GET[mesin]' ";
   }
+  if($_GET['jnsmesin']=="ALL"){
+		  $jnsmc=" ";
+	  }else{
+		  $jnsmc=" AND a.jns_mesin= '$_GET[jnsmesin]' ";
+	  }	
   ?>
   <table width="100%" border="1">
     <tr valign="top">
@@ -45,9 +51,9 @@ include ('../../koneksi.php');
         echo "7";
       } else {
         echo "8";
-      } ?>">TANGGAL:<strong> <?php echo $tglawal . " " . $jamawal; ?> s/d
-          <?php echo $tglakhir . " " . $jamakhir; ?></strong></td>
-      <td colspan="9">GROUP SHIFT:<strong><?php echo $shft; ?></strong></td>
+      } ?>">TANGGAL:<strong> <?php echo $tglawal . " 23:01 " . $jamawal; ?> s/d
+          <?php echo $tglakhir . " 23:00 " . $jamakhir; ?></strong></td>
+      <td colspan="10">GROUP SHIFT:<strong><?php echo $shft; ?></strong></td>
       <td colspan="12">NO MESIN :<strong>
           <?php if ($_GET['mesin'] == "") {
             echo "ALL";
@@ -81,6 +87,7 @@ include ('../../koneksi.php');
             <font size="-2">MC</font>
           </div>
         </td>
+        <td rowspan="3"><div align="center"> <font size="-2">Operation</font> </div></td>
       <?php } ?>
       <td rowspan="3">
         <div align="center">
@@ -278,29 +285,35 @@ include ('../../koneksi.php');
       </td>
     </tr>
     <?php
-    $sql = mysqli_query($con, " SELECT 
+    $sql = sqlsrv_query($con, " SELECT 
                                         *
                                       FROM
-                                        `tbl_produksi` a
+                                        db_finishing.tbl_produksi a
                                       WHERE
-                                        $tgl $shift $mesin ORDER BY a.`jam_in` ASC");
+                                        $tgl $shift $mesin $jnsmc ORDER BY a.jam_in ASC");
     $no = 1;
     $c = 0;
-    while ($rowd = mysqli_fetch_array($sql)) {
+    while ($rowd = sqlsrv_fetch_array($sql, SQLSRV_FETCH_ASSOC)) {
       // hitung hari dan jam	 
       // $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
       // $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
       // $diff  = ($akhir - $awal);
       // $tmenit = round($diff / (60), 2);
-      $awal = date_create($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
-      $akhir = date_create($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
+      if($rowd['tgl_stop_l'] != NULL && $rowd['tgl_stop_r'] != NULL) {
 
-      $tmenit_stopmesin = date_diff($awal, $akhir);
+        $stopL = trim($rowd['stop_l']) ?: '00:00';
+        $stopR = trim($rowd['stop_r']) ?: '00:00';
 
-      $tmenit = $tmenit_stopmesin->h . ' jam, ' . $tmenit_stopmesin->i . ' menit ';
+        $awal         = date_create($rowd['tgl_stop_l']->format('Y-m-d') . ' ' . $stopL);
+        $akhir        = date_create($rowd['tgl_stop_r']->format('Y-m-d') . ' ' . $stopR);
 
-      $tjam = round($diff / (60 * 60), 2);
-      $hari = round($tjam / 24, 2);
+        $tmenit_stopmesin = date_diff($awal, $akhir);
+
+        $tmenit   = $tmenit_stopmesin->h . ' jam, '. $tmenit_stopmesin->i . ' menit ';
+
+        $tjam  = round($diff / (60 * 60), 2);
+        $hari  = round($tjam / 24, 2);
+      }
       ?>
       <tr valign="top">
         <td>&nbsp;</td>
@@ -322,6 +335,7 @@ include ('../../koneksi.php');
           <td>
             <font size="-2"><?php echo $rowd['no_mesin']; ?></font>
           </td>
+          <td><font size="-2"><?php echo $rowd['nama_mesin']; ?></td>
         <?php } ?>
         <td>
           <font size="-2"><?php echo $rowd['langganan']; ?></font>
@@ -580,14 +594,35 @@ include ('../../koneksi.php');
           <div align="center">
             <font size="-2">
               <?php
-              $total_waktu_awal = date_create($rowd['jam_in']);
-              $total_waktu_akhir = date_create($rowd['jam_out']);
-
-              $diff_total_waktu = date_diff($total_waktu_awal, $total_waktu_akhir);
-
-              echo $diff_total_waktu->h . ' jam, ';
-              echo $diff_total_waktu->i . ' menit ';
+//              $total_waktu_awal = date_create($rowd['jam_in']);
+//              $total_waktu_akhir = date_create($rowd['jam_out']);
+//
+//              $diff_total_waktu = date_diff($total_waktu_awal, $total_waktu_akhir);
+//
+//              echo $diff_total_waktu->h . ' jam, ';
+//              echo $diff_total_waktu->i . ' menit ';
               ?>
+				<?php
+					$jam_in = $rowd['jam_in'];
+					$jam_out = $rowd['jam_out'];
+
+					if ($jam_in && $jam_out) {
+						// Buat DateTime dari hari yang sama
+						$tanggal_dasar = '2025-04-01'; // Tanggal bebas, hanya untuk perhitungan waktu
+						$total_waktu_awal = new DateTime($tanggal_dasar . ' ' . $jam_in);
+						$total_waktu_akhir = new DateTime($tanggal_dasar . ' ' . $jam_out);
+
+						// Jika jam_out < jam_in, berarti lewat tengah malam → tambah 1 hari
+						if ($jam_out < $jam_in) {
+							$total_waktu_akhir->modify('+1 day');
+						}
+
+						$diff_total_waktu = $total_waktu_awal->diff($total_waktu_akhir);
+
+						echo $diff_total_waktu->h . ' jam, ';
+						echo $diff_total_waktu->i . ' menit';
+					}
+				 ?>	
             </font>
           </div>
         </td>
