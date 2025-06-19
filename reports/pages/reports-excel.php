@@ -39,7 +39,7 @@ include ('../../koneksi.php');
   } else {
     $mesin = " AND a.no_mesin='$_GET[mesin]' ";
   }
-  if($_GET['jnsmesin']=="ALL"){
+  if($_GET['jnsmesin']=="ALL" or $_GET['jnsmesin']==""){
 		  $jnsmc=" ";
 	  }else{
 		  $jnsmc=" AND a.jns_mesin= '$_GET[jnsmesin]' ";
