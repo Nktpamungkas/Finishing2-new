@@ -11,24 +11,26 @@
   $jamakhir = $_GET['jamakhir'];
   $shft = $_GET['shift'];
  if ($tglakhir != "" and $tglawal != "") {
-   $tgl = " DATE_FORMAT(a.`tgl_update`,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+//   $tgl = " CONVERT(DATE, a.tgl_update) BETWEEN '$tglawal' AND '$tglakhir' ";
+//	 $tgl = " a.tgl_buat BETWEEN '$tglawal 23:01:00' AND '$tglakhir 23:00:00' ";
+	 $tgl = " CONCAT(a.tgl_update,CONCAT(' ',a.jam_out)) BETWEEN '$tglawal 23:01' AND '$tglakhir 23:00' ";
  } else {
    $tgl = " ";
  }
   // if ($tglakhir != "" and $tglawal != "" or $jamakhir != "" and $jamawal != "") {
-  //   $tgl = " DATE_FORMAT(a.`tgl_buat`,'%Y-%m-%d %H:%i') BETWEEN '$tglawal $jamawal' AND '$tglakhir $jamakhir' ";
+  //   $tgl = " DATE_FORMAT(a.tgl_buat,'%Y-%m-%d %H:%i') BETWEEN '$tglawal $jamawal' AND '$tglakhir $jamakhir' ";
   // } else {
   //   $tgl = " ";
   // }	
   if ($shft == "ALL") {
     $shift = " ";
   } else {
-    $shift = " AND a.`shift`='$shft' ";
+    $shift = " AND a.shift='$shft' ";
   }
   if ($_GET['mesin'] == "") {
     $mesin = " ";
   } else {
-    $mesin = " AND a.`no_mesin`='$_GET[mesin]' ";
+    $mesin = " AND a.no_mesin='$_GET[mesin]' ";
   }
 
 ?>
@@ -90,7 +92,7 @@
                 <td width="6%" rowspan="3"><img src="Indo.jpg" alt="" width="60" height="60"></td>
                 <td width="75%" rowspan="3">
                   <div align="center">
-                    <h2>FORM PRODUKSI HARIAN DEPARTEMEN FINISHING</h2>
+                    <h2>FORM PRODUKSI HARIAN DEPARTEMEN FINISHING.</h2>
                   </div>
                 </td>
                 <td width="8%">No. Form</td>
@@ -111,7 +113,7 @@
       <tr valign="top">
         <td <?php if ($_GET['mesin'] == "") { ?> colspan="8" <?php } else {
                                                           echo 'colspan="7"';
-                                                        } ?>>TANGGAL:<strong> <?php echo $tglawal." ".$jamawal; ?> s/d <?php echo $tglakhir." ".$jamakhir; ?></strong></td>
+                                                        } ?>>TANGGAL:<strong> <?php echo $tglawal." 23:01 ".$jamawal; ?> s/d <?php echo $tglakhir." 23:00".$jamakhir; ?></strong></td>
         <td colspan="9">GROUP SHIFT:<strong><?php echo $shft; ?></strong></td>
         <td colspan="13">NO MESIN :<strong><?php if ($_GET['mesin'] == "") {
                                               echo "ALL";
@@ -330,34 +332,39 @@
     </thead>
     <tbody>
       <?php
-        $sql = mysqli_query($con, " SELECT 
+        $sql = sqlsrv_query($con, " SELECT 
                                         *
                                       FROM
-                                        `tbl_produksi` a
+                                        db_finishing.tbl_produksi a
                                       WHERE
-                                        $tgl $shift $mesin ORDER BY a.`jam_in` ASC");
+                                        $tgl $shift $mesin ORDER BY a.jam_in ASC");
 
         $no = 1;
 
         $c = 0;
 
-        while ($rowd = mysqli_fetch_array($sql)) {
+        while ($rowd = sqlsrv_fetch_array($sql, SQLSRV_FETCH_ASSOC)) {
 
           // hitung hari dan jam	 
           // $awal  = strtotime($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
           // $akhir = strtotime($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
           // $diff  = ($akhir - $awal);
           // $tmenit = round($diff / (60), 2);
+          if($rowd['tgl_stop_l'] != NULL && $rowd['tgl_stop_r'] != NULL) {
 
-          $awal         = date_create($rowd['tgl_stop_l'] . ' ' . $rowd['stop_l']);
-          $akhir        = date_create($rowd['tgl_stop_r'] . ' ' . $rowd['stop_r']);
+            $stopL = trim($rowd['stop_l']) ?: '00:00';
+            $stopR = trim($rowd['stop_r']) ?: '00:00';
 
-          $tmenit_stopmesin = date_diff($awal, $akhir);
+            $awal         = date_create($rowd['tgl_stop_l']->format('Y-m-d') . ' ' . $stopL);
+            $akhir        = date_create($rowd['tgl_stop_r']->format('Y-m-d') . ' ' . $stopR);
 
-          $tmenit   = $tmenit_stopmesin->h . ' jam, '. $tmenit_stopmesin->i . ' menit ';
+            $tmenit_stopmesin = date_diff($awal, $akhir);
 
-          $tjam  = round($diff / (60 * 60), 2);
-          $hari  = round($tjam / 24, 2);
+            $tmenit   = $tmenit_stopmesin->h . ' jam, '. $tmenit_stopmesin->i . ' menit ';
+
+            $tjam  = round($diff / (60 * 60), 2);
+            $hari  = round($tjam / 24, 2);
+          }
       ?>
         <tr valign="top">
           <td>&nbsp;</td>

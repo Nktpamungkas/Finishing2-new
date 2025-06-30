@@ -68,7 +68,9 @@
       }
       if ($tglakhir != "" and $tglawal != "") {
 //      $tgl = " CONVERT(DATE, a.tgl_update) BETWEEN '$tglawal' AND '$tglakhir' ";
-	    $tgl = " a.tgl_buat BETWEEN '$tglawal 23:01:00' AND '$tglakhir 23:00:00' ";	
+//	    $tgl = " a.tgl_buat BETWEEN '$tglawal 23:01:00' AND '$tglakhir 23:00:00' ";	
+	    $tgl = " CONCAT(a.tgl_update,CONCAT(' ',a.jam_out)) BETWEEN '$tglawal 23:01' AND '$tglakhir 23:00' ";	
+		  
 //		$tgl = " a.tgl_buat BETWEEN CAST(CONVERT(VARCHAR, $tglawal, 23) + ' 23:01:00' AS DATETIME) AND CAST(CONVERT(VARCHAR, $tglakhir, 23) + ' 23:00:00' AS DATETIME) ";  
       } else {
         $tgl = " ";
@@ -764,7 +766,9 @@
       $mesin1 = $_GET['msn'];
     }
     if ($tglakhir != "" and $tglawal != "") {
-      $tgl = " DATE_FORMAT(a.tgl_update,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+//      $tgl = " DATE_FORMAT(a.tgl_update,'%Y-%m-%d') BETWEEN '$tglawal' AND '$tglakhir' ";
+      $tgl = " CONCAT(a.tgl_update,CONCAT(' ',a.jam_out)) BETWEEN '$tglawal 23:01' AND '$tglakhir 23:00' ";
+		
     } else {
       $tgl = " ";
     }

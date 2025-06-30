@@ -20,7 +20,8 @@ include ('../../koneksi.php');
   $shft = $_GET['shift'];
   if ($tglakhir != "" and $tglawal != "") {
 //    $tgl = " CONVERT(DATE, a.tgl_update) BETWEEN '$tglawal' AND '$tglakhir' ";
-	  $tgl = " a.tgl_buat BETWEEN '$tglawal 23:01:00' AND '$tglakhir 23:00:00' ";
+//	  $tgl = " a.tgl_buat BETWEEN '$tglawal 23:01:00' AND '$tglakhir 23:00:00' ";
+	  $tgl = " CONCAT(a.tgl_update,CONCAT(' ',a.jam_out))  BETWEEN '$tglawal 23:01' AND '$tglakhir 23:00' ";
   } else {
     $tgl = " ";
   }
